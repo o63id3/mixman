@@ -25,6 +25,7 @@ arch('models')
         'App\Rules',
         'App\Services',
         'Database\Factories',
+        'Database\Seeders',
     ])->ignoring('App\Models\Concerns');
 
 arch('ensure factories', function () {
