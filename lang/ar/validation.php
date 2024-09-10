@@ -152,7 +152,10 @@ return [
     'uuid' => 'حقل :attribute يجب أن يكون بصيغة UUID سليمة.',
 
     'attributes' => [
+        'name' => 'الاسم',
         'username' => 'اسم المستخدم',
         'password' => 'كلمة المرور',
+        'contact_info' => 'بيانات التواصل',
+        'notes' => 'الملاحظات',
     ],
 ];

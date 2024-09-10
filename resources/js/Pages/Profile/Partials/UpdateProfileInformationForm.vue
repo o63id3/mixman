@@ -48,7 +48,7 @@ const form = useForm({
 
         <TextInput
           id="username"
-          class="mt-1 block w-full text-left"
+          class="mt-1 block w-full"
           v-model="form.username"
         />
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Checkbox from '@/Components/Checkbox.vue'
+import { Checkbox } from '@/Components/ui/checkbox'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, useForm } from '@inertiajs/vue3'
+import Input from '@/Components/ui/input/Input.vue'
 
 defineProps<{
   canResetPassword?: boolean
@@ -39,9 +39,9 @@ const submit = () => {
       <div>
         <InputLabel for="username" value="اسم المستخدم" />
 
-        <TextInput
-          id="username"
-          class="mt-1 block w-full text-left"
+        <Input
+          type="text"
+          class="mt-2 block w-full"
           v-model="form.username"
           autofocus
         />
@@ -52,11 +52,11 @@ const submit = () => {
       <div class="mt-4">
         <InputLabel for="password" value="كلمة المرور" />
 
-        <TextInput
-          id="password"
+        <Input
           type="password"
-          class="mt-1 block w-full"
+          class="mt-2 block w-full"
           v-model="form.password"
+          autofocus
         />
 
         <InputError class="mt-2" :message="form.errors.password" />
@@ -64,7 +64,7 @@ const submit = () => {
 
       <div class="mt-4 block">
         <label class="flex items-center">
-          <Checkbox name="remember" v-model:checked="form.remember" />
+          <Checkbox name="remember" v-model="form.remember" />
           <span class="ms-2 text-sm text-gray-600">تذكرني</span>
         </label>
       </div>

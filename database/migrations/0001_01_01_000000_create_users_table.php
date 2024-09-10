@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
+            $table->boolean('admin')->default(false);
+            $table->boolean('active')->default(true);
+            $table->integer('balance')->default(0);
+            $table->longText('contact_info')->nullable();
+            $table->longText('notes')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

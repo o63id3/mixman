@@ -5,9 +5,10 @@ import Dropdown from '@/Components/Dropdown.vue'
 import DropdownLink from '@/Components/DropdownLink.vue'
 import NavLink from '@/Components/NavLink.vue'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 
 const showingNavigationDropdown = ref(false)
+const user = usePage().props.auth.user
 </script>
 
 <template>
@@ -28,12 +29,20 @@ const showingNavigationDropdown = ref(false)
               </div>
 
               <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+              <div class="hidden gap-8 sm:-my-px sm:ms-10 sm:flex">
                 <NavLink
                   :href="route('dashboard')"
                   :active="route().current('dashboard')"
                 >
                   الرئيسة
+                </NavLink>
+
+                <NavLink
+                  v-if="user.can.sellers.viewAny"
+                  :href="route('sellers.index')"
+                  :active="route().current('sellers.index')"
+                >
+                  نقاط البيع
                 </NavLink>
               </div>
             </div>
@@ -134,6 +143,13 @@ const showingNavigationDropdown = ref(false)
               :active="route().current('dashboard')"
             >
               الرئيسة
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.sellers.viewAny"
+              :href="route('sellers.index')"
+              :active="route().current('sellers.index')"
+            >
+              نقاط البيع
             </ResponsiveNavLink>
           </div>
 

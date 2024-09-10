@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,6 +35,22 @@ final class User extends Authenticatable
     ];
 
     /**
+     * check if the user is admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
+    /**
+     * Scope the users to sellers only.
+     */
+    public function scopeSellers(Builder $query): Builder
+    {
+        return $query->where('admin', false);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -42,6 +59,8 @@ final class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'admin' => 'boolean',
+            'active' => 'boolean',
         ];
     }
 }

@@ -20,5 +20,18 @@
         "vite": "^5.0",
         "vue": "^3.4.0",
         "vue-tsc": "^2.0.24"
+    },
+    "dependencies": {
+        "@formkit/auto-animate": "^0.8.2",
+        "@radix-icons/vue": "^1.0.0",
+        "@vee-validate/zod": "^4.13.2",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "lucide-vue-next": "^0.439.0",
+        "radix-vue": "^1.9.5",
+        "tailwind-merge": "^2.5.2",
+        "tailwindcss-animate": "^1.0.7",
+        "vee-validate": "^4.13.2",
+        "zod": "^3.23.8"
     }
 }

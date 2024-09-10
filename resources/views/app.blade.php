@@ -17,5 +17,6 @@
   </head>
   <body class="rtl font-sans antialiased">
     @inertia
+    <div id="toaster"></div>
   </body>
 </html>

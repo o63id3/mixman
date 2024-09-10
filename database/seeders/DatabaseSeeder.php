@@ -17,6 +17,9 @@ final class DatabaseSeeder extends Seeder
         User::factory()->create([
             'username' => 'hos',
             'password' => '1',
+            'admin' => true,
         ]);
+
+        User::factory(30)->create();
     }
 }
