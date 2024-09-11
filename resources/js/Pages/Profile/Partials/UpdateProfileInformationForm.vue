@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import Button from '@/Components/ui/button/Button.vue'
+import Input from '@/Components/ui/input/Input.vue'
+import Label from '@/Components/ui/label/Label.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 
 defineProps<{
@@ -30,12 +30,12 @@ const form = useForm({
       class="mt-6 space-y-6"
     >
       <div>
-        <InputLabel for="name" value="اسمك" />
+        <Label for="name">اسمك</Label>
 
-        <TextInput
+        <Input
           id="name"
           type="text"
-          class="mt-1 block w-full"
+          class="mt-2 block w-full"
           v-model="form.name"
           autofocus
         />
@@ -44,11 +44,12 @@ const form = useForm({
       </div>
 
       <div>
-        <InputLabel for="username" value="اسم المستخدم" />
+        <Label for="username">اسم المستخدم</Label>
 
-        <TextInput
+        <Input
           id="username"
-          class="mt-1 block w-full"
+          type="text"
+          class="mt-2 block w-full"
           v-model="form.username"
         />
 
@@ -56,7 +57,7 @@ const form = useForm({
       </div>
 
       <div class="flex items-center gap-4">
-        <PrimaryButton :disabled="form.processing">حفظ</PrimaryButton>
+        <Button :disabled="form.processing">حفظ</Button>
 
         <Transition
           enter-active-class="transition ease-in-out"

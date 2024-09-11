@@ -2,10 +2,10 @@
 import { Checkbox } from '@/Components/ui/checkbox'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 import Input from '@/Components/ui/input/Input.vue'
+import Button from '@/Components/ui/button/Button.vue'
+import Label from '@/Components/ui/label/Label.vue'
 
 defineProps<{
   canResetPassword?: boolean
@@ -37,7 +37,7 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="username" value="اسم المستخدم" />
+        <Label for="username">اسم المستخدم</Label>
 
         <Input
           type="text"
@@ -50,7 +50,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="كلمة المرور" />
+        <Label for="password">كلمة المرور</Label>
 
         <Input
           type="password"
@@ -70,13 +70,13 @@ const submit = () => {
       </div>
 
       <div class="mt-4 flex items-center justify-end">
-        <PrimaryButton
+        <Button
           class="ms-4"
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
         >
           دخول
-        </PrimaryButton>
+        </Button>
       </div>
     </form>
   </GuestLayout>
