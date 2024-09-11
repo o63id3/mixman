@@ -38,6 +38,14 @@ const user = usePage().props.auth.user
                 </NavLink>
 
                 <NavLink
+                  v-if="user.can.regions.viewAny"
+                  :href="route('regions.index')"
+                  :active="route().current('regions.index')"
+                >
+                  المناطق
+                </NavLink>
+
+                <NavLink
                   v-if="user.can.sellers.viewAny"
                   :href="route('sellers.index')"
                   :active="route().current('sellers.index')"
@@ -143,6 +151,13 @@ const user = usePage().props.auth.user
               :active="route().current('dashboard')"
             >
               الرئيسة
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.regions.viewAny"
+              :href="route('regions.index')"
+              :active="route().current('regions.index')"
+            >
+              المناطق
             </ResponsiveNavLink>
             <ResponsiveNavLink
               v-if="user.can.sellers.viewAny"

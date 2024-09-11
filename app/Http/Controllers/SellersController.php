@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\Models\Region;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,6 +26,7 @@ final class SellersController
         $sellers = User::query()
             ->sellers()
             ->latest()
+            ->with('region:id,name')
             ->paginate(10);
 
         return Inertia::render('Sellers/Index', [
@@ -38,7 +41,9 @@ final class SellersController
     {
         Gate::authorize('create', User::class);
 
-        return Inertia::render('Sellers/Create');
+        return Inertia::render('Sellers/Create', [
+            'regions' => Region::all(),
+        ]);
     }
 
     /**
@@ -50,11 +55,16 @@ final class SellersController
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
+            'region' => ['required', Rule::exists('regions', 'id')],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
             'contact_info' => ['string'],
             'notes' => ['string'],
         ]);
+
+        $validated['region_id'] = $validated['region'];
+
+        unset($validated['region']);
 
         User::create($validated);
 
@@ -68,8 +78,11 @@ final class SellersController
     {
         Gate::authorize('update', User::class);
 
+        $seller->load('region');
+
         return Inertia::render('Sellers/Edit', [
-            'seller' => $seller,
+            'seller' => UserResource::make($seller),
+            'regions' => Region::all(),
         ]);
     }
 

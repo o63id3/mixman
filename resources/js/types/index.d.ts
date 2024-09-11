@@ -1,5 +1,6 @@
 export interface User {
   id: number
+  region: Region
   name: string
   username: string
   balance: Number
@@ -13,7 +14,17 @@ export interface User {
       create: Boolean
       update: Boolean
     }
+    regions: {
+      viewAny: Boolean
+      create: Boolean
+      update: Boolean
+    }
   }
+}
+
+export interface Region {
+  id: number
+  name: string
 }
 
 interface Link {

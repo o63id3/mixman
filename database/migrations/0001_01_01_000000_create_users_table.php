@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Region;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Region::class)->nullable()->constrained('regions');
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');

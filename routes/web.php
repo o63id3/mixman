@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +38,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/sellers/{seller}/edit', [SellersController::class, 'edit'])->name('sellers.edit');
     Route::patch('/sellers/{seller}', [SellersController::class, 'update'])->name('sellers.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/regions', [RegionsController::class, 'index'])->name('regions.index');
+
+    Route::get('/regions/create', [RegionsController::class, 'create'])->name('regions.create');
+    Route::post('/regions', [RegionsController::class, 'store'])->name('regions.store');
+
+    Route::get('/regions/{region}/edit', [RegionsController::class, 'edit'])->name('regions.edit');
+    Route::patch('/regions/{region}', [RegionsController::class, 'update'])->name('regions.update');
 });

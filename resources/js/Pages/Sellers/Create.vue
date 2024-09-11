@@ -20,8 +20,20 @@ import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select'
+import { Region } from '@/types'
+
 const formSchema = toTypedSchema(
   z.object({
+    region: z.string({ message: 'هذا الحقل مطلوب' }),
     name: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
@@ -50,6 +62,10 @@ const onSubmit = handleSubmit((values) => {
     onError: (errors) => setErrors(errors),
   })
 })
+
+defineProps<{
+  regions: Array<Region>
+}>()
 </script>
 
 <template>
@@ -69,7 +85,7 @@ const onSubmit = handleSubmit((values) => {
             <form class="space-y-6" @submit="onSubmit">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField v-slot="{ componentField }" name="name">
-                  <FormItem class="md:col-span-2" v-auto-animate>
+                  <FormItem v-auto-animate>
                     <FormLabel>اسم نقطة البيع</FormLabel>
                     <FormControl>
                       <Input
@@ -77,6 +93,31 @@ const onSubmit = handleSubmit((values) => {
                         placeholder="حجاج"
                         v-bind="componentField"
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </FormField>
+                <FormField v-slot="{ componentField }" name="region">
+                  <FormItem>
+                    <FormLabel>المنطقة</FormLabel>
+                    <FormControl>
+                      <Select v-bind="componentField">
+                        <SelectTrigger>
+                          <SelectValue placeholder="اختر منطقة" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>المناطق</SelectLabel>
+                            <SelectItem
+                              v-for="region in regions"
+                              :key="region.id"
+                              :value="String(region.id)"
+                            >
+                              {{ region.name }}
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
