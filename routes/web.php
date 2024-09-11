@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CardsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellersController;
@@ -48,4 +49,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/regions/{region}/edit', [RegionsController::class, 'edit'])->name('regions.edit');
     Route::patch('/regions/{region}', [RegionsController::class, 'update'])->name('regions.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cards', [CardsController::class, 'index'])->name('cards.index');
+
+    Route::get('/cards/create', [CardsController::class, 'create'])->name('cards.create');
+    Route::post('/cards', [CardsController::class, 'store'])->name('cards.store');
+
+    Route::get('/cards/{card}/edit', [CardsController::class, 'edit'])->name('cards.edit');
+    Route::patch('/cards/{card}', [CardsController::class, 'update'])->name('cards.update');
 });

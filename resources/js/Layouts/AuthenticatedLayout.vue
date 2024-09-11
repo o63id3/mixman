@@ -52,6 +52,14 @@ const user = usePage().props.auth.user
                 >
                   نقاط البيع
                 </NavLink>
+
+                <NavLink
+                  v-if="user.can.cards.viewAny"
+                  :href="route('cards.index')"
+                  :active="route().current('cards.index')"
+                >
+                  الكروت
+                </NavLink>
               </div>
             </div>
 
@@ -165,6 +173,13 @@ const user = usePage().props.auth.user
               :active="route().current('sellers.index')"
             >
               نقاط البيع
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.cards.viewAny"
+              :href="route('cards.index')"
+              :active="route().current('cards.index')"
+            >
+              الكروت
             </ResponsiveNavLink>
           </div>
 

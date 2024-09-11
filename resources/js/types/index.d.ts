@@ -4,20 +4,25 @@ export interface User {
   name: string
   username: string
   balance: Number
-  admin: Boolean
-  active: Boolean
+  admin: boolean
+  active: boolean
   contact_info: string
   notes: string
   can: {
     sellers: {
-      viewAny: Boolean
-      create: Boolean
-      update: Boolean
+      viewAny: boolean
+      create: boolean
+      update: boolean
     }
     regions: {
-      viewAny: Boolean
-      create: Boolean
-      update: Boolean
+      viewAny: boolean
+      create: boolean
+      update: boolean
+    }
+    cards: {
+      viewAny: boolean
+      create: boolean
+      update: boolean
     }
   }
 }
@@ -27,8 +32,16 @@ export interface Region {
   name: string
 }
 
+export interface Card {
+  id: number
+  name: string
+  active: boolean
+  price: number
+  notes: string
+}
+
 interface Link {
-  active: Boolean
+  active: boolean
   url: string
   label: string
 }
