@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Card, Paginator, User } from '@/types'
+import { Order, Paginator } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
 
 import {
@@ -19,25 +19,25 @@ import {
 } from '@/Components/ui/pagination'
 
 import { Button } from '@/Components/ui/button'
-import { CheckCircle2Icon, XCircleIcon } from 'lucide-vue-next'
+import { CheckCircle2Icon, CircleDashed, XCircleIcon } from 'lucide-vue-next'
 
 defineProps<{
-  cards: Paginator<Card>
+  orders: Paginator<Order>
 }>()
 </script>
 
 <template>
-  <Head title="Cards" />
+  <Head title="Orders" />
 
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          الكروت
+          الطلبات
         </h2>
-        <div v-if="$page.props.auth.user.can.cards.create">
-          <Link :href="route('cards.create')">
-            <Button> إنشاء كرت </Button>
+        <div v-if="$page.props.auth.user.can.orders.create">
+          <Link :href="route('orders.create')">
+            <Button> طلبية جديدة </Button>
           </Link>
         </div>
       </div>
@@ -51,41 +51,49 @@ defineProps<{
               <TableHeader>
                 <TableRow>
                   <TableHead class="w-[50px] text-right">#</TableHead>
-                  <TableHead class="w-1/3 text-right">الاسم</TableHead>
-                  <TableHead class="w-1/3 text-right">السعر</TableHead>
-                  <TableHead class="w-1/3 text-right">فعال</TableHead>
+                  <TableHead class="w-1/2 text-right">البائع</TableHead>
+                  <TableHead class="w-5 text-right">الحالة</TableHead>
+                  <TableHead class="w-1/2 text-right">
+                    تم اتخاذ الاجراء بواسطة
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow v-for="card in cards.data" :key="card.id">
+                <TableRow v-for="order in orders.data" :key="order.id">
                   <TableCell class="font-medium hover:underline">
                     <component
-                      :is="
-                        $page.props.auth.user.can.cards.update ? Link : 'span'
-                      "
-                      :href="route('cards.edit', card.id)"
+                      :is="order.can.view ? Link : 'span'"
+                      :href="route('orders.edit', order.id)"
                     >
-                      {{ card.id }}
+                      {{ order.id }}
                     </component>
                   </TableCell>
-                  <TableCell>{{ card.name }}</TableCell>
-                  <TableCell>{{ card.price }}</TableCell>
+                  <TableCell>{{ order.seller.name }}</TableCell>
                   <TableCell>
-                    <component
-                      :is="card.active ? CheckCircle2Icon : XCircleIcon"
-                      :class="[card.active ? 'text-green-500' : 'text-red-500']"
+                    <CheckCircle2Icon
+                      v-if="order.status === 'C'"
+                      class="text-green-500"
+                    />
+                    <XCircleIcon
+                      v-if="order.status === 'X'"
+                      class="text-red-500"
+                    />
+                    <CircleDashed
+                      v-if="order.status === 'P'"
+                      class="text-yellow-500"
                     />
                   </TableCell>
+                  <TableCell>{{ order.action?.name }}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
 
             <Pagination
               v-slot="{ page }"
-              :total="cards.total"
+              :total="orders.total"
               :sibling-count="1"
               show-edges
-              :default-page="cards.current_page"
+              :default-page="orders.current_page"
             >
               <PaginationList
                 v-slot="{ items }"
@@ -99,7 +107,7 @@ defineProps<{
                     as-child
                   >
                     <Link
-                      :href="route('cards.index', { page: item.value })"
+                      :href="route('orders.index', { page: item.value })"
                       preserve-scroll
                     >
                       <Button

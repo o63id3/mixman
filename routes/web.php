@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CardsController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellersController;
@@ -59,4 +60,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cards/{card}/edit', [CardsController::class, 'edit'])->name('cards.edit');
     Route::patch('/cards/{card}', [CardsController::class, 'update'])->name('cards.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
+
+    Route::get('/orders/create', [OrdersController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
+
+    Route::get('/orders/{order}/edit', [OrdersController::class, 'edit'])->name('orders.edit');
+    Route::patch('/orders/{order}', [OrdersController::class, 'update'])->name('orders.update');
+
+    Route::delete('/orders/{order}', [OrdersController::class, 'destroy'])->name('orders.destroy');
 });

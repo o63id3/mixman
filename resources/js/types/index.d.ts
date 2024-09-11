@@ -24,6 +24,11 @@ export interface User {
       create: boolean
       update: boolean
     }
+    orders: {
+      viewAny: boolean
+      create: boolean
+      update: boolean
+    }
   }
 }
 
@@ -38,6 +43,17 @@ export interface Card {
   active: boolean
   price: number
   notes: string
+}
+
+export interface Order {
+  id: number
+  seller: User
+  status: 'C' | 'P' | 'X'
+  action?: User
+  notes: string
+  can: {
+    view: boolean
+  }
 }
 
 interface Link {

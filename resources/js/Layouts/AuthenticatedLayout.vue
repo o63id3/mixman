@@ -60,6 +60,14 @@ const user = usePage().props.auth.user
                 >
                   الكروت
                 </NavLink>
+
+                <NavLink
+                  v-if="user.can.orders.viewAny"
+                  :href="route('orders.index')"
+                  :active="route().current('orders.index')"
+                >
+                  الطلبات
+                </NavLink>
               </div>
             </div>
 
@@ -180,6 +188,13 @@ const user = usePage().props.auth.user
               :active="route().current('cards.index')"
             >
               الكروت
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.orders.viewAny"
+              :href="route('orders.index')"
+              :active="route().current('orders.index')"
+            >
+              الطلبات
             </ResponsiveNavLink>
           </div>
 

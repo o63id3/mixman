@@ -60,7 +60,7 @@ const { handleSubmit, setErrors } = useForm({
     name: props.seller.name,
     username: props.seller.username,
     contact_info: props.seller.contact_info ?? undefined,
-    notes: props.seller.contact_info ?? undefined,
+    notes: props.seller.notes ?? undefined,
   },
 })
 
