@@ -22,7 +22,7 @@ final class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'region' => $this->whenLoaded('region', fn () => $this->region),
+            'region' => $this->whenLoaded('region', fn () => RegionResource::make($this->region)),
             'name' => $this->name,
             'username' => $this->username,
             'active' => $this->active,
@@ -49,7 +49,6 @@ final class UserResource extends JsonResource
                 'orders' => [
                     'viewAny' => $this->resource->can('viewAny', Order::class),
                     'create' => $this->resource->can('create', Order::class),
-                    // 'update' => $this->resource->can('update', Order::class),
                 ],
             ],
         ];

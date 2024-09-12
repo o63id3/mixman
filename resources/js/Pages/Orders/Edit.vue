@@ -55,10 +55,6 @@ if (usePage().props.auth.user.admin) {
 const props = defineProps<{
   order: Order
   sellers: Array<User>
-  can: {
-    delete: boolean
-    update: boolean
-  }
 }>()
 
 const formSchema = toTypedSchema(
@@ -110,7 +106,7 @@ const onSubmit = handleSubmit((values) => {
                       <PopoverTrigger as-child>
                         <FormControl>
                           <Button
-                            :disabled="!can.update"
+                            :disabled="!order.can.update"
                             variant="outline"
                             role="combobox"
                             :class="
@@ -191,7 +187,7 @@ const onSubmit = handleSubmit((values) => {
                               v-for="(item, key) in statuses"
                               :key="key"
                               :value="key"
-                              :disabled="!can.update"
+                              :disabled="!order.can.update"
                             >
                               {{ item }}
                             </SelectItem>
@@ -207,7 +203,7 @@ const onSubmit = handleSubmit((values) => {
                     <FormLabel>ملاحظات</FormLabel>
                     <FormControl>
                       <Textarea
-                        :disabled="!can.update"
+                        :disabled="!order.can.update"
                         v-bind="componentField"
                       />
                     </FormControl>
@@ -216,9 +212,9 @@ const onSubmit = handleSubmit((values) => {
                 </FormField>
               </div>
               <div class="flex gap-2">
-                <Button v-if="can.update" type="submit"> تعديل </Button>
+                <Button v-if="order.can.update" type="submit"> تعديل </Button>
                 <Link
-                  v-if="can.delete"
+                  v-if="order.can.delete"
                   :href="route('orders.destroy', order.id)"
                   method="delete"
                   as="button"

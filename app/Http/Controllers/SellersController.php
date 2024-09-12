@@ -30,7 +30,7 @@ final class SellersController
             ->paginate(10);
 
         return Inertia::render('Sellers/Index', [
-            'sellers' => $sellers,
+            'sellers' => UserResource::collection($sellers),
         ]);
     }
 

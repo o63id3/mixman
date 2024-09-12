@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CardResource;
 use App\Models\Card;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ final class CardsController
             ->paginate(10);
 
         return Inertia::render('Cards/Index', [
-            'cards' => $cards,
+            'cards' => CardResource::collection($cards),
         ]);
     }
 
@@ -65,8 +66,10 @@ final class CardsController
     {
         Gate::authorize('update', Card::class);
 
+        CardResource::withoutWrapping();
+
         return Inertia::render('Cards/Edit', [
-            'card' => $card,
+            'card' => CardResource::make($card),
         ]);
     }
 

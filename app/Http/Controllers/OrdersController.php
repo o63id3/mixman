@@ -77,13 +77,11 @@ final class OrdersController
 
         $order->load(['seller', 'action']);
 
+        OrderResource::withoutWrapping();
+
         return Inertia::render('Orders/Edit', [
             'sellers' => User::sellers()->get(),
-            'order' => $order,
-            'can' => [
-                'update' => Gate::allows('update', $order),
-                'delete' => Gate::allows('delete', $order),
-            ],
+            'order' => OrderResource::make($order),
         ]);
     }
 

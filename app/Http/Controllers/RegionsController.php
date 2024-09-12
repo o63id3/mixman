@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegionResource;
 use App\Models\Region;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ final class RegionsController
             ->paginate(10);
 
         return Inertia::render('Regions/Index', [
-            'regions' => $regions,
+            'regions' => RegionResource::collection($regions),
         ]);
     }
 
@@ -63,8 +64,10 @@ final class RegionsController
     {
         Gate::authorize('update', Region::class);
 
+        RegionResource::withoutWrapping();
+
         return Inertia::render('Regions/Edit', [
-            'region' => $region,
+            'region' => RegionResource::make($region),
         ]);
     }
 

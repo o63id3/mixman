@@ -25,6 +25,8 @@ final class OrderResource extends JsonResource
 
             'can' => [
                 'view' => Gate::allows('view', $this->resource),
+                'update' => Gate::allows('update', $this->resource),
+                'delete' => Gate::allows('delete', $this->resource),
             ],
         ];
     }

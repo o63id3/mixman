@@ -82,10 +82,10 @@ defineProps<{
 
             <Pagination
               v-slot="{ page }"
-              :total="sellers.total"
+              :total="sellers.meta.total"
               :sibling-count="1"
               show-edges
-              :default-page="sellers.current_page"
+              :default-page="sellers.meta.current_page"
             >
               <PaginationList
                 v-slot="{ items }"

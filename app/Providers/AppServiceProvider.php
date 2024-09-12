@@ -28,6 +28,6 @@ final class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict(! app()->isProduction());
 
-        JsonResource::withoutWrapping();
+        // JsonResource::withoutWrapping();
     }
 }
