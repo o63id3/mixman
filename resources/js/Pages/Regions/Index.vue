@@ -55,6 +55,7 @@ defineProps<{
               </TableHeader>
               <TableBody>
                 <TableRow v-for="region in regions.data" :key="region.id">
+                  <TableCell>{{ region.id }}</TableCell>
                   <TableCell class="font-medium hover:underline">
                     <component
                       :is="
@@ -62,10 +63,9 @@ defineProps<{
                       "
                       :href="route('regions.edit', region.id)"
                     >
-                      {{ region.id }}
+                      {{ region.name }}
                     </component>
                   </TableCell>
-                  <TableCell>{{ region.name }}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

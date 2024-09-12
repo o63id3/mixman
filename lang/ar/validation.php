@@ -160,7 +160,8 @@ return [
 
         'region' => 'المنطقة',
 
-        'price' => 'السعر',
+        'price_for_consumer' => 'السعر للمستهلك',
+        'price_for_seller' => 'السعر للبائع',
 
         'seller_id' => 'نقطة البيع',
         'status' => 'الحالة',

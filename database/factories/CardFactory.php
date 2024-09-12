@@ -18,9 +18,12 @@ final class CardFactory extends Factory
      */
     public function definition(): array
     {
+        $price = random_int(1, 10);
+
         return [
             'name' => $this->faker->words(3, true),
-            'price' => random_int(1, 10),
+            'price_for_consumer' => $price,
+            'price_for_seller' => $price * 0.9,
             'active' => $this->faker->randomElement([true, false]),
             'notes' => $this->faker->realText(),
         ];

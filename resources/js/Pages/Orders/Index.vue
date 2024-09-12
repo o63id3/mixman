@@ -60,15 +60,17 @@ defineProps<{
               </TableHeader>
               <TableBody>
                 <TableRow v-for="order in orders.data" :key="order.id">
+                  <TableCell>
+                    {{ order.id }}
+                  </TableCell>
                   <TableCell class="font-medium hover:underline">
                     <component
                       :is="order.can.view ? Link : 'span'"
                       :href="route('orders.edit', order.id)"
                     >
-                      {{ order.id }}
+                      {{ order.seller.name }}
                     </component>
                   </TableCell>
-                  <TableCell>{{ order.seller.name }}</TableCell>
                   <TableCell>
                     <CheckCircle2Icon
                       v-if="order.status === 'C'"

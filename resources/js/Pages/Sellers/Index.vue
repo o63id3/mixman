@@ -60,6 +60,7 @@ defineProps<{
               </TableHeader>
               <TableBody>
                 <TableRow v-for="seller in sellers.data" :key="seller.id">
+                  <TableCell>{{ seller.id }}</TableCell>
                   <TableCell class="font-medium hover:underline">
                     <component
                       :is="
@@ -67,10 +68,9 @@ defineProps<{
                       "
                       :href="route('sellers.edit', seller.id)"
                     >
-                      {{ seller.id }}
+                      {{ seller.name }}
                     </component>
                   </TableCell>
-                  <TableCell>{{ seller.name }}</TableCell>
                   <TableCell>{{ seller.username }}</TableCell>
                   <TableCell class="text-right">
                     {{ seller.region.name }}

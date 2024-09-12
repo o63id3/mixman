@@ -10,7 +10,9 @@ import {
 import { CheckIcon } from '@radix-icons/vue'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<
+  SelectItemProps & { class?: HTMLAttributes['class'] }
+>()
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props
@@ -26,18 +28,20 @@ const forwardedProps = useForwardProps(delegatedProps)
     v-bind="forwardedProps"
     :class="
       cn(
-        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ltr:pl-2 ltr:pr-8 rtl:pl-8 rtl:pr-2',
         props.class,
       )
     "
   >
-    <span class="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span
+      class="absolute right-2 flex h-3.5 w-3.5 items-center justify-center rtl:left-2"
+    >
       <SelectItemIndicator>
         <CheckIcon class="h-4 w-4" />
       </SelectItemIndicator>
     </span>
 
-    <SelectItemText>
+    <SelectItemText class="rtl:flex-1 rtl:text-right">
       <slot />
     </SelectItemText>
   </SelectItem>

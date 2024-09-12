@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->float('price');
+            $table->float('price_for_consumer');
+            $table->float('price_for_seller');
             $table->boolean('active')->default(true);
             $table->longText('notes')->nullable();
             $table->timestamps();

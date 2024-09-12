@@ -39,7 +39,8 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     active: z.boolean(),
-    price: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )
@@ -48,7 +49,8 @@ const { handleSubmit, setErrors, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
     name: props.card.name,
-    price: props.card.price,
+    price_for_consumer: props.card.price_for_consumer,
+    price_for_seller: props.card.price_for_seller,
     active: props.card.active,
     notes: props.card.notes ?? undefined,
   },
@@ -82,7 +84,7 @@ const onSubmit = handleSubmit((values) => {
             <form class="space-y-6" @submit="onSubmit">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField v-slot="{ componentField }" name="name">
-                  <FormItem v-auto-animate>
+                  <FormItem class="col-span-2" v-auto-animate>
                     <FormLabel>اسم الكرت</FormLabel>
                     <FormControl>
                       <Input
@@ -94,9 +96,9 @@ const onSubmit = handleSubmit((values) => {
                     <FormMessage />
                   </FormItem>
                 </FormField>
-                <FormField v-slot="{ value }" name="price">
+                <FormField v-slot="{ value }" name="price_for_consumer">
                   <FormItem>
-                    <FormLabel>السعر</FormLabel>
+                    <FormLabel>السعر للمستهلك</FormLabel>
                     <NumberField
                       class="ltr gap-2"
                       :min="0"
@@ -105,7 +107,7 @@ const onSubmit = handleSubmit((values) => {
                       @update:model-value="
                         (newValue) =>
                           setFieldValue(
-                            'price',
+                            'price_for_consumer',
                             newValue ? newValue : undefined,
                           )
                       "
@@ -121,21 +123,35 @@ const onSubmit = handleSubmit((values) => {
                     <FormMessage />
                   </FormItem>
                 </FormField>
-                <FormField v-slot="{ value, handleChange }" name="active">
-                  <FormItem v-auto-animate>
-                    <FormControl>
-                      <div class="flex items-center gap-2">
-                        <Label for="active">فعال</Label>
-                        <Switch
-                          id="active"
-                          :checked="value"
-                          @update:checked="handleChange"
-                        />
-                      </div>
-                    </FormControl>
+
+                <FormField v-slot="{ value }" name="price_for_seller">
+                  <FormItem>
+                    <FormLabel>السعر للبائع</FormLabel>
+                    <NumberField
+                      class="ltr gap-2"
+                      :min="0"
+                      :step="0.01"
+                      :model-value="value"
+                      @update:model-value="
+                        (newValue) =>
+                          setFieldValue(
+                            'price_for_seller',
+                            newValue ? newValue : undefined,
+                          )
+                      "
+                    >
+                      <NumberFieldContent>
+                        <NumberFieldDecrement />
+                        <FormControl>
+                          <NumberFieldInput />
+                        </FormControl>
+                        <NumberFieldIncrement />
+                      </NumberFieldContent>
+                    </NumberField>
                     <FormMessage />
                   </FormItem>
                 </FormField>
+
                 <FormField v-slot="{ componentField }" name="notes">
                   <FormItem class="md:col-span-2" v-auto-animate>
                     <FormLabel>ملاحظات</FormLabel>

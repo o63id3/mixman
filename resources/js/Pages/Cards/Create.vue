@@ -15,6 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form'
+import {
+  NumberField,
+  NumberFieldContent,
+  NumberFieldDecrement,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from '@/Components/ui/number-field'
 import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
@@ -24,12 +31,13 @@ const formSchema = toTypedSchema(
     name: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
-    price: z.number({ message: 'هذا الحقل مطلوب' }).min(1),
+    price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )
 
-const { handleSubmit, resetForm, setErrors } = useForm({
+const { handleSubmit, resetForm, setErrors, setFieldValue } = useForm({
   validationSchema: formSchema,
 })
 
@@ -62,7 +70,7 @@ const onSubmit = handleSubmit((values) => {
             <form class="space-y-6" @submit="onSubmit">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField v-slot="{ componentField }" name="name">
-                  <FormItem v-auto-animate>
+                  <FormItem class="col-span-2" v-auto-animate>
                     <FormLabel>اسم الكرت</FormLabel>
                     <FormControl>
                       <Input
@@ -74,15 +82,62 @@ const onSubmit = handleSubmit((values) => {
                     <FormMessage />
                   </FormItem>
                 </FormField>
-                <FormField v-slot="{ componentField }" name="price">
-                  <FormItem v-auto-animate>
-                    <FormLabel>السعر</FormLabel>
-                    <FormControl>
-                      <Input type="number" min="1" v-bind="componentField" />
-                    </FormControl>
+                <FormField v-slot="{ value }" name="price_for_consumer">
+                  <FormItem>
+                    <FormLabel>السعر للمستهلك</FormLabel>
+                    <NumberField
+                      class="ltr gap-2"
+                      :min="0"
+                      :step="0.01"
+                      :model-value="value"
+                      @update:model-value="
+                        (newValue) =>
+                          setFieldValue(
+                            'price_for_consumer',
+                            newValue ? newValue : undefined,
+                          )
+                      "
+                    >
+                      <NumberFieldContent>
+                        <NumberFieldDecrement />
+                        <FormControl>
+                          <NumberFieldInput />
+                        </FormControl>
+                        <NumberFieldIncrement />
+                      </NumberFieldContent>
+                    </NumberField>
                     <FormMessage />
                   </FormItem>
                 </FormField>
+
+                <FormField v-slot="{ value }" name="price_for_seller">
+                  <FormItem>
+                    <FormLabel>السعر للبائع</FormLabel>
+                    <NumberField
+                      class="ltr gap-2"
+                      :min="0"
+                      :step="0.01"
+                      :model-value="value"
+                      @update:model-value="
+                        (newValue) =>
+                          setFieldValue(
+                            'price_for_seller',
+                            newValue ? newValue : undefined,
+                          )
+                      "
+                    >
+                      <NumberFieldContent>
+                        <NumberFieldDecrement />
+                        <FormControl>
+                          <NumberFieldInput />
+                        </FormControl>
+                        <NumberFieldIncrement />
+                      </NumberFieldContent>
+                    </NumberField>
+                    <FormMessage />
+                  </FormItem>
+                </FormField>
+
                 <FormField v-slot="{ componentField }" name="notes">
                   <FormItem class="md:col-span-2" v-auto-animate>
                     <FormLabel>ملاحظات</FormLabel>

@@ -51,13 +51,17 @@ defineProps<{
               <TableHeader>
                 <TableRow>
                   <TableHead class="w-[50px] text-right">#</TableHead>
-                  <TableHead class="w-1/3 text-right">الاسم</TableHead>
-                  <TableHead class="w-1/3 text-right">السعر</TableHead>
-                  <TableHead class="w-1/3 text-right">فعال</TableHead>
+                  <TableHead class="w-1/4 text-right">الاسم</TableHead>
+                  <TableHead class="w-1/4 text-right">السعر للمستهلك</TableHead>
+                  <TableHead class="w-1/4 text-right">السعر للبائع</TableHead>
+                  <TableHead class="w-1/4 text-right">فعال</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow v-for="card in cards.data" :key="card.id">
+                  <TableCell>
+                    {{ card.id }}
+                  </TableCell>
                   <TableCell class="font-medium hover:underline">
                     <component
                       :is="
@@ -65,11 +69,11 @@ defineProps<{
                       "
                       :href="route('cards.edit', card.id)"
                     >
-                      {{ card.id }}
+                      {{ card.name }}
                     </component>
                   </TableCell>
-                  <TableCell>{{ card.name }}</TableCell>
-                  <TableCell>{{ card.price }}</TableCell>
+                  <TableCell>{{ card.price_for_consumer }}</TableCell>
+                  <TableCell>{{ card.price_for_seller }}</TableCell>
                   <TableCell>
                     <component
                       :is="card.active ? CheckCircle2Icon : XCircleIcon"

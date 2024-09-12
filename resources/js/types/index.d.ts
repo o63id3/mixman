@@ -41,7 +41,8 @@ export interface Card {
   id: number
   name: string
   active: boolean
-  price: number
+  price_for_consumer: number
+  price_for_seller: number
   notes: string
 }
 

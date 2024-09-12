@@ -19,7 +19,8 @@ final class CardResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => $this->price,
+            'price_for_consumer' => $this->price_for_consumer,
+            'price_for_seller' => $this->price_for_seller,
             'active' => $this->active,
             'notes' => $this->notes,
         ];
