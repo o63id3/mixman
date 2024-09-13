@@ -22,6 +22,9 @@ final class OrderResource extends JsonResource
             'status' => $this->status,
             'seller' => $this->whenLoaded('seller', fn () => UserResource::make($this->seller)),
             'action' => $this->whenLoaded('action', fn () => UserResource::make($this->action)),
+            'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
+            'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),
+            'updated_at' => $this->updated_at->diffForHumans(),
 
             'can' => [
                 'view' => Gate::allows('view', $this->resource),

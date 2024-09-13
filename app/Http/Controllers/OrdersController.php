@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
+use App\Models\Card;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -25,6 +27,8 @@ final class OrdersController
 
         $orders = Order::query()
             ->with(['seller', 'action'])
+            ->withSum('items as total_price_for_seller', 'total_price_for_seller')
+            ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->latest()
             ->seller()
             ->paginate(10);
@@ -43,6 +47,7 @@ final class OrdersController
 
         return Inertia::render('Orders/Create', [
             'sellers' => User::sellers()->get(),
+            'cards' => Card::all(),
         ]);
     }
 
@@ -56,14 +61,22 @@ final class OrdersController
         $validated = $request->validate([
             'seller_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', 'in:C,P'],
+            'cards' => ['array'],
+            'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
+            'cards.*.number_of_packages' => ['required', 'numeric'],
+            'cards.*.number_of_cards_per_package' => ['required', 'numeric'],
             'notes' => ['string'],
         ]);
+
+        $cards = $validated['cards'];
+        unset($validated['cards']);
 
         if ($validated['status'] === 'C') {
             $validated['action_by'] = $request->user()->id;
         }
 
-        Order::create($validated);
+        $order = Order::create($validated);
+        $order->items()->createMany($cards);
 
         return back();
     }
@@ -75,13 +88,14 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['seller', 'action']);
+        $order->load(['seller', 'action', 'items', 'items.card']);
 
         OrderResource::withoutWrapping();
 
         return Inertia::render('Orders/Edit', [
             'sellers' => User::sellers()->get(),
             'order' => OrderResource::make($order),
+            'items' => OrderItemResource::collection($order->items),
         ]);
     }
 

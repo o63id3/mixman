@@ -51,7 +51,7 @@ defineProps<{
               <TableCaption>حسابات نقاط البيع</TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead class="w-[50px] text-right">#</TableHead>
+                  <TableHead class="w-5 text-right">#</TableHead>
                   <TableHead class="w-1/4 text-right">الاسم</TableHead>
                   <TableHead class="w-1/4 text-right">اسم المستخدم</TableHead>
                   <TableHead class="w-1/4 text-right">المنطقة</TableHead>

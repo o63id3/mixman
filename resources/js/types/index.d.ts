@@ -51,12 +51,26 @@ export interface Order {
   seller: User
   status: 'C' | 'P' | 'X'
   action?: User
+  total_price_for_seller: number
+  total_price_for_consumer: number
   notes: string
+  updated_at: string
   can: {
     view: boolean
     update: boolean
     delete: boolean
   }
+}
+
+export interface OrderItem {
+  id: number
+  order: Order
+  card: Card
+  number_of_packages: number
+  number_of_cards_per_package: number
+  quantity: number
+  total_price_for_consumer: number
+  total_price_for_seller: number
 }
 
 interface Link {

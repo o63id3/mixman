@@ -50,12 +50,19 @@ defineProps<{
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead class="w-[50px] text-right">#</TableHead>
-                  <TableHead class="w-1/2 text-right">البائع</TableHead>
+                  <TableHead class="w-5 text-right">#</TableHead>
+                  <TableHead class="w-1/5 text-right">البائع</TableHead>
                   <TableHead class="w-5 text-right">الحالة</TableHead>
-                  <TableHead class="w-1/2 text-right">
+                  <TableHead class="w-1/5 text-right">
                     تم اتخاذ الاجراء بواسطة
                   </TableHead>
+                  <TableHead class="w-1/5 text-right">
+                    اجمالي السعر للبائع
+                  </TableHead>
+                  <TableHead class="w-1/5 text-right">
+                    اجمالي السعر للمستهلك
+                  </TableHead>
+                  <TableHead class="w-1/5 text-right"> التاريخ </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -86,6 +93,15 @@ defineProps<{
                     />
                   </TableCell>
                   <TableCell>{{ order.action?.name }}</TableCell>
+                  <TableCell>
+                    {{ order.total_price_for_seller }} شيكل
+                  </TableCell>
+                  <TableCell>
+                    {{ order.total_price_for_consumer }} شيكل
+                  </TableCell>
+                  <TableCell>
+                    {{ order.updated_at }}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>

@@ -32,16 +32,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectLabel,
 } from '@/Components/ui/select'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/Components/ui/popover'
-import { User } from '@/types'
+import { Card, User } from '@/types'
 import { cn } from '@/lib/utils'
-import { CheckIcon } from 'lucide-vue-next'
+import { CheckIcon, PlusCircleIcon, Trash2Icon } from 'lucide-vue-next'
 import { CaretSortIcon } from '@radix-icons/vue'
+import { Input } from '@/Components/ui/input'
+import Label from '@/Components/ui/label/Label.vue'
 
 const statuses = {
   P: 'جاري',
@@ -52,6 +55,13 @@ const formSchema = toTypedSchema(
   z.object({
     seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
+    cards: z.array(
+      z.object({
+        card_id: z.string({ message: 'حقل الفئة مطلوب' }),
+        number_of_packages: z.number({ message: 'حقل الفئة مطلوب' }).min(1),
+        number_of_cards_per_package: z.number(),
+      }),
+    ),
     notes: z.string().optional(),
   }),
 )
@@ -60,6 +70,13 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
     status: 'P',
+    cards: [
+      {
+        card_id: '1',
+        number_of_packages: 1,
+        number_of_cards_per_package: 120,
+      },
+    ],
   },
 })
 
@@ -76,6 +93,7 @@ const onSubmit = handleSubmit((values) => {
 
 defineProps<{
   sellers: Array<User>
+  cards: Array<Card>
 }>()
 </script>
 
@@ -192,6 +210,81 @@ defineProps<{
                     <FormMessage />
                   </FormItem>
                 </FormField>
+
+                <FormField v-slot="{ componentField }" name="cards">
+                  <FormItem class="md:col-span-2">
+                    <FormLabel>الكروت</FormLabel>
+                    <div class="flex w-full">
+                      <Label class="w-1/3 text-xs"> الفئة </Label>
+                      <Label class="w-1/3 text-xs"> عدد الرزم </Label>
+                      <Label class="w-1/3 text-xs">
+                        عدد الكروت في كل رزمة
+                      </Label>
+                      <div class="w-12"></div>
+                    </div>
+                    <FormControl class="col-span-2">
+                      <div
+                        v-for="(card, index) in componentField.modelValue"
+                        :key="index"
+                        class="mb-2 flex gap-1"
+                      >
+                        <Select v-model="card.card_id">
+                          <SelectTrigger>
+                            <SelectValue placeholder="اختر الفئة" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>الفئات</SelectLabel>
+                              <SelectItem
+                                v-for="cardOption in cards"
+                                :key="cardOption.id"
+                                :value="String(cardOption.id)"
+                              >
+                                {{ cardOption.name }}
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+
+                        <Input
+                          v-model="card.number_of_packages"
+                          type="number"
+                          placeholder="عدد الرزم"
+                        />
+                        <Input
+                          v-model="card.number_of_cards_per_package"
+                          type="number"
+                          placeholder="عدد الكروت في الرزمة"
+                        />
+
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          @click="componentField.modelValue.splice(index, 1)"
+                          :disabled="componentField.modelValue.length < 2"
+                        >
+                          <Trash2Icon class="h-5 w-5" />
+                        </Button>
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        @click="
+                          componentField.modelValue.push({
+                            card_id: '1',
+                            number_of_packages: 1,
+                            number_of_cards_per_package: 120,
+                          })
+                        "
+                      >
+                        <PlusCircleIcon class="w-5" />
+                      </Button>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </FormField>
+
                 <FormField v-slot="{ componentField }" name="notes">
                   <FormItem class="md:col-span-2" v-auto-animate>
                     <FormLabel>ملاحظات</FormLabel>

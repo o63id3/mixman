@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Order extends Model
 {
@@ -24,6 +25,14 @@ final class Order extends Model
         'status',
         'notes',
     ];
+
+    /**
+     * Check if the order state is complete
+     */
+    public function completed(): bool
+    {
+        return $this->status === 'C';
+    }
 
     /**
      * Scope the users to sellers only.
@@ -51,5 +60,13 @@ final class Order extends Model
     public function action(): BelongsTo
     {
         return $this->belongsTo(User::class, 'action_by');
+    }
+
+    /**
+     * Get the order items.
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

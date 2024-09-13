@@ -46,19 +46,19 @@ const user = usePage().props.auth.user
                 </NavLink>
 
                 <NavLink
-                  v-if="user.can.sellers.viewAny"
-                  :href="route('sellers.index')"
-                  :active="route().current('sellers.index')"
-                >
-                  نقاط البيع
-                </NavLink>
-
-                <NavLink
                   v-if="user.can.cards.viewAny"
                   :href="route('cards.index')"
                   :active="route().current('cards.index')"
                 >
                   الكروت
+                </NavLink>
+
+                <NavLink
+                  v-if="user.can.sellers.viewAny"
+                  :href="route('sellers.index')"
+                  :active="route().current('sellers.index')"
+                >
+                  نقاط البيع
                 </NavLink>
 
                 <NavLink
@@ -176,18 +176,18 @@ const user = usePage().props.auth.user
               المناطق
             </ResponsiveNavLink>
             <ResponsiveNavLink
-              v-if="user.can.sellers.viewAny"
-              :href="route('sellers.index')"
-              :active="route().current('sellers.index')"
-            >
-              نقاط البيع
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
               v-if="user.can.cards.viewAny"
               :href="route('cards.index')"
               :active="route().current('cards.index')"
             >
               الكروت
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.sellers.viewAny"
+              :href="route('sellers.index')"
+              :active="route().current('sellers.index')"
+            >
+              نقاط البيع
             </ResponsiveNavLink>
             <ResponsiveNavLink
               v-if="user.can.orders.viewAny"

@@ -9,6 +9,14 @@ import { vAutoAnimate } from '@formkit/auto-animate/vue'
 
 import { Button, buttonVariants } from '@/Components/ui/button'
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/Components/ui/table'
+import {
   FormControl,
   FormField,
   FormItem,
@@ -38,7 +46,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/Components/ui/popover'
-import { Order, User } from '@/types'
+import { Order, OrderItem, User } from '@/types'
 import { cn } from '@/lib/utils'
 import { CheckIcon } from 'lucide-vue-next'
 import { CaretSortIcon } from '@radix-icons/vue'
@@ -54,6 +62,7 @@ if (usePage().props.auth.user.admin) {
 
 const props = defineProps<{
   order: Order
+  items: Array<OrderItem>
   sellers: Array<User>
 }>()
 
@@ -93,7 +102,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <div class="py-12">
+    <div class="pt-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 text-gray-900">
@@ -226,6 +235,42 @@ const onSubmit = handleSubmit((values) => {
                 </Link>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-12 pt-5">
+      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <h2 class="text-semibold pr-4"># تفاصيل الطلبية</h2>
+        <div class="mt-3 overflow-hidden bg-white shadow-sm sm:rounded-lg">
+          <div class="p-6 text-gray-900">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead class="w-5 text-right">#</TableHead>
+                  <TableHead class="w-1/6 text-right">الفئة</TableHead>
+                  <TableHead class="w-1/6 text-right">عدد الرزم</TableHead>
+                  <TableHead class="w-1/6 text-right"
+                    >عدد الكروت في الرزمة</TableHead
+                  >
+                  <TableHead class="w-1/6 text-right">عدد الكروت</TableHead>
+                  <TableHead class="w-1/6 text-right">السعر للبائع</TableHead>
+                  <TableHead class="w-1/6 text-right">السعر للمستهلك</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow v-for="item in items" :key="item.id">
+                  <TableCell>{{ item.id }}</TableCell>
+                  <TableCell>{{ item.card.name }}</TableCell>
+                  <TableCell>{{ item.number_of_packages }}</TableCell>
+                  <TableCell>{{ item.number_of_cards_per_package }}</TableCell>
+                  <TableCell>{{ item.quantity }}</TableCell>
+                  <TableCell>{{ item.total_price_for_seller }}</TableCell>
+                  <TableCell>{{ item.total_price_for_consumer }}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </div>

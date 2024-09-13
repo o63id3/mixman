@@ -70,7 +70,7 @@ const onSubmit = handleSubmit((values) => {
             <form class="space-y-6" @submit="onSubmit">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField v-slot="{ componentField }" name="name">
-                  <FormItem class="col-span-2" v-auto-animate>
+                  <FormItem class="md:col-span-2" v-auto-animate>
                     <FormLabel>اسم الكرت</FormLabel>
                     <FormControl>
                       <Input

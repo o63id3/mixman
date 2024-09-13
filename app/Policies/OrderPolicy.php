@@ -38,7 +38,7 @@ final class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        if ($order->status === 'C') {
+        if ($order->completed()) {
             return false;
         }
 
@@ -50,7 +50,7 @@ final class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        if ($order->status === 'C') {
+        if ($order->completed()) {
             return false;
         }
 

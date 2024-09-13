@@ -50,7 +50,7 @@ defineProps<{
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead class="w-[50px] text-right">#</TableHead>
+                  <TableHead class="w-5 text-right">#</TableHead>
                   <TableHead class="w-1/4 text-right">الاسم</TableHead>
                   <TableHead class="w-1/4 text-right">السعر للمستهلك</TableHead>
                   <TableHead class="w-1/4 text-right">السعر للبائع</TableHead>
