@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellersController;
@@ -72,4 +73,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/orders/{order}', [OrdersController::class, 'update'])->name('orders.update');
 
     Route::delete('/orders/{order}', [OrdersController::class, 'destroy'])->name('orders.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payments', [PaymentsController::class, 'index'])->name('payments.index');
+
+    Route::get('/payments/create', [PaymentsController::class, 'create'])->name('payments.create');
+    Route::post('/payments', [PaymentsController::class, 'store'])->name('payments.store');
+
+    Route::get('/payments/{payment}/edit', [PaymentsController::class, 'edit'])->name('payments.edit');
+    Route::patch('/payments/{payment}', [PaymentsController::class, 'update'])->name('payments.update');
+
+    Route::delete('/payments/{payment}', [PaymentsController::class, 'destroy'])->name('payments.destroy');
 });

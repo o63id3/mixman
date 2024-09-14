@@ -29,6 +29,11 @@ export interface User {
       create: boolean
       update: boolean
     }
+    payments: {
+      viewAny: boolean
+      create: boolean
+      update: boolean
+    }
   }
 }
 
@@ -71,6 +76,15 @@ export interface OrderItem {
   quantity: number
   total_price_for_consumer: number
   total_price_for_seller: number
+}
+
+export interface Payment {
+  id: number
+  seller: User
+  registerer: User
+  amount: number
+  notes: string
+  created_at: string
 }
 
 interface Link {

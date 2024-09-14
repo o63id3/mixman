@@ -135,7 +135,7 @@ final class OrdersController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): RedirectResponse
     {
         Gate::authorize('delete', $order);
 

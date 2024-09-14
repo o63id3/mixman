@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Models\Card;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,6 +50,10 @@ final class UserResource extends JsonResource
                 'orders' => [
                     'viewAny' => $this->resource->can('viewAny', Order::class),
                     'create' => $this->resource->can('create', Order::class),
+                ],
+                'payments' => [
+                    'viewAny' => $this->resource->can('viewAny', Payment::class),
+                    'create' => $this->resource->can('create', Payment::class),
                 ],
             ],
         ];
