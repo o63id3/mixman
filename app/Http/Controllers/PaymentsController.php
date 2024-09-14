@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -59,9 +60,10 @@ final class PaymentsController
             'notes' => ['string'],
         ]);
 
-        User::find($validated['seller_id'])->increment('balance', $validated['amount']);
-
-        $request->user()->payments()->create($validated);
+        DB::transaction(function () use ($validated, $request) {
+            User::find($validated['seller_id'])->increment('balance', $validated['amount']);
+            $request->user()->payments()->create($validated);
+        });
 
         return back();
     }
@@ -96,11 +98,13 @@ final class PaymentsController
             'notes' => ['string'],
         ]);
 
-        $seller = User::find($validated['seller_id']);
-        $seller->decrement('balance', $payment->amount);
-        $seller->increment('balance', $validated['amount']);
+        DB::transaction(function () use ($payment, $validated) {
+            $seller = User::find($validated['seller_id']);
+            $seller->decrement('balance', $payment->amount);
+            $seller->increment('balance', $validated['amount']);
 
-        $payment->update($validated);
+            $payment->update($validated);
+        });
 
         return back();
     }
@@ -112,8 +116,10 @@ final class PaymentsController
     {
         Gate::authorize('update', $payment);
 
-        $payment->seller()->decrement('balance', $payment->amount);
-        $payment->delete();
+        DB::transaction(function () use ($payment) {
+            $payment->seller()->decrement('balance', $payment->amount);
+            $payment->delete();
+        });
 
         return to_route('payments.index');
     }
