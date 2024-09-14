@@ -55,6 +55,9 @@ final class UserResource extends JsonResource
                     'viewAny' => $this->resource->can('viewAny', Payment::class),
                     'create' => $this->resource->can('create', Payment::class),
                 ],
+                'transactions' => [
+                    'viewAny' => $this->resource->can('viewAny', Payment::class),
+                ],
             ],
         ];
     }

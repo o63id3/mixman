@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellersController;
+use App\Http\Controllers\TransactionsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -85,4 +86,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/payments/{payment}', [PaymentsController::class, 'update'])->name('payments.update');
 
     Route::delete('/payments/{payment}', [PaymentsController::class, 'destroy'])->name('payments.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/transactions', TransactionsController::class)->name('transactions.index');
 });

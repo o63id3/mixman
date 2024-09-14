@@ -76,6 +76,14 @@ const user = usePage().props.auth.user
                 >
                   المدفوعات
                 </NavLink>
+
+                <NavLink
+                  v-if="user.can.transactions.viewAny"
+                  :href="route('transactions.index')"
+                  :active="route().current('transactions.index')"
+                >
+                  الحركات
+                </NavLink>
               </div>
             </div>
 
@@ -210,6 +218,13 @@ const user = usePage().props.auth.user
               :active="route().current('payments.index')"
             >
               المدفوعات
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              v-if="user.can.transactions.viewAny"
+              :href="route('transactions.index')"
+              :active="route().current('transactions.index')"
+            >
+              الحركات
             </ResponsiveNavLink>
           </div>
 

@@ -34,6 +34,9 @@ export interface User {
       create: boolean
       update: boolean
     }
+    transactions: {
+      viewAny: boolean
+    }
   }
 }
 
@@ -84,6 +87,14 @@ export interface Payment {
   registerer: User
   amount: number
   notes: string
+  created_at: string
+}
+
+export interface Transaction {
+  id: number
+  seller: User
+  amount: number
+  type: 'payment' | 'order'
   created_at: string
 }
 

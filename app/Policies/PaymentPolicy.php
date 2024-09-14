@@ -13,7 +13,7 @@ final class PaymentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user !== null;
     }
 
     /**

@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/Components/ui/table'
-import { Input } from '@/Components/ui/input'
 import {
   Select,
   SelectContent,
@@ -33,30 +32,23 @@ import { Button } from '@/Components/ui/button'
 import { valueUpdater } from '@/lib/utils'
 import { ref, watch } from 'vue'
 import { Link, router } from '@inertiajs/vue3'
-import { Meta, Order } from '@/types'
-
-const statuses = {
-  all: 'الكل',
-  P: 'جاري',
-  C: 'مكتمل',
-  X: 'لاغي',
-}
+import { Meta, User } from '@/types'
+import { FilterXIcon } from 'lucide-vue-next'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   meta: Meta
-  filters: Pick<Order, 'seller' | 'status'>
+  sellers: User[]
+  filters: {
+    seller: Pick<User, 'id'>
+  }
 }>()
 
 const columnFilters = ref<ColumnFiltersState>([
   {
     id: 'seller',
     value: props.filters.seller,
-  },
-  {
-    id: 'status',
-    value: props.filters.status,
   },
 ])
 
@@ -95,7 +87,7 @@ watch(columnFilters, () => {
     {} as Record<string, string>,
   )
 
-  router.get(route('orders.index'), filters, {
+  router.get(route('transactions.index'), filters, {
     preserveScroll: true,
     preserveState: true,
   })
@@ -103,34 +95,38 @@ watch(columnFilters, () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between p-4 md:px-0">
-    <div v-if="$page.props.auth.user.admin" class="flex items-center">
-      <Input
-        class="max-w-sm"
-        placeholder="ابحث باسم البائع"
+  <div
+    v-if="$page.props.auth.user.admin"
+    class="flex w-full items-center gap-2"
+  >
+    <div class="flex max-w-sm flex-1 items-center">
+      <Select
         :model-value="table.getColumn('seller')?.getFilterValue() as string"
         @update:model-value="table.getColumn('seller')?.setFilterValue($event)"
-      />
-    </div>
-    <div class="flex items-center">
-      <Select
-        :model-value="table.getColumn('status')?.getFilterValue() as string"
-        @update:model-value="table.getColumn('status')?.setFilterValue($event)"
       >
         <SelectTrigger>
-          <SelectValue placeholder="اختر حالة الطلب" />
+          <SelectValue placeholder="اختر البائع" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem v-for="(item, key) in statuses" :key="key" :value="key">
-              {{ item }}
+            <SelectItem
+              v-for="seller in sellers"
+              :key="seller.id"
+              :value="String(seller.id)"
+            >
+              {{ seller.name }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
     </div>
+    <div>
+      <Button variant="outline" @click="table.resetColumnFilters()">
+        <FilterXIcon />
+      </Button>
+    </div>
   </div>
-  <div class="rounded-md border">
+  <div class="mt-2 rounded-md border">
     <Table>
       <TableHeader>
         <TableRow
@@ -192,7 +188,9 @@ watch(columnFilters, () => {
             as-child
           >
             <Link
-              :href="route('orders.index', { page: item.value, ...filters })"
+              :href="
+                route('transactions.index', { page: item.value, ...filters })
+              "
               preserve-scroll
             >
               <Button
