@@ -127,8 +127,6 @@ final class OrdersController
             $validated['action_by'] = $request->user()->id;
         }
 
-        // dd($validated);
-
         $order->update($validated);
 
         return back();
@@ -140,6 +138,9 @@ final class OrdersController
     public function destroy(Order $order)
     {
         Gate::authorize('delete', $order);
+
+        $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
+        $order->seller()->increment('balance', $order->total_price_for_seller);
 
         $order->delete();
 
