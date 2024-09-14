@@ -52,7 +52,7 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        Order::factory(20)
+        Order::factory(500)
             ->hasItems(3)
             ->recycle($cards)
             ->recycle($sellers)

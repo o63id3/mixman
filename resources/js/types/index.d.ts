@@ -79,24 +79,27 @@ interface Link {
   label: string
 }
 
+export interface Meta {
+  current_page: number
+  from: number
+  path: string
+  per_page: number
+  to: number
+  total: number
+}
+
+export interface Links {
+  first_page_url: string
+  last_page: number
+  last_page_url: string
+  next_page_url: string
+  prev_page_url: null
+}
+
 export interface Paginator<T> {
   data: Array<T>
-  meta: {
-    current_page: number
-    from: number
-    path: string
-    per_page: number
-    to: number
-    total: number
-  }
-  links: {
-    first_page_url: string
-    last_page: number
-    last_page_url: string
-    next_page_url: string
-    prev_page_url: null
-  }
-  //   links: Array<Link>
+  meta: Meta
+  links: Links
 }
 
 export type PageProps<
@@ -104,5 +107,6 @@ export type PageProps<
 > = T & {
   auth: {
     user: User
+    filters?: Array<Record<string, string>>
   }
 }

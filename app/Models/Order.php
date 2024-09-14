@@ -47,6 +47,32 @@ final class Order extends Model
     }
 
     /**
+     * Search by seller name.
+     */
+    public function scopeSearchBySellerName(Builder $query, $search): Builder
+    {
+        if ($search === '' || $search === null) {
+            return $query;
+        }
+
+        return $query->whereHas('seller', function ($query) use ($search) {
+            return $query->where('name', 'like', "%$search%");
+        });
+    }
+
+    /**
+     * filter by seller name.
+     */
+    public function scopeFilterByStatus(Builder $query, $status): Builder
+    {
+        if ($status === null || $status === 'all') {
+            return $query;
+        }
+
+        return $query->where('status', $status);
+    }
+
+    /**
      * Get the seller.
      */
     public function seller(): BelongsTo

@@ -269,6 +269,23 @@ const onSubmit = handleSubmit((values) => {
                   <TableCell>{{ item.total_price_for_seller }}</TableCell>
                   <TableCell>{{ item.total_price_for_consumer }}</TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    {{
+                      items.reduce(
+                        (accumulator: number, item: OrderItem) =>
+                          accumulator + item.number_of_packages,
+                        0,
+                      )
+                    }}
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>{{ order.total_price_for_seller }}</TableCell>
+                  <TableCell>{{ order.total_price_for_consumer }}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>

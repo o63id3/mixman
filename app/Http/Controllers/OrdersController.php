@@ -21,20 +21,27 @@ final class OrdersController
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Order::class);
 
         $orders = Order::query()
+            ->searchBySellerName($request->get('seller', ''))
+            ->filterByStatus($request->get('status'))
             ->with(['seller', 'action'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->latest()
+            ->latest('id')
             ->seller()
             ->paginate(10);
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
+            'filters' => [
+                'seller' => $request->get('seller'),
+                'status' => $request->get('status'),
+            ],
         ]);
     }
 
@@ -89,6 +96,8 @@ final class OrdersController
         Gate::authorize('view', $order);
 
         $order->load(['seller', 'action', 'items', 'items.card']);
+        $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
+            ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
         OrderResource::withoutWrapping();
 
