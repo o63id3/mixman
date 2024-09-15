@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Paginator, Payment } from '@/types'
-import DataTable from './Table/DataTable.vue'
 import { columns } from './Table/columns'
 import { Head, Link } from '@inertiajs/vue3'
 import Button from '@/Components/ui/button/Button.vue'
+import { DataTable, DataTablePagination } from '@/Components/data-table/index'
 
 defineProps<{
   payments: Paginator<Payment>
@@ -32,11 +32,14 @@ defineProps<{
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 text-gray-900">
-            <DataTable
-              :columns="columns"
-              :data="payments.data"
-              :meta="payments.meta"
-            />
+            <DataTable :columns="columns" :data="payments.data">
+              <template #pagination>
+                <DataTablePagination
+                  :meta="payments.meta"
+                  href="payments.index"
+                />
+              </template>
+            </DataTable>
           </div>
         </div>
       </div>

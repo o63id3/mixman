@@ -136,6 +136,9 @@ watch(columnFilters, () => {
           <TableHead
             v-for="header in headerGroup.headers"
             class="text-right"
+            :class="[
+              header.id === 'id' || header.id === 'type' ? 'w-5' : 'w-1/3',
+            ]"
             :key="header.id"
           >
             <FlexRender

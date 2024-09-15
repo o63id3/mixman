@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Card, Paginator, User } from '@/types'
+import { Card, Paginator } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
 
 import {

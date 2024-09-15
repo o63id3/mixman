@@ -25,6 +25,8 @@ final class User extends Authenticatable
         'username',
         'password',
         'region_id',
+        'contact_info',
+        'notes',
     ];
 
     /**

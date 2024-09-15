@@ -4,10 +4,17 @@ import { ColumnDef } from '@tanstack/vue-table'
 import { CheckCircle2Icon, CircleDashed, XCircleIcon } from 'lucide-vue-next'
 import { h } from 'vue'
 
-export const columns: ColumnDef<Order>[] = [
+interface CustomColumnMeta {
+  class?: string
+}
+
+export const columns: ColumnDef<Order, CustomColumnMeta>[] = [
   {
     accessorKey: 'id',
     header: '#',
+    meta: {
+      class: 'w-5',
+    },
   },
   {
     accessorKey: 'seller',
@@ -24,10 +31,13 @@ export const columns: ColumnDef<Order>[] = [
         },
       )
     },
+    meta: {
+      class: 'w-1/5',
+    },
   },
   {
     accessorKey: 'status',
-    header: 'حالة الطلب',
+    header: 'الحالة',
     cell: ({ row }) => {
       var tag = CircleDashed
       var color = 'text-yellow-500'
@@ -46,6 +56,9 @@ export const columns: ColumnDef<Order>[] = [
         { default: () => row.getValue('status') },
       )
     },
+    meta: {
+      class: 'w-5',
+    },
   },
   {
     accessorKey: 'action',
@@ -57,17 +70,29 @@ export const columns: ColumnDef<Order>[] = [
         row.getValue<User>('action')?.name,
       )
     },
+    meta: {
+      class: 'w-1/5',
+    },
   },
   {
     accessorKey: 'total_price_for_seller',
     header: 'اجمالي السعر للبائع',
+    meta: {
+      class: 'w-1/5',
+    },
   },
   {
     accessorKey: 'total_price_for_consumer',
     header: 'اجمالي السعر للمستهلك',
+    meta: {
+      class: 'w-1/5',
+    },
   },
   {
     accessorKey: 'updated_at',
     header: 'التاريخ',
+    meta: {
+      class: 'w-1/5',
+    },
   },
 ]

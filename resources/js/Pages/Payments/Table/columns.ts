@@ -7,6 +7,9 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'id',
     header: '#',
+    meta: {
+      class: 'w-5',
+    },
   },
   {
     accessorKey: 'seller',
@@ -23,6 +26,9 @@ export const columns: ColumnDef<Payment>[] = [
         },
       )
     },
+    meta: {
+      class: 'w-1/4',
+    },
   },
   {
     accessorKey: 'registerer',
@@ -30,13 +36,22 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       return row.getValue<User>('registerer').name
     },
+    meta: {
+      class: 'w-1/4',
+    },
   },
   {
     accessorKey: 'amount',
     header: 'المبلغ',
+    meta: {
+      class: 'w-1/4',
+    },
   },
   {
     accessorKey: 'created_at',
     header: 'التاريخ',
+    meta: {
+      class: 'w-1/4',
+    },
   },
 ]

@@ -1,11 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef, ColumnFiltersState } from '@tanstack/vue-table'
-import {
-  FlexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
+import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 
 import {
   Table,
@@ -77,7 +72,6 @@ const table = useVueTable({
   },
   onColumnFiltersChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, columnFilters),
-  getPaginationRowModel: getPaginationRowModel(),
   getCoreRowModel: getCoreRowModel(),
   state: {
     get columnFilters() {
@@ -139,7 +133,8 @@ watch(columnFilters, () => {
         >
           <TableHead
             v-for="header in headerGroup.headers"
-            class="text-right"
+            class="w-full text-nowrap text-right"
+            :class="header.column.columnDef.meta?.class"
             :key="header.id"
           >
             <FlexRender
@@ -155,6 +150,7 @@ watch(columnFilters, () => {
           <TableRow
             v-for="row in table.getRowModel().rows"
             :key="row.id"
+            class="w-full text-nowrap text-right"
             :data-state="row.getIsSelected() ? 'selected' : undefined"
           >
             <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">

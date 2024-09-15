@@ -6,7 +6,6 @@ import {
   getPaginationRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
-
 import {
   Table,
   TableBody,
@@ -15,19 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/Components/ui/table'
-import {
-  Pagination,
-  PaginationList,
-  PaginationListItem,
-} from '@/Components/ui/pagination'
-import { Button } from '@/Components/ui/button'
-import { Link } from '@inertiajs/vue3'
-import { Meta } from '@/types'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  meta: Meta
 }>()
 
 const table = useVueTable({
@@ -50,10 +40,11 @@ const table = useVueTable({
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
         >
+          <!-- @ignore-ts -->
           <TableHead
             v-for="header in headerGroup.headers"
-            class="text-right"
-            :class="[header.id === 'id' ? 'w-5' : 'w-1/4']"
+            class="w-full text-nowrap text-right"
+            :class="header.column.columnDef.meta?.class"
             :key="header.id"
           >
             <FlexRender
@@ -69,6 +60,7 @@ const table = useVueTable({
           <TableRow
             v-for="row in table.getRowModel().rows"
             :key="row.id"
+            class="w-full text-nowrap text-right"
             :data-state="row.getIsSelected() ? 'selected' : undefined"
           >
             <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
@@ -89,38 +81,7 @@ const table = useVueTable({
       </TableBody>
     </Table>
   </div>
-  <div class="mt-3 flex items-center justify-between px-4 md:px-0">
-    <Pagination
-      v-slot="{ page }"
-      :total="meta.total"
-      :sibling-count="1"
-      show-edges
-      :default-page="meta.current_page"
-    >
-      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-        <template v-for="(item, index) in items">
-          <PaginationListItem
-            v-if="item.type === 'page'"
-            :key="index"
-            :value="item.value"
-            as-child
-          >
-            <Link
-              :href="route('orders.index', { page: item.value })"
-              preserve-scroll
-            >
-              <Button
-                class="h-10 w-10 p-0"
-                :variant="item.value === page ? 'default' : 'outline'"
-              >
-                {{ item.value }}
-              </Button>
-            </Link>
-          </PaginationListItem>
-        </template>
-      </PaginationList>
-    </Pagination>
-
-    <div class="text-sm">عدد النتائج {{ meta.total }}</div>
+  <div>
+    <slot name="pagination" />
   </div>
 </template>

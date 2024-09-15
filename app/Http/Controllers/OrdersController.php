@@ -122,6 +122,16 @@ final class OrdersController
             'notes' => ['string'],
         ]);
 
+        if ($validated['status'] === 'X' && $order->status !== 'X') {
+            $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
+            $order->seller()->increment('balance', $order->total_price_for_seller);
+        }
+
+        if ($validated['status'] !== 'X' && $order->status === 'X') {
+            $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
+            $order->seller()->decrement('balance', $order->total_price_for_seller);
+        }
+
         if ($validated['status'] === 'P') {
             $validated['action_by'] = null;
         } else {
@@ -141,8 +151,10 @@ final class OrdersController
         Gate::authorize('delete', $order);
 
         DB::transaction(function () use ($order) {
-            $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
-            $order->seller()->increment('balance', $order->total_price_for_seller);
+            if ($order->status !== 'X') {
+                $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
+                $order->seller()->increment('balance', $order->total_price_for_seller);
+            }
 
             $order->delete();
         });
