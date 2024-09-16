@@ -18,14 +18,6 @@ final class OrderPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Order $order): bool
-    {
-        return $user->isAdmin() || $user->id === $order->seller_id;
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
@@ -55,21 +47,5 @@ final class OrderPolicy
         }
 
         return $user->isAdmin() || $user->id === $order->seller_id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user): bool
-    {
-        return $user->isAdmin();
     }
 }
