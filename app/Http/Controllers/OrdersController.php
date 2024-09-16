@@ -36,7 +36,7 @@ final class OrdersController
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->latest()
             ->latest('id')
-            ->seller($seller)
+            ->visibleTo($seller)
             ->paginate(10);
 
         return Inertia::render('Orders/Index', [

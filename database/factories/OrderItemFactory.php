@@ -20,7 +20,7 @@ final class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
-        $packages = $this->faker()->rand(1, 3);
+        $packages = random_int(1, 3);
         $price = $packages * 120;
 
         return [
