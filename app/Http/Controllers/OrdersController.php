@@ -26,6 +26,8 @@ final class OrdersController
     {
         Gate::authorize('viewAny', Order::class);
 
+        $seller = type($request->user())->as(User::class);
+
         $orders = Order::query()
             ->searchBySellerName($request->get('seller', ''))
             ->filterByStatus($request->get('status'))
@@ -34,7 +36,7 @@ final class OrdersController
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->latest()
             ->latest('id')
-            ->seller()
+            ->seller($seller)
             ->paginate(10);
 
         return Inertia::render('Orders/Index', [

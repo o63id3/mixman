@@ -37,13 +37,13 @@ final class Order extends Model
     /**
      * Scope the users to sellers only.
      */
-    public function scopeSeller(Builder $query): Builder
+    public function scopeSeller(Builder $query, User $user): Builder
     {
-        if (auth()->user()->isAdmin()) {
+        if ($user->isAdmin()) {
             return $query;
         }
 
-        return $query->where('seller_id', auth()->id());
+        return $query->where('seller_id', $user->id());
     }
 
     /**

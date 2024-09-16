@@ -31,6 +31,8 @@ final class UserFactory extends Factory
             'region_id' => Region::factory(),
             'username' => fake()->unique()->username(),
             'password' => self::$password ??= Hash::make('password'),
+            'contact_info' => 'contact info',
+            'notes' => 'notes',
             'admin' => false,
             'active' => true,
             'balance' => 0,

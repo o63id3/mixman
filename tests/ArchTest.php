@@ -35,6 +35,7 @@ arch('avoid inheritance')
         'App\Exceptions',
         'App\Filament',
         'App\Http\Requests',
+        'App\Http\Resources',
         'App\Jobs',
         'App\Mail',
         'App\Models',
