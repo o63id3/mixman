@@ -85,7 +85,6 @@ final class CardsController
             'name' => ['required', 'string', 'min:2', Rule::unique('cards', 'name')->ignore($card->id)],
             'price_for_consumer' => ['required', 'numeric'],
             'price_for_seller' => ['required', 'numeric'],
-            'active' => ['boolean'],
             'notes' => ['string'],
         ]);
 

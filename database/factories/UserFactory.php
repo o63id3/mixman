@@ -39,4 +39,24 @@ final class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    /**
+     * Indicate that the model is admin.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'admin' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the model is not admin.
+     */
+    public function user(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'admin' => false,
+        ]);
+    }
 }
