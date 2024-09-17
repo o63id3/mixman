@@ -95,11 +95,15 @@ final class SellersController
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
+            'region' => ['required', Rule::exists('regions', 'id')],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($seller->id)],
             'password' => ['string', 'min:4'],
             'contact_info' => ['string'],
             'notes' => ['string'],
         ]);
+
+        $validated['region_id'] = $validated['region'];
+        unset($validated['region']);
 
         $seller->update($validated);
 
