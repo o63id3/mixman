@@ -10,10 +10,10 @@ it('renders the edit page for admin', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
-        ->get(route('cards.edit', Card::factory()->create()))
+        ->get(route('regions.edit', Card::factory()->create()))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Cards/Edit')
-            ->has('card')
+            ->component('Regions/Edit')
+            ->has('region')
         );
 });
 
@@ -21,6 +21,6 @@ it('does not render the edit page for seller', function () {
     $user = User::factory()->user()->create();
 
     $this->actingAs($user)
-        ->get(route('cards.edit', Card::factory()->create()))
+        ->get(route('regions.edit', Card::factory()->create()))
         ->assertForbidden();
 });

@@ -79,7 +79,7 @@ final class RegionsController
         Gate::authorize('update', Region::class);
 
         $validated = $request->validate([
-            'name' => ['string', 'min:2', Rule::unique('regions', 'name')->ignore($region->id)],
+            'name' => ['required', 'string', 'min:2', Rule::unique('regions', 'name')->ignore($region->id)],
         ]);
 
         $region->update($validated);
