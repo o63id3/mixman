@@ -18,10 +18,13 @@ final class TransactionsController
      */
     public function __invoke(Request $request): Response
     {
+        $user = type($request->user())->as(User::class);
+
         $transactions = Transaction::query()
             ->with('seller')
             ->latest()
             ->latest('id')
+            ->visibleTo($user)
             ->paginate(10);
 
         return Inertia::render('Transactions/Index', [
