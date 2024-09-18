@@ -13,6 +13,18 @@ test('view any', function () {
         ->and($seller->can('viewAny', Order::class))->toBeTrue();
 });
 
+test('view', function () {
+    $admin = User::factory()->create(['admin' => true]);
+    $seller = User::factory()->create(['admin' => false]);
+
+    $order = Order::factory()->create();
+    expect($admin->can('view', $order))->toBeTrue()
+        ->and($seller->can('view', $order))->toBeFalse();
+
+    $order = Order::factory()->create(['seller_id' => $seller]);
+    expect($seller->can('view', $order))->toBeTrue();
+});
+
 test('create', function () {
     $admin = User::factory()->create(['admin' => true]);
     $seller = User::factory()->create(['admin' => false]);

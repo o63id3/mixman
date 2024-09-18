@@ -71,7 +71,7 @@ final class OrdersController
         $validated = $request->validate([
             'seller_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', 'in:C,P'],
-            'cards' => ['array'],
+            'cards' => ['required', 'array'],
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
             'cards.*.number_of_packages' => ['required', 'numeric'],
             'cards.*.number_of_cards_per_package' => ['required', 'numeric'],

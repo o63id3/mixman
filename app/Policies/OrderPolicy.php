@@ -18,6 +18,14 @@ final class OrderPolicy
     }
 
     /**
+     * Determine whether the user can view any models.
+     */
+    public function view(User $user, Order $order): bool
+    {
+        return $user->isAdmin() || $order->seller_id === $user->id;
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
