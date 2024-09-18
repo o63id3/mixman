@@ -22,7 +22,7 @@ export const columns: ColumnDef<Transaction>[] = [
       return h(
         Link,
         {
-          href: route('payments.edit', row.getValue('id')),
+          href: route(`${row.getValue('type')}s.edit`, row.getValue('id')),
           class: 'text-right font-medium hover:underline',
         },
         {
