@@ -19,14 +19,17 @@ final class PaymentsController
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Payment::class);
+
+        $seller = type($request->user())->as(User::class);
 
         $payments = Payment::query()
             ->with(['seller', 'registerer'])
             ->latest()
             ->latest('id')
+            ->visibleTo($seller)
             ->paginate(10);
 
         return Inertia::render('Payments/Index', [

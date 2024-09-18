@@ -18,3 +18,14 @@ test('registerer', function () {
 
     expect($payment->registerer)->toBe($registerer);
 });
+
+test('visible to', function () {
+    $admin = User::factory()->admin()->create();
+    $seller = User::factory()->user()->create();
+
+    Payment::factory(5)->create();
+    expect(Payment::visibleTo($admin)->count())->toBe(5);
+
+    Payment::factory()->create(['seller_id' => $seller]);
+    expect(Payment::visibleTo($seller)->get()->pluck('seller_id'))->each->toBe($seller->id);
+});
