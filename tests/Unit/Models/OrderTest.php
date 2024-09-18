@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\User;
 
 test('completed', function () {
-    $completed = Order::factory()->create(['status' => 'C']);
-    $canceled = Order::factory()->create(['status' => 'X']);
-    $processing = Order::factory()->create(['status' => 'X']);
+    $completed = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
+    $pending = Order::factory()->create(['status' => OrderStatusEnum::Pending]);
+    $returned = Order::factory()->create(['status' => OrderStatusEnum::Returned]);
 
     expect($completed->completed())->toBeTrue()
-        ->and($canceled->completed())->toBeFalse()
-        ->and($processing->completed())->toBeFalse();
+        ->and($pending->completed())->toBeFalse()
+        ->and($returned->completed())->toBeFalse();
 });
 
 test('scope visible to', function () {

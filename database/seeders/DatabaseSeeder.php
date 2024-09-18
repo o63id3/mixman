@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Card;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -55,6 +56,10 @@ final class DatabaseSeeder extends Seeder
         Order::factory(500)
             ->hasItems(3)
             ->recycle($cards)
+            ->recycle($sellers)
+            ->create();
+
+        Payment::factory(100)
             ->recycle($sellers)
             ->create();
     }

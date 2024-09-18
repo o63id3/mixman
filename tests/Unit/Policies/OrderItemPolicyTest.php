@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
@@ -17,7 +18,7 @@ test('view any', function () {
 test('delete', function ($status) {
     $admin = User::factory()->create(['admin' => true]);
 
-    $order = Order::factory()->create(['status' => 'C']);
+    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
     $item = OrderItem::factory()->recycle($order)->create();
     expect($admin->can('delete', $item))->toBeFalse();
 
@@ -29,6 +30,6 @@ test('delete', function ($status) {
     $item = OrderItem::factory()->recycle($order)->create();
     expect($seller->can('delete', $item))->toBeFalse();
 })->with([
-    'P',
-    'X',
+    OrderStatusEnum::Pending,
+    OrderStatusEnum::Returned,
 ]);

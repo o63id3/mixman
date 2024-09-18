@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatusEnum;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Card;
@@ -40,6 +41,7 @@ final class OrdersController
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
+            'statuses' => OrderStatusEnum::cases(),
             'filters' => [
                 'seller' => $request->get('seller'),
                 'status' => $request->get('status'),
@@ -57,6 +59,7 @@ final class OrdersController
         return Inertia::render('Orders/Create', [
             'sellers' => User::sellers()->get(),
             'cards' => Card::all(),
+            'statuses' => OrderStatusEnum::cases(),
         ]);
     }
 
@@ -69,7 +72,7 @@ final class OrdersController
 
         $validated = $request->validate([
             'seller_id' => ['required', Rule::exists('users', 'id')],
-            'status' => ['required', 'in:C,P'],
+            'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'cards' => ['required', 'array'],
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
             'cards.*.number_of_packages' => ['required', 'numeric'],
@@ -80,9 +83,7 @@ final class OrdersController
         $cards = $validated['cards'];
         unset($validated['cards']);
 
-        if ($validated['status'] === 'C') {
-            $validated['action_by'] = $request->user()->id;
-        }
+        $validated['action_by'] = $request->user()->id;
 
         $order = Order::create($validated);
         $order->items()->createMany($cards);
@@ -107,6 +108,7 @@ final class OrdersController
             'sellers' => User::sellers()->get(),
             'order' => OrderResource::make($order),
             'items' => OrderItemResource::collection($order->items),
+            'statuses' => OrderStatusEnum::cases(),
         ]);
     }
 
@@ -119,15 +121,11 @@ final class OrdersController
 
         $validated = $request->validate([
             'seller_id' => ['required', Rule::exists('users', 'id')],
-            'status' => ['required', 'in:C,P,X'],
+            'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['string'],
         ]);
 
-        if ($validated['status'] === 'P') {
-            $validated['action_by'] = null;
-        } else {
-            $validated['action_by'] = $request->user()->id;
-        }
+        $validated['action_by'] = $request->user()->id;
 
         $order->update($validated);
 

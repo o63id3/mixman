@@ -57,7 +57,7 @@ export interface Card {
 export interface Order {
   id: number
   seller: User
-  status: 'C' | 'P' | 'X'
+  status: 'طلب جديد' | 'مكتمل' | 'مرجع'
   action?: User
   total_price_for_seller: number
   total_price_for_consumer: number
@@ -95,6 +95,7 @@ export interface Transaction {
   seller: User
   amount: number
   type: 'payment' | 'order'
+  status: 'طلب جديد' | 'مكتمل' | 'مرجع' | ''
   created_at: string
 }
 

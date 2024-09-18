@@ -46,11 +46,6 @@ import { CaretSortIcon } from '@radix-icons/vue'
 import { Input } from '@/Components/ui/input'
 import Label from '@/Components/ui/label/Label.vue'
 
-const statuses = {
-  P: 'جاري',
-  C: 'مكتمل',
-}
-
 const formSchema = toTypedSchema(
   z.object({
     seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
@@ -94,6 +89,7 @@ const onSubmit = handleSubmit((values) => {
 defineProps<{
   sellers: Array<User>
   cards: Array<Card>
+  statuses: Array<string>
 }>()
 </script>
 
@@ -197,11 +193,11 @@ defineProps<{
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem
-                              v-for="(item, key) in statuses"
-                              :key="key"
-                              :value="key"
+                              v-for="status in statuses"
+                              :key="status"
+                              :value="status"
                             >
-                              {{ item }}
+                              {{ status }}
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>

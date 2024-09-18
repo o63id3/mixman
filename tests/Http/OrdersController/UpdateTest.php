@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\User;
 
@@ -10,7 +11,7 @@ it('allows an authorized user to update an order', function () {
 
     $order = [
         'seller_id' => User::factory()->user()->create()->id,
-        'status' => 'P',
+        'status' => OrderStatusEnum::Pending->value,
         'notes' => 'This is notes',
     ];
 

@@ -30,18 +30,12 @@ import { ref, watch } from 'vue'
 import { Link, router } from '@inertiajs/vue3'
 import { Meta, Order } from '@/types'
 
-const statuses = {
-  all: 'الكل',
-  P: 'جاري',
-  C: 'مكتمل',
-  X: 'لاغي',
-}
-
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   meta: Meta
   filters: Pick<Order, 'seller' | 'status'>
+  statuses: Array<string>
 }>()
 
 const columnFilters = ref<ColumnFiltersState>([
@@ -116,8 +110,13 @@ watch(columnFilters, () => {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem v-for="(item, key) in statuses" :key="key" :value="key">
-              {{ item }}
+            <SelectItem value="all"> الكل </SelectItem>
+            <SelectItem
+              v-for="status in statuses"
+              :key="status"
+              :value="status"
+            >
+              {{ status }}
             </SelectItem>
           </SelectGroup>
         </SelectContent>

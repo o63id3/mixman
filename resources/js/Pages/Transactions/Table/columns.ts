@@ -1,7 +1,13 @@
 import { Transaction, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { ColumnDef } from '@tanstack/vue-table'
-import { HandCoinsIcon, ShoppingCartIcon } from 'lucide-vue-next'
+import {
+  CheckCircle2Icon,
+  CircleDashed,
+  CircleFadingArrowUpIcon,
+  HandCoinsIcon,
+  ShoppingCartIcon,
+} from 'lucide-vue-next'
 import { h } from 'vue'
 
 export const columns: ColumnDef<Transaction>[] = [
@@ -38,6 +44,32 @@ export const columns: ColumnDef<Transaction>[] = [
       }
 
       return h(icon, { class: `text-right ${color}` })
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: 'الحالة',
+    cell: ({ row }) => {
+      if (row.getValue('status') === '') {
+        return ''
+      }
+
+      var tag = CircleDashed
+      var color = 'text-yellow-500'
+
+      if (row.getValue('status') === 'مكتمل') {
+        tag = CheckCircle2Icon
+        color = 'text-green-500'
+      } else if (row.getValue('status') === 'مرجع') {
+        tag = CircleFadingArrowUpIcon
+        color = 'text-red-500'
+      }
+
+      return h(
+        tag,
+        { class: `text-right ${color}` },
+        { default: () => row.getValue('status') },
+      )
     },
   },
   {

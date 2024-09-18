@@ -21,6 +21,7 @@ final class TransactionResource extends JsonResource
             'seller' => UserResource::make($this->seller),
             'amount' => $this->amount,
             'type' => $this->type,
+            'status' => $this->status,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

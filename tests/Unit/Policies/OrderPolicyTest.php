@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\User;
 
@@ -36,7 +37,7 @@ test('create', function () {
 test('update', function ($status) {
     $admin = User::factory()->create(['admin' => true]);
 
-    $order = Order::factory()->create(['status' => 'C']);
+    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
     expect($admin->can('update', $order))->toBeTrue();
 
     $order = Order::factory()->create(['status' => $status]);
@@ -47,20 +48,20 @@ test('update', function ($status) {
     $order = Order::factory()->create();
     expect($seller->can('update', $order))->toBeFalse();
 
-    $order = Order::factory()->create(['status' => 'C', 'seller_id' => $seller]);
+    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed, 'seller_id' => $seller]);
     expect($seller->can('update', $order))->toBeFalse();
 
     $order = Order::factory()->create(['status' => $status, 'seller_id' => $seller]);
     expect($seller->can('update', $order))->toBeTrue();
 })->with([
-    'X',
-    'P',
+    OrderStatusEnum::Pending,
+    OrderStatusEnum::Returned,
 ]);
 
 test('delete', function ($status) {
     $admin = User::factory()->create(['admin' => true]);
 
-    $order = Order::factory()->create(['status' => 'C']);
+    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
     expect($admin->can('delete', $order))->toBeTrue();
 
     $order = Order::factory()->create(['status' => $status]);
@@ -71,12 +72,12 @@ test('delete', function ($status) {
     $order = Order::factory()->create();
     expect($seller->can('delete', $order))->toBeFalse();
 
-    $order = Order::factory()->create(['status' => 'C', 'seller_id' => $seller]);
+    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed, 'seller_id' => $seller]);
     expect($seller->can('delete', $order))->toBeFalse();
 
     $order = Order::factory()->create(['status' => $status, 'seller_id' => $seller]);
     expect($seller->can('delete', $order))->toBeTrue();
 })->with([
-    'X',
-    'P',
+    OrderStatusEnum::Pending,
+    OrderStatusEnum::Returned,
 ]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,7 @@ final class Order extends Model
      */
     public function completed(): bool
     {
-        return $this->status === 'C';
+        return $this->status === OrderStatusEnum::Completed;
     }
 
     /**
@@ -94,5 +95,17 @@ final class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => OrderStatusEnum::class,
+        ];
     }
 }

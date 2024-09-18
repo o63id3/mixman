@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Card;
 use App\Models\User;
 
@@ -22,7 +23,7 @@ it('allows an authorized user to create an order', function () {
 
     $order = [
         'seller_id' => User::factory()->user()->create()->id,
-        'status' => 'P',
+        'status' => OrderStatusEnum::Pending->value,
         'notes' => 'This is notes',
     ];
 
@@ -70,7 +71,6 @@ it('fails validation when fields are not applicable', function ($status, $number
 })->with([
     [1, 'asd', 'asd'],
     ['a', 'asd', 'asd'],
-    ['X', 'asd', 'asd'],
 ]);
 
 it('prevents unauthorized users from creating an order', function () {

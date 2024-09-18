@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -48,7 +49,18 @@ test('transactions', function () {
 test('with balance', function () {
     $user = User::factory()->user()->create();
 
-    $order = Order::factory()->create(['seller_id' => $user->id]);
+    // Pending do not sum
+    $order = Order::factory()->create(['seller_id' => $user->id, 'status' => OrderStatusEnum::Pending]);
+    $item = OrderItem::factory()->recycle($order)->create([
+        'number_of_packages' => 1,
+        'number_of_cards_per_package' => 120,
+    ]);
+
+    $user = User::withBalance()->find($user->id);
+    expect($user->balance)->toBe(0);
+
+    // Completed do sum
+    $order = Order::factory()->create(['seller_id' => $user->id, 'status' => OrderStatusEnum::Completed]);
     $item = OrderItem::factory()->recycle($order)->create([
         'number_of_packages' => 1,
         'number_of_cards_per_package' => 120,
@@ -57,16 +69,26 @@ test('with balance', function () {
     $user = User::withBalance()->find($user->id);
     expect($user->balance)->toBe((int) -$item->total_price_for_seller);
 
+    // Returned do sum in positive
+    $order = Order::factory()->create(['seller_id' => $user->id, 'status' => OrderStatusEnum::Returned]);
+    $returned = OrderItem::factory()->recycle($order)->create([
+        'number_of_packages' => 1,
+        'number_of_cards_per_package' => 120,
+    ]);
+
+    $user = User::withBalance()->find($user->id);
+    expect($user->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller));
+
     $payment = Payment::factory()->create(['seller_id' => $user->id]);
 
     $user = User::withBalance()->find($user->id);
-    expect($user->balance)->toBe((int) (-$item->total_price_for_seller + $payment->amount));
+    expect($user->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller + $payment->amount));
 });
 
 test('load balance', function () {
     $user = User::factory()->user()->create();
 
-    $order = Order::factory()->create(['seller_id' => $user->id]);
+    $order = Order::factory()->create(['seller_id' => $user->id, 'status' => OrderStatusEnum::Completed]);
     $item = OrderItem::factory()->recycle($order)->create([
         'number_of_packages' => 1,
         'number_of_cards_per_package' => 120,

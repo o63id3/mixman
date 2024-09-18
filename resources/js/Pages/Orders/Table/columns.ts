@@ -1,7 +1,12 @@
 import { Order, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { ColumnDef } from '@tanstack/vue-table'
-import { CheckCircle2Icon, CircleDashed, XCircleIcon } from 'lucide-vue-next'
+import {
+  CheckCircle2Icon,
+  CircleDashed,
+  CircleFadingArrowUpIcon,
+  XCircleIcon,
+} from 'lucide-vue-next'
 import { h } from 'vue'
 
 interface CustomColumnMeta {
@@ -42,11 +47,11 @@ export const columns: ColumnDef<Order, CustomColumnMeta>[] = [
       var tag = CircleDashed
       var color = 'text-yellow-500'
 
-      if (row.getValue('status') === 'C') {
+      if (row.getValue('status') === 'مكتمل') {
         tag = CheckCircle2Icon
         color = 'text-green-500'
-      } else if (row.getValue('status') === 'X') {
-        tag = XCircleIcon
+      } else if (row.getValue('status') === 'مرجع') {
+        tag = CircleFadingArrowUpIcon
         color = 'text-red-500'
       }
 

@@ -51,19 +51,11 @@ import { cn } from '@/lib/utils'
 import { CheckIcon } from 'lucide-vue-next'
 import { CaretSortIcon } from '@radix-icons/vue'
 
-const statuses: Record<string, string> = {
-  P: 'جاري',
-  X: 'لاغي',
-}
-
-if (usePage().props.auth.user.admin) {
-  statuses.C = 'مكتمل'
-}
-
 const props = defineProps<{
   order: Order
   items: Array<OrderItem>
   sellers: Array<User>
+  statuses: Array<string>
 }>()
 
 const formSchema = toTypedSchema(
@@ -193,12 +185,12 @@ const onSubmit = handleSubmit((values) => {
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem
-                              v-for="(item, key) in statuses"
-                              :key="key"
-                              :value="key"
+                              v-for="status in statuses"
+                              :key="status"
+                              :value="status"
                               :disabled="!order.can.update"
                             >
-                              {{ item }}
+                              {{ status }}
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>

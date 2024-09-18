@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,10 +21,10 @@ final class OrderFactory extends Factory
     public function definition(): array
     {
         $seller = User::factory();
-        $status = $this->faker->randomElement(['C', 'P', 'X']);
+        $status = $this->faker->randomElement(OrderStatusEnum::cases());
         $action_by = null;
 
-        if ($status === 'X' || $status === 'C') {
+        if ($status === OrderStatusEnum::Completed || $status === OrderStatusEnum::Returned) {
             $action_by = 1;
         }
 

@@ -9,6 +9,7 @@ import Button from '@/Components/ui/button/Button.vue'
 defineProps<{
   orders: Paginator<Order>
   filters: Pick<Order, 'seller' | 'status'>
+  statuses: Array<string>
 }>()
 </script>
 
@@ -34,6 +35,7 @@ defineProps<{
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 text-gray-900">
             <DataTable
+              :statuses="statuses"
               :columns="columns"
               :data="orders.data"
               :meta="orders.meta"

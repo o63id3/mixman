@@ -19,15 +19,26 @@ return new class extends Migration
                 amount AS amount,
                 seller_id,
                 'payment' AS type,
+                '' AS status,
                 created_at
             FROM
                 payments
             UNION
             SELECT
                 orders.id,
-                COALESCE(SUM(-order_items.total_price_for_seller), 0) AS amount,
+                COALESCE(
+                    SUM(
+                        CASE
+                            WHEN status = 'مرجع' THEN order_items.total_price_for_seller
+                            WHEN status = 'مكتمل' THEN -order_items.total_price_for_seller
+                            WHEN status = 'طلب جديد' THEN 0
+                        END
+                    ),
+                    0
+                ) AS amount,
                 orders.seller_id,
                 'order' AS type,
+                orders.status,
                 orders.created_at
             FROM
                 orders
