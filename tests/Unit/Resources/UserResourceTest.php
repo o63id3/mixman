@@ -20,7 +20,16 @@ test('make', function () {
         ->toHaveKey('username', $user->username)
         ->toHaveKey('active', $user->active)
         ->toHaveKey('admin', $user->admin)
-        // ->toHaveKey('balance', $user->balance)
         ->toHaveKey('contact_info', $user->contact_info)
         ->toHaveKey('notes', $user->notes);
+});
+
+test('make with balance', function () {
+    $user = User::factory()->create();
+    $user->loadBalance();
+
+    $resource = UserResource::make($user)->resolve();
+
+    expect($resource)
+        ->toHaveKey('balance', $user->balance);
 });

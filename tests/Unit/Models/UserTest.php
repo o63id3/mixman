@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Region;
 use App\Models\User;
@@ -33,4 +35,48 @@ test('payments', function () {
     Payment::factory(3)->create();
 
     expect($user->payments->pluck('registered_by'))->each->toBe($user->id);
+});
+
+test('transactions', function () {
+    $user = User::factory()->user()->create();
+    Order::factory(3)->create(['seller_id' => $user->id]);
+    Payment::factory(3)->create(['seller_id' => $user->id]);
+
+    expect($user->transactions->pluck('seller_id'))->each->toBe($user->id);
+});
+
+test('with balance', function () {
+    $user = User::factory()->user()->create();
+
+    $order = Order::factory()->create(['seller_id' => $user->id]);
+    $item = OrderItem::factory()->recycle($order)->create([
+        'number_of_packages' => 1,
+        'number_of_cards_per_package' => 120,
+    ]);
+
+    $user = User::withBalance()->find($user->id);
+    expect($user->balance)->toBe((int) -$item->total_price_for_seller);
+
+    $payment = Payment::factory()->create(['seller_id' => $user->id]);
+
+    $user = User::withBalance()->find($user->id);
+    expect($user->balance)->toBe((int) (-$item->total_price_for_seller + $payment->amount));
+});
+
+test('load balance', function () {
+    $user = User::factory()->user()->create();
+
+    $order = Order::factory()->create(['seller_id' => $user->id]);
+    $item = OrderItem::factory()->recycle($order)->create([
+        'number_of_packages' => 1,
+        'number_of_cards_per_package' => 120,
+    ]);
+
+    $user->loadBalance();
+    expect($user->balance)->toBe((int) -$item->total_price_for_seller);
+
+    $payment = Payment::factory()->create(['seller_id' => $user->id]);
+
+    $user->loadBalance();
+    expect($user->balance)->toBe((int) (-$item->total_price_for_seller + $payment->amount));
 });

@@ -88,6 +88,14 @@ final class User extends Authenticatable
     }
 
     /**
+     * Load the balance.
+     */
+    public function loadBalance(): void
+    {
+        $this->loadSum('transactions as balance', 'amount');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
