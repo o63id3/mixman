@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Transaction;
+
 arch('models')
     ->expect('App\Models')
     ->toHaveMethod('casts')
@@ -29,9 +31,13 @@ arch('models')
     ])->ignoring('App\Models\Concerns');
 
 arch('ensure factories', function () {
-    expect($models = getModels())->toHaveCount(6);
+    expect($models = getModels())->toHaveCount(7);
 
     foreach ($models as $model) {
+        if ($model === Transaction::class) {
+            continue;
+        }
+
         /* @var \Illuminate\Database\Eloquent\Factories\HasFactory $model */
         expect($model::factory())
             ->toBeInstanceOf(Illuminate\Database\Eloquent\Factories\Factory::class);

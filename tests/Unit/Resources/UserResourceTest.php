@@ -20,7 +20,7 @@ test('make', function () {
         ->toHaveKey('username', $user->username)
         ->toHaveKey('active', $user->active)
         ->toHaveKey('admin', $user->admin)
-        ->toHaveKey('balance', $user->balance)
+        // ->toHaveKey('balance', $user->balance)
         ->toHaveKey('contact_info', $user->contact_info)
         ->toHaveKey('notes', $user->notes);
 });

@@ -11,7 +11,6 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -124,16 +123,6 @@ final class OrdersController
             'notes' => ['string'],
         ]);
 
-        if ($validated['status'] === 'X' && $order->status !== 'X') {
-            $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
-            $order->seller()->increment('balance', $order->total_price_for_seller);
-        }
-
-        if ($validated['status'] !== 'X' && $order->status === 'X') {
-            $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
-            $order->seller()->decrement('balance', $order->total_price_for_seller);
-        }
-
         if ($validated['status'] === 'P') {
             $validated['action_by'] = null;
         } else {
@@ -152,14 +141,7 @@ final class OrdersController
     {
         Gate::authorize('delete', $order);
 
-        DB::transaction(function () use ($order) {
-            if ($order->status !== 'X') {
-                $order->loadSum('items as total_price_for_seller', 'total_price_for_seller');
-                $order->seller()->increment('balance', $order->total_price_for_seller);
-            }
-
-            $order->delete();
-        });
+        $order->delete();
 
         return to_route('orders.index');
     }

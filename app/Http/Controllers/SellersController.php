@@ -26,7 +26,8 @@ final class SellersController
         $sellers = User::query()
             ->sellers()
             ->latest()
-            ->with('region:id,name')
+            ->withBalance()
+            ->with(['region:id,name'])
             ->paginate(10);
 
         return Inertia::render('Sellers/Index', [

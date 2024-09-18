@@ -17,8 +17,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'seller_id')->constrained('users');
-            $table->string('status');
             $table->foreignIdFor(User::class, 'action_by')->nullable()->constrained('users');
+            $table->string('status');
             $table->longText('notes')->nullable();
             $table->timestamps();
         });

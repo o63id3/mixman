@@ -72,6 +72,22 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the seller transactions.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'seller_id');
+    }
+
+    /**
+     * Calculate the balance.
+     */
+    public function scopeWithBalance(Builder $query): Builder
+    {
+        return $query->withSum('transactions as balance', 'amount');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

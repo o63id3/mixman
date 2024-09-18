@@ -35,7 +35,6 @@ final class UserFactory extends Factory
             'notes' => 'notes',
             'admin' => false,
             'active' => true,
-            'balance' => 0,
             'remember_token' => Str::random(10),
         ];
     }
