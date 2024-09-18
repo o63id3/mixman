@@ -1,7 +1,7 @@
-import { Payment, Transaction, User } from '@/types'
+import { Transaction, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { ColumnDef } from '@tanstack/vue-table'
-import { HandCoinsIcon, TicketMinusIcon } from 'lucide-vue-next'
+import { HandCoinsIcon, ShoppingCartIcon } from 'lucide-vue-next'
 import { h } from 'vue'
 
 export const columns: ColumnDef<Transaction>[] = [
@@ -33,7 +33,7 @@ export const columns: ColumnDef<Transaction>[] = [
       var color = 'text-green-500'
 
       if (row.getValue('type') === 'order') {
-        icon = TicketMinusIcon
+        icon = ShoppingCartIcon
         color = 'text-yellow-500'
       }
 

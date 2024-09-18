@@ -39,7 +39,7 @@ final class OrderPolicy
     public function update(User $user, Order $order): bool
     {
         if ($order->completed()) {
-            return false;
+            return $user->isAdmin();
         }
 
         return $user->isAdmin() || $user->id === $order->seller_id;
@@ -51,7 +51,7 @@ final class OrderPolicy
     public function delete(User $user, Order $order): bool
     {
         if ($order->completed()) {
-            return false;
+            return $user->isAdmin();
         }
 
         return $user->isAdmin() || $user->id === $order->seller_id;

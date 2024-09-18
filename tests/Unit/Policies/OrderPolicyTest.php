@@ -37,7 +37,7 @@ test('update', function ($status) {
     $admin = User::factory()->create(['admin' => true]);
 
     $order = Order::factory()->create(['status' => 'C']);
-    expect($admin->can('update', $order))->toBeFalse();
+    expect($admin->can('update', $order))->toBeTrue();
 
     $order = Order::factory()->create(['status' => $status]);
     expect($admin->can('update', $order))->toBeTrue();
@@ -61,7 +61,7 @@ test('delete', function ($status) {
     $admin = User::factory()->create(['admin' => true]);
 
     $order = Order::factory()->create(['status' => 'C']);
-    expect($admin->can('delete', $order))->toBeFalse();
+    expect($admin->can('delete', $order))->toBeTrue();
 
     $order = Order::factory()->create(['status' => $status]);
     expect($admin->can('delete', $order))->toBeTrue();
