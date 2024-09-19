@@ -48,6 +48,6 @@ final readonly class AuthenticatedSessionController
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

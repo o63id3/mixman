@@ -115,7 +115,7 @@ const links: Array<Link> = [
 
                   <template #content>
                     <DropdownLink :href="route('profile.edit')">
-                      حسابك
+                      حسابي
                     </DropdownLink>
                     <DropdownLink
                       :href="route('logout')"
@@ -199,7 +199,7 @@ const links: Array<Link> = [
 
             <div class="mt-3 space-y-1">
               <ResponsiveNavLink :href="route('profile.edit')">
-                حسابك
+                حسابي
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 :href="route('logout')"
