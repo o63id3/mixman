@@ -9,6 +9,50 @@ import { Link, usePage } from '@inertiajs/vue3'
 
 const showingNavigationDropdown = ref(false)
 const user = usePage().props.auth.user
+
+interface Link {
+  route: string
+  label: string
+  visible: boolean
+}
+
+const links: Array<Link> = [
+  {
+    route: 'dashboard',
+    label: 'الرئيسة',
+    visible: true,
+  },
+  {
+    route: 'regions.index',
+    label: 'المناطق',
+    visible: user.can.regions.viewAny,
+  },
+  {
+    route: 'cards.index',
+    label: 'الكروت',
+    visible: user.can.cards.viewAny,
+  },
+  {
+    route: 'sellers.index',
+    label: 'الباعة',
+    visible: user.can.sellers.viewAny,
+  },
+  {
+    route: 'orders.index',
+    label: 'الطلبات',
+    visible: user.can.orders.viewAny,
+  },
+  {
+    route: 'payments.index',
+    label: 'المدفوعات',
+    visible: user.can.payments.viewAny,
+  },
+  {
+    route: 'transactions.index',
+    label: 'الحركات',
+    visible: user.can.transactions.viewAny,
+  },
+]
 </script>
 
 <template>
@@ -31,58 +75,12 @@ const user = usePage().props.auth.user
               <!-- Navigation Links -->
               <div class="hidden gap-8 sm:-my-px sm:ms-10 sm:flex">
                 <NavLink
-                  :href="route('dashboard')"
-                  :active="route().current('dashboard')"
+                  v-for="link in links.filter((link) => link.visible)"
+                  :key="link.route"
+                  :href="route(link.route)"
+                  :active="route().current(link.route)"
                 >
-                  الرئيسة
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.regions.viewAny"
-                  :href="route('regions.index')"
-                  :active="route().current('regions.index')"
-                >
-                  المناطق
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.cards.viewAny"
-                  :href="route('cards.index')"
-                  :active="route().current('cards.index')"
-                >
-                  الكروت
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.sellers.viewAny"
-                  :href="route('sellers.index')"
-                  :active="route().current('sellers.index')"
-                >
-                  نقاط البيع
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.orders.viewAny"
-                  :href="route('orders.index')"
-                  :active="route().current('orders.index')"
-                >
-                  الطلبات
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.payments.viewAny"
-                  :href="route('payments.index')"
-                  :active="route().current('payments.index')"
-                >
-                  المدفوعات
-                </NavLink>
-
-                <NavLink
-                  v-if="user.can.transactions.viewAny"
-                  :href="route('transactions.index')"
-                  :active="route().current('transactions.index')"
-                >
-                  الحركات
+                  {{ link.label }}
                 </NavLink>
               </div>
             </div>
@@ -179,52 +177,12 @@ const user = usePage().props.auth.user
         >
           <div class="space-y-1 pb-3 pt-2">
             <ResponsiveNavLink
-              :href="route('dashboard')"
-              :active="route().current('dashboard')"
+              v-for="link in links.filter((link) => link.visible)"
+              :key="link.route"
+              :href="route(link.route)"
+              :active="route().current(link.route)"
             >
-              الرئيسة
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.regions.viewAny"
-              :href="route('regions.index')"
-              :active="route().current('regions.index')"
-            >
-              المناطق
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.cards.viewAny"
-              :href="route('cards.index')"
-              :active="route().current('cards.index')"
-            >
-              الكروت
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.sellers.viewAny"
-              :href="route('sellers.index')"
-              :active="route().current('sellers.index')"
-            >
-              نقاط البيع
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.orders.viewAny"
-              :href="route('orders.index')"
-              :active="route().current('orders.index')"
-            >
-              الطلبات
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.payments.viewAny"
-              :href="route('payments.index')"
-              :active="route().current('payments.index')"
-            >
-              المدفوعات
-            </ResponsiveNavLink>
-            <ResponsiveNavLink
-              v-if="user.can.transactions.viewAny"
-              :href="route('transactions.index')"
-              :active="route().current('transactions.index')"
-            >
-              الحركات
+              {{ link.label }}
             </ResponsiveNavLink>
           </div>
 
