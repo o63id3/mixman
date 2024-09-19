@@ -112,14 +112,14 @@ export interface Meta {
   per_page: number
   to: number
   total: number
+  last_page: number
 }
 
 export interface Links {
-  first_page_url: string
-  last_page: number
-  last_page_url: string
-  next_page_url: string
-  prev_page_url: null
+  first: string
+  last: string
+  prev: string
+  next: string
 }
 
 export interface Paginator<T> {

@@ -21,7 +21,7 @@ final class PaymentFactory extends Factory
     {
         return [
             'seller_id' => User::factory(),
-            'registered_by' => User::factory(),
+            'registered_by' => 1,
             'amount' => random_int(100, 300),
             'notes' => fake()->paragraph(),
         ];

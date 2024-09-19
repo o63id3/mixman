@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import DataTable from '@/Components/data-table/DataTable.vue'
+import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Paginator, Transaction, User } from '@/types'
-import DataTable from './Table/DataTable.vue'
-import { columns } from './Table/columns'
 import { Head } from '@inertiajs/vue3'
+import { columns } from './columns'
 
 defineProps<{
   transactions: Paginator<Transaction>
@@ -22,18 +23,16 @@ defineProps<{
       <h2 class="text-xl font-semibold leading-tight text-gray-800">الحركات</h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <DataTable
-              :columns="columns"
-              :data="transactions.data"
-              :meta="transactions.meta"
-              :sellers="sellers"
-              :filters="filters"
-            />
+    <div class="py-8">
+      <div class="mx-auto max-w-7xl lg:px-2">
+        <div class="space-y-4">
+          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
+            <DataTable :data="transactions.data" :columns="columns" />
           </div>
+          <DataTablePagination
+            :links="transactions.links"
+            :meta="transactions.meta"
+          />
         </div>
       </div>
     </div>

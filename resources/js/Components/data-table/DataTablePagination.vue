@@ -1,49 +1,65 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts">
 import {
-  Pagination,
-  PaginationList,
-  PaginationListItem,
-} from '@/Components/ui/pagination'
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-icons/vue'
+
 import { Button } from '@/Components/ui/button'
-import { Link } from '@inertiajs/vue3'
-import { Meta } from '@/types'
+import { Links, Meta } from '@/types'
+
+import { router } from '@inertiajs/vue3'
 
 defineProps<{
+  links: Links
   meta: Meta
-  href: string
 }>()
 </script>
 
 <template>
-  <div class="mt-3 flex items-center justify-between px-4 md:px-0">
-    <Pagination
-      v-slot="{ page }"
-      :total="meta.total"
-      :sibling-count="1"
-      show-edges
-      :default-page="meta.current_page"
-    >
-      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-        <template v-for="(item, index) in items">
-          <PaginationListItem
-            v-if="item.type === 'page'"
-            :key="index"
-            :value="item.value"
-            as-child
-          >
-            <Link :href="route(href, { page: item.value })" preserve-scroll>
-              <Button
-                class="h-10 w-10 p-0"
-                :variant="item.value === page ? 'default' : 'outline'"
-              >
-                {{ item.value }}
-              </Button>
-            </Link>
-          </PaginationListItem>
-        </template>
-      </PaginationList>
-    </Pagination>
-
-    <div class="text-sm">عدد النتائج {{ meta.total }}</div>
+  <div class="flex items-center justify-between px-2 rtl:flex-row-reverse">
+    <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+      صفحة {{ meta.current_page }} من
+      {{ meta.last_page }}
+    </div>
+    <div class="flex items-center space-x-2 rtl:flex-row-reverse">
+      <Button
+        variant="outline"
+        class="hidden h-8 w-8 p-0 lg:flex"
+        :disabled="!links.next"
+        @click="router.get(links.last, undefined, { preserveScroll: true })"
+      >
+        <span class="sr-only">Go to first page</span>
+        <DoubleArrowLeftIcon class="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        class="h-8 w-8 p-0"
+        :disabled="!links.next"
+        @click="router.get(links.next, undefined, { preserveScroll: true })"
+      >
+        <span class="sr-only">Go to previous page</span>
+        <ChevronLeftIcon class="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        class="h-8 w-8 p-0"
+        :disabled="!links.prev"
+        @click="router.get(links.prev, undefined, { preserveScroll: true })"
+      >
+        <span class="sr-only">Go to next page</span>
+        <ChevronRightIcon class="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        class="hidden h-8 w-8 p-0 lg:flex"
+        :disabled="!links.prev"
+        @click="router.get(links.first, undefined, { preserveScroll: true })"
+      >
+        <span class="sr-only">Go to last page</span>
+        <DoubleArrowRightIcon class="h-4 w-4" />
+      </Button>
+    </div>
   </div>
 </template>

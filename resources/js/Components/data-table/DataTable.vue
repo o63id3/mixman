@@ -1,11 +1,22 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/vue-table'
 import {
   FlexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
+
+import { ref } from 'vue'
+import { valueUpdater } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -15,10 +26,16 @@ import {
   TableRow,
 } from '@/Components/ui/table'
 
-const props = defineProps<{
+interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-}>()
+}
+const props = defineProps<DataTableProps>()
+
+const sorting = ref<SortingState>([])
+const columnFilters = ref<ColumnFiltersState>([])
+const columnVisibility = ref<VisibilityState>({})
+const rowSelection = ref({})
 
 const table = useVueTable({
   get data() {
@@ -27,26 +44,45 @@ const table = useVueTable({
   get columns() {
     return props.columns
   },
-  getPaginationRowModel: getPaginationRowModel(),
+  state: {
+    get sorting() {
+      return sorting.value
+    },
+    get columnFilters() {
+      return columnFilters.value
+    },
+    get columnVisibility() {
+      return columnVisibility.value
+    },
+    get rowSelection() {
+      return rowSelection.value
+    },
+  },
+  enableRowSelection: true,
+  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnFilters),
+  onColumnVisibilityChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnVisibility),
+  onRowSelectionChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  getFacetedRowModel: getFacetedRowModel(),
+  getFacetedUniqueValues: getFacetedUniqueValues(),
 })
 </script>
 
 <template>
-  <div class="rounded-md border">
+  <div class="border lg:rounded-md">
     <Table>
-      <TableHeader>
+      <TableHeader class="bg-gray-100">
         <TableRow
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
         >
-          <!-- @ignore-ts -->
-          <TableHead
-            v-for="header in headerGroup.headers"
-            class="w-full text-nowrap text-right"
-            :class="header.column.columnDef.meta?.class"
-            :key="header.id"
-          >
+          <TableHead v-for="header in headerGroup.headers" :key="header.id">
             <FlexRender
               v-if="!header.isPlaceholder"
               :render="header.column.columnDef.header"
@@ -60,8 +96,7 @@ const table = useVueTable({
           <TableRow
             v-for="row in table.getRowModel().rows"
             :key="row.id"
-            class="w-full text-nowrap text-right"
-            :data-state="row.getIsSelected() ? 'selected' : undefined"
+            :data-state="row.getIsSelected() && 'selected'"
           >
             <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
               <FlexRender
@@ -71,17 +106,13 @@ const table = useVueTable({
             </TableCell>
           </TableRow>
         </template>
-        <template v-else>
-          <TableRow>
-            <TableCell :colspan="columns.length" class="h-24 text-center">
-              لا يوجد نتائج
-            </TableCell>
-          </TableRow>
-        </template>
+
+        <TableRow v-else>
+          <TableCell :colspan="columns.length" class="h-24 text-center">
+            No results.
+          </TableCell>
+        </TableRow>
       </TableBody>
     </Table>
-  </div>
-  <div>
-    <slot name="pagination" />
   </div>
 </template>

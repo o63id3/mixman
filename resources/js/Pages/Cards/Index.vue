@@ -1,25 +1,13 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Card, Paginator } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/Components/ui/table'
-
-import {
-  Pagination,
-  PaginationList,
-  PaginationListItem,
-} from '@/Components/ui/pagination'
+import { Card, Paginator } from '@/types'
 
 import { Button } from '@/Components/ui/button'
-import { CheckCircle2Icon, XCircleIcon } from 'lucide-vue-next'
+
+import DataTable from '@/Components/data-table/DataTable.vue'
+import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
+import { columns } from './columns'
 
 defineProps<{
   cards: Paginator<Card>
@@ -43,81 +31,13 @@ defineProps<{
       </div>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead class="w-5 text-right">#</TableHead>
-                  <TableHead class="w-1/4 text-right">الاسم</TableHead>
-                  <TableHead class="w-1/4 text-right">السعر للمستهلك</TableHead>
-                  <TableHead class="w-1/4 text-right">السعر للبائع</TableHead>
-                  <TableHead class="w-1/4 text-right">فعال</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow v-for="card in cards.data" :key="card.id">
-                  <TableCell>
-                    {{ card.id }}
-                  </TableCell>
-                  <TableCell class="font-medium hover:underline">
-                    <component
-                      :is="
-                        $page.props.auth.user.can.cards.update ? Link : 'span'
-                      "
-                      :href="route('cards.edit', card.id)"
-                    >
-                      {{ card.name }}
-                    </component>
-                  </TableCell>
-                  <TableCell>{{ card.price_for_consumer }}</TableCell>
-                  <TableCell>{{ card.price_for_seller }}</TableCell>
-                  <TableCell>
-                    <component
-                      :is="card.active ? CheckCircle2Icon : XCircleIcon"
-                      :class="[card.active ? 'text-green-500' : 'text-red-500']"
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-
-            <Pagination
-              v-slot="{ page }"
-              :total="cards.meta.total"
-              :sibling-count="1"
-              show-edges
-              :default-page="cards.meta.current_page"
-            >
-              <PaginationList
-                v-slot="{ items }"
-                class="flex items-center gap-1"
-              >
-                <template v-for="(item, index) in items">
-                  <PaginationListItem
-                    v-if="item.type === 'page'"
-                    :key="index"
-                    :value="item.value"
-                    as-child
-                  >
-                    <Link
-                      :href="route('cards.index', { page: item.value })"
-                      preserve-scroll
-                    >
-                      <Button
-                        class="h-10 w-10 p-0"
-                        :variant="item.value === page ? 'default' : 'outline'"
-                      >
-                        {{ item.value }}
-                      </Button>
-                    </Link>
-                  </PaginationListItem>
-                </template>
-              </PaginationList>
-            </Pagination>
+    <div class="py-8">
+      <div class="mx-auto max-w-7xl lg:px-2">
+        <div class="space-y-4">
+          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
+            <DataTable :data="cards.data" :columns="columns" />
           </div>
+          <DataTablePagination :links="cards.links" :meta="cards.meta" />
         </div>
       </div>
     </div>
