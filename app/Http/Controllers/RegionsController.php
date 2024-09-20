@@ -90,8 +90,12 @@ final class RegionsController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Region $region)
+    public function destroy(Region $region): RedirectResponse
     {
-        //
+        Gate::authorize('delete', Region::class);
+
+        $region->delete();
+
+        return to_route('regions.index');
     }
 }

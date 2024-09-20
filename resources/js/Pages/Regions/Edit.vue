@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button } from '@/Components/ui/button'
+import { Button, buttonVariants } from '@/Components/ui/button'
 import {
   FormControl,
   FormDescription,
@@ -28,6 +28,7 @@ import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { Region } from '@/types'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<{
   region: Region
@@ -83,7 +84,19 @@ const onSubmit = handleSubmit((values) => {
                   </FormItem>
                 </FormField>
               </div>
-              <Button type="submit"> تعديل </Button>
+              <div class="flex gap-2">
+                <Button type="submit"> تعديل </Button>
+                <Link
+                  :href="route('regions.destroy', region.id)"
+                  method="delete"
+                  as="button"
+                  type="button"
+                  :class="cn(buttonVariants({ variant: 'destructive' }))"
+                  @success="toast({ title: 'تم حذف المنطقة' })"
+                >
+                  حذف
+                </Link>
+              </div>
             </form>
           </div>
         </div>

@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/regions/{region}/edit', [RegionsController::class, 'edit'])->name('regions.edit');
     Route::patch('/regions/{region}', [RegionsController::class, 'update'])->name('regions.update');
+
+    Route::delete('/regions/{region}', [RegionsController::class, 'destroy'])->name('regions.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -61,6 +63,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cards/{card}/edit', [CardsController::class, 'edit'])->name('cards.edit');
     Route::patch('/cards/{card}', [CardsController::class, 'update'])->name('cards.update');
+
+    Route::delete('/cards/{card}', [CardsController::class, 'destroy'])->name('cards.destroy');
 });
 
 Route::middleware('auth')->group(function () {
