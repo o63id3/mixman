@@ -36,6 +36,7 @@ final class HandleInertiaRequests extends Middleware
         if (auth()->check()) {
             $user = type($request->user())->as(User::class);
             UserResource::withoutWrapping();
+            $user->loadBalance();
             $user = UserResource::make($user);
         }
 

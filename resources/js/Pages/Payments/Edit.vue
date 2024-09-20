@@ -5,7 +5,6 @@ import { Head, Link, router } from '@inertiajs/vue3'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-import { vAutoAnimate } from '@formkit/auto-animate/vue'
 
 import { Button, buttonVariants } from '@/Components/ui/button'
 import {
@@ -193,7 +192,7 @@ const onSubmit = handleSubmit((values) => {
                 </FormField>
 
                 <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="md:col-span-2" v-auto-animate>
+                  <FormItem class="md:col-span-2">
                     <FormLabel>ملاحظات</FormLabel>
                     <FormControl>
                       <Textarea v-bind="componentField" />

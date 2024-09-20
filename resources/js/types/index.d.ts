@@ -3,7 +3,7 @@ export interface User {
   region: Region
   name: string
   username: string
-  balance: Number
+  balance: number
   admin: boolean
   active: boolean
   contact_info: string

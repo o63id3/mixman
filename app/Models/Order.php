@@ -48,6 +48,30 @@ final class Order extends Model
     }
 
     /**
+     * Check if the order state is complete
+     */
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Completed);
+    }
+
+    /**
+     * Check if the order state is complete
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Pending);
+    }
+
+    /**
+     * Check if the order state is complete
+     */
+    public function scopeReturned(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Returned);
+    }
+
+    /**
      * Search by seller name.
      */
     public function scopeSearchBySellerName(Builder $query, $search): Builder
