@@ -3,9 +3,10 @@ import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import TransactionsRowActions from './Partials/TransactionsRowActions.vue'
-import { Transaction } from '@/types'
+import { Transaction, User } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
+import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -15,9 +16,18 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'seller.name',
+    accessorKey: 'seller',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
+    cell: ({ row }) =>
+      h(
+        Link,
+        {
+          href: `${route(`${row.getValue('type')}s.edit`, row.getValue('id'))}`,
+          class: 'hover:underline',
+        },
+        row.getValue<User>('seller').name,
+      ),
   },
   {
     accessorKey: 'type',

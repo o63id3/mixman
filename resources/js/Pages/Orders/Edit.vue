@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, router, usePage } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -23,14 +23,6 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/Components/ui/command'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import {
   Select,
@@ -40,15 +32,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/Components/ui/select'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/Components/ui/popover'
 import { Order, OrderItem, User } from '@/types'
 import { cn } from '@/lib/utils'
-import { CheckIcon } from 'lucide-vue-next'
-import { CaretSortIcon } from '@radix-icons/vue'
+import Combobox from '@/Components/combobox/Combobox.vue'
 
 const props = defineProps<{
   order: Order
@@ -102,73 +88,21 @@ const onSubmit = handleSubmit((values) => {
                 <FormField name="seller_id">
                   <FormItem class="flex flex-col gap-2">
                     <FormLabel>نقطة البيع</FormLabel>
-                    <Popover>
-                      <PopoverTrigger as-child>
-                        <FormControl>
-                          <Button
-                            :disabled="!order.can.update"
-                            variant="outline"
-                            role="combobox"
-                            :class="
-                              cn(
-                                'justify-between',
-                                !values.seller_id && 'text-muted-foreground',
-                              )
-                            "
-                          >
-                            {{
-                              values.seller_id
-                                ? sellers.find(
-                                    (seller) => seller.id === values.seller_id,
-                                  )?.name
-                                : 'اختر نقطة بيع...'
-                            }}
-                            <CaretSortIcon
-                              class="ml-2 h-4 w-4 shrink-0 opacity-50"
-                            />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent class="w-full p-0">
-                        <Command>
-                          <CommandInput
-                            class="text-right"
-                            placeholder="ابحث عن نقطة بيع"
-                          />
-                          <CommandEmpty>لا يوجد تطابق!</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              <CommandItem
-                                v-for="seller in sellers"
-                                :key="seller.id"
-                                :value="seller.name"
-                                @select="
-                                  () => setFieldValue('seller_id', seller.id)
-                                "
-                              >
-                                <div
-                                  class="flex w-full items-center justify-between"
-                                >
-                                  <CheckIcon
-                                    :class="
-                                      cn(
-                                        'ml-auto h-4 w-4',
-                                        seller.id === values.seller_id
-                                          ? 'opacity-100'
-                                          : 'opacity-0',
-                                      )
-                                    "
-                                  />
-                                  <div class="flex-1 text-right">
-                                    {{ seller.name }}
-                                  </div>
-                                </div>
-                              </CommandItem>
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
+                    <Combobox
+                      :options="
+                        sellers.map((seller) => ({
+                          value: seller.id,
+                          label: seller.name,
+                        }))
+                      "
+                      choose-title="اختر بائع..."
+                      search-placeholder="ابحث عن نقطة بيع"
+                      :selected="values.seller_id"
+                      @select="
+                        (selected: any) =>
+                          setFieldValue('seller_id', selected.value)
+                      "
+                    />
                     <FormMessage />
                   </FormItem>
                 </FormField>

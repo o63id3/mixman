@@ -87,11 +87,7 @@ defineProps<{
                   <FormItem>
                     <FormLabel>اسم نقطة البيع</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="حجاج"
-                        v-bind="componentField"
-                      />
+                      <Input type="text" v-bind="componentField" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,11 +121,7 @@ defineProps<{
                   <FormItem>
                     <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="hajaj"
-                        v-bind="componentField"
-                      />
+                      <Input type="text" v-bind="componentField" />
                     </FormControl>
                     <FormDescription>
                       سيتم استخدام هذا الاسم في عملية تسجيل الدخول.

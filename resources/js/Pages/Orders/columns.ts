@@ -6,6 +6,7 @@ import OrdersRowActions from './Partials/OrdersRowActions.vue'
 import { Order, User } from '@/types'
 import { orderStatues } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
+import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Order>[] = [
   {
@@ -15,9 +16,18 @@ export const columns: ColumnDef<Order>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'seller.name',
+    accessorKey: 'seller',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
+    cell: ({ row }) =>
+      h(
+        Link,
+        {
+          href: `${route('orders.edit', row.getValue('id'))}`,
+          class: 'hover:underline',
+        },
+        row.getValue<User>('seller').name,
+      ),
   },
   {
     accessorKey: 'status',

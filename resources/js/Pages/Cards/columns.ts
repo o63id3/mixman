@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import CardsRowActions from './Partials/CardsRowActions.vue'
 import { Card } from '@/types'
 import { active } from '@/types/enums'
+import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Card>[] = [
   {
@@ -17,6 +18,15 @@ export const columns: ColumnDef<Card>[] = [
     accessorKey: 'name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
+    cell: ({ row }) =>
+      h(
+        Link,
+        {
+          href: `${route('cards.edit', row.getValue('id'))}`,
+          class: 'hover:underline',
+        },
+        row.getValue('name'),
+      ),
   },
   {
     accessorKey: 'price_for_consumer',

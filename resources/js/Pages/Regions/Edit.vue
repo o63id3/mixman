@@ -77,11 +77,7 @@ const onSubmit = handleSubmit((values) => {
                   <FormItem>
                     <FormLabel>اسم المنطقة</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="كمال عدوان"
-                        v-bind="componentField"
-                      />
+                      <Input type="text" v-bind="componentField" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

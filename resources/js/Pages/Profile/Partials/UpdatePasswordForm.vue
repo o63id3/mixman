@@ -2,6 +2,7 @@
 import InputError from '@/Components/InputError.vue'
 import Button from '@/Components/ui/button/Button.vue'
 import Input from '@/Components/ui/input/Input.vue'
+import Label from '@/Components/ui/label/Label.vue'
 import { useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 

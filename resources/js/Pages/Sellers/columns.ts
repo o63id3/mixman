@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import RegionsRowActions from './Partials/SellersRowActions.vue'
 import { User } from '@/types'
 import { formatMoney } from '@/lib/money'
+import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -17,6 +18,15 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
+    cell: ({ row }) =>
+      h(
+        Link,
+        {
+          href: `${route('sellers.edit', row.getValue('id'))}`,
+          class: 'hover:underline',
+        },
+        row.getValue('name'),
+      ),
   },
   {
     accessorKey: 'region.name',

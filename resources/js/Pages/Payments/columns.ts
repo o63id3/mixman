@@ -4,6 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import PaymentsRowActions from './Partials/PaymentsRowActions.vue'
 import { Payment, User } from '@/types'
+import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Payment>[] = [
   {
@@ -16,7 +17,15 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: 'seller',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
-    cell: ({ row }) => row.getValue<User>('seller').name,
+    cell: ({ row }) =>
+      h(
+        Link,
+        {
+          href: `${route('payments.edit', row.getValue('id'))}`,
+          class: 'hover:underline',
+        },
+        row.getValue<User>('seller').name,
+      ),
   },
   {
     accessorKey: 'registerer',

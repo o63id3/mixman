@@ -18,15 +18,6 @@ import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { Card } from '@/types'
-import Switch from '@/Components/ui/switch/Switch.vue'
-import Label from '@/Components/ui/label/Label.vue'
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
-} from '@/Components/ui/number-field'
 
 const props = defineProps<{
   card: Card
@@ -44,7 +35,7 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit, setErrors, setFieldValue } = useForm({
+const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
   initialValues: {
     name: props.card.name,
@@ -86,71 +77,40 @@ const onSubmit = handleSubmit((values) => {
                   <FormItem class="col-span-2">
                     <FormLabel>اسم الكرت</FormLabel>
                     <FormControl>
+                      <Input type="text" v-bind="componentField" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </FormField>
+                <FormField
+                  v-slot="{ componentField }"
+                  name="price_for_consumer"
+                >
+                  <FormItem>
+                    <FormLabel>السعر للمستهلك</FormLabel>
+                    <FormControl>
                       <Input
-                        type="text"
-                        placeholder="كرت فئة 1 شيكل"
+                        type="number"
+                        step="0.01"
                         v-bind="componentField"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 </FormField>
-                <FormField v-slot="{ value }" name="price_for_consumer">
-                  <FormItem>
-                    <FormLabel>السعر للمستهلك</FormLabel>
-                    <NumberField
-                      class="ltr gap-2"
-                      :min="0"
-                      :step="0.01"
-                      :model-value="value"
-                      @update:model-value="
-                        (newValue) =>
-                          setFieldValue(
-                            'price_for_consumer',
-                            newValue ? newValue : undefined,
-                          )
-                      "
-                    >
-                      <NumberFieldContent>
-                        <NumberFieldDecrement />
-                        <FormControl>
-                          <NumberFieldInput />
-                        </FormControl>
-                        <NumberFieldIncrement />
-                      </NumberFieldContent>
-                    </NumberField>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ value }" name="price_for_seller">
+                <FormField v-slot="{ componentField }" name="price_for_seller">
                   <FormItem>
                     <FormLabel>السعر للبائع</FormLabel>
-                    <NumberField
-                      class="ltr gap-2"
-                      :min="0"
-                      :step="0.01"
-                      :model-value="value"
-                      @update:model-value="
-                        (newValue) =>
-                          setFieldValue(
-                            'price_for_seller',
-                            newValue ? newValue : undefined,
-                          )
-                      "
-                    >
-                      <NumberFieldContent>
-                        <NumberFieldDecrement />
-                        <FormControl>
-                          <NumberFieldInput />
-                        </FormControl>
-                        <NumberFieldIncrement />
-                      </NumberFieldContent>
-                    </NumberField>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        v-bind="componentField"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 </FormField>
-
                 <FormField v-slot="{ componentField }" name="notes">
                   <FormItem class="md:col-span-2">
                     <FormLabel>ملاحظات</FormLabel>

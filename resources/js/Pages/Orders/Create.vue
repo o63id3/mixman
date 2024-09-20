@@ -15,14 +15,6 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/Components/ui/command'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import {
   Select,
@@ -31,19 +23,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectLabel,
 } from '@/Components/ui/select'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/Components/ui/popover'
 import { Card, User } from '@/types'
-import { cn } from '@/lib/utils'
-import { CheckIcon, PlusCircleIcon, Trash2Icon } from 'lucide-vue-next'
-import { CaretSortIcon } from '@radix-icons/vue'
-import { Input } from '@/Components/ui/input'
-import Label from '@/Components/ui/label/Label.vue'
+import { PlusCircleIcon } from 'lucide-vue-next'
+import Combobox from '@/Components/combobox/Combobox.vue'
+import CardItemForm from './Partials/CardItemForm.vue'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -63,7 +47,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    status: 'P',
+    status: 'طلب جديد',
     cards: [
       {
         card_id: '1',
@@ -109,78 +93,26 @@ defineProps<{
             <form class="space-y-6" @submit="onSubmit">
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField name="seller_id">
-                  <FormItem class="flex flex-col gap-2">
+                  <FormItem>
                     <FormLabel>نقطة البيع</FormLabel>
-                    <Popover>
-                      <PopoverTrigger as-child>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            :class="
-                              cn(
-                                'justify-between',
-                                !values.seller_id && 'text-muted-foreground',
-                              )
-                            "
-                          >
-                            {{
-                              values.seller_id
-                                ? sellers.find(
-                                    (seller) => seller.id === values.seller_id,
-                                  )?.name
-                                : 'اختر نقطة بيع...'
-                            }}
-                            <CaretSortIcon
-                              class="ml-2 h-4 w-4 shrink-0 opacity-50"
-                            />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent class="w-full p-0">
-                        <Command>
-                          <CommandInput
-                            class="text-right"
-                            placeholder="ابحث عن نقطة بيع"
-                          />
-                          <CommandEmpty>لا يوجد تطابق!</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              <CommandItem
-                                v-for="seller in sellers"
-                                :key="seller.id"
-                                :value="seller.name"
-                                @select="
-                                  () => setFieldValue('seller_id', seller.id)
-                                "
-                              >
-                                <div
-                                  class="flex w-full items-center justify-between"
-                                >
-                                  <CheckIcon
-                                    :class="
-                                      cn(
-                                        'ml-auto h-4 w-4',
-                                        seller.id === values.seller_id
-                                          ? 'opacity-100'
-                                          : 'opacity-0',
-                                      )
-                                    "
-                                  />
-                                  <div class="flex-1 text-right">
-                                    {{ seller.name }}
-                                  </div>
-                                </div>
-                              </CommandItem>
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
+                    <Combobox
+                      :options="
+                        sellers.map((seller) => ({
+                          value: seller.id,
+                          label: seller.name,
+                        }))
+                      "
+                      choose-title="اختر بائع..."
+                      search-placeholder="ابحث عن نقطة بيع"
+                      :selected="values.seller_id"
+                      @select="
+                        (selected: any) =>
+                          setFieldValue('seller_id', selected.value)
+                      "
+                    />
                     <FormMessage />
                   </FormItem>
                 </FormField>
-
                 <FormField v-slot="{ componentField }" name="status">
                   <FormItem>
                     <FormLabel>الحالة</FormLabel>
@@ -205,81 +137,42 @@ defineProps<{
                     <FormMessage />
                   </FormItem>
                 </FormField>
-
                 <FormField v-slot="{ componentField }" name="cards">
-                  <FormItem class="md:col-span-2">
+                  <FormItem class="col-span-full">
                     <FormLabel>الكروت</FormLabel>
-                    <div class="flex w-full">
-                      <Label class="w-1/3 text-xs"> الفئة </Label>
-                      <Label class="w-1/3 text-xs"> عدد الرزم </Label>
-                      <Label class="w-1/3 text-xs">
-                        عدد الكروت في كل رزمة
-                      </Label>
-                      <div class="w-12"></div>
-                    </div>
-                    <FormControl class="col-span-2">
-                      <div
+                    <FormControl class="col-span-full">
+                      <CardItemForm
                         v-for="(card, index) in componentField.modelValue"
                         :key="index"
-                        class="mb-2 flex gap-1"
-                      >
-                        <Select v-model="card.card_id">
-                          <SelectTrigger>
-                            <SelectValue placeholder="اختر الفئة" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>الفئات</SelectLabel>
-                              <SelectItem
-                                v-for="cardOption in cards"
-                                :key="cardOption.id"
-                                :value="String(cardOption.id)"
-                              >
-                                {{ cardOption.name }}
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-
-                        <Input
-                          v-model="card.number_of_packages"
-                          type="number"
-                          placeholder="عدد الرزم"
-                        />
-                        <Input
-                          v-model="card.number_of_cards_per_package"
-                          type="number"
-                          placeholder="عدد الكروت في الرزمة"
-                        />
-
+                        class="mb-2 flex gap-1 border-b pb-3"
+                        :cards="cards"
+                        :can-delete="componentField.modelValue.length > 1"
+                        @delete="componentField.modelValue.splice(index, 1)"
+                        v-model:card="card.card_id"
+                        v-model:packages="card.number_of_packages"
+                        v-model:cardsPerPackage="
+                          card.number_of_cards_per_package
+                        "
+                      />
+                      <div>
                         <Button
                           type="button"
-                          variant="destructive"
-                          @click="componentField.modelValue.splice(index, 1)"
-                          :disabled="componentField.modelValue.length < 2"
+                          variant="outline"
+                          @click="
+                            componentField.modelValue.push({
+                              card_id: '1',
+                              number_of_packages: 1,
+                              number_of_cards_per_package: 120,
+                            })
+                          "
                         >
-                          <Trash2Icon class="h-5 w-5" />
+                          <PlusCircleIcon class="w-5" />
                         </Button>
                       </div>
-
-                      <Button
-                        type="button"
-                        variant="outline"
-                        @click="
-                          componentField.modelValue.push({
-                            card_id: '1',
-                            number_of_packages: 1,
-                            number_of_cards_per_package: 120,
-                          })
-                        "
-                      >
-                        <PlusCircleIcon class="w-5" />
-                      </Button>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 </FormField>
-
                 <FormField v-slot="{ componentField }" name="notes">
                   <FormItem class="md:col-span-2">
                     <FormLabel>ملاحظات</FormLabel>
