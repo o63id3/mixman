@@ -5,27 +5,19 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import OrdersRowActions from './Partials/OrdersRowActions.vue'
 import { Order, User } from '@/types'
 import { orderStatues } from '@/types/enums'
+import { formatMoney } from '@/lib/money'
 
 export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: '#', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('id')),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'seller',
+    accessorKey: 'seller.name',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم', class: 'text-right' }),
-    cell: ({ row }) =>
-      h(
-        'div',
-        { class: 'text-nowrap text-right' },
-        row.getValue<User>('seller').name,
-      ),
+      h(DataTableColumnHeader, { column, title: 'الاسم' }),
   },
   {
     accessorKey: 'status',
@@ -33,7 +25,6 @@ export const columns: ColumnDef<Order>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'الحالة',
-        class: 'text-right',
       }),
     cell: ({ row }) => {
       const status = orderStatues.find(
@@ -42,11 +33,8 @@ export const columns: ColumnDef<Order>[] = [
 
       if (!status) return null
 
-      return h('div', { class: 'flex items-center text-nowrap text-right' }, [
-        status.icon &&
-          h(status.icon, {
-            class: 'mr-2 rtl:ml-2',
-          }),
+      return h('div', { class: 'flex items-center gap-2' }, [
+        status.icon && h(status.icon),
         h('span', { class: ' text-muted-foreground' }, status.label),
       ])
     },
@@ -57,14 +45,8 @@ export const columns: ColumnDef<Order>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'تم اتخاذ الاجراء بواسطة',
-        class: 'text-right text-nowrap',
       }),
-    cell: ({ row }) =>
-      h(
-        'div',
-        { class: 'text-nowrap text-right' },
-        row.getValue<User>('action')?.name,
-      ),
+    cell: ({ row }) => row.getValue<User>('action')?.name,
   },
   {
     accessorKey: 'total_price_for_seller',
@@ -72,14 +54,9 @@ export const columns: ColumnDef<Order>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'اجمالي السعر للبائع',
-        class: 'text-right text-nowrap',
       }),
-    cell: ({ row }) => {
-      const price = Number.parseFloat(row.getValue('total_price_for_seller'))
-      const formatted = new Intl.NumberFormat('en-US').format(price)
-
-      return h('div', { class: 'text-right text-nowrap' }, `${formatted} شيكل`)
-    },
+    cell: ({ row }) =>
+      `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
   },
   {
     accessorKey: 'total_price_for_consumer',
@@ -87,14 +64,9 @@ export const columns: ColumnDef<Order>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'اجمالي السعر للمستهلك',
-        class: 'text-nowrap text-right',
       }),
-    cell: ({ row }) => {
-      const price = Number.parseFloat(row.getValue('total_price_for_consumer'))
-      const formatted = new Intl.NumberFormat('en-US').format(price)
-
-      return h('div', { class: 'text-right text-nowrap' }, `${formatted} شيكل`)
-    },
+    cell: ({ row }) =>
+      `${formatMoney(row.getValue('total_price_for_consumer'))} شيكل`,
   },
   {
     accessorKey: 'updated_at',
@@ -102,10 +74,7 @@ export const columns: ColumnDef<Order>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'التاريخ',
-        class: 'text-right',
       }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-right text-nowrap' }, row.getValue('updated_at')),
   },
   {
     id: 'actions',

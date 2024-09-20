@@ -81,8 +81,13 @@ const table = useVueTable({
         <TableRow
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
+          class="text-nowrap text-right"
         >
-          <TableHead v-for="header in headerGroup.headers" :key="header.id">
+          <TableHead
+            v-for="header in headerGroup.headers"
+            :key="header.id"
+            class="text-nowrap text-right"
+          >
             <FlexRender
               v-if="!header.isPlaceholder"
               :render="header.column.columnDef.header"
@@ -97,8 +102,13 @@ const table = useVueTable({
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() && 'selected'"
+            class="text-nowrap text-right"
           >
-            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+            <TableCell
+              v-for="cell in row.getVisibleCells()"
+              :key="cell.id"
+              class="text-nowrap text-right"
+            >
               <FlexRender
                 :render="cell.column.columnDef.cell"
                 :props="cell.getContext()"
@@ -109,7 +119,7 @@ const table = useVueTable({
 
         <TableRow v-else>
           <TableCell :colspan="columns.length" class="h-24 text-center">
-            No results.
+            لا يوجد نتائج.
           </TableCell>
         </TableRow>
       </TableBody>

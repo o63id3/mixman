@@ -8,19 +8,14 @@ import { Region } from '@/types'
 export const columns: ColumnDef<Region>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: '#', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('id')),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('name')),
+      h(DataTableColumnHeader, { column, title: 'الاسم' }),
   },
   {
     id: 'actions',

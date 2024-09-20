@@ -3,29 +3,21 @@ import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import TransactionsRowActions from './Partials/TransactionsRowActions.vue'
-import { Transaction, User } from '@/types'
+import { Transaction } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
+import { formatMoney } from '@/lib/money'
 
 export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: '#', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('id')),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'seller',
+    accessorKey: 'seller.name',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم', class: 'text-right' }),
-    cell: ({ row }) =>
-      h(
-        'div',
-        { class: 'text-nowrap text-right' },
-        row.getValue<User>('seller').name,
-      ),
+      h(DataTableColumnHeader, { column, title: 'الاسم' }),
   },
   {
     accessorKey: 'type',
@@ -33,7 +25,6 @@ export const columns: ColumnDef<Transaction>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'نوع الحركة',
-        class: 'text-right',
       }),
     cell: ({ row }) => {
       const type = transactionTypes.find(
@@ -42,11 +33,8 @@ export const columns: ColumnDef<Transaction>[] = [
 
       if (!type) return null
 
-      return h('div', { class: 'flex items-center text-nowrap text-right' }, [
-        type.icon &&
-          h(type.icon, {
-            class: 'mr-2 rtl:ml-2',
-          }),
+      return h('div', { class: 'flex items-center gap-2' }, [
+        type.icon && h(type.icon),
         h('span', { class: ' text-muted-foreground' }, type.label),
       ])
     },
@@ -57,7 +45,6 @@ export const columns: ColumnDef<Transaction>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'الحالة',
-        class: 'text-right',
       }),
     cell: ({ row }) => {
       const status = orderStatues.find(
@@ -66,11 +53,8 @@ export const columns: ColumnDef<Transaction>[] = [
 
       if (!status) return null
 
-      return h('div', { class: 'flex items-center text-nowrap text-right' }, [
-        status.icon &&
-          h(status.icon, {
-            class: 'mr-2 rtl:ml-2',
-          }),
+      return h('div', { class: 'flex items-center gap-2' }, [
+        status.icon && h(status.icon),
         h('span', { class: ' text-muted-foreground' }, status.label),
       ])
     },
@@ -81,14 +65,8 @@ export const columns: ColumnDef<Transaction>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'المبلغ',
-        class: 'text-right text-nowrap',
       }),
-    cell: ({ row }) => {
-      const amount = Number.parseFloat(row.getValue('amount'))
-      const formatted = new Intl.NumberFormat('en-US').format(amount)
-
-      return h('div', { class: 'text-right text-nowrap' }, `${formatted} شيكل`)
-    },
+    cell: ({ row }) => `${formatMoney(row.getValue('amount'))} شيكل`,
   },
   {
     accessorKey: 'created_at',
@@ -96,10 +74,7 @@ export const columns: ColumnDef<Transaction>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'التاريخ',
-        class: 'text-right',
       }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-right text-nowrap' }, row.getValue('created_at')),
   },
   {
     id: 'actions',

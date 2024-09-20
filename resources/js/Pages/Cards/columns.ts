@@ -9,19 +9,14 @@ import { active } from '@/types/enums'
 export const columns: ColumnDef<Card>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: '#', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('id')),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم', class: 'text-right' }),
-    cell: ({ row }) =>
-      h('div', { class: 'text-nowrap text-right' }, row.getValue('name')),
+      h(DataTableColumnHeader, { column, title: 'الاسم' }),
   },
   {
     accessorKey: 'price_for_consumer',
@@ -29,16 +24,8 @@ export const columns: ColumnDef<Card>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'السعر للمستهلك',
-        class: 'text-right',
       }),
-
-    cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-nowrap text-right' },
-        `${row.getValue('price_for_consumer')} شيكل`,
-      )
-    },
+    cell: ({ row }) => `${row.getValue('price_for_consumer')} شيكل`,
   },
   {
     accessorKey: 'price_for_seller',
@@ -46,15 +33,8 @@ export const columns: ColumnDef<Card>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'السعر للبائع',
-        class: 'text-right',
       }),
-    cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-nowrap text-right' },
-        `${row.getValue('price_for_seller')} شيكل`,
-      )
-    },
+    cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
   },
   {
     accessorKey: 'active',
@@ -62,14 +42,13 @@ export const columns: ColumnDef<Card>[] = [
       h(DataTableColumnHeader, {
         column,
         title: 'الحالة',
-        class: 'text-right',
       }),
     cell: ({ row }) => {
       const value = active.find((a: any) => a.value === row.getValue('active'))
 
       if (!value) return null
 
-      return h('div', { class: 'flex items-center text-nowrap text-right' }, [
+      return h('div', { class: 'flex items-center' }, [
         value.icon &&
           h(value.icon, {
             class: 'mr-2 rtl:ml-2',
