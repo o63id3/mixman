@@ -26,7 +26,9 @@ export const columns: ColumnDef<Transaction>[] = [
           href: `${route(`${row.getValue('type')}s.edit`, row.getValue('id'))}`,
           class: 'hover:underline',
         },
-        row.getValue<User>('seller').name,
+        {
+          default: () => row.getValue<User>('seller').name,
+        },
       ),
   },
   {

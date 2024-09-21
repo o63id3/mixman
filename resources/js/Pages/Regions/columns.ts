@@ -24,7 +24,9 @@ export const columns: ColumnDef<Region>[] = [
           href: `${route('regions.edit', row.getValue('id'))}`,
           class: 'hover:underline',
         },
-        row.getValue('name'),
+        {
+          default: () => row.getValue('name'),
+        },
       ),
   },
   {

@@ -25,7 +25,9 @@ export const columns: ColumnDef<Card>[] = [
           href: `${route('cards.edit', row.getValue('id'))}`,
           class: 'hover:underline',
         },
-        row.getValue('name'),
+        {
+          default: () => row.getValue('name'),
+        },
       ),
   },
   {
