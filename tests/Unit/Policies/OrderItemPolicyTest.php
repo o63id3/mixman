@@ -2,34 +2,22 @@
 
 declare(strict_types=1);
 
-use App\Enums\OrderStatusEnum;
-use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 
 test('view any', function () {
-    $admin = User::factory()->create(['admin' => true]);
-    $seller = User::factory()->create(['admin' => false]);
+    $admin = User::factory()->admin()->create();
+    $seller = User::factory()->user()->create();
 
     expect($admin->can('viewAny', OrderItem::class))->toBeTrue()
         ->and($seller->can('viewAny', OrderItem::class))->toBeFalse();
 });
 
-test('delete', function ($status) {
-    $admin = User::factory()->create(['admin' => true]);
+test('delete', function () {
+    $admin = User::factory()->admin()->create();
+    $seller = User::factory()->user()->create();
 
-    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
-    $item = OrderItem::factory()->recycle($order)->create();
-    expect($admin->can('delete', $item))->toBeFalse();
-
-    $order = Order::factory()->create(['status' => $status]);
-    $item = OrderItem::factory()->recycle($order)->create();
-    expect($admin->can('delete', $item))->toBeTrue();
-
-    $seller = User::factory()->create(['admin' => false]);
-    $item = OrderItem::factory()->recycle($order)->create();
-    expect($seller->can('delete', $item))->toBeFalse();
-})->with([
-    OrderStatusEnum::Pending,
-    OrderStatusEnum::Returned,
-]);
+    $item = OrderItem::factory()->create();
+    expect($admin->can('delete', $item))->toBeTrue()
+        ->and($seller->can('delete', $item))->toBeFalse();
+});

@@ -25,11 +25,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/Components/ui/table'
+import DataTableSummary from './DataTableSummary.vue'
+import type { SummaryField } from './DataTableSummary.vue'
 
 interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  summaryFields?: SummaryField[]
 }
+
 const props = defineProps<DataTableProps>()
 
 const sorting = ref<SortingState>([])
@@ -122,6 +126,13 @@ const table = useVueTable({
             لا يوجد نتائج.
           </TableCell>
         </TableRow>
+
+        <DataTableSummary
+          v-if="props.summaryFields"
+          :data="props.data"
+          :summaryFields="props.summaryFields"
+          :columnsCount="props.columns.length"
+        />
       </TableBody>
     </Table>
   </div>

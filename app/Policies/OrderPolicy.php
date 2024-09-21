@@ -34,6 +34,14 @@ final class OrderPolicy
     }
 
     /**
+     * Determine whether the user can create items for the model.
+     */
+    public function createItems(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Order $order): bool

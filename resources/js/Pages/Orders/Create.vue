@@ -28,6 +28,7 @@ import { Card, User } from '@/types'
 import { PlusCircleIcon } from 'lucide-vue-next'
 import Combobox from '@/Components/combobox/Combobox.vue'
 import CardItemForm from './Partials/CardItemForm.vue'
+import { orderStatues } from '@/types/enums'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -124,11 +125,14 @@ defineProps<{
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem
-                              v-for="status in statuses"
-                              :key="status"
-                              :value="status"
+                              v-for="status in orderStatues"
+                              :key="status.value"
+                              :value="status.value"
                             >
-                              {{ status }}
+                              <div class="flex items-center justify-end gap-1">
+                                {{ status.label }}
+                                <component :is="status.icon" class="w-4" />
+                              </div>
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>

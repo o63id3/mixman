@@ -7,7 +7,6 @@ import { Button } from '@/Components/ui/button'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
-// import { columns } from './Table/columns'
 import { columns } from './columns'
 
 defineProps<{

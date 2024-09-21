@@ -8,14 +8,6 @@ import * as z from 'zod'
 
 import { Button, buttonVariants } from '@/Components/ui/button'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/Components/ui/table'
-import {
   FormControl,
   FormField,
   FormItem,
@@ -32,15 +24,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/Components/ui/select'
-import { Order, OrderItem, User } from '@/types'
+import { Card, Order, OrderItem, User } from '@/types'
 import { cn } from '@/lib/utils'
 import Combobox from '@/Components/combobox/Combobox.vue'
+import DataTable from '@/Components/data-table/DataTable.vue'
+import { columns } from './itemsColumns'
+import { ref } from 'vue'
+import { summaryFields } from './itemsColumns'
+import AddItemsForm from './Partials/AddItemsForm.vue'
+import { orderStatues } from '@/types/enums'
 
 const props = defineProps<{
   order: Order
   items: Array<OrderItem>
   sellers: Array<User>
   statuses: Array<string>
+  cards: Array<Card>
+  can: {
+    createItem: boolean
+  }
 }>()
 
 const formSchema = toTypedSchema(
@@ -67,6 +69,8 @@ const onSubmit = handleSubmit((values) => {
     onError: (errors) => setErrors(errors),
   })
 })
+
+const addingForm = ref(false)
 </script>
 
 <template>
@@ -106,7 +110,6 @@ const onSubmit = handleSubmit((values) => {
                     <FormMessage />
                   </FormItem>
                 </FormField>
-
                 <FormField v-slot="{ componentField }" name="status">
                   <FormItem>
                     <FormLabel>الحالة</FormLabel>
@@ -118,12 +121,15 @@ const onSubmit = handleSubmit((values) => {
                         <SelectContent>
                           <SelectGroup>
                             <SelectItem
-                              v-for="status in statuses"
-                              :key="status"
-                              :value="status"
+                              v-for="status in orderStatues"
+                              :key="status.value"
+                              :value="status.value"
                               :disabled="!order.can.update"
                             >
-                              {{ status }}
+                              <div class="flex items-center justify-end gap-1">
+                                {{ status.label }}
+                                <component :is="status.icon" class="w-4" />
+                              </div>
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>
@@ -165,54 +171,38 @@ const onSubmit = handleSubmit((values) => {
       </div>
     </div>
 
-    <div class="pb-12 pt-5">
+    <div class="pb-8 pt-5">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <h2 class="text-semibold pr-4"># تفاصيل الطلبية</h2>
-        <div class="mt-3 overflow-hidden bg-white shadow-sm sm:rounded-lg">
+        <div class="flex items-center justify-between px-4">
+          <p class="text-sm font-medium tracking-wide"># الكروت</p>
+          <Button
+            class="text-xs tracking-wide"
+            size="xs"
+            @click="addingForm = true"
+            v-if="!addingForm && can.createItem"
+          >
+            إضافة رزم
+          </Button>
+        </div>
+        <div v-if="!addingForm" class="mt-4 space-y-4">
+          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
+            <DataTable
+              :data="items"
+              :columns="columns"
+              :summaryFields="summaryFields"
+            />
+          </div>
+        </div>
+        <div
+          v-if="addingForm && can.createItem"
+          class="mt-4 overflow-hidden bg-white shadow-sm sm:rounded-lg"
+        >
           <div class="p-6 text-gray-900">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead class="w-5 text-right">#</TableHead>
-                  <TableHead class="w-1/6 text-right">الفئة</TableHead>
-                  <TableHead class="w-1/6 text-right">عدد الرزم</TableHead>
-                  <TableHead class="w-1/6 text-right"
-                    >عدد الكروت في الرزمة</TableHead
-                  >
-                  <TableHead class="w-1/6 text-right">عدد الكروت</TableHead>
-                  <TableHead class="w-1/6 text-right">السعر للبائع</TableHead>
-                  <TableHead class="w-1/6 text-right">السعر للمستهلك</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow v-for="item in items" :key="item.id">
-                  <TableCell>{{ item.id }}</TableCell>
-                  <TableCell>{{ item.card.name }}</TableCell>
-                  <TableCell>{{ item.number_of_packages }}</TableCell>
-                  <TableCell>{{ item.number_of_cards_per_package }}</TableCell>
-                  <TableCell>{{ item.quantity }}</TableCell>
-                  <TableCell>{{ item.total_price_for_seller }}</TableCell>
-                  <TableCell>{{ item.total_price_for_consumer }}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    {{
-                      items.reduce(
-                        (accumulator: number, item: OrderItem) =>
-                          accumulator + item.number_of_packages,
-                        0,
-                      )
-                    }}
-                  </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>{{ order.total_price_for_seller }}</TableCell>
-                  <TableCell>{{ order.total_price_for_consumer }}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <AddItemsForm
+              :cards="cards"
+              :order="order"
+              @success="addingForm = false"
+            />
           </div>
         </div>
       </div>

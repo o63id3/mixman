@@ -15,16 +15,10 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
-} from '@/Components/ui/number-field'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { User } from '@/types'
 import Combobox from '@/Components/combobox/Combobox.vue'
+import Input from '@/Components/ui/input/Input.vue'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -92,30 +86,10 @@ defineProps<{
                   </FormItem>
                 </FormField>
 
-                <FormField v-slot="{ value }" name="amount">
+                <FormField v-slot="{ componentField }" name="amount">
                   <FormItem>
                     <FormLabel>المبلغ</FormLabel>
-                    <NumberField
-                      class="ltr gap-2"
-                      :min="0"
-                      :step="0.01"
-                      :model-value="value"
-                      @update:model-value="
-                        (newValue) =>
-                          setFieldValue(
-                            'amount',
-                            newValue ? newValue : undefined,
-                          )
-                      "
-                    >
-                      <NumberFieldContent>
-                        <NumberFieldDecrement />
-                        <FormControl>
-                          <NumberFieldInput />
-                        </FormControl>
-                        <NumberFieldIncrement />
-                      </NumberFieldContent>
-                    </NumberField>
+                    <Input type="number" step="0.01" v-bind="componentField" />
                     <FormMessage />
                   </FormItem>
                 </FormField>

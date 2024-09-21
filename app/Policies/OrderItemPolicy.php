@@ -22,6 +22,6 @@ final class OrderItemPolicy
      */
     public function delete(User $user, OrderItem $orderItem): bool
     {
-        return $user->isAdmin() && ! $orderItem->order->completed();
+        return $user->isAdmin();
     }
 }

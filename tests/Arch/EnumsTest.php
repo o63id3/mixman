@@ -10,6 +10,7 @@ arch('enums')
     ->toHaveMethod('toArray')
     ->toOnlyBeUsedIn([
         'Database\Factories',
+        'Database\Seeders',
         'App\Console\Commands',
         'App\Http\Requests',
         'App\Http\Controllers',

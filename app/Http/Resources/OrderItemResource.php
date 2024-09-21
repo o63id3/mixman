@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 final class OrderItemResource extends JsonResource
 {
@@ -25,6 +26,9 @@ final class OrderItemResource extends JsonResource
             'quantity' => $this->quantity,
             'total_price_for_consumer' => $this->total_price_for_consumer,
             'total_price_for_seller' => $this->total_price_for_seller,
+            'can' => [
+                'delete' => Gate::allows('delete', $this->resource),
+            ],
         ];
     }
 }

@@ -79,6 +79,9 @@ export interface OrderItem {
   quantity: number
   total_price_for_consumer: number
   total_price_for_seller: number
+  can: {
+    delete: boolean
+  }
 }
 
 export interface Payment {

@@ -15,32 +15,11 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/Components/ui/command'
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
-} from '@/Components/ui/number-field'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/Components/ui/popover'
 import { Payment, User } from '@/types'
 import { cn } from '@/lib/utils'
-import { CheckIcon } from 'lucide-vue-next'
-import { CaretSortIcon } from '@radix-icons/vue'
 import Combobox from '@/Components/combobox/Combobox.vue'
+import Input from '@/Components/ui/input/Input.vue'
 
 const props = defineProps<{
   payment: Payment
@@ -55,7 +34,7 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
+const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
     seller_id: props.payment.seller.id,
@@ -112,30 +91,10 @@ const onSubmit = handleSubmit((values) => {
                     <FormMessage />
                   </FormItem>
                 </FormField>
-                <FormField v-slot="{ value }" name="amount">
+                <FormField v-slot="{ componentField }" name="amount">
                   <FormItem>
                     <FormLabel>المبلغ</FormLabel>
-                    <NumberField
-                      class="ltr gap-2"
-                      :min="0"
-                      :step="0.01"
-                      :model-value="value"
-                      @update:model-value="
-                        (newValue) =>
-                          setFieldValue(
-                            'amount',
-                            newValue ? newValue : undefined,
-                          )
-                      "
-                    >
-                      <NumberFieldContent>
-                        <NumberFieldDecrement />
-                        <FormControl>
-                          <NumberFieldInput />
-                        </FormControl>
-                        <NumberFieldIncrement />
-                      </NumberFieldContent>
-                    </NumberField>
+                    <Input type="number" step="0.01" v-bind="componentField" />
                     <FormMessage />
                   </FormItem>
                 </FormField>

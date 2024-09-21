@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
+use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Card;
@@ -109,6 +110,10 @@ final class OrdersController
             'order' => OrderResource::make($order),
             'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
+            'cards' => CardResource::collection(Card::get()),
+            'can' => [
+                'addItem' => Gate::allows('createItem', $order),
+            ],
         ]);
     }
 
