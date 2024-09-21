@@ -33,6 +33,7 @@ import { ref } from 'vue'
 import { summaryFields } from './itemsColumns'
 import AddItemsForm from './Partials/AddItemsForm.vue'
 import { orderStatues } from '@/types/enums'
+import Input from '@/Components/ui/input/Input.vue'
 
 const props = defineProps<{
   order: Order
@@ -41,7 +42,7 @@ const props = defineProps<{
   statuses: Array<string>
   cards: Array<Card>
   can: {
-    createItem: boolean
+    addItem: boolean
   }
 }>()
 
@@ -93,6 +94,7 @@ const addingForm = ref(false)
                   <FormItem class="flex flex-col gap-2">
                     <FormLabel>نقطة البيع</FormLabel>
                     <Combobox
+                      v-if="$page.props.auth.user.admin"
                       :options="
                         sellers.map((seller) => ({
                           value: seller.id,
@@ -107,6 +109,7 @@ const addingForm = ref(false)
                           setFieldValue('seller_id', selected.value)
                       "
                     />
+                    <Input v-else disabled v-model="order.seller.name" />
                     <FormMessage />
                   </FormItem>
                 </FormField>
@@ -179,7 +182,7 @@ const addingForm = ref(false)
             class="text-xs tracking-wide"
             size="xs"
             @click="addingForm = true"
-            v-if="!addingForm && can.createItem"
+            v-if="!addingForm && can.addItem"
           >
             إضافة رزم
           </Button>
@@ -189,12 +192,12 @@ const addingForm = ref(false)
             <DataTable
               :data="items"
               :columns="columns"
-              :summaryFields="summaryFields"
+              :summaryFields="items.length ? summaryFields : undefined"
             />
           </div>
         </div>
         <div
-          v-if="addingForm && can.createItem"
+          v-if="addingForm && can.addItem"
           class="mt-4 overflow-hidden bg-white shadow-sm sm:rounded-lg"
         >
           <div class="p-6 text-gray-900">

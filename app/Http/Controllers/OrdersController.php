@@ -112,7 +112,7 @@ final class OrdersController
             'statuses' => OrderStatusEnum::cases(),
             'cards' => CardResource::collection(Card::get()),
             'can' => [
-                'addItem' => Gate::allows('createItem', $order),
+                'addItem' => Gate::allows('createItems', Order::class),
             ],
         ]);
     }

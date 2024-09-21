@@ -46,11 +46,11 @@ final class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        if ($order->completed()) {
-            return $user->isAdmin();
-        }
+        // if ($order->completed()) {
+        //     return $user->isAdmin();
+        // }
 
-        return $user->isAdmin() || $user->id === $order->seller_id;
+        return $user->isAdmin()/*|| $user->id === $order->seller_id*/;
     }
 
     /**
@@ -62,6 +62,6 @@ final class OrderPolicy
             return $user->isAdmin();
         }
 
-        return $user->isAdmin() || $user->id === $order->seller_id;
+        return $user->isAdmin()/*|| $user->id === $order->seller_id*/;
     }
 }

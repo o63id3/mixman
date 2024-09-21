@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use App\Models\User;
 
@@ -42,50 +41,20 @@ test('create items', function () {
         ->and($seller->can('createItems', Order::class))->toBeFalse();
 });
 
-test('update', function ($status) {
+test('update', function () {
     $admin = User::factory()->create(['admin' => true]);
-
-    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
-    expect($admin->can('update', $order))->toBeTrue();
-
-    $order = Order::factory()->create(['status' => $status]);
-    expect($admin->can('update', $order))->toBeTrue();
-
     $seller = User::factory()->create(['admin' => false]);
 
     $order = Order::factory()->create();
-    expect($seller->can('update', $order))->toBeFalse();
+    expect($admin->can('update', $order))->toBeTrue()
+        ->and($seller->can('update', $order))->toBeFalse();
+});
 
-    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed, 'seller_id' => $seller]);
-    expect($seller->can('update', $order))->toBeFalse();
-
-    $order = Order::factory()->create(['status' => $status, 'seller_id' => $seller]);
-    expect($seller->can('update', $order))->toBeTrue();
-})->with([
-    OrderStatusEnum::Pending,
-    OrderStatusEnum::Returned,
-]);
-
-test('delete', function ($status) {
+test('delete', function () {
     $admin = User::factory()->create(['admin' => true]);
-
-    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed]);
-    expect($admin->can('delete', $order))->toBeTrue();
-
-    $order = Order::factory()->create(['status' => $status]);
-    expect($admin->can('delete', $order))->toBeTrue();
-
     $seller = User::factory()->create(['admin' => false]);
 
     $order = Order::factory()->create();
-    expect($seller->can('delete', $order))->toBeFalse();
-
-    $order = Order::factory()->create(['status' => OrderStatusEnum::Completed, 'seller_id' => $seller]);
-    expect($seller->can('delete', $order))->toBeFalse();
-
-    $order = Order::factory()->create(['status' => $status, 'seller_id' => $seller]);
-    expect($seller->can('delete', $order))->toBeTrue();
-})->with([
-    OrderStatusEnum::Pending,
-    OrderStatusEnum::Returned,
-]);
+    expect($admin->can('delete', $order))->toBeTrue()
+        ->and($seller->can('delete', $order))->toBeFalse();
+});

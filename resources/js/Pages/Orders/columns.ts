@@ -53,12 +53,12 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: 'action',
+    accessorFn: (order) => order.action?.name,
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
         title: 'تم اتخاذ الاجراء بواسطة',
       }),
-    cell: ({ row }) => row.getValue<User>('action')?.name,
   },
   {
     accessorKey: 'total_price_for_seller',
