@@ -9,6 +9,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
+use App\Http\Controllers\SellerOrdersController;
 use App\Http\Controllers\SellersController;
 use App\Http\Controllers\TransactionsController;
 use Illuminate\Foundation\Application;
@@ -84,6 +85,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/items', [OrderItemsController::class, 'store'])->name('order-items.store');
 
     Route::delete('/orders-items/{item}', [OrderItemsController::class, 'destroy'])->name('order-items.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::middleware(['throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
 });
 
 Route::middleware('auth')->group(function () {

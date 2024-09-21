@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import {
@@ -13,6 +13,11 @@ import {
 import { Region, User } from '@/types'
 import { h } from 'vue'
 import { formatMoney } from '@/lib/money'
+import CardDescription from '@/Components/ui/card/CardDescription.vue'
+import CardFooter from '@/Components/ui/card/CardFooter.vue'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/Components/ui/button'
+import { toast } from '@/Components/ui/toast'
 
 const props = defineProps<{
   total_debuts: number
@@ -86,27 +91,37 @@ const cards: Array<Card> = [
     visible: true,
   },
 ]
-
-// function formatMoney(money?: number): string {
-//   if (!money) return ''
-
-//   return new Intl.NumberFormat('ar').format(money)
-// }
 </script>
 
 <template>
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
-    <!-- <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        لوحة التحكم
-      </h2>
-    </template> -->
-
     <div class="py-8">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          <Card
+            v-if="!user.admin"
+            class="rounded-none sm:col-span-2 sm:rounded-xl"
+          >
+            <CardHeader class="pb-3">
+              <CardTitle>طلباتي</CardTitle>
+              <CardDescription class="max-w-lg text-balance leading-relaxed">
+                بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
+              </CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Link
+                :href="route('seller-orders.store')"
+                method="post"
+                as="button"
+                :class="cn(buttonVariants({ variant: 'default' }))"
+                @success="() => toast({ title: 'تم إرسال الطلب بنجاح' })"
+              >
+                طلب كروت
+              </Link>
+            </CardFooter>
+          </Card>
           <Card
             class="rounded-none sm:rounded-xl"
             v-for="card in cards.filter((card) => card.visible)"
