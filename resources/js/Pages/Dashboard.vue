@@ -20,8 +20,8 @@ const props = defineProps<{
   number_of_returned_orders_last_week: number
   number_of_completed_orders_last_week: number
   max_debut_seller?: {
-    seller: User
-    amount: number
+    seller?: User
+    amount?: number
   }
   max_region_income?: {
     region?: Region | null
@@ -45,14 +45,14 @@ const cards: Array<Card> = [
     title: 'الديون المستحقة',
     value: `${formatMoney(props.total_debuts)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: true,
+    visible: props.total_debuts > 0,
   },
   {
     title: 'أكبر دين',
-    value: props.max_debut_seller?.seller.name ?? '',
+    value: props.max_debut_seller?.seller?.name ?? '',
     description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin,
+    visible: user.admin && props.max_debut_seller?.seller !== null,
   },
   {
     title: 'أكبر مدخول الأسبوع الماضي',

@@ -29,10 +29,23 @@ final class DashboardController
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
 
         $statistics = [
-            'total_debuts' => Transaction::visibleTo($user)->sum('amount'),
-            'number_of_pending_orders' => Order::visibleTo($user)->pending()->count(),
-            'number_of_returned_orders_last_week' => Order::visibleTo($user)->returned()->whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])->count(),
-            'number_of_completed_orders_last_week' => Order::visibleTo($user)->completed()->whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])->count(),
+            'total_debuts' => Transaction::query()
+                ->visibleTo($user)
+                ->sum('amount'),
+            'number_of_pending_orders' => Order::query()
+                ->visibleTo($user)
+                ->pending()
+                ->count(),
+            'number_of_returned_orders_last_week' => Order::query()
+                ->visibleTo($user)
+                ->returned()
+                // ->whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])
+                ->count(),
+            'number_of_completed_orders_last_week' => Order::query()
+                ->visibleTo($user)
+                ->completed()
+                // ->whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])
+                ->count(),
         ];
 
         if ($user->isAdmin()) {
@@ -52,8 +65,8 @@ final class DashboardController
 
             $statistics = array_merge($statistics, [
                 'max_debut_seller' => [
-                    'seller' => $maxSeller->seller,
-                    'amount' => $maxSeller->total_amount,
+                    'seller' => $maxSeller ? $maxSeller->seller : null,
+                    'amount' => $maxSeller ? $maxSeller->total_amount : 0,
                 ],
                 'max_region_income' => [
                     'region' => $maxRegion ? RegionResource::make(Region::find($maxRegion->region_id)) : null,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
@@ -53,8 +54,32 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        Order::factory(500)
+        Order::factory(100)
             ->hasItems(3)
+            ->recycle($cards)
+            ->recycle($sellers)
+            ->create([
+                'status' => OrderStatusEnum::Completed,
+            ]);
+
+        Order::factory(100)
+            ->hasItems(3)
+            ->recycle($cards)
+            ->recycle($sellers)
+            ->create([
+                'status' => OrderStatusEnum::Pending,
+            ]);
+
+        Order::factory(100)
+            ->hasItems(1)
+            ->recycle($cards)
+            ->recycle($sellers)
+            ->create([
+                'status' => OrderStatusEnum::Returned,
+            ]);
+
+        Order::factory(100)
+            ->hasItems(1)
             ->recycle($cards)
             ->recycle($sellers)
             ->create();
