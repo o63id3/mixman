@@ -132,8 +132,8 @@ const onSubmit = handleSubmit((values) => {
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="hajaj"
                         v-bind="componentField"
+                        autocapitalize="none"
                       />
                     </FormControl>
                     <FormDescription>

@@ -50,6 +50,7 @@ const form = useForm({
           id="username"
           type="text"
           class="mt-2 block w-full"
+          autocapitalize="none"
           v-model="form.username"
         />
 

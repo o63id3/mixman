@@ -75,18 +75,18 @@ const table = useVueTable({
 </script>
 
 <template>
-  <div class="border lg:rounded-md">
+  <div class="overflow-x-auto border lg:rounded-md">
     <Table>
       <TableHeader class="bg-gray-100">
         <TableRow
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
-          class="text-nowrap text-right"
+          class="whitespace-nowrap text-nowrap text-right"
         >
           <TableHead
             v-for="header in headerGroup.headers"
             :key="header.id"
-            class="text-nowrap text-right"
+            class="whitespace-nowrap text-nowrap text-right"
           >
             <FlexRender
               v-if="!header.isPlaceholder"
@@ -102,12 +102,12 @@ const table = useVueTable({
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() && 'selected'"
-            class="text-nowrap text-right"
+            class="whitespace-nowrap text-nowrap text-right"
           >
             <TableCell
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="text-nowrap text-right"
+              class="whitespace-nowrap text-nowrap text-right"
             >
               <FlexRender
                 :render="cell.column.columnDef.cell"

@@ -50,11 +50,11 @@ defineProps<{
         </Select>
       </div>
       <div class="space-y-0.5">
-        <Label class="text-xs"> عدد الرزم </Label>
+        <Label class="text-xs"> الرزم </Label>
         <Input v-model="packages" type="number" />
       </div>
       <div class="space-y-0.5">
-        <Label class="text-xs"> عدد الكروت </Label>
+        <Label class="text-xs"> الكروت </Label>
         <Input v-model="cardsPerPackage" type="number" />
       </div>
     </div>

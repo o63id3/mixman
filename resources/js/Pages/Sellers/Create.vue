@@ -121,7 +121,11 @@ defineProps<{
                   <FormItem>
                     <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
-                      <Input type="text" v-bind="componentField" />
+                      <Input
+                        type="text"
+                        v-bind="componentField"
+                        autocapitalize="none"
+                      />
                     </FormControl>
                     <FormDescription>
                       سيتم استخدام هذا الاسم في عملية تسجيل الدخول.
