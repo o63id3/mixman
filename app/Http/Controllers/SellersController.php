@@ -29,7 +29,7 @@ final class SellersController
             ->latest()
             ->withBalance()
             ->with(['region:id,name'])
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Sellers/Index', [
             'sellers' => SellerResource::collection($sellers),

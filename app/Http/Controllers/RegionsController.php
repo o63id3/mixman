@@ -24,7 +24,7 @@ final class RegionsController
 
         $regions = Region::query()
             ->latest()
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Regions/Index', [
             'regions' => RegionResource::collection($regions),

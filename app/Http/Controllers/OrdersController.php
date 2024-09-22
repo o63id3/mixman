@@ -39,7 +39,7 @@ final class OrdersController
             ->latest()
             ->latest('id')
             ->visibleTo($seller)
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),

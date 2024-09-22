@@ -25,7 +25,7 @@ final class TransactionsController
             ->latest()
             ->latest('id')
             ->visibleTo($user)
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),

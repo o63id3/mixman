@@ -24,7 +24,7 @@ final class CardsController
 
         $cards = Card::query()
             ->latest()
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Cards/Index', [
             'cards' => CardResource::collection($cards),

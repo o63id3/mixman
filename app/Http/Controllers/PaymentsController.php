@@ -31,7 +31,7 @@ final class PaymentsController
             ->latest()
             ->latest('id')
             ->visibleTo($seller)
-            ->paginate(10);
+            ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),

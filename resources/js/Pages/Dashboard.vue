@@ -29,7 +29,7 @@ const props = defineProps<{
     amount: number
   }
   max_region_income?: {
-    region: Region | null
+    region: string
     amount: number
   }
   sellers_count?: number
@@ -65,7 +65,7 @@ const cards: Array<Card> = [
   },
   {
     title: 'أكبر مدخول الأسبوع الماضي',
-    value: props.max_region_income?.region?.name ?? '',
+    value: props.max_region_income?.region ?? '',
     description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
     visible: user.admin && props.max_region_income?.region !== null,
