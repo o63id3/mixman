@@ -34,6 +34,7 @@ import { summaryFields } from './itemsColumns'
 import AddItemsForm from './Partials/AddItemsForm.vue'
 import { orderStatues } from '@/types/enums'
 import Input from '@/Components/ui/input/Input.vue'
+import { Trash2 } from 'lucide-vue-next'
 
 const props = defineProps<{
   order: Order
@@ -185,6 +186,15 @@ const addingForm = ref(false)
             v-if="!addingForm && can.addItem"
           >
             إضافة رزم
+          </Button>
+          <Button
+            class="text-xs tracking-wide"
+            size="xs"
+            variant="outline"
+            @click="addingForm = false"
+            v-if="addingForm && can.addItem"
+          >
+            <Trash2 class="w-3 text-red-500" />
           </Button>
         </div>
         <div v-if="!addingForm" class="mt-4 space-y-4">

@@ -113,7 +113,7 @@ const onSubmit = handleSubmit((values) => {
                   </FormItem>
                 </FormField>
                 <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="md:col-span-2">
+                  <FormItem class="col-span-2">
                     <FormLabel>ملاحظات</FormLabel>
                     <FormControl>
                       <Textarea v-bind="componentField" />

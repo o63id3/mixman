@@ -25,12 +25,12 @@ const props = defineProps<{
   number_of_returned_orders_last_week: number
   number_of_completed_orders_last_week: number
   max_debut_seller?: {
-    seller?: User
-    amount?: number
+    seller: User
+    amount: number
   }
   max_region_income?: {
-    region?: Region | null
-    amount?: number
+    region: Region | null
+    amount: number
   }
   sellers_count?: number
 }>()
@@ -57,7 +57,11 @@ const cards: Array<Card> = [
     value: props.max_debut_seller?.seller?.name ?? '',
     description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin && props.max_debut_seller?.seller !== null,
+    visible:
+      user.admin &&
+      props.max_debut_seller?.seller !== null &&
+      props.max_debut_seller !== undefined &&
+      props.max_debut_seller.amount > 0,
   },
   {
     title: 'أكبر مدخول الأسبوع الماضي',
@@ -99,7 +103,7 @@ const cards: Array<Card> = [
   <AuthenticatedLayout>
     <div class="py-8">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        <div class="grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
           <Card
             v-if="!user.admin"
             class="rounded-none sm:col-span-2 sm:rounded-xl"
