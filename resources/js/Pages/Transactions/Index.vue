@@ -23,18 +23,12 @@ defineProps<{
       <h2 class="text-xl font-semibold leading-tight text-gray-800">الحركات</h2>
     </template>
 
-    <div class="py-8">
-      <div class="mx-auto max-w-7xl lg:px-2">
-        <div class="space-y-4">
-          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
-            <DataTable :data="transactions.data" :columns="columns" />
-          </div>
-          <DataTablePagination
-            :links="transactions.links"
-            :meta="transactions.meta"
-          />
-        </div>
-      </div>
+    <div class="space-y-4">
+      <DataTable :data="transactions.data" :columns="columns" />
+      <DataTablePagination
+        :links="transactions.links"
+        :meta="transactions.meta"
+      />
     </div>
   </AuthenticatedLayout>
 </template>

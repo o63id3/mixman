@@ -221,7 +221,7 @@ const links: Array<Link> = [
       </header>
 
       <!-- Page Content -->
-      <main>
+      <main class="mx-auto max-w-7xl py-8 lg:px-2">
         <slot />
       </main>
     </div>

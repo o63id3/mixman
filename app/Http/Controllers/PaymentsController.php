@@ -81,6 +81,9 @@ final class PaymentsController
         return Inertia::render('Payments/Edit', [
             'sellers' => User::sellers()->get(),
             'payment' => PaymentResource::make($payment),
+            'can' => [
+                'delete' => Gate::allows('delete', $payment),
+            ],
         ]);
     }
 

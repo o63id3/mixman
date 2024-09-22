@@ -6,17 +6,9 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
-import { Input } from '@/Components/ui/input'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
+import CardForm from './Partials/CardForm.vue'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -55,65 +47,8 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField v-slot="{ componentField }" name="name">
-                  <FormItem class="col-span-2">
-                    <FormLabel>اسم الكرت</FormLabel>
-                    <FormControl>
-                      <Input type="text" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField
-                  v-slot="{ componentField }"
-                  name="price_for_consumer"
-                >
-                  <FormItem>
-                    <FormLabel>السعر للمستهلك</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        v-bind="componentField"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="price_for_seller">
-                  <FormItem>
-                    <FormLabel>السعر للبائع</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        v-bind="componentField"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="col-span-2">
-                    <FormLabel>ملاحظات</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <Button type="submit"> إنشاء </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CreateFormLayout @submit="onSubmit">
+      <CardForm />
+    </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

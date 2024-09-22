@@ -4,7 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { OrderItem } from '@/types'
 import { formatMoney } from '@/lib/money'
-import OrderItemsRowActions from './Partials/OrderItemsRowActions.vue'
+import OrderItemsRowActions from './OrderItemsRowActions.vue'
 
 export const columns: ColumnDef<OrderItem>[] = [
   {

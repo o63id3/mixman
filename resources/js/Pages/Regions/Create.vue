@@ -6,16 +6,9 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
-import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+import RegionForm from './Partials/RegionForm.vue'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -51,27 +44,8 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField v-slot="{ componentField }" name="name">
-                  <FormItem>
-                    <FormLabel>اسم المنطقة</FormLabel>
-                    <FormControl>
-                      <Input type="text" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <Button type="submit"> إنشاء </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CreateFormLayout @submit="onSubmit">
+      <RegionForm />
+    </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

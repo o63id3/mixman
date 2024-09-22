@@ -79,7 +79,9 @@ const table = useVueTable({
 </script>
 
 <template>
-  <div class="overflow-x-auto border lg:rounded-md">
+  <div
+    class="overflow-hidden overflow-x-auto border bg-white shadow-sm lg:rounded-md"
+  >
     <Table>
       <TableHeader class="bg-gray-100">
         <TableRow

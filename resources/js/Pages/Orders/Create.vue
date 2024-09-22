@@ -6,29 +6,16 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/Components/ui/select'
 import { Card, User } from '@/types'
-import { PlusCircleIcon } from 'lucide-vue-next'
-import Combobox from '@/Components/combobox/Combobox.vue'
-import CardItemForm from './Partials/CardItemForm.vue'
-import { orderStatues } from '@/types/enums'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+import OrderForm from './Partials/OrderForm.vue'
+
+const props = defineProps<{
+  sellers: Array<User>
+  cards: Array<Card>
+  statuses: Array<string>
+}>()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -51,7 +38,7 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
     status: 'طلب جديد',
     cards: [
       {
-        card_id: '1',
+        card_id: String(props.cards[0]?.id),
         number_of_packages: 1,
         number_of_cards_per_package: 120,
       },
@@ -69,12 +56,6 @@ const onSubmit = handleSubmit((values) => {
     onError: (errors) => setErrors(errors),
   })
 })
-
-defineProps<{
-  sellers: Array<User>
-  cards: Array<Card>
-  statuses: Array<string>
-}>()
 </script>
 
 <template>
@@ -87,111 +68,13 @@ defineProps<{
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField name="seller_id">
-                  <FormItem>
-                    <FormLabel>نقطة البيع</FormLabel>
-                    <Combobox
-                      :options="
-                        sellers.map((seller) => ({
-                          value: seller.id,
-                          label: seller.name,
-                        }))
-                      "
-                      choose-title="اختر بائع..."
-                      search-placeholder="ابحث عن نقطة بيع"
-                      :selected="values.seller_id"
-                      @select="
-                        (selected: any) =>
-                          setFieldValue('seller_id', selected.value)
-                      "
-                    />
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="status">
-                  <FormItem>
-                    <FormLabel>الحالة</FormLabel>
-                    <FormControl>
-                      <Select v-bind="componentField">
-                        <SelectTrigger>
-                          <SelectValue placeholder="اختر حالة الطلب" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem
-                              v-for="status in orderStatues"
-                              :key="status.value"
-                              :value="status.value"
-                            >
-                              <div class="flex items-center justify-end gap-1">
-                                {{ status.label }}
-                                <component :is="status.icon" class="w-4" />
-                              </div>
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="cards">
-                  <FormItem class="col-span-full">
-                    <FormLabel>الكروت</FormLabel>
-                    <FormControl class="col-span-full">
-                      <CardItemForm
-                        v-for="(card, index) in componentField.modelValue"
-                        :key="index"
-                        class="mb-2 flex gap-1 border-b pb-3"
-                        :cards="cards"
-                        :can-delete="componentField.modelValue.length > 1"
-                        @delete="componentField.modelValue.splice(index, 1)"
-                        v-model:card="card.card_id"
-                        v-model:packages="card.number_of_packages"
-                        v-model:cardsPerPackage="
-                          card.number_of_cards_per_package
-                        "
-                      />
-                      <div>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          @click="
-                            componentField.modelValue.push({
-                              card_id: '1',
-                              number_of_packages: 1,
-                              number_of_cards_per_package: 120,
-                            })
-                          "
-                        >
-                          <PlusCircleIcon class="w-5" />
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="md:col-span-2">
-                    <FormLabel>ملاحظات</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <Button type="submit"> إنشاء </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CreateFormLayout @submit="onSubmit">
+      <OrderForm
+        :sellers="sellers"
+        :cards="cards"
+        :selected="values.seller_id"
+        @select="(selected: number) => setFieldValue('seller_id', selected)"
+      />
+    </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

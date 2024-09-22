@@ -84,6 +84,9 @@ final class SellersController
         return Inertia::render('Sellers/Edit', [
             'seller' => UserResource::make($seller),
             'regions' => Region::all(),
+            'can' => [
+                'delete' => Gate::allows('delete', User::class),
+            ],
         ]);
     }
 

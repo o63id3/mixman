@@ -68,6 +68,9 @@ final class RegionsController
 
         return Inertia::render('Regions/Edit', [
             'region' => RegionResource::make($region),
+            'can' => [
+                'delete' => Gate::allows('delete', Region::class),
+            ],
         ]);
     }
 

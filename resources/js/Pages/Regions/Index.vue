@@ -31,15 +31,9 @@ defineProps<{
       </div>
     </template>
 
-    <div class="py-8">
-      <div class="mx-auto max-w-7xl lg:px-2">
-        <div class="space-y-4">
-          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
-            <DataTable :data="regions.data" :columns="columns" />
-          </div>
-          <DataTablePagination :links="regions.links" :meta="regions.meta" />
-        </div>
-      </div>
+    <div class="space-y-4">
+      <DataTable :data="regions.data" :columns="columns" />
+      <DataTablePagination :links="regions.links" :meta="regions.meta" />
     </div>
   </AuthenticatedLayout>
 </template>

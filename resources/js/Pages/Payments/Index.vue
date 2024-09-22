@@ -29,15 +29,9 @@ defineProps<{
       </div>
     </template>
 
-    <div class="py-8">
-      <div class="mx-auto max-w-7xl lg:px-2">
-        <div class="space-y-4">
-          <div class="overflow-hidden bg-white shadow-sm lg:rounded-md">
-            <DataTable :data="payments.data" :columns="columns" />
-          </div>
-          <DataTablePagination :links="payments.links" :meta="payments.meta" />
-        </div>
-      </div>
+    <div class="space-y-4">
+      <DataTable :data="payments.data" :columns="columns" />
+      <DataTablePagination :links="payments.links" :meta="payments.meta" />
     </div>
   </AuthenticatedLayout>
 </template>

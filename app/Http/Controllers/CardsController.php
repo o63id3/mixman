@@ -71,6 +71,9 @@ final class CardsController
 
         return Inertia::render('Cards/Edit', [
             'card' => CardResource::make($card),
+            'can' => [
+                'delete' => Gate::allows('delete', Card::class),
+            ],
         ]);
     }
 

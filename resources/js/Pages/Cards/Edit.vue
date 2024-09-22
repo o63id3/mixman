@@ -6,22 +6,19 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button, buttonVariants } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
-import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { Card } from '@/types'
+import CardForm from './Partials/CardForm.vue'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/Components/ui/button'
+import DeleteLink from '@/Components/links/DeleteLink.vue'
 
 const props = defineProps<{
   card: Card
+  can: {
+    delete: boolean
+  }
 }>()
 
 const formSchema = toTypedSchema(
@@ -48,8 +45,6 @@ const { handleSubmit, setErrors } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  console.log(values)
-
   router.patch(route('cards.update', props.card.id), values, {
     preserveScroll: true,
     onSuccess: () => toast({ title: 'تم تعديل الكرت' }),
@@ -68,77 +63,17 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField v-slot="{ componentField }" name="name">
-                  <FormItem class="col-span-2">
-                    <FormLabel>اسم الكرت</FormLabel>
-                    <FormControl>
-                      <Input type="text" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField
-                  v-slot="{ componentField }"
-                  name="price_for_consumer"
-                >
-                  <FormItem>
-                    <FormLabel>السعر للمستهلك</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        v-bind="componentField"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="price_for_seller">
-                  <FormItem>
-                    <FormLabel>السعر للبائع</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        v-bind="componentField"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="col-span-2">
-                    <FormLabel>ملاحظات</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <div class="flex gap-2">
-                <Button type="submit"> تعديل </Button>
-                <Link
-                  :href="route('cards.destroy', card.id)"
-                  method="delete"
-                  as="button"
-                  type="button"
-                  :class="cn(buttonVariants({ variant: 'destructive' }))"
-                  @success="toast({ title: 'تم حذف الكرت' })"
-                >
-                  حذف
-                </Link>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
+      <template #deleteBtn>
+        <DeleteLink
+          :href="route('cards.destroy', card.id)"
+          @success="toast({ title: 'تم حذف الطلب' })"
+        >
+          حذف
+        </DeleteLink>
+      </template>
+
+      <CardForm />
+    </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>

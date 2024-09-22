@@ -50,7 +50,7 @@ const cards: Array<Card> = [
     title: 'الديون المستحقة',
     value: `${formatMoney(props.total_debuts)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: props.total_debuts > 0,
+    visible: props.total_debuts !== 0,
   },
   {
     title: 'أكبر دين',
@@ -101,52 +101,45 @@ const cards: Array<Card> = [
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
-    <div class="py-8">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-          <Card
-            v-if="!user.admin"
-            class="rounded-none sm:col-span-2 sm:rounded-xl"
+    <div class="grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+      <Card v-if="!user.admin" class="rounded-none sm:col-span-2 sm:rounded-xl">
+        <CardHeader class="pb-3">
+          <CardTitle>طلباتي</CardTitle>
+          <CardDescription class="max-w-lg text-balance leading-relaxed">
+            بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
+          </CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Link
+            :href="route('seller-orders.store')"
+            method="post"
+            as="button"
+            :class="cn(buttonVariants({ variant: 'default' }))"
+            @success="() => toast({ title: 'تم إرسال الطلب بنجاح' })"
           >
-            <CardHeader class="pb-3">
-              <CardTitle>طلباتي</CardTitle>
-              <CardDescription class="max-w-lg text-balance leading-relaxed">
-                بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Link
-                :href="route('seller-orders.store')"
-                method="post"
-                as="button"
-                :class="cn(buttonVariants({ variant: 'default' }))"
-                @success="() => toast({ title: 'تم إرسال الطلب بنجاح' })"
-              >
-                طلب كروت
-              </Link>
-            </CardFooter>
-          </Card>
-          <Card
-            class="rounded-none sm:rounded-xl"
-            v-for="card in cards.filter((card) => card.visible)"
-          >
-            <CardHeader
-              class="flex flex-row items-center justify-between space-y-0 pb-2"
-            >
-              <CardTitle class="text-sm font-medium">
-                {{ card.title }}
-              </CardTitle>
-              <component :is="card.icon" class="h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <div class="text-2xl font-bold">{{ card.value }}</div>
-              <p v-if="card.description" class="text-xs text-muted-foreground">
-                {{ card.description }}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            طلب كروت
+          </Link>
+        </CardFooter>
+      </Card>
+      <Card
+        class="rounded-none sm:rounded-xl"
+        v-for="card in cards.filter((card) => card.visible)"
+      >
+        <CardHeader
+          class="flex flex-row items-center justify-between space-y-0 pb-2"
+        >
+          <CardTitle class="text-sm font-medium">
+            {{ card.title }}
+          </CardTitle>
+          <component :is="card.icon" class="h-4 w-4" />
+        </CardHeader>
+        <CardContent>
+          <div class="text-2xl font-bold">{{ card.value }}</div>
+          <p v-if="card.description" class="text-xs text-muted-foreground">
+            {{ card.description }}
+          </p>
+        </CardContent>
+      </Card>
     </div>
   </AuthenticatedLayout>
 </template>

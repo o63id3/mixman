@@ -6,28 +6,10 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
-import { Input } from '@/Components/ui/input'
 import { toast } from '@/Components/ui/toast'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/Components/ui/select'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+import SellerForm from './Partials/SellerForm.vue'
 import { Region } from '@/types'
 
 const formSchema = toTypedSchema(
@@ -77,102 +59,8 @@ defineProps<{
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField v-slot="{ componentField }" name="name">
-                  <FormItem>
-                    <FormLabel>اسم نقطة البيع</FormLabel>
-                    <FormControl>
-                      <Input type="text" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="region">
-                  <FormItem>
-                    <FormLabel>المنطقة</FormLabel>
-                    <FormControl>
-                      <Select v-bind="componentField">
-                        <SelectTrigger>
-                          <SelectValue placeholder="اختر منطقة" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>المناطق</SelectLabel>
-                            <SelectItem
-                              v-for="region in regions"
-                              :key="region.id"
-                              :value="String(region.id)"
-                            >
-                              {{ region.name }}
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="username">
-                  <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        v-bind="componentField"
-                        autocapitalize="none"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      سيتم استخدام هذا الاسم في عملية تسجيل الدخول.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="password">
-                  <FormItem>
-                    <FormLabel>كلمة المرور</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="********"
-                        v-bind="componentField"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      سيتم استخدامها في عملية تسجيل الدخول.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="contact_info">
-                  <FormItem class="md:col-span-2">
-                    <FormLabel>بيانات التواصل</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="md:col-span-2">
-                    <FormLabel>ملاحظات</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <Button type="submit"> إنشاء </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CreateFormLayout @submit="onSubmit">
+      <SellerForm :regions="regions" />
+    </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

@@ -1,29 +1,23 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { Button, buttonVariants } from '@/Components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/Components/ui/form'
 import { toast } from '@/Components/ui/toast'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { Payment, User } from '@/types'
-import { cn } from '@/lib/utils'
-import Combobox from '@/Components/combobox/Combobox.vue'
-import Input from '@/Components/ui/input/Input.vue'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+import DeleteLink from '@/Components/links/DeleteLink.vue'
+import PaymentForm from './Partials/PaymentForm.vue'
 
 const props = defineProps<{
   payment: Payment
   sellers: Array<User>
+  can: {
+    delete: boolean
+  }
 }>()
 
 const formSchema = toTypedSchema(
@@ -64,67 +58,21 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <form class="space-y-6" @submit="onSubmit">
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <FormField name="seller_id">
-                  <FormItem class="flex flex-col gap-2">
-                    <FormLabel>نقطة البيع</FormLabel>
-                    <Combobox
-                      :options="
-                        sellers.map((seller) => ({
-                          value: seller.id,
-                          label: seller.name,
-                        }))
-                      "
-                      choose-title="اختر بائع..."
-                      search-placeholder="ابحث عن نقطة بيع"
-                      :selected="values.seller_id"
-                      @select="
-                        (selected: any) =>
-                          setFieldValue('seller_id', selected.value)
-                      "
-                    />
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="amount">
-                  <FormItem>
-                    <FormLabel>المبلغ</FormLabel>
-                    <Input type="number" step="0.01" v-bind="componentField" />
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="notes">
-                  <FormItem class="md:col-span-2">
-                    <FormLabel>ملاحظات</FormLabel>
-                    <FormControl>
-                      <Textarea v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </FormField>
-              </div>
-              <div class="flex gap-2">
-                <Button type="submit"> تعديل </Button>
-                <Link
-                  :href="route('payments.destroy', payment.id)"
-                  method="delete"
-                  as="button"
-                  type="button"
-                  :class="cn(buttonVariants({ variant: 'destructive' }))"
-                  @success="toast({ title: 'تم حذف الدفعة' })"
-                >
-                  حذف
-                </Link>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
+      <template #deleteBtn>
+        <DeleteLink
+          :href="route('payments.destroy', payment.id)"
+          @success="toast({ title: 'تم حذف الدفعة' })"
+        >
+          حذف
+        </DeleteLink>
+      </template>
+
+      <PaymentForm
+        :sellers="sellers"
+        :selected="values.seller_id"
+        @select="(selected: number) => setFieldValue('seller_id', selected)"
+      />
+    </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>

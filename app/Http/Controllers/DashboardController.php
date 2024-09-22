@@ -53,6 +53,7 @@ final class DashboardController
                 ->with('seller')
                 ->groupBy('seller_id')
                 ->orderBy('total_amount')
+                ->having('total_amount', '<', 0)
                 ->first();
 
             $maxRegion = Payment::query()
