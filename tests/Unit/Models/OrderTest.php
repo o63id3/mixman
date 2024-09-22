@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
+use App\Models\Seller;
 use App\Models\User;
 
 test('completed', function () {
@@ -17,26 +18,26 @@ test('completed', function () {
 });
 
 test('scope visible to', function () {
-    $admin = User::factory()->create(['admin' => true]);
-    $seller = User::factory()->create(['admin' => false]);
+    $admin = User::factory()->admin()->create();
+    $seller = Seller::factory()->create();
 
     Order::factory(5)->create();
     expect(Order::visibleTo($admin)->count())->toBe(5);
 
-    Order::factory()->create(['seller_id' => $seller]);
+    Order::factory()->recycle($seller)->create();
     expect(Order::visibleTo($seller)->get()->pluck('seller_id'))->each->toBe($seller->id);
 });
 
 test('seller', function () {
-    $seller = User::factory()->create(['admin' => false]);
-    $order = Order::factory()->create(['seller_id' => $seller]);
+    $seller = Seller::factory()->create();
+    $order = Order::factory()->recycle($seller)->create();
 
     expect($order->seller)->toBe($seller);
 });
 
 test('action', function () {
-    $admin = User::factory()->create(['admin' => true]);
-    $order = Order::factory()->create(['action_by' => $admin]);
+    $admin = User::factory()->admin()->create();
+    $order = Order::factory()->recycle($admin)->create(['status' => OrderStatusEnum::Completed]);
 
     expect($order->action)->toBe($admin);
 });

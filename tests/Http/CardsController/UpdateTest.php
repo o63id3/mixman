@@ -63,7 +63,7 @@ it('fails validation when the name field is not unique', function () {
 });
 
 it('prevents unauthorized users from updating a card', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $cardData = [
         'name' => 'Test Card',

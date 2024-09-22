@@ -8,6 +8,7 @@ use App\Http\Resources\RegionResource;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
+use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -73,7 +74,7 @@ final class DashboardController
                     'region' => $maxRegion ? RegionResource::make(Region::find($maxRegion->region_id)) : null,
                     'amount' => $maxRegion ? $maxRegion->total_amount : 0,
                 ],
-                'sellers_count' => User::sellers()->count(),
+                'sellers_count' => Seller::count(),
             ]);
         }
 

@@ -18,7 +18,7 @@ it('renders the edit page for admin', function () {
 });
 
 it('does not render the edit page for seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->get(route('regions.edit', Card::factory()->create()))

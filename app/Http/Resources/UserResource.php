@@ -28,7 +28,6 @@ final class UserResource extends JsonResource
             'username' => $this->username,
             'active' => $this->active,
             'admin' => $this->admin,
-            'balance' => $this->whenHas('balance'),
             'contact_info' => $this->contact_info,
             'notes' => $this->notes,
             'can' => [

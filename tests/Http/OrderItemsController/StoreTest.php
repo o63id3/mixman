@@ -61,7 +61,7 @@ it('fails validation when fields are not applicable', function ($number_of_packa
 ]);
 
 it('prevents unauthorized users from creating an order item', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('order-items.store', Order::factory()->create()))

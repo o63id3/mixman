@@ -17,7 +17,7 @@ it('renders the index page for admin', function () {
 });
 
 it('does not render the index page for seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->get(route('regions.index'))

@@ -22,7 +22,7 @@ it('renders the index page for admin', function () {
 });
 
 it('renders the index page for seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     Payment::factory(5)->create();
     Order::factory(5)->create();

@@ -159,6 +159,7 @@ return [
         'notes' => 'الملاحظات',
 
         'region' => 'المنطقة',
+        'region_id' => 'المنطقة',
 
         'price_for_consumer' => 'السعر للمستهلك',
         'price_for_seller' => 'السعر للبائع',

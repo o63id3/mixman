@@ -23,13 +23,3 @@ test('make', function () {
         ->toHaveKey('contact_info', $user->contact_info)
         ->toHaveKey('notes', $user->notes);
 });
-
-test('make with balance', function () {
-    $user = User::factory()->create();
-    $user->loadBalance();
-
-    $resource = UserResource::make($user)->resolve();
-
-    expect($resource)
-        ->toHaveKey('balance', $user->balance);
-});

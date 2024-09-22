@@ -56,7 +56,7 @@ it('fails validation when the name field is not unique', function () {
 });
 
 it('prevents unauthorized users from creating a region', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $data = [
         'name' => 'Test region',

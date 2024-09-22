@@ -38,7 +38,7 @@ final class Order extends Model
     /**
      * Scope the users to sellers only.
      */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
+    public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
     {
         if ($user->isAdmin()) {
             return $query;
@@ -102,7 +102,7 @@ final class Order extends Model
      */
     public function seller(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'seller_id');
+        return $this->belongsTo(Seller::class);
     }
 
     /**

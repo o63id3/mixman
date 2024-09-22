@@ -29,7 +29,6 @@ final class TransactionsController
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'sellers' => User::sellers()->get(),
             'filters' => [
                 'seller' => $request->get('seller'),
             ],

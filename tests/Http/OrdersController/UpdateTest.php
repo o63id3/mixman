@@ -10,7 +10,7 @@ it('allows an authorized user to update an order', function () {
     $user = User::factory()->admin()->create();
 
     $order = [
-        'seller_id' => User::factory()->user()->create()->id,
+        'seller_id' => User::factory()->create()->id,
         'status' => OrderStatusEnum::Pending->value,
         'notes' => 'This is notes',
     ];
@@ -52,7 +52,7 @@ it('fails validation when fields are not applicable', function ($status) {
 ]);
 
 it('prevents unauthorized users from creating an order', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->patch(route('orders.update', Order::factory()->create()))

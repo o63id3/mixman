@@ -14,7 +14,7 @@ import { Region } from '@/types'
 
 const formSchema = toTypedSchema(
   z.object({
-    region: z.string({ message: 'هذا الحقل مطلوب' }),
+    region_id: z.string({ message: 'هذا الحقل مطلوب' }),
     name: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),

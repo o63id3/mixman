@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ final class PaymentsController
         Gate::authorize('create', Payment::class);
 
         return Inertia::render('Payments/Create', [
-            'sellers' => User::sellers()->get(),
+            'sellers' => Seller::get(),
         ]);
     }
 
@@ -57,7 +58,7 @@ final class PaymentsController
         Gate::authorize('create', Payment::class);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('users', 'id')],
+            'seller_id' => ['required', Rule::exists('sellers', 'id')],
             'amount' => ['required', 'numeric'],
             'notes' => ['string'],
         ]);
@@ -79,7 +80,7 @@ final class PaymentsController
         PaymentResource::withoutWrapping();
 
         return Inertia::render('Payments/Edit', [
-            'sellers' => User::sellers()->get(),
+            'sellers' => Seller::get(),
             'payment' => PaymentResource::make($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),
@@ -95,7 +96,7 @@ final class PaymentsController
         Gate::authorize('update', $payment);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('users', 'id')],
+            'seller_id' => ['required', Rule::exists('sellers', 'id')],
             'amount' => ['required', 'numeric'],
             'notes' => ['string'],
         ]);

@@ -16,7 +16,7 @@ it('renders the create page for admin', function () {
 });
 
 it('does not render the create page for seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->get(route('regions.create'))

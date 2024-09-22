@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Card;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,6 +24,18 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('order_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
+            $table->foreignIdFor(Card::class)->constrained('cards')->nullOnDelete();
+            $table->integer('number_of_packages');
+            $table->integer('number_of_cards_per_package');
+            $table->integer('quantity');
+            $table->integer('total_price_for_consumer');
+            $table->integer('total_price_for_seller');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -30,5 +44,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_items');
     }
 };

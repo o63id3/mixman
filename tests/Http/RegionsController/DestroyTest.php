@@ -15,7 +15,7 @@ it('allows an authorized user to delete a region', function () {
 });
 
 it('prevents unauthorized users from updating a region', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->delete(route('regions.destroy', Region::factory()->create()))

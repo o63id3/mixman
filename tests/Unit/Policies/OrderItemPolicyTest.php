@@ -7,7 +7,7 @@ use App\Models\User;
 
 test('view any', function () {
     $admin = User::factory()->admin()->create();
-    $seller = User::factory()->user()->create();
+    $seller = User::factory()->create();
 
     expect($admin->can('viewAny', OrderItem::class))->toBeTrue()
         ->and($seller->can('viewAny', OrderItem::class))->toBeFalse();
@@ -15,7 +15,7 @@ test('view any', function () {
 
 test('delete', function () {
     $admin = User::factory()->admin()->create();
-    $seller = User::factory()->user()->create();
+    $seller = User::factory()->create();
 
     $item = OrderItem::factory()->create();
     expect($admin->can('delete', $item))->toBeTrue()

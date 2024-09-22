@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\OrderStatusEnum;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,18 +21,10 @@ final class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $seller = User::factory();
-        $status = $this->faker->randomElement(OrderStatusEnum::cases());
-        $action_by = null;
-
-        if ($status === OrderStatusEnum::Completed || $status === OrderStatusEnum::Returned) {
-            $action_by = 1;
-        }
-
         return [
-            'seller_id' => $seller,
-            'action_by' => $action_by,
-            'status' => $status,
+            'seller_id' => Seller::factory(),
+            'action_by' => User::factory(),
+            'status' => $this->faker->randomElement(OrderStatusEnum::cases()),
             'notes' => $this->faker->realText(),
         ];
     }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SellerResource;
 use App\Http\Resources\UserResource;
 use App\Models\Region;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,17 +23,16 @@ final class SellersController
      */
     public function index(): Response
     {
-        Gate::authorize('viewAny', User::class);
+        Gate::authorize('viewAny', Seller::class);
 
-        $sellers = User::query()
-            ->sellers()
+        $sellers = Seller::query()
             ->latest()
             ->withBalance()
             ->with(['region:id,name'])
             ->paginate(10);
 
         return Inertia::render('Sellers/Index', [
-            'sellers' => UserResource::collection($sellers),
+            'sellers' => SellerResource::collection($sellers),
         ]);
     }
 
@@ -40,7 +41,7 @@ final class SellersController
      */
     public function create(): Response
     {
-        Gate::authorize('create', User::class);
+        Gate::authorize('create', Seller::class);
 
         return Inertia::render('Sellers/Create', [
             'regions' => Region::all(),
@@ -52,22 +53,18 @@ final class SellersController
      */
     public function store(Request $request): RedirectResponse
     {
-        Gate::authorize('create', User::class);
+        Gate::authorize('create', Seller::class);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
-            'region' => ['required', Rule::exists('regions', 'id')],
+            'region_id' => ['required', Rule::exists('regions', 'id')],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
             'contact_info' => ['string'],
             'notes' => ['string'],
         ]);
 
-        $validated['region_id'] = $validated['region'];
-
-        unset($validated['region']);
-
-        User::create($validated);
+        Seller::create($validated);
 
         return back();
     }
@@ -77,7 +74,7 @@ final class SellersController
      */
     public function edit(User $seller): Response
     {
-        Gate::authorize('update', User::class);
+        Gate::authorize('update', Seller::class);
 
         $seller->load('region');
 
@@ -93,21 +90,18 @@ final class SellersController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $seller): RedirectResponse
+    public function update(Request $request, Seller $seller): RedirectResponse
     {
-        Gate::authorize('update', User::class);
+        Gate::authorize('update', Seller::class);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
-            'region' => ['required', Rule::exists('regions', 'id')],
+            'region_id' => ['required', Rule::exists('regions', 'id')],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($seller->id)],
             'password' => ['string', 'min:4'],
             'contact_info' => ['string'],
             'notes' => ['string'],
         ]);
-
-        $validated['region_id'] = $validated['region'];
-        unset($validated['region']);
 
         $seller->update($validated);
 

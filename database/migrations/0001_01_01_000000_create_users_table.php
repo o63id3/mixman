@@ -14,6 +14,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('regions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Region::class)->nullable()->constrained('regions');
@@ -43,6 +49,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('regions');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');

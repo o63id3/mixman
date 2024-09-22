@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-final class UserFactory extends Factory
+final class SellerFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -33,19 +33,8 @@ final class UserFactory extends Factory
             'password' => self::$password ??= Hash::make('password'),
             'contact_info' => 'contact info',
             'notes' => 'notes',
-            'admin' => false,
             'active' => true,
             'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model is admin.
-     */
-    public function admin(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'admin' => true,
-        ]);
     }
 }

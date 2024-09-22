@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\SellerResource;
 use App\Http\Resources\UserResource;
 use App\Models\Order;
 
@@ -18,7 +19,7 @@ test('make', function () {
     expect($resource)
         ->toHaveKey('id', $order->id)
         ->toHaveKey('status', $order->status)
-        ->toHaveKey('seller', UserResource::make($order->seller))
+        ->toHaveKey('seller', SellerResource::make($order->seller))
         ->toHaveKey('action', $order->action ? UserResource::make($order->action) : null)
         ->toHaveKey('total_price_for_seller', $order->total_price_for_seller)
         ->toHaveKey('total_price_for_consumer', $order->total_price_for_consumer)

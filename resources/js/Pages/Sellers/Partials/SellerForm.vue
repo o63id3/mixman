@@ -35,7 +35,7 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField v-slot="{ componentField }" name="region">
+  <FormField v-slot="{ componentField }" name="region_id">
     <FormItem>
       <FormLabel>المنطقة</FormLabel>
       <FormControl>

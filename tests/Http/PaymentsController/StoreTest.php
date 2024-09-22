@@ -8,7 +8,7 @@ it('allows an authorized user to create a payment', function () {
     $user = User::factory()->admin()->create();
 
     $data = [
-        'seller_id' => User::factory()->user()->create()->id,
+        'seller_id' => User::factory()->create()->id,
         'amount' => 100,
         'notes' => 'This is notes',
     ];
@@ -43,7 +43,7 @@ it('fails validation when fields are not applicable', function () {
 });
 
 it('prevents unauthorized users from creating a payment', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('payments.store'))

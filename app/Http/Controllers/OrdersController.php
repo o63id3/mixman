@@ -10,6 +10,7 @@ use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Card;
 use App\Models\Order;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ final class OrdersController
         Gate::authorize('create', Order::class);
 
         return Inertia::render('Orders/Create', [
-            'sellers' => User::sellers()->get(),
+            'sellers' => Seller::get(),
             'cards' => Card::all(),
             'statuses' => OrderStatusEnum::cases(),
         ]);
@@ -72,7 +73,7 @@ final class OrdersController
         Gate::authorize('create', Order::class);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('users', 'id')],
+            'seller_id' => ['required', Rule::exists('sellers', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'cards' => ['required', 'array'],
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
@@ -106,7 +107,7 @@ final class OrdersController
         OrderResource::withoutWrapping();
 
         return Inertia::render('Orders/Edit', [
-            'sellers' => User::sellers()->get(),
+            'sellers' => Seller::get(),
             'order' => OrderResource::make($order),
             'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
@@ -126,7 +127,7 @@ final class OrdersController
         Gate::authorize('update', $order);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('users', 'id')],
+            'seller_id' => ['required', Rule::exists('sellers', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['string'],
         ]);

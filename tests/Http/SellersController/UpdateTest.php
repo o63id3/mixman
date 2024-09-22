@@ -10,7 +10,7 @@ it('allows an authorized user to update a seller', function () {
 
     $data = [
         'name' => 'Test user',
-        'region' => Region::factory()->create()->id,
+        'region_id' => Region::factory()->create()->id,
         'username' => 'test',
         'password' => '1234',
         'contact_info' => 'Sample contact info',
@@ -21,13 +21,8 @@ it('allows an authorized user to update a seller', function () {
         ->patch(route('sellers.update', User::factory()->create()), $data)
         ->assertRedirect();
 
-    $this->assertDatabaseHas('users', [
-        'name' => $data['name'],
-        'region_id' => $data['region'],
-        'username' => $data['username'],
-        'contact_info' => $data['contact_info'],
-        'notes' => $data['notes'],
-    ]);
+    unset($data['password']);
+    $this->assertDatabaseHas('users', $data);
 });
 
 it('fails validation when required fields are missing', function () {
@@ -43,14 +38,14 @@ it('fails validation when fields are not applicable', function ($name, $region, 
 
     $data = [
         'name' => $name,
-        'region' => $region,
+        'region_id' => $region,
         'username' => $username,
         'password' => $password,
     ];
 
     $this->actingAs($user)
         ->patch(route('sellers.update', User::factory()->create()), $data)
-        ->assertSessionHasErrors(['name', 'region', 'username', 'password']);
+        ->assertSessionHasErrors(['name', 'region_id', 'username', 'password']);
 })->with([
     [1, 1000, 123, 1233],
     ['a', 1000, 'a', 'asd'],
@@ -61,7 +56,7 @@ it('fails validation when the name field is not unique', function () {
 
     $data = [
         'name' => 'Test seller',
-        'region' => Region::factory()->create()->id,
+        'region_id' => Region::factory()->create()->id,
         'username' => User::factory()->create()->username,
         'password' => '1234',
     ];
@@ -72,7 +67,7 @@ it('fails validation when the name field is not unique', function () {
 });
 
 it('prevents unauthorized users from updating a seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->patch(route('sellers.update', User::factory()->create()))

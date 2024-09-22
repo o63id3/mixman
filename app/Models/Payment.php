@@ -27,7 +27,7 @@ final class Payment extends Model
     /**
      * Scope the payments depending on user role.
      */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
+    public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
     {
         if ($user->isAdmin()) {
             return $query;
@@ -41,7 +41,7 @@ final class Payment extends Model
      */
     public function seller(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'seller_id');
+        return $this->belongsTo(Seller::class);
     }
 
     /**

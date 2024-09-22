@@ -20,7 +20,7 @@ it('renders the index page for admin', function () {
 });
 
 it('renders the index page for seller', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     Payment::factory(5)->create();
     Payment::factory(3)->create(['seller_id' => $user->id]);

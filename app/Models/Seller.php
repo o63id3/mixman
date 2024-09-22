@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-final class User extends Authenticatable
+final class Seller extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -39,11 +39,11 @@ final class User extends Authenticatable
     ];
 
     /**
-     * Check if the user is admin.
+     * Seller is not an admin.
      */
     public function isAdmin(): bool
     {
-        return $this->admin;
+        return false;
     }
 
     /**
@@ -55,11 +55,43 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the seller orders.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * Get the seller region.
      */
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class, 'registered_by');
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get the seller transactions.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Calculate the balance.
+     */
+    public function scopeWithBalance(Builder $query): Builder
+    {
+        return $query->withSum('transactions as balance', 'amount');
+    }
+
+    /**
+     * Load the balance.
+     */
+    public function loadBalance(): void
+    {
+        $this->loadSum('transactions as balance', 'amount');
     }
 
     /**
@@ -71,7 +103,6 @@ final class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
-            'admin' => 'boolean',
             'active' => 'boolean',
         ];
     }

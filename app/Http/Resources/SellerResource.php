@@ -7,7 +7,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class PaymentResource extends JsonResource
+final class SellerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,13 @@ final class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'seller' => $this->whenLoaded('seller', fn () => SellerResource::make($this->seller)),
-            'registerer' => $this->whenLoaded('registerer', fn () => UserResource::make($this->registerer)),
-            'amount' => $this->amount,
+            'region' => $this->whenLoaded('region', fn () => RegionResource::make($this->region)),
+            'name' => $this->name,
+            'username' => $this->username,
+            'active' => $this->active,
+            'balance' => $this->whenHas('balance'),
+            'contact_info' => $this->contact_info,
             'notes' => $this->notes,
-            'created_at' => $this->created_at->diffForHumans(),
         ];
     }
 }

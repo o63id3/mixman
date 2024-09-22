@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Models\User;
 
 it('allows an seller to create an order', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('seller-orders.store'))
@@ -18,7 +18,7 @@ it('allows an seller to create an order', function () {
 });
 
 it('prevents a seller from creating more than one order within 24 hours', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('seller-orders.store'))

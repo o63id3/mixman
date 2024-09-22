@@ -15,7 +15,7 @@ it('allows an authorized user to delete an order item', function () {
 });
 
 it('prevents unauthorized users from deleting an order item', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->delete(route('order-items.destroy', OrderItem::factory()->create()))

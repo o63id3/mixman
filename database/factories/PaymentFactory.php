@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,8 +21,8 @@ final class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'seller_id' => User::factory(),
-            'registered_by' => 1,
+            'seller_id' => Seller::factory(),
+            'registered_by' => User::factory(),
             'amount' => random_int(100, 300),
             'notes' => fake()->paragraph(),
         ];

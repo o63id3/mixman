@@ -15,7 +15,7 @@ it('allows an authorized user to delete a card', function () {
 });
 
 it('prevents unauthorized users from updating a card', function () {
-    $user = User::factory()->user()->create();
+    $user = User::factory()->create();
 
     $this->actingAs($user)
         ->delete(route('cards.destroy', Card::factory()->create()))
