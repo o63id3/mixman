@@ -20,11 +20,15 @@ final class PaymentFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
+
         return [
             'seller_id' => Seller::factory(),
             'registered_by' => User::factory(),
             'amount' => random_int(100, 300),
             'notes' => fake()->paragraph(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

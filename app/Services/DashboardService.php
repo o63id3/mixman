@@ -32,7 +32,8 @@ final class DashboardService
      */
     public function getMaxDebutSeller(): array
     {
-        $maxSeller = Transaction::select(['seller_id', DB::raw('SUM(amount) as total_amount')])
+        $seller = Transaction::query()
+            ->select(['seller_id', DB::raw('SUM(amount) as total_amount')])
             ->with('seller')
             ->groupBy('seller_id')
             ->orderBy('total_amount')
@@ -40,8 +41,8 @@ final class DashboardService
             ->first();
 
         return [
-            'seller' => $maxSeller ? $maxSeller->seller : null,
-            'amount' => $maxSeller ? $maxSeller->total_amount : 0,
+            'seller' => $seller ? $seller->seller : null,
+            'amount' => $seller ? $seller->total_amount : 0,
         ];
     }
 
@@ -50,18 +51,29 @@ final class DashboardService
      */
     public function getMaxRegionIncome($start = null, $end = null): array
     {
-        $maxRegion = Payment::query()
-            ->select([DB::raw('SUM(amount) as total_amount'), 'region_id'])
-            ->when($start && $end, fn ($query) => $query->whereBetween('payments.created_at', [$start, $end]))
-            ->join('users', 'users.id', '=', 'seller_id')
-            ->groupBy('region_id')
+        $region = Region::query()
+            ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
+                $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
+            }], 'amount')
             ->orderByDesc('total_amount')
             ->first();
 
         return [
-            'region' => $maxRegion ? Region::find($maxRegion->region_id)->value('name') : null,
-            'amount' => $maxRegion ? $maxRegion->total_amount : 0,
+            'region' => $region->name,
+            'amount' => $region ? $region->total_amount : 0,
         ];
+    }
+
+    /**
+     * Get the total income between two dates.
+     */
+    public function getTotalIncome($start = null, $end = null): int
+    {
+        $income = Payment::query()
+            ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
+            ->sum('amount');
+
+        return $income;
     }
 
     /**
@@ -84,6 +96,7 @@ final class DashboardService
             'max_debut_seller' => $this->getMaxDebutSeller(),
             'max_region_income' => $this->getMaxRegionIncome($startOfLastWeek, $endOfLastWeek),
             'sellers_count' => $this->getSellersCount(),
+            'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
         ];
     }
 

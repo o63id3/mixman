@@ -33,6 +33,7 @@ const props = defineProps<{
     amount: number
   }
   sellers_count?: number
+  total_income?: number
 }>()
 
 const user = usePage().props.auth.user
@@ -57,18 +58,20 @@ const cards: Array<Card> = [
     value: props.max_debut_seller?.seller?.name ?? '',
     description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible:
-      user.admin &&
-      props.max_debut_seller?.seller !== null &&
-      props.max_debut_seller !== undefined &&
-      props.max_debut_seller.amount > 0,
+    visible: user.admin,
+  },
+  {
+    title: 'مدخول الأسبوع الماضي',
+    value: `${props.total_income} شيكل`,
+    icon: h(DollarSign, { class: 'text-green-500' }),
+    visible: user.admin,
   },
   {
     title: 'أكبر مدخول الأسبوع الماضي',
     value: props.max_region_income?.region ?? '',
     description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin && props.max_region_income?.region !== null,
+    visible: user.admin,
   },
   {
     title: 'الباعة',

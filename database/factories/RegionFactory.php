@@ -19,7 +19,7 @@ final class RegionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->streetName(),
+            'name' => $this->faker->unique()->streetName(),
         ];
     }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Enums\OrderStatusEnum;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +19,7 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        $admin = User::factory()->create([
             'region_id' => null,
             'name' => 'المسؤول',
             'username' => 'admin',
@@ -35,9 +35,9 @@ final class DatabaseSeeder extends Seeder
             'name' => 'المشروع',
         ]]);
 
-        $sellers = User::factory(15)->recycle($regions)->create();
+        $sellers = Seller::factory(15)->recycle($regions)->create();
 
-        $cards = Card::factory()->createMany([[
+        Card::factory()->createMany([[
             'name' => 'كرت فئة 1 شيكل',
             'price_for_consumer' => 1,
             'price_for_seller' => 0.9,
@@ -54,38 +54,15 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        Order::factory(100)
+        Order::factory(200)
             ->hasItems(3)
-            ->recycle($cards)
             ->recycle($sellers)
-            ->create([
-                'status' => OrderStatusEnum::Completed,
-            ]);
-
-        Order::factory(100)
-            ->hasItems(3)
-            ->recycle($cards)
-            ->recycle($sellers)
-            ->create([
-                'status' => OrderStatusEnum::Pending,
-            ]);
-
-        Order::factory(100)
-            ->hasItems(1)
-            ->recycle($cards)
-            ->recycle($sellers)
-            ->create([
-                'status' => OrderStatusEnum::Returned,
-            ]);
-
-        Order::factory(100)
-            ->hasItems(1)
-            ->recycle($cards)
-            ->recycle($sellers)
+            ->recycle($admin)
             ->create();
 
         Payment::factory(100)
             ->recycle($sellers)
+            ->recycle($admin)
             ->create();
     }
 }
