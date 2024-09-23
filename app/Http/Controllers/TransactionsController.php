@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TransactionResource;
+use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,11 +28,12 @@ final class TransactionsController
             ->latest()
             ->latest('id')
             ->visibleTo($user)
-            ->when(array_key_exists('type', $filters), fn ($query) => $query->whereIn('type', explode(',', $filters['type'])))
+            ->when(array_key_exists('seller', $filters), fn ($query) => $query->whereIn('seller_id', explode(',', $filters['seller'])))
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
+            'sellers' => Seller::all(),
             'filters' => $filters,
         ]);
     }

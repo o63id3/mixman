@@ -2,13 +2,14 @@
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Filters, Paginator, Transaction } from '@/types'
+import { Filters, Paginator, Transaction, User } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import { columns } from './columns'
 import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   transactions: Paginator<Transaction>
+  sellers: Array<User>
   filters: Filters
 }>()
 </script>
@@ -29,7 +30,7 @@ defineProps<{
         href="transactions.index"
       >
         <template #toolBar="{ table }">
-          <Toolbar :table="table" />
+          <Toolbar :table="table" :sellers="sellers" />
         </template>
       </DataTable>
       <DataTablePagination

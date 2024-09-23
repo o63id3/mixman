@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { Transaction, User } from '@/types'
+import { Payment, User } from '@/types'
 import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilter.vue'
 
 import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 interface DataTableToolbarProps {
-  table: Table<Transaction>
+  table: Table<Payment>
   sellers: Array<User>
 }
 

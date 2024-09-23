@@ -31,7 +31,8 @@ export const columns: ColumnDef<User>[] = [
       ),
   },
   {
-    accessorKey: 'region.name',
+    accessorKey: 'region',
+    accessorFn: (seller) => seller.region.name,
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,

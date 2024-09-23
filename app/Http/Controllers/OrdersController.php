@@ -29,10 +29,11 @@ final class OrdersController
         Gate::authorize('viewAny', Order::class);
 
         $seller = type($request->user())->as(User::class);
+        $filters = $request->get('filters', []);
 
         $orders = Order::query()
-            ->searchBySellerName($request->get('seller', ''))
-            ->filterByStatus($request->get('status'))
+            ->when(array_key_exists('seller', $filters), fn ($query) => $query->whereIn('seller_id', explode(',', $filters['seller'])))
+            ->when(array_key_exists('status', $filters), fn ($query) => $query->whereIn('status', explode(',', $filters['status'])))
             ->with(['seller', 'action'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
@@ -44,10 +45,8 @@ final class OrdersController
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'statuses' => OrderStatusEnum::cases(),
-            'filters' => [
-                'seller' => $request->get('seller'),
-                'status' => $request->get('status'),
-            ],
+            'sellers' => Seller::all(),
+            'filters' => $filters,
         ]);
     }
 

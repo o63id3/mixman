@@ -131,7 +131,7 @@ const filterFunction = (val: any[], term: string) => {
                 v-if="option.icon"
                 class="mr-2 h-4 w-4 text-muted-foreground"
               />
-              <span>{{ option.label }}</span>
+              <span class="truncate">{{ option.label }}</span>
               <span
                 v-if="facets?.get(option.value)"
                 class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs"

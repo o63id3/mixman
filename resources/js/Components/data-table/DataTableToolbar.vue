@@ -1,13 +1,12 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import type { Table } from '@tanstack/vue-table'
 import { computed } from 'vue'
-import { Transaction } from '@/types'
 
 import { Cross2Icon } from '@radix-icons/vue'
 import { Button } from '@/Components/ui/button'
 
 interface DataTableToolbarProps {
-  table: Table<Transaction>
+  table: Table<TData>
 }
 
 const props = defineProps<DataTableToolbarProps>()

@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Order, Paginator } from '@/types'
+import { Filters, Order, Paginator, User } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import { columns } from './columns'
+import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   orders: Paginator<Order>
+  sellers: Array<User>
+  filters: Filters
 }>()
 </script>
 
@@ -32,7 +35,16 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="orders.data" :columns="columns" />
+      <DataTable
+        :data="orders.data"
+        :columns="columns"
+        :filters="filters"
+        href="orders.index"
+      >
+        <template #toolBar="{ table }">
+          <Toolbar :table="table" :sellers="sellers" />
+        </template>
+      </DataTable>
       <DataTablePagination :links="orders.links" :meta="orders.meta" />
     </div>
   </AuthenticatedLayout>

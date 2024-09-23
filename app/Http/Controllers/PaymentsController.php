@@ -25,8 +25,10 @@ final class PaymentsController
         Gate::authorize('viewAny', Payment::class);
 
         $seller = type($request->user())->as(User::class);
+        $filters = $request->get('filters', []);
 
         $payments = Payment::query()
+            ->when(array_key_exists('seller', $filters), fn ($query) => $query->whereIn('seller_id', explode(',', $filters['seller'])))
             ->with(['seller', 'registerer'])
             ->latest()
             ->latest('id')
@@ -35,6 +37,8 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
+            'sellers' => Seller::all(),
+            'filters' => $filters,
         ]);
     }
 
