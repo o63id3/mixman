@@ -7,13 +7,14 @@ import {
 } from '@radix-icons/vue'
 
 import { Button } from '@/Components/ui/button'
-import { Links, Meta } from '@/types'
+import { Filters, Links, Meta } from '@/types'
 
 import { router } from '@inertiajs/vue3'
 
 defineProps<{
   links: Links
   meta: Meta
+  filters?: Filters
 }>()
 </script>
 
@@ -28,7 +29,9 @@ defineProps<{
         variant="outline"
         class="hidden h-8 w-8 p-0 lg:flex"
         :disabled="!links.next"
-        @click="router.get(links.last, undefined, { preserveScroll: true })"
+        @click="
+          router.get(links.last, { filters: filters }, { preserveScroll: true })
+        "
       >
         <span class="sr-only">Go to first page</span>
         <DoubleArrowLeftIcon class="h-4 w-4" />
@@ -37,7 +40,9 @@ defineProps<{
         variant="outline"
         class="h-8 w-8 p-0"
         :disabled="!links.next"
-        @click="router.get(links.next, undefined, { preserveScroll: true })"
+        @click="
+          router.get(links.next, { filters: filters }, { preserveScroll: true })
+        "
       >
         <span class="sr-only">Go to previous page</span>
         <ChevronLeftIcon class="h-4 w-4" />
@@ -46,7 +51,9 @@ defineProps<{
         variant="outline"
         class="h-8 w-8 p-0"
         :disabled="!links.prev"
-        @click="router.get(links.prev, undefined, { preserveScroll: true })"
+        @click="
+          router.get(links.prev, { filters: filters }, { preserveScroll: true })
+        "
       >
         <span class="sr-only">Go to next page</span>
         <ChevronRightIcon class="h-4 w-4" />
@@ -55,7 +62,13 @@ defineProps<{
         variant="outline"
         class="hidden h-8 w-8 p-0 lg:flex"
         :disabled="!links.prev"
-        @click="router.get(links.first, undefined, { preserveScroll: true })"
+        @click="
+          router.get(
+            links.first,
+            { filters: filters },
+            { preserveScroll: true },
+          )
+        "
       >
         <span class="sr-only">Go to last page</span>
         <DoubleArrowRightIcon class="h-4 w-4" />

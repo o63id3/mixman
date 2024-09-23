@@ -136,6 +136,8 @@ export type PageProps<
 > = T & {
   auth: {
     user: User
-    filters?: Array<Record<string, string>>
   }
 }
+
+export type Filters = Record<Filter[]>
+export type Filter = Record<string, any>

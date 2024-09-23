@@ -11,7 +11,7 @@ import {
   UserRound,
 } from 'lucide-vue-next'
 import { User } from '@/types'
-import { h } from 'vue'
+import { Component, h } from 'vue'
 import { formatMoney } from '@/lib/money'
 import CardDescription from '@/Components/ui/card/CardDescription.vue'
 import CardFooter from '@/Components/ui/card/CardFooter.vue'
@@ -41,7 +41,7 @@ interface Card {
   title: string
   value: string | number
   description?: string
-  icon: Object
+  icon: Component
   visible: boolean
 }
 

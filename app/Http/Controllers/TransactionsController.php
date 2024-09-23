@@ -20,18 +20,19 @@ final class TransactionsController
     {
         $user = type($request->user())->as(User::class);
 
+        $filters = $request->get('filters', []);
+
         $transactions = Transaction::query()
             ->with('seller')
             ->latest()
             ->latest('id')
             ->visibleTo($user)
+            ->when(array_key_exists('type', $filters), fn ($query) => $query->whereIn('type', explode(',', $filters['type'])))
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'filters' => [
-                'seller' => $request->get('seller'),
-            ],
+            'filters' => $filters,
         ]);
     }
 }

@@ -5,17 +5,9 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/vue-table'
-import {
-  FlexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
+import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { valueUpdater } from '@/lib/utils'
 import {
   Table,
@@ -27,11 +19,15 @@ import {
 } from '@/Components/ui/table'
 import DataTableSummary from './DataTableSummary.vue'
 import type { SummaryField } from './DataTableSummary.vue'
+import { Filters } from '@/types'
+import { router } from '@inertiajs/vue3'
 
 interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   summaryFields?: SummaryField[]
+  href?: string
+  filters?: Filters
 }
 
 const props = defineProps<DataTableProps>()
@@ -40,6 +36,19 @@ const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
 const columnVisibility = ref<VisibilityState>({})
 const rowSelection = ref({})
+
+if (props.filters) {
+  let filters: ColumnFiltersState = []
+
+  Object.keys(props.filters).forEach((key) => {
+    filters.push({
+      id: key,
+      value: props.filters[key],
+    })
+  })
+
+  columnFilters.value = filters
+}
 
 const table = useVueTable({
   get data() {
@@ -62,7 +71,6 @@ const table = useVueTable({
       return rowSelection.value
     },
   },
-  enableRowSelection: true,
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, columnFilters),
@@ -71,14 +79,35 @@ const table = useVueTable({
   onRowSelectionChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
 })
+
+const fetchData = () => {
+  if (!props.href) return
+
+  let filters: Filters = {}
+  columnFilters.value.forEach((filter: { id: string; value: unknown }) => {
+    filters[filter.id] = filter.value
+  })
+
+  router.get(
+    route(props.href),
+    { filters: filters },
+    {
+      preserveState: true,
+      preserveScroll: true,
+    },
+  )
+}
+
+if (props.href) {
+  watch(columnFilters, fetchData, { deep: true })
+}
 </script>
 
 <template>
+  <div class="mb-4 px-4 lg:px-0">
+    <slot :table="table" name="toolBar" />
+  </div>
   <div
     class="overflow-hidden overflow-x-auto border bg-white shadow-sm lg:rounded-md"
   >
