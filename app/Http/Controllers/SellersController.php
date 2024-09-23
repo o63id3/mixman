@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\SellerFilter;
 use App\Http\Resources\SellerResource;
 use App\Http\Resources\UserResource;
 use App\Models\Region;
@@ -21,15 +22,12 @@ final class SellersController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index(Request $request, SellerFilter $filter): Response
     {
         Gate::authorize('viewAny', Seller::class);
 
-        $filters = $request->get('filters', []);
-
         $sellers = Seller::query()
-            ->when(array_key_exists('region', $filters), fn ($query) => $query->whereIn('region_id', explode(',', $filters['region'])))
-
+            ->filter($filter)
             ->latest()
             ->withBalance()
             ->with(['region:id,name'])
@@ -38,7 +36,7 @@ final class SellersController
         return Inertia::render('Sellers/Index', [
             'sellers' => SellerResource::collection($sellers),
             'regions' => Region::all(),
-            'filters' => $filters,
+            'filters' => $filter->filters,
         ]);
     }
 

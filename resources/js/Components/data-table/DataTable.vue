@@ -91,7 +91,7 @@ const fetchData = () => {
 
   router.get(
     route(props.href),
-    { filters: filters },
+    { filter: filters },
     {
       preserveState: true,
       preserveScroll: true,

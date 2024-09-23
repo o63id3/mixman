@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Order extends Model
 {
-    use HasFactory;
+    use Filterable, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -69,32 +70,6 @@ final class Order extends Model
     public function scopeReturned(Builder $query): Builder
     {
         return $query->where('status', OrderStatusEnum::Returned);
-    }
-
-    /**
-     * Search by seller name.
-     */
-    public function scopeSearchBySellerName(Builder $query, $search): Builder
-    {
-        if ($search === '' || $search === null) {
-            return $query;
-        }
-
-        return $query->whereHas('seller', function ($query) use ($search) {
-            return $query->where('name', 'like', "%$search%");
-        });
-    }
-
-    /**
-     * filter by seller name.
-     */
-    public function scopeFilterByStatus(Builder $query, $status): Builder
-    {
-        if ($status === null || $status === 'all') {
-            return $query;
-        }
-
-        return $query->where('status', $status);
     }
 
     /**

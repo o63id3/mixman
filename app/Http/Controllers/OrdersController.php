@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
+use App\Http\Filters\OrderFilter;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
@@ -24,29 +25,27 @@ final class OrdersController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index(Request $request, OrderFilter $filter): Response
     {
         Gate::authorize('viewAny', Order::class);
 
         $seller = type($request->user())->as(User::class);
-        $filters = $request->get('filters', []);
 
         $orders = Order::query()
-            ->when(array_key_exists('seller', $filters), fn ($query) => $query->whereIn('seller_id', explode(',', $filters['seller'])))
-            ->when(array_key_exists('status', $filters), fn ($query) => $query->whereIn('status', explode(',', $filters['status'])))
             ->with(['seller', 'action'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->latest()
             ->latest('id')
             ->visibleTo($seller)
+            ->filter($filter)
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'statuses' => OrderStatusEnum::cases(),
             'sellers' => Seller::all(),
-            'filters' => $filters,
+            'filters' => $filter->filters,
         ]);
     }
 
