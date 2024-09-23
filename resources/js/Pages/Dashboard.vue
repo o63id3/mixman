@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, usePage } from '@inertiajs/vue3'
+import { Head, useForm, usePage } from '@inertiajs/vue3'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import {
@@ -10,14 +10,13 @@ import {
   DollarSign,
   UserRound,
 } from 'lucide-vue-next'
-import { Region, User } from '@/types'
+import { User } from '@/types'
 import { h } from 'vue'
 import { formatMoney } from '@/lib/money'
 import CardDescription from '@/Components/ui/card/CardDescription.vue'
 import CardFooter from '@/Components/ui/card/CardFooter.vue'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from '@/Components/ui/button'
 import { toast } from '@/Components/ui/toast'
+import Button from '@/Components/ui/button/Button.vue'
 
 const props = defineProps<{
   total_debuts: number
@@ -62,7 +61,7 @@ const cards: Array<Card> = [
   },
   {
     title: 'مدخول الأسبوع الماضي',
-    value: `${props.total_income} شيكل`,
+    value: `${formatMoney(props.total_income)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
     visible: user.admin,
   },
@@ -98,6 +97,8 @@ const cards: Array<Card> = [
     visible: true,
   },
 ]
+
+const form = useForm({})
 </script>
 
 <template>
@@ -113,15 +114,17 @@ const cards: Array<Card> = [
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Link
-            :href="route('seller-orders.store')"
-            method="post"
-            as="button"
-            :class="cn(buttonVariants({ variant: 'default' }))"
-            @success="() => toast({ title: 'تم إرسال الطلب بنجاح' })"
+          <Button
+            @click="
+              form.post(route('seller-orders.store'), {
+                preserveScroll: true,
+                onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
+              })
+            "
+            :disabled="form.processing"
           >
             طلب كروت
-          </Link>
+          </Button>
         </CardFooter>
       </Card>
       <Card

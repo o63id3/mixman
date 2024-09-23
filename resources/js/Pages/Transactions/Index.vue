@@ -2,16 +2,12 @@
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Paginator, Transaction, User } from '@/types'
+import { Paginator, Transaction } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import { columns } from './columns'
 
 defineProps<{
   transactions: Paginator<Transaction>
-  sellers: User[]
-  filters: {
-    seller: Pick<User, 'id'>
-  }
 }>()
 </script>
 

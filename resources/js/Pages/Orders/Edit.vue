@@ -21,6 +21,7 @@ const props = defineProps<{
   cards: Array<Card>
   can: {
     addItem: boolean
+    update: boolean
     delete: boolean
   }
 }>()
@@ -61,7 +62,11 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
+    <UpdateFormLayout
+      @submit="onSubmit"
+      :can-update="can.update"
+      :can-delete="can.delete"
+    >
       <template #deleteBtn>
         <DeleteLink
           :href="route('orders.destroy', order.id)"
@@ -73,6 +78,7 @@ const onSubmit = handleSubmit((values) => {
 
       <OrderForm
         hidden-cards
+        :disabled="!can.update"
         :sellers="sellers"
         :cards="cards"
         :selected="values.seller_id"
@@ -82,6 +88,8 @@ const onSubmit = handleSubmit((values) => {
 
     <CardsSection
       class="mt-4"
+      editing
+      :can-update="can.update"
       :items="items"
       :order="order"
       :cards="cards"

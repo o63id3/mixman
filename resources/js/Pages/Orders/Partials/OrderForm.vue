@@ -21,6 +21,8 @@ import { orderStatues } from '@/types/enums'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircle } from 'lucide-vue-next'
 import Button from '@/Components/ui/button/Button.vue'
+import Input from '@/Components/ui/input/Input.vue'
+import { ref } from 'vue'
 
 const emit = defineEmits(['select'])
 
@@ -29,7 +31,12 @@ const props = defineProps<{
   cards: Array<Card>
   selected?: number
   hiddenCards?: boolean
+  disabled?: boolean
 }>()
+
+const sellerName = ref(
+  props.sellers.find((seller) => seller.id === props.selected)?.name,
+)
 </script>
 
 <template>
@@ -37,6 +44,7 @@ const props = defineProps<{
     <FormItem>
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox
+        v-if="!disabled"
         :options="
           sellers.map((seller) => ({
             value: seller.id,
@@ -48,6 +56,7 @@ const props = defineProps<{
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />
+      <Input v-else v-model="sellerName" disabled />
       <FormMessage />
     </FormItem>
   </FormField>
@@ -55,7 +64,7 @@ const props = defineProps<{
     <FormItem>
       <FormLabel>الحالة</FormLabel>
       <FormControl>
-        <Select v-bind="componentField">
+        <Select v-bind="componentField" :disabled="disabled">
           <SelectTrigger>
             <SelectValue placeholder="اختر حالة الطلب" />
           </SelectTrigger>
@@ -116,7 +125,7 @@ const props = defineProps<{
     <FormItem class="md:col-span-2">
       <FormLabel>ملاحظات</FormLabel>
       <FormControl>
-        <Textarea v-bind="componentField" />
+        <Textarea v-bind="componentField" :disabled="disabled" />
       </FormControl>
       <FormMessage />
     </FormItem>
