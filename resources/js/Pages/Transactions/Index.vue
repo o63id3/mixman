@@ -11,6 +11,7 @@ defineProps<{
   transactions: Paginator<Transaction>
   sellers: Array<User>
   filters: Filters
+  sorts: string
 }>()
 </script>
 
@@ -27,9 +28,10 @@ defineProps<{
         :data="transactions.data"
         :columns="columns"
         :filters="filters"
+        :sorts="sorts"
         href="transactions.index"
       >
-        <template #toolBar="{ table }">
+        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :sellers="sellers" />
         </template>
       </DataTable>
@@ -37,6 +39,7 @@ defineProps<{
         :links="transactions.links"
         :meta="transactions.meta"
         :filters="filters"
+        :sorts="sorts"
       />
     </div>
   </AuthenticatedLayout>

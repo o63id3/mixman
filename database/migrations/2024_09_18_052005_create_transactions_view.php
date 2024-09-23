@@ -19,7 +19,7 @@ return new class extends Migration
                 amount AS amount,
                 seller_id,
                 'payment' AS type,
-                '' AS status,
+                NULL AS status,
                 created_at
             FROM
                 payments

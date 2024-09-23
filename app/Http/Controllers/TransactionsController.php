@@ -24,16 +24,16 @@ final class TransactionsController
 
         $transactions = Transaction::query()
             ->with('seller')
-            ->latest()
-            ->latest('id')
             ->visibleTo($user)
             ->filter($filter)
+            ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
             'sellers' => Seller::all(),
             'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
         ]);
     }
 }

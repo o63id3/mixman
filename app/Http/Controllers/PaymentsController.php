@@ -28,11 +28,10 @@ final class PaymentsController
         $seller = type($request->user())->as(User::class);
 
         $payments = Payment::query()
-            ->filter($filter)
             ->with(['seller', 'registerer'])
-            ->latest()
-            ->latest('id')
             ->visibleTo($seller)
+            ->filter($filter)
+            ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Payments/Index', [

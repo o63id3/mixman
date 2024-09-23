@@ -15,6 +15,7 @@ defineProps<{
   links: Links
   meta: Meta
   filters?: Filters
+  sorts?: string
 }>()
 </script>
 
@@ -30,7 +31,11 @@ defineProps<{
         class="hidden h-8 w-8 p-0 lg:flex"
         :disabled="!links.next"
         @click="
-          router.get(links.last, { filter: filters }, { preserveScroll: true })
+          router.get(
+            links.last,
+            { filter: filters, sort: sorts },
+            { preserveScroll: true },
+          )
         "
       >
         <span class="sr-only">Go to first page</span>
@@ -41,7 +46,11 @@ defineProps<{
         class="h-8 w-8 p-0"
         :disabled="!links.next"
         @click="
-          router.get(links.next, { filter: filters }, { preserveScroll: true })
+          router.get(
+            links.next,
+            { filter: filters, sort: sorts },
+            { preserveScroll: true },
+          )
         "
       >
         <span class="sr-only">Go to previous page</span>
@@ -52,7 +61,11 @@ defineProps<{
         class="h-8 w-8 p-0"
         :disabled="!links.prev"
         @click="
-          router.get(links.prev, { filter: filters }, { preserveScroll: true })
+          router.get(
+            links.prev,
+            { filter: filters, sort: sorts },
+            { preserveScroll: true },
+          )
         "
       >
         <span class="sr-only">Go to next page</span>
@@ -63,7 +76,11 @@ defineProps<{
         class="hidden h-8 w-8 p-0 lg:flex"
         :disabled="!links.prev"
         @click="
-          router.get(links.first, { filter: filters }, { preserveScroll: true })
+          router.get(
+            links.first,
+            { filter: filters, sort: sorts },
+            { preserveScroll: true },
+          )
         "
       >
         <span class="sr-only">Go to last page</span>

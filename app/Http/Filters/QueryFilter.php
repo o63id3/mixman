@@ -11,6 +11,8 @@ abstract class QueryFilter
 {
     public array $filters = [];
 
+    public string $sorts = '';
+
     protected Builder $builder;
 
     public function __construct(
@@ -30,6 +32,8 @@ abstract class QueryFilter
 
     final public function sort(string $values): void
     {
+        $this->sorts = $values;
+
         $sortAttrs = explode(',', $values);
 
         foreach ($sortAttrs as $sortAttr) {
@@ -40,7 +44,9 @@ abstract class QueryFilter
                 $sortAttr = mb_substr($sortAttr, 1);
             }
 
-            $this->builder->orderBy($sortAttr, $direction);
+            $this->builder
+                ->orderByRaw("$sortAttr IS NULL")
+                ->orderBy($sortAttr, $direction);
         }
     }
 

@@ -1,7 +1,9 @@
 <script setup lang="ts" generic="TData, TValue">
 import type {
   ColumnDef,
+  ColumnFilter,
   ColumnFiltersState,
+  ColumnSort,
   SortingState,
   VisibilityState,
 } from '@tanstack/vue-table'
@@ -28,6 +30,7 @@ interface DataTableProps {
   summaryFields?: SummaryField[]
   href?: string
   filters?: Filters
+  sorts?: string
 }
 
 const props = defineProps<DataTableProps>()
@@ -48,6 +51,13 @@ if (props.filters) {
   })
 
   columnFilters.value = filters
+}
+
+if (props.sorts) {
+  sorting.value = props.sorts.split(',').map((sort) => ({
+    desc: sort.charAt(0) === '-',
+    id: sort.charAt(0) === '-' ? sort.substring(1) : sort,
+  }))
 }
 
 const table = useVueTable({
@@ -85,13 +95,19 @@ const fetchData = () => {
   if (!props.href) return
 
   let filters: Filters = {}
-  columnFilters.value.forEach((filter: { id: string; value: unknown }) => {
+  columnFilters.value.forEach((filter: ColumnFilter) => {
     filters[filter.id] = filter.value
   })
 
+  let sorts: string | undefined = sorting.value
+    .map((sort: ColumnSort) => `${sort.desc ? '-' : ''}${sort.id}`)
+    .join(',')
+
+  sorts = sorts.length ? sorts : undefined
+
   router.get(
     route(props.href),
-    { filter: filters },
+    { filter: filters, sort: sorts },
     {
       preserveState: true,
       preserveScroll: true,
@@ -100,7 +116,7 @@ const fetchData = () => {
 }
 
 if (props.href) {
-  watch(columnFilters, fetchData, { deep: true })
+  watch([columnFilters, sorting], fetchData, { deep: true })
 }
 </script>
 

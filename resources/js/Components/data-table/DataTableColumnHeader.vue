@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <!-- <div
+  <div
     v-if="column.getCanSort()"
     :class="cn('flex items-center space-x-2', $attrs.class ?? '')"
   >
@@ -69,10 +69,10 @@ export default {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  </div> -->
+  </div>
 
-  <!-- <div v-else :class="$attrs.class"> -->
-  <div :class="$attrs.class">
+  <div v-else :class="$attrs.class">
+    <!-- <div :class="$attrs.class"> -->
     {{ title }}
   </div>
 </template>

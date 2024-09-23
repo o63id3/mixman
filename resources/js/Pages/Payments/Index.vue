@@ -39,7 +39,7 @@ defineProps<{
         :filters="filters"
         href="payments.index"
       >
-        <template #toolBar="{ table }">
+        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :sellers="sellers" />
         </template>
       </DataTable>

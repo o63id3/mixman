@@ -41,7 +41,7 @@ defineProps<{
         :filters="filters"
         href="sellers.index"
       >
-        <template #toolBar="{ table }">
+        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :regions="regions" />
         </template>
       </DataTable>
