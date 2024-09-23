@@ -56,7 +56,7 @@ const filterFunction = (val: any[], term: string) => {
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" size="sm" class="h-8 border-dashed">
-        <PlusCircledIcon class="mr-2 h-4 w-4" />
+        <PlusCircledIcon class="h-4 w-4 ltr:mr-2 rtl:ml-2" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <Separator orientation="vertical" class="mx-2 h-4" />
@@ -117,7 +117,7 @@ const filterFunction = (val: any[], term: string) => {
               <div
                 :class="
                   cn(
-                    'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                    'flex h-4 w-4 items-center justify-center rounded-sm border border-primary ltr:mr-2 rtl:ml-2',
                     selectedValues.has(option.value)
                       ? 'bg-primary text-primary-foreground'
                       : 'opacity-50 [&_svg]:invisible',
@@ -129,12 +129,12 @@ const filterFunction = (val: any[], term: string) => {
               <component
                 :is="option.icon"
                 v-if="option.icon"
-                class="mr-2 h-4 w-4 text-muted-foreground"
+                class="h-4 w-4 ltr:mr-2 rtl:ml-2"
               />
               <span class="truncate">{{ option.label }}</span>
               <span
                 v-if="facets?.get(option.value)"
-                class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs"
+                class="flex h-4 w-4 items-center justify-center font-mono text-xs ltr:ml-auto rtl:mr-auto"
               >
                 {{ facets.get(option.value) }}
               </span>

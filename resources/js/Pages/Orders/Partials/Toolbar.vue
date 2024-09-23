@@ -18,12 +18,6 @@ defineProps<DataTableToolbarProps>()
   <DataTableToolbar :table="table">
     <div class="flex gap-2">
       <DataTableFacetedFilter
-        v-if="table.getColumn('status')"
-        :column="table.getColumn('status')"
-        title="الحالة"
-        :options="orderStatues"
-      />
-      <DataTableFacetedFilter
         v-if="table.getColumn('seller')"
         :column="table.getColumn('seller')"
         title="البائع"
@@ -33,6 +27,12 @@ defineProps<DataTableToolbarProps>()
             value: String(seller.id),
           }))
         "
+      />
+      <DataTableFacetedFilter
+        v-if="table.getColumn('status')"
+        :column="table.getColumn('status')"
+        title="الحالة"
+        :options="orderStatues"
       />
     </div>
   </DataTableToolbar>
