@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
-use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -35,9 +35,9 @@ final class DatabaseSeeder extends Seeder
             'name' => 'المشروع',
         ]]);
 
-        $sellers = Seller::factory(15)->recycle($regions)->create();
+        $sellers = User::factory(15)->recycle($regions)->create(['admin' => false]);
 
-        Card::factory()->createMany([[
+        $cards = Card::factory()->createMany([[
             'name' => 'كرت فئة 1 شيكل',
             'price_for_consumer' => 1,
             'price_for_seller' => 0.9,
@@ -54,15 +54,56 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        Order::factory(200)
-            ->hasItems(3)
-            ->recycle($sellers)
+        Order::factory(100)
+            ->state(function () use ($sellers) {
+                return [
+                    'seller_id' => $sellers->random()->id,
+                ];
+            })
             ->recycle($admin)
+            ->hasItems(3)
+            ->recycle($cards)
+            ->pending()
+            ->create();
+
+        Order::factory(100)
+            ->state(function () use ($sellers) {
+                return [
+                    'seller_id' => $sellers->random()->id,
+                ];
+            })
+            ->recycle($admin)
+            ->hasItems(3)
+            ->recycle($cards)
+            ->completed()
+            ->create();
+
+        Order::factory(20)
+            ->state(function () use ($sellers) {
+                return [
+                    'seller_id' => $sellers->random()->id,
+                ];
+            })
+            ->recycle($admin)
+            ->hasItems(1)
+            ->recycle($cards)
+            ->returned()
             ->create();
 
         Payment::factory(100)
-            ->recycle($sellers)
+            ->state(function () use ($sellers) {
+                return [
+                    'seller_id' => $sellers->random()->id,
+                ];
+            })
             ->recycle($admin)
             ->create();
+
+        Order::where('status', OrderStatusEnum::Pending)
+            ->where('created_at', '<', now()->subWeek())
+            ->update([
+                'status' => OrderStatusEnum::Completed,
+                'action_by' => $admin->id,
+            ]);
     }
 }
