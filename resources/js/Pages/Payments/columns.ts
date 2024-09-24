@@ -37,6 +37,7 @@ export const columns: ColumnDef<Payment>[] = [
         title: 'تم الاستلام بواسطة',
       }),
     cell: ({ row }) => row.getValue<User>('registerer')?.name,
+    enableSorting: false,
   },
   {
     accessorKey: 'amount',

@@ -29,6 +29,8 @@ export const columns: ColumnDef<Card>[] = [
           default: () => row.getValue('name'),
         },
       ),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'price_for_consumer',
@@ -38,6 +40,8 @@ export const columns: ColumnDef<Card>[] = [
         title: 'السعر للمستهلك',
       }),
     cell: ({ row }) => `${row.getValue('price_for_consumer')} شيكل`,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'price_for_seller',
@@ -47,6 +51,8 @@ export const columns: ColumnDef<Card>[] = [
         title: 'السعر للبائع',
       }),
     cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'active',
@@ -68,6 +74,8 @@ export const columns: ColumnDef<Card>[] = [
         h('span', { class: ' text-muted-foreground' }, value.label),
       ])
     },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'actions',

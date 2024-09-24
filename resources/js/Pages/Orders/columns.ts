@@ -30,6 +30,8 @@ export const columns: ColumnDef<Order>[] = [
           default: () => row.getValue<User>('seller').name,
         },
       ),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'status',
@@ -59,6 +61,7 @@ export const columns: ColumnDef<Order>[] = [
         column,
         title: 'تم اتخاذ الاجراء بواسطة',
       }),
+    enableSorting: false,
   },
   {
     accessorKey: 'total_price_for_seller',
@@ -69,6 +72,7 @@ export const columns: ColumnDef<Order>[] = [
       }),
     cell: ({ row }) =>
       `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
+    enableHiding: false,
   },
   {
     accessorKey: 'total_price_for_consumer',
@@ -79,6 +83,7 @@ export const columns: ColumnDef<Order>[] = [
       }),
     cell: ({ row }) =>
       `${formatMoney(row.getValue('total_price_for_consumer'))} شيكل`,
+    enableSorting: false,
   },
   {
     accessorKey: 'updated_at',
@@ -87,6 +92,8 @@ export const columns: ColumnDef<Order>[] = [
         column,
         title: 'التاريخ',
       }),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'actions',

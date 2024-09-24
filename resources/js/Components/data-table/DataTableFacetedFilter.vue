@@ -76,16 +76,18 @@ const filterFunction = (val: any[], term: string) => {
             </Badge>
 
             <template v-else>
-              <Badge
-                v-for="option in options.filter((option) =>
-                  selectedValues.has(option.value),
-                )"
-                :key="option.value"
-                variant="secondary"
-                class="rounded-sm px-1 font-normal"
-              >
-                {{ option.label }}
-              </Badge>
+              <div class="flex items-center gap-0.5">
+                <Badge
+                  v-for="option in options.filter((option) =>
+                    selectedValues.has(option.value),
+                  )"
+                  :key="option.value"
+                  variant="secondary"
+                  class="rounded-sm px-1 font-normal"
+                >
+                  {{ option.label }}
+                </Badge>
+              </div>
             </template>
           </div>
         </template>

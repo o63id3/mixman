@@ -54,18 +54,34 @@ export default {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem @click="column.toggleSorting(false)">
-          <ArrowUpIcon class="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-          Asc
+        <DropdownMenuItem
+          @click="column.toggleSorting(false)"
+          class="rtl:flex-row-reverse"
+        >
+          <ArrowUpIcon
+            class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
+          />
+          تصاعدي
         </DropdownMenuItem>
-        <DropdownMenuItem @click="column.toggleSorting(true)">
-          <ArrowDownIcon class="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-          Desc
+        <DropdownMenuItem
+          @click="column.toggleSorting(true)"
+          class="rtl:flex-row-reverse"
+        >
+          <ArrowDownIcon
+            class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
+          />
+          تنازلي
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem @click="column.toggleVisibility(false)">
-          <EyeNoneIcon class="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-          Hide
+        <DropdownMenuSeparator v-if="column.getCanHide()" />
+        <DropdownMenuItem
+          v-if="column.getCanHide()"
+          @click="column.toggleVisibility(false)"
+          class="rtl:flex-row-reverse"
+        >
+          <EyeNoneIcon
+            class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
+          />
+          اخفاء
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

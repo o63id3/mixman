@@ -20,8 +20,12 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-2 rtl:flex-row-reverse">
-    <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+  <div
+    class="flex items-center justify-between rounded bg-white px-3 py-2 rtl:flex-row-reverse"
+  >
+    <div
+      class="flex w-[100px] items-center justify-center text-xs font-medium tracking-wide"
+    >
       صفحة {{ meta.current_page }} من
       {{ meta.last_page }}
     </div>

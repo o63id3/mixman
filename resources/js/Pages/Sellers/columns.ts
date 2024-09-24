@@ -29,6 +29,7 @@ export const columns: ColumnDef<User>[] = [
           default: () => row.getValue('name'),
         },
       ),
+    enableHiding: false,
   },
   {
     accessorKey: 'region',
@@ -38,6 +39,8 @@ export const columns: ColumnDef<User>[] = [
         column,
         title: 'المنطقة',
       }),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'balance',
@@ -47,6 +50,7 @@ export const columns: ColumnDef<User>[] = [
         title: 'صافي الحساب',
       }),
     cell: ({ row }) => `${formatMoney(row.getValue('balance'))} شيكل`,
+    enableHiding: false,
   },
 
   {

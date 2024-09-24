@@ -22,14 +22,14 @@ final class OrderFilter extends QueryFilter
         return $this->builder->whereIn('status', $statues);
     }
 
-    public function createdAt($values): Builder
+    public function updatedAt($values): Builder
     {
         $dates = explode(',', $values);
 
         if (count($dates) > 1) {
-            return $this->builder->whereBetween('created_at', $dates);
+            return $this->builder->whereBetween('updated_at', $dates);
         }
 
-        return $this->builder->whereDate('created_at', $values);
+        return $this->builder->whereDate('updated_at', $values);
     }
 }

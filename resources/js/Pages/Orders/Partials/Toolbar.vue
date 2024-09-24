@@ -5,6 +5,7 @@ import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilt
 
 import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 import { orderStatues } from '@/types/enums'
+import DataTableDateRangeFilter from '@/Components/data-table/DataTableDateRangeFilter.vue'
 
 interface DataTableToolbarProps {
   table: Table<Order>
@@ -33,6 +34,10 @@ defineProps<DataTableToolbarProps>()
         :column="table.getColumn('status')"
         title="الحالة"
         :options="orderStatues"
+      />
+      <DataTableDateRangeFilter
+        v-if="table.getColumn('updated_at')"
+        :column="table.getColumn('updated_at')"
       />
     </div>
   </DataTableToolbar>

@@ -28,6 +28,8 @@ export const columns: ColumnDef<Region>[] = [
           default: () => row.getValue('name'),
         },
       ),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'actions',

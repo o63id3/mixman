@@ -6,6 +6,7 @@ namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 abstract class QueryFilter
 {
@@ -24,6 +25,8 @@ abstract class QueryFilter
         $this->filters = $filters;
 
         foreach ($filters as $key => $values) {
+            $key = Str::camel($key);
+
             if (method_exists($this, $key)) {
                 $this->$key($values);
             }
