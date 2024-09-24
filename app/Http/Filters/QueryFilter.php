@@ -25,8 +25,13 @@ abstract class QueryFilter
         $this->filters = $filters;
 
         foreach ($filters as $key => $values) {
-            $key = Str::camel($key);
+            if (Str::contains($key, '.')) {
+                $this->applyNestedFilter($key, $values);
 
+                continue;
+            }
+
+            $key = Str::camel($key);
             if (method_exists($this, $key)) {
                 $this->$key($values);
             }
@@ -60,9 +65,22 @@ abstract class QueryFilter
         foreach ($this->request->all() as $key => $values) {
             if (method_exists($this, $key)) {
                 $this->$key($values);
+            } elseif (Str::contains($key, '.')) {
+                $this->applyNestedFilter($key, $values);
             }
         }
 
         return $builder;
+    }
+
+    protected function applyNestedFilter(string $key, $values): void
+    {
+        [$relation, $field] = explode('.', $key);
+
+        $this->builder->whereHas($relation, function (Builder $query) use ($field, $values) {
+            $values = explode(',', $values);
+
+            return $query->whereIn($field, $values);
+        });
     }
 }

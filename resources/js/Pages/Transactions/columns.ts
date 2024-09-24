@@ -30,6 +30,7 @@ export const columns: ColumnDef<Transaction>[] = [
           default: () => row.getValue<User>('seller').name,
         },
       ),
+    enableSorting: false,
     enableHiding: false,
   },
   {

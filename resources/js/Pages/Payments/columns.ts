@@ -28,6 +28,7 @@ export const columns: ColumnDef<Payment>[] = [
           default: () => row.getValue<User>('seller').name,
         },
       ),
+    enableSorting: false,
   },
   {
     accessorKey: 'registerer',
@@ -38,6 +39,7 @@ export const columns: ColumnDef<Payment>[] = [
       }),
     cell: ({ row }) => row.getValue<User>('registerer')?.name,
     enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'amount',
