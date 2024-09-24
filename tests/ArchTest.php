@@ -9,7 +9,10 @@ arch()->preset()->php();
 arch()->preset()->security()->ignoring('assert');
 
 arch()->preset()->laravel()
-    ->ignoring('App\Providers\Filament\CitadelPanelProvider');
+    ->ignoring('App\Providers\Filament\CitadelPanelProvider')
+    ->ignoring([
+        'App\Http\Filters',
+    ]);
 
 arch('strict types')
     ->expect('App')
@@ -18,18 +21,25 @@ arch('strict types')
 arch('avoid open for extension')
     ->expect('App')
     ->classes()
-    ->toBeFinal();
+    ->toBeFinal()
+    ->ignoring([
+        'App\Http\Filters',
+    ]);
 
 test('ensure no extends')
     ->expect('App')
     ->classes()
-    ->not->toBeAbstract();
+    ->not->toBeAbstract()
+    ->ignoring([
+        'App\Http\Filters',
+    ]);
 
 arch('avoid inheritance')
     ->expect('App')
     ->classes()
     ->toExtendNothing()
     ->ignoring([
+        'App\Http\Filters',
         'App\Http\Middleware',
         'App\Console\Commands',
         'App\Exceptions',

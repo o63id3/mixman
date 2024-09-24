@@ -6,6 +6,7 @@ import DropdownLink from '@/Components/DropdownLink.vue'
 import NavLink from '@/Components/NavLink.vue'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
 import { Link, usePage } from '@inertiajs/vue3'
+import Badge from '@/Components/ui/badge/Badge.vue'
 
 const showingNavigationDropdown = ref(false)
 const user = usePage().props.auth.user
@@ -14,6 +15,7 @@ interface Link {
   route: string
   label: string
   visible: boolean
+  badge?: number
 }
 
 const links: Array<Link> = [
@@ -41,6 +43,7 @@ const links: Array<Link> = [
     route: 'orders.index',
     label: 'الطلبات',
     visible: user.can.orders.viewAny,
+    badge: usePage().props.pendingOrders,
   },
   {
     route: 'payments.index',
@@ -80,7 +83,15 @@ const links: Array<Link> = [
                   :href="route(link.route)"
                   :active="route().current(link.route)"
                 >
-                  {{ link.label }}
+                  <div class="flex items-center gap-1">
+                    {{ link.label }}
+                    <Badge
+                      v-if="link.badge"
+                      class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
+                    >
+                      {{ link.badge }}
+                    </Badge>
+                  </div>
                 </NavLink>
               </div>
             </div>
@@ -182,7 +193,15 @@ const links: Array<Link> = [
               :href="route(link.route)"
               :active="route().current(link.route)"
             >
-              {{ link.label }}
+              <div class="flex items-center">
+                {{ link.label }}
+                <Badge
+                  v-if="link.badge"
+                  class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
+                >
+                  {{ link.badge }}
+                </Badge>
+              </div>
             </ResponsiveNavLink>
           </div>
 

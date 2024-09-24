@@ -17,6 +17,8 @@ export const columns: ColumnDef<OrderItem>[] = [
     accessorKey: 'card.name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الفئة' }),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'number_of_packages',
@@ -25,6 +27,8 @@ export const columns: ColumnDef<OrderItem>[] = [
         column,
         title: 'الرزم',
       }),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'number_of_cards_per_package',
@@ -33,6 +37,8 @@ export const columns: ColumnDef<OrderItem>[] = [
         column,
         title: 'الكروت في الرزمة الواحدة',
       }),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'total_price_for_seller',
@@ -43,6 +49,8 @@ export const columns: ColumnDef<OrderItem>[] = [
       }),
     cell: ({ row }) =>
       `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     id: 'actions',

@@ -61,11 +61,11 @@ function filter(value: string, search: string) {
   <div>
     <UseTemplate>
       <Command :filter="filter">
-        <CommandInput
+        <!-- <CommandInput
           v-model="searchQuery"
           class="rtl:text-right"
           :placeholder="searchPlaceholder"
-        />
+        /> -->
         <CommandList>
           <CommandEmpty>لا يوجد نتائج.</CommandEmpty>
           <CommandGroup>

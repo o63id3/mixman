@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -42,6 +43,7 @@ final class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'pendingOrders' => Order::pending()->count(),
             'auth' => [
                 'user' => $user ?? null,
             ],

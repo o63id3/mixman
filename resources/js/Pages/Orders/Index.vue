@@ -25,6 +25,7 @@ defineProps<{
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
           الطلبيات
+          <span class="text-xs tracking-wide">({{ orders.meta.total }})</span>
         </h2>
         <div v-if="$page.props.auth.user.can.cards.create">
           <Link :href="route('orders.create')">

@@ -10,16 +10,33 @@ use Illuminate\Support\Str;
 
 abstract class QueryFilter
 {
+    /**
+     * List of the filters.
+     */
     public array $filters = [];
 
+    /**
+     * List of the sorts.
+     */
     public string $sorts = '';
 
+    /**
+     * Query builder.
+     */
     protected Builder $builder;
 
+    /**
+     * Construct the request field.
+     */
     public function __construct(
         protected Request $request
     ) {}
 
+    /**
+     * Applies the filters.
+     *
+     * @var array<string, string>
+     */
     final public function filter(array $filters): void
     {
         $this->filters = $filters;
@@ -38,6 +55,11 @@ abstract class QueryFilter
         }
     }
 
+    /**
+     * Applies the sorts.
+     *
+     * @var array<string>
+     */
     final public function sort(string $values): void
     {
         $this->sorts = $values;
@@ -58,21 +80,30 @@ abstract class QueryFilter
         }
     }
 
+    /**
+     * Applies the directives such sort, and filter.
+     *
+     * @var Builder
+     */
     final public function apply(Builder $builder): Builder
     {
         $this->builder = $builder;
 
         foreach ($this->request->all() as $key => $values) {
-            if (method_exists($this, $key)) {
+            if ($values && method_exists($this, $key)) {
                 $this->$key($values);
-            } elseif (Str::contains($key, '.')) {
-                $this->applyNestedFilter($key, $values);
             }
         }
 
         return $builder;
     }
 
+    /**
+     * Applies the nested filters such user.name.
+     *
+     * @var key<string>
+     * @var values<string>
+     */
     protected function applyNestedFilter(string $key, $values): void
     {
         [$relation, $field] = explode('.', $key);

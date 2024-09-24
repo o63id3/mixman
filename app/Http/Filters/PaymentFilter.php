@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class PaymentFilter extends QueryFilter
 {
+    /**
+     * Filter the payment by the seller id.
+     */
     public function seller($values): Builder
     {
         $ides = explode(',', $values);
@@ -15,6 +18,9 @@ final class PaymentFilter extends QueryFilter
         return $this->builder->whereIn('seller_id', $ides);
     }
 
+    /**
+     * Filter the payment by the created at.
+     */
     public function createdAt($values): Builder
     {
         $dates = explode(',', $values);

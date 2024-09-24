@@ -21,8 +21,6 @@ import { orderStatues } from '@/types/enums'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircle } from 'lucide-vue-next'
 import Button from '@/Components/ui/button/Button.vue'
-import Input from '@/Components/ui/input/Input.vue'
-import { ref } from 'vue'
 
 const emit = defineEmits(['select'])
 
@@ -33,10 +31,6 @@ const props = defineProps<{
   hiddenCards?: boolean
   disabled?: boolean
 }>()
-
-const sellerName = ref(
-  props.sellers.find((seller) => seller.id === props.selected)?.name,
-)
 </script>
 
 <template>
@@ -56,7 +50,12 @@ const sellerName = ref(
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />
-      <Input v-else v-model="sellerName" disabled />
+      <div
+        v-else
+        class="flex h-9 w-full cursor-not-allowed select-none items-center rounded-md border border-input bg-transparent px-3 py-1 text-base opacity-50 shadow-sm transition-colors sm:text-sm"
+      >
+        {{ sellers.find((seller) => seller.id === props.selected)?.name }}
+      </div>
       <FormMessage />
     </FormItem>
   </FormField>

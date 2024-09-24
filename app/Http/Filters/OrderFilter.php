@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class OrderFilter extends QueryFilter
 {
+    /**
+     * Filter the order by the seller id.
+     */
     public function seller($values): Builder
     {
         $ides = explode(',', $values);
@@ -15,6 +18,9 @@ final class OrderFilter extends QueryFilter
         return $this->builder->whereIn('seller_id', $ides);
     }
 
+    /**
+     * Filter the order by the status.
+     */
     public function status($values): Builder
     {
         $statues = explode(',', $values);
@@ -22,6 +28,9 @@ final class OrderFilter extends QueryFilter
         return $this->builder->whereIn('status', $statues);
     }
 
+    /**
+     * Filter the order by the updated at.
+     */
     public function updatedAt($values): Builder
     {
         $dates = explode(',', $values);
