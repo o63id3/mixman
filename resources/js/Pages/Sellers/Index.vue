@@ -37,12 +37,7 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable
-        :data="sellers.data"
-        :columns="columns"
-        :filters="filters"
-        href="sellers.index"
-      >
+      <DataTable :data="sellers.data" :columns="columns" :filters="filters">
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :regions="regions" />
         </template>

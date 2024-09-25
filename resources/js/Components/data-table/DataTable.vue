@@ -22,13 +22,12 @@ import {
 import DataTableSummary from './DataTableSummary.vue'
 import type { SummaryField } from './DataTableSummary.vue'
 import { Filters } from '@/types'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 
 interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   summaryFields?: SummaryField[]
-  href?: string
   filters?: Filters
   sorts?: string
 }
@@ -92,8 +91,6 @@ const table = useVueTable({
 })
 
 const fetchData = () => {
-  if (!props.href) return
-
   let filters: Filters = {}
   columnFilters.value.forEach((filter: ColumnFilter) => {
     filters[filter.id] = filter.value
@@ -106,7 +103,7 @@ const fetchData = () => {
   sorts = sorts.length ? sorts : undefined
 
   router.get(
-    route(props.href),
+    usePage().url.split('?')[0],
     { filter: filters, sort: sorts },
     {
       preserveState: true,
@@ -115,9 +112,7 @@ const fetchData = () => {
   )
 }
 
-if (props.href) {
-  watch([columnFilters, sorting], fetchData)
-}
+watch([columnFilters, sorting], fetchData)
 </script>
 
 <template>

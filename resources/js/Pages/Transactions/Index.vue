@@ -34,7 +34,6 @@ defineProps<{
         :columns="columns"
         :filters="filters"
         :sorts="sorts"
-        href="transactions.index"
       >
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :sellers="sellers" />
