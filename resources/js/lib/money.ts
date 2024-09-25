@@ -1,5 +1,5 @@
 export function formatMoney(money?: number): string {
-  if (money === undefined) return ''
+  if (!money) return ''
 
-  return new Intl.NumberFormat('ar').format(money)
+  return new Intl.NumberFormat('en-US').format(money)
 }

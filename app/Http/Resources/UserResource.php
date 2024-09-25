@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Admin;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
@@ -35,6 +36,9 @@ final class UserResource extends JsonResource
                     'viewAny' => $this->resource->can('viewAny', User::class),
                     'create' => $this->resource->can('create', User::class),
                     'update' => $this->resource->can('update', User::class),
+                ],
+                'admins' => [
+                    'viewAny' => $this->resource->can('viewAny', Admin::class),
                 ],
                 'regions' => [
                     'viewAny' => $this->resource->can('viewAny', Region::class),

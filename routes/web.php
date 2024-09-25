@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderItemsController;
@@ -43,6 +44,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/sellers/{seller}/edit', [SellersController::class, 'edit'])->name('sellers.edit');
     Route::patch('/sellers/{seller}', [SellersController::class, 'update'])->name('sellers.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admins', [AdminsController::class, 'index'])->name('admins.index');
+
+    Route::get('/admins/create', [AdminsController::class, 'create'])->name('admins.create');
+    Route::post('/admins', [AdminsController::class, 'store'])->name('admins.store');
+
+    Route::get('/admins/{admin}/edit', [AdminsController::class, 'edit'])->name('admins.edit');
+    Route::patch('/admins/{admin}', [AdminsController::class, 'update'])->name('admins.update');
+
+    Route::delete('/admins/{admin}', [AdminsController::class, 'destroy'])->name('admins.destroy');
 });
 
 Route::middleware('auth')->group(function () {

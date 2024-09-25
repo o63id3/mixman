@@ -95,7 +95,7 @@ const filterFunction = (val: any[], term: string) => {
     </PopoverTrigger>
     <PopoverContent class="w-[200px] p-0" align="start">
       <Command :filter-function="filterFunction">
-        <CommandInput class="rtl:text-right" :placeholder="title" />
+        <!-- <CommandInput class="rtl:text-right" :placeholder="title" /> -->
         <CommandList>
           <CommandEmpty>لا يوجد نتائج</CommandEmpty>
           <CommandGroup>

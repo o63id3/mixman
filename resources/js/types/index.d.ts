@@ -14,6 +14,9 @@ export interface User {
       create: boolean
       update: boolean
     }
+    admins: {
+      viewAny: boolean
+    }
     regions: {
       viewAny: boolean
       create: boolean

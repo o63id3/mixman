@@ -25,6 +25,11 @@ const links: Array<Link> = [
     visible: true,
   },
   {
+    route: 'admins.index',
+    label: 'المستخدمين',
+    visible: user.can.admins.viewAny,
+  },
+  {
     route: 'regions.index',
     label: 'المناطق',
     visible: user.can.regions.viewAny,
@@ -65,7 +70,7 @@ const links: Array<Link> = [
         <!-- Primary Navigation Menu -->
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 justify-between">
-            <div class="flex">
+            <div class="flex overflow-hidden overflow-x-auto">
               <!-- Logo -->
               <div class="flex shrink-0 items-center">
                 <Link :href="route('dashboard')">

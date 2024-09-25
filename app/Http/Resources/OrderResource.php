@@ -24,7 +24,8 @@ final class OrderResource extends JsonResource
             'action' => $this->whenLoaded('action', fn () => UserResource::make($this->action)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),
-            'updated_at' => $this->updated_at->diffForHumans(),
+            'updated_at' => /*\Carbon\Carbon::parse($this->updated_at)->format('Y/m/d')*/
+            $this->updated_at->diffForHumans(),
 
             'can' => [
                 'view' => Gate::allows('view', $this->resource),

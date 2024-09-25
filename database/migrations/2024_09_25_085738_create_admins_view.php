@@ -12,29 +12,30 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         DB::statement('
-            CREATE VIEW sellers AS
+            CREATE VIEW admins AS
             SELECT
                 *
             FROM
                 users
             WHERE
-                admin = false
+                admin = true
         ');
 
         DB::statement('
-            CREATE TRIGGER insert_seller
-            INSTEAD OF INSERT ON sellers
+            CREATE TRIGGER insert_admin
+            INSTEAD OF INSERT ON admins
             FOR EACH ROW
             BEGIN
                 INSERT INTO users (region_id, name, username, password, admin, contact_info, notes, remember_token, created_at, updated_at)
-                VALUES (NEW.region_id, NEW.name, NEW.username, NEW.password, false, NEW.contact_info, NEW.notes, NEW.remember_token, NEW.created_at, NEW.updated_at);
+                VALUES (null, NEW.name, NEW.username, NEW.password, TRUE, NEW.contact_info, NEW.notes, NEW.remember_token, NEW.created_at, NEW.updated_at);
             END
         ');
 
         DB::statement('
-            CREATE TRIGGER update_seller
-            INSTEAD OF UPDATE ON sellers
+            CREATE TRIGGER update_admin
+            INSTEAD OF UPDATE ON admins
             FOR EACH ROW
             BEGIN
                 UPDATE users
@@ -53,14 +54,15 @@ return new class extends Migration
         ');
 
         DB::statement('
-            CREATE TRIGGER delete_seller
-            INSTEAD OF DELETE ON sellers
+            CREATE TRIGGER delete_admin
+            INSTEAD OF DELETE ON admins
             FOR EACH ROW
             BEGIN
                 DELETE FROM users
                 WHERE id = OLD.id;
             END
         ');
+
     }
 
     /**
@@ -68,9 +70,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP VIEW IF EXISTS sellers');
-        DB::statement('DROP TRIGGER IF EXISTS insert_seller');
-        DB::statement('DROP TRIGGER IF EXISTS update_seller');
-        DB::statement('DROP TRIGGER IF EXISTS delete_seller');
+        DB::statement('DROP VIEW IF EXISTS admins');
+        DB::statement('DROP TRIGGER IF EXISTS insert_admin');
+        DB::statement('DROP TRIGGER IF EXISTS update_admin');
+        DB::statement('DROP TRIGGER IF EXISTS delete_admin');
     }
 };
