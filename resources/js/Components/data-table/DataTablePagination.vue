@@ -38,7 +38,7 @@ defineProps<{
           router.get(
             links.last,
             { filter: filters, sort: sorts?.length ? sorts : undefined },
-            { preserveScroll: true },
+            { preserveScroll: true, preserveState: true },
           )
         "
       >
@@ -53,7 +53,7 @@ defineProps<{
           router.get(
             links.next,
             { filter: filters, sort: sorts?.length ? sorts : undefined },
-            { preserveScroll: true },
+            { preserveScroll: true, preserveState: true },
           )
         "
       >
@@ -68,7 +68,7 @@ defineProps<{
           router.get(
             links.prev,
             { filter: filters, sort: sorts?.length ? sorts : undefined },
-            { preserveScroll: true },
+            { preserveScroll: true, preserveState: true },
           )
         "
       >
@@ -83,7 +83,7 @@ defineProps<{
           router.get(
             links.first,
             { filter: filters, sort: sorts?.length ? sorts : undefined },
-            { preserveScroll: true },
+            { preserveScroll: true, preserveState: true },
           )
         "
       >
