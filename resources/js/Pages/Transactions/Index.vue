@@ -32,8 +32,8 @@ defineProps<{
       <DataTable
         :data="transactions.data"
         :columns="columns"
-        :filters="filters"
-        :sorts="sorts"
+        :initialFilters="filters"
+        :initialSorts="sorts"
       >
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <Toolbar :table="table" :sellers="sellers" />

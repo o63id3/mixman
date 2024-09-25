@@ -9,7 +9,7 @@ import type {
 } from '@tanstack/vue-table'
 import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { valueUpdater } from '@/lib/utils'
 import {
   Table,
@@ -28,36 +28,19 @@ interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   summaryFields?: SummaryField[]
-  filters?: Filters
-  sorts?: string
+  initialFilters?: Filters
+  initialSorts?: string
 }
 
 const props = defineProps<DataTableProps>()
 
-const sorting = ref<SortingState>([])
-const columnFilters = ref<ColumnFiltersState>([])
 const columnVisibility = ref<VisibilityState>({})
 const rowSelection = ref({})
 
-if (props.filters) {
-  let filters: ColumnFiltersState = []
-
-  Object.keys(props.filters).forEach((key) => {
-    filters.push({
-      id: key,
-      value: props.filters[key],
-    })
-  })
-
-  columnFilters.value = filters
-}
-
-if (props.sorts) {
-  sorting.value = props.sorts.split(',').map((sort) => ({
-    desc: sort.charAt(0) === '-',
-    id: sort.charAt(0) === '-' ? sort.substring(1) : sort,
-  }))
-}
+const { columnFilters, sorting } = useFilteringAndSorting(
+  props.initialFilters,
+  props.initialSorts,
+)
 
 const table = useVueTable({
   get data() {
@@ -90,29 +73,57 @@ const table = useVueTable({
   getCoreRowModel: getCoreRowModel(),
 })
 
-const fetchData = () => {
-  let filters: Filters = {}
-  columnFilters.value.forEach((filter: ColumnFilter) => {
-    filters[filter.id] = filter.value
+function useFilteringAndSorting(
+  initialFilters?: Filters,
+  initialSorts?: string,
+) {
+  const columnFilters = ref<ColumnFiltersState>([])
+  const sorting = ref<SortingState>([])
+
+  if (initialFilters) {
+    columnFilters.value = Object.entries(initialFilters).map(
+      ([key, value]) => ({
+        id: key,
+        value: value,
+      }),
+    )
+  }
+
+  if (initialSorts) {
+    sorting.value = initialSorts.split(',').map((sort) => ({
+      desc: sort.charAt(0) === '-',
+      id: sort.charAt(0) === '-' ? sort.substring(1) : sort,
+    }))
+  }
+
+  const computedFilters = computed<Filters>(() => {
+    const filters: Filters = {}
+    columnFilters.value.forEach((filter: ColumnFilter) => {
+      filters[filter.id] = filter.value
+    })
+    return filters
   })
 
-  let sorts: string | undefined = sorting.value
-    .map((sort: ColumnSort) => `${sort.desc ? '-' : ''}${sort.id}`)
-    .join(',')
+  const computedSorts = computed<string | undefined>(() => {
+    const sorts = sorting.value
+      .map((sort: ColumnSort) => `${sort.desc ? '-' : ''}${sort.id}`)
+      .join(',')
+    return sorts.length ? sorts : undefined
+  })
 
-  sorts = sorts.length ? sorts : undefined
+  watch([computedFilters, computedSorts], ([filters, sorts]) => {
+    router.get(
+      usePage().url.split('?')[0],
+      { filter: filters, sort: sorts },
+      { preserveState: true, preserveScroll: true },
+    )
+  })
 
-  router.get(
-    usePage().url.split('?')[0],
-    { filter: filters, sort: sorts },
-    {
-      preserveState: true,
-      preserveScroll: true,
-    },
-  )
+  return {
+    columnFilters,
+    sorting,
+  }
 }
-
-watch([columnFilters, sorting], fetchData)
 </script>
 
 <template>
