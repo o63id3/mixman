@@ -34,29 +34,21 @@ final class UserResource extends JsonResource
             'can' => [
                 'sellers' => [
                     'viewAny' => $this->resource->can('viewAny', User::class),
-                    'create' => $this->resource->can('create', User::class),
-                    'update' => $this->resource->can('update', User::class),
                 ],
                 'admins' => [
                     'viewAny' => $this->resource->can('viewAny', Admin::class),
                 ],
                 'regions' => [
                     'viewAny' => $this->resource->can('viewAny', Region::class),
-                    'create' => $this->resource->can('create', Region::class),
-                    'update' => $this->resource->can('update', Region::class),
                 ],
                 'cards' => [
                     'viewAny' => $this->resource->can('viewAny', Card::class),
-                    'create' => $this->resource->can('create', Card::class),
-                    'update' => $this->resource->can('update', Card::class),
                 ],
                 'orders' => [
                     'viewAny' => $this->resource->can('viewAny', Order::class),
-                    'create' => $this->resource->can('create', Order::class),
                 ],
                 'payments' => [
                     'viewAny' => $this->resource->can('viewAny', Payment::class),
-                    'create' => $this->resource->can('create', Payment::class),
                 ],
                 'transactions' => [
                     'viewAny' => $this->resource->can('viewAny', Payment::class),

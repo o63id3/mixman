@@ -22,7 +22,7 @@ final class SellersController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, SellerFilter $filter): Response
+    public function index(SellerFilter $filter): Response
     {
         Gate::authorize('viewAny', Seller::class);
 
@@ -38,6 +38,9 @@ final class SellersController
             'regions' => Region::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
+            'can' => [
+                'create' => Gate::allows('create', Seller::class),
+            ],
         ]);
     }
 

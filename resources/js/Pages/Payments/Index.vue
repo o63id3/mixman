@@ -13,6 +13,9 @@ defineProps<{
   sellers: Array<User>
   filters: Filters
   sorts: string
+  can: {
+    create: boolean
+  }
 }>()
 </script>
 
@@ -26,7 +29,7 @@ defineProps<{
           المدفوعات
           <span class="text-xs tracking-wide">({{ payments.meta.total }})</span>
         </h2>
-        <div v-if="$page.props.auth.user.can.payments.create">
+        <div v-if="can.create">
           <Link :href="route('payments.create')">
             <Button> إنشاء </Button>
           </Link>

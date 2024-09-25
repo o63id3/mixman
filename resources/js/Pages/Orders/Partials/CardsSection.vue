@@ -45,7 +45,6 @@ const addingForm = ref(false)
     />
     <DataTable
       v-else
-      class="mt-4"
       :data="items"
       :columns="columns"
       :summaryFields="items.length ? summaryFields : undefined"

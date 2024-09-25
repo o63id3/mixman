@@ -11,6 +11,9 @@ import { columns } from './columns'
 
 defineProps<{
   regions: Paginator<Region>
+  can: {
+    create: boolean
+  }
 }>()
 </script>
 
@@ -24,7 +27,7 @@ defineProps<{
           المناطق
           <span class="text-xs tracking-wide">({{ regions.meta.total }})</span>
         </h2>
-        <div v-if="$page.props.auth.user.can.cards.create">
+        <div v-if="can.create">
           <Link :href="route('regions.create')">
             <Button> إنشاء منطقة </Button>
           </Link>

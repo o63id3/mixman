@@ -28,6 +28,9 @@ final class CardsController
 
         return Inertia::render('Cards/Index', [
             'cards' => CardResource::collection($cards),
+            'can' => [
+                'create' => Gate::allows('create', Card::class),
+            ],
         ]);
     }
 

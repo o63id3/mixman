@@ -28,6 +28,9 @@ final class RegionsController
 
         return Inertia::render('Regions/Index', [
             'regions' => RegionResource::collection($regions),
+            'can' => [
+                'create' => Gate::allows('create', Region::class),
+            ],
         ]);
     }
 

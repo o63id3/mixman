@@ -39,6 +39,9 @@ final class PaymentsController
             'sellers' => Seller::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
+            'can' => [
+                'create' => Gate::allows('create', Payment::class),
+            ],
         ]);
     }
 

@@ -46,6 +46,9 @@ final class OrdersController
             'sellers' => Seller::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
+            'can' => [
+                'create' => Gate::allows('create', Order::class),
+            ],
         ]);
     }
 
@@ -101,8 +104,6 @@ final class OrdersController
         $order->load(['seller', 'action', 'items', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
-
-        OrderResource::withoutWrapping();
 
         return Inertia::render('Orders/Edit', [
             'sellers' => Seller::get(),

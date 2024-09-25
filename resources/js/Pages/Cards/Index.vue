@@ -11,6 +11,9 @@ import { columns } from './columns'
 
 defineProps<{
   cards: Paginator<Card>
+  can: {
+    create: boolean
+  }
 }>()
 </script>
 
@@ -24,7 +27,7 @@ defineProps<{
           الكروت
           <span class="text-xs tracking-wide">({{ cards.meta.total }})</span>
         </h2>
-        <div v-if="$page.props.auth.user.can.cards.create">
+        <div v-if="can.create">
           <Link :href="route('cards.create')">
             <Button> إنشاء كرت </Button>
           </Link>

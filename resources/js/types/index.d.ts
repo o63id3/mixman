@@ -11,31 +11,21 @@ export interface User {
   can: {
     sellers: {
       viewAny: boolean
-      create: boolean
-      update: boolean
     }
     admins: {
       viewAny: boolean
     }
     regions: {
       viewAny: boolean
-      create: boolean
-      update: boolean
     }
     cards: {
       viewAny: boolean
-      create: boolean
-      update: boolean
     }
     orders: {
       viewAny: boolean
-      create: boolean
-      update: boolean
     }
     payments: {
       viewAny: boolean
-      create: boolean
-      update: boolean
     }
     transactions: {
       viewAny: boolean

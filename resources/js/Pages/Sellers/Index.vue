@@ -15,6 +15,9 @@ defineProps<{
   regions: Array<Region>
   filters: Filters
   sorts: string
+  can: {
+    create: boolean
+  }
 }>()
 </script>
 
@@ -28,7 +31,7 @@ defineProps<{
           الباعة
           <span class="text-xs tracking-wide">({{ sellers.meta.total }})</span>
         </h2>
-        <div v-if="$page.props.auth.user.can.cards.create">
+        <div v-if="can.create">
           <Link :href="route('sellers.create')">
             <Button> إنشاء بائع </Button>
           </Link>
