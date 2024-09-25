@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
-            CREATE VIEW transactions AS
+            CREATE OR REPLACE VIEW transactions AS
             SELECT
                 id,
                 amount AS amount,
@@ -55,8 +55,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('
-            DROP VIEW IF EXISTS transactions
-        ');
+        DB::statement('DROP VIEW IF EXISTS transactions');
     }
 };
