@@ -67,9 +67,9 @@ final class DashboardService
     /**
      * Get the total income between two dates.
      */
-    public function getTotalIncome($start = null, $end = null): int
+    public function getTotalIncome($start = null, $end = null): float
     {
-        $income = Payment::query()
+        $income = (float) Payment::query()
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
             ->sum('amount');
 
@@ -105,7 +105,7 @@ final class DashboardService
      */
     public function getTotalDebut($user): float
     {
-        return Transaction::query()
+        return (float) Transaction::query()
             ->visibleTo($user)
             ->sum('amount');
     }

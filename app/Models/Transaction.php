@@ -13,6 +13,10 @@ final class Transaction extends Model
 {
     use Filterable;
 
+    protected $casts = [
+        'amount' => 'float',
+    ];
+
     /**
      * Get the seller.
      */

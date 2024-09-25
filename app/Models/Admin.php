@@ -43,6 +43,26 @@ final class Admin extends Model
     }
 
     /**
+     * The "booting" method of the model.
+     *
+     * This method is used to register any event listeners for the model,
+     * such as handling actions before a model is created or updated.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        $setTotalPrices = function ($model) {
+            $model->admin = true;
+        };
+
+        self::creating($setTotalPrices);
+        self::updating($setTotalPrices);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

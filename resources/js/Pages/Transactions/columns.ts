@@ -80,7 +80,10 @@ export const columns: ColumnDef<Transaction>[] = [
         column,
         title: 'المبلغ',
       }),
-    cell: ({ row }) => `${formatMoney(row.getValue('amount'))} شيكل`,
+    cell: ({ row }) =>
+      row.getValue('amount')
+        ? `${formatMoney(row.getValue('amount'))} شيكل`
+        : '-',
   },
   {
     accessorKey: 'created_at',
