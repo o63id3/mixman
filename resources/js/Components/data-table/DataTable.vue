@@ -116,7 +116,7 @@ const fetchData = () => {
 }
 
 if (props.href) {
-  watch([columnFilters, sorting], fetchData, { deep: true })
+  watch([columnFilters, sorting], fetchData)
 }
 </script>
 

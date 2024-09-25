@@ -24,8 +24,6 @@ const setRange = (range: DateRange) => {
     .filter(Boolean)
     .join(',')
 
-  console.log(dates)
-
   props.column?.setFilterValue(dates)
 }
 
@@ -33,12 +31,16 @@ const setDateRange = () => {
   const dates = props.column?.getFilterValue() as string
 
   const [start, end] = dates ? dates.split(',') : []
-  dateRange.value.start = start ? parseDateString(start) : undefined
-  dateRange.value.end = end ? parseDateString(end) : undefined
+  dateRange.value = {
+    start: start ? parseDateString(start) : undefined,
+    end: end ? parseDateString(end) : undefined,
+  }
 }
 
 watch(dateRange, setRange, { deep: true })
-watch(() => props.column?.getFilterValue(), setDateRange, { immediate: true })
+watch(() => props.column?.getFilterValue(), setDateRange, {
+  immediate: true,
+})
 
 function parseDateString(dateStr: string): CalendarDate | undefined {
   const [year, month, day] = dateStr.split('-').map(Number)

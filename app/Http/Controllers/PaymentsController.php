@@ -38,6 +38,7 @@ final class PaymentsController
             'payments' => PaymentResource::collection($payments),
             'sellers' => Seller::all(),
             'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
         ]);
     }
 

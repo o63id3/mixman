@@ -14,6 +14,7 @@ defineProps<{
   orders: Paginator<Order>
   sellers: Array<User>
   filters: Filters
+  sorts: string
 }>()
 </script>
 
@@ -46,7 +47,12 @@ defineProps<{
           <Toolbar :table="table" :sellers="sellers" />
         </template>
       </DataTable>
-      <DataTablePagination :links="orders.links" :meta="orders.meta" />
+      <DataTablePagination
+        :links="orders.links"
+        :meta="orders.meta"
+        :filters="filters"
+        :sorts="sorts"
+      />
     </div>
   </AuthenticatedLayout>
 </template>

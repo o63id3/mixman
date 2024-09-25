@@ -45,6 +45,7 @@ final class OrdersController
             'statuses' => OrderStatusEnum::cases(),
             'sellers' => Seller::all(),
             'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
         ]);
     }
 

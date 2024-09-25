@@ -31,7 +31,7 @@ export default {
 
 <template>
   <div
-    v-if="column.getCanSort()"
+    v-if="column.getCanSort() || column.getCanHide()"
     :class="cn('flex items-center space-x-2', $attrs.class ?? '')"
   >
     <DropdownMenu>
@@ -56,6 +56,7 @@ export default {
       <DropdownMenuContent align="start">
         <DropdownMenuItem
           @click="column.toggleSorting(false)"
+          v-if="column.getCanSort()"
           class="rtl:flex-row-reverse"
         >
           <ArrowUpIcon
@@ -65,6 +66,7 @@ export default {
         </DropdownMenuItem>
         <DropdownMenuItem
           @click="column.toggleSorting(true)"
+          v-if="column.getCanSort()"
           class="rtl:flex-row-reverse"
         >
           <ArrowDownIcon
@@ -72,7 +74,9 @@ export default {
           />
           تنازلي
         </DropdownMenuItem>
-        <DropdownMenuSeparator v-if="column.getCanHide()" />
+        <DropdownMenuSeparator
+          v-if="column.getCanSort() && column.getCanHide()"
+        />
         <DropdownMenuItem
           v-if="column.getCanHide()"
           @click="column.toggleVisibility(false)"

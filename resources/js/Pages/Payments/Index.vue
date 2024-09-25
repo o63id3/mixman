@@ -12,6 +12,7 @@ defineProps<{
   payments: Paginator<Payment>
   sellers: Array<User>
   filters: Filters
+  sorts: string
 }>()
 </script>
 
@@ -44,7 +45,12 @@ defineProps<{
           <Toolbar :table="table" :sellers="sellers" />
         </template>
       </DataTable>
-      <DataTablePagination :links="payments.links" :meta="payments.meta" />
+      <DataTablePagination
+        :links="payments.links"
+        :meta="payments.meta"
+        :filters="filters"
+        :sorts="sorts"
+      />
     </div>
   </AuthenticatedLayout>
 </template>

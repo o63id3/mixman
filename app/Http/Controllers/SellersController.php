@@ -37,6 +37,7 @@ final class SellersController
             'sellers' => SellerResource::collection($sellers),
             'regions' => Region::all(),
             'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
         ]);
     }
 

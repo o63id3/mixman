@@ -66,7 +66,7 @@ const cards: Array<Card> = [
     visible: user.admin,
   },
   {
-    title: 'أكبر مدخول الأسبوع الماضي',
+    title: 'أكبر مدخول منطقة الأسبوع الماضي',
     value: props.max_region_income?.region ?? '',
     description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
     icon: h(DollarSign, { class: 'text-green-500' }),
