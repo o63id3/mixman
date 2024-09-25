@@ -72,7 +72,7 @@ const filterFunction = (val: any[], term: string) => {
               variant="secondary"
               class="rounded-sm px-1 font-normal"
             >
-              {{ selectedValues.size }} selected
+              {{ selectedValues.size }} مختار
             </Badge>
 
             <template v-else>

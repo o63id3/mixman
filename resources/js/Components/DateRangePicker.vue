@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
 import type { DateRange } from 'radix-vue'
@@ -12,6 +13,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/Components/ui/popover'
+import Separator from './ui/separator/Separator.vue'
+import Badge from './ui/badge/Badge.vue'
 
 const props = defineProps<{
   modelValue: DateRange | undefined
@@ -30,8 +33,11 @@ const df = new DateFormatter('ar-US', {
   dateStyle: 'long',
 })
 
+const isDesktop = useMediaQuery('(min-width: 768px)')
+
 const formattedDateRange = computed(() => {
-  if (!model.value?.start) return 'اختر تاريخ'
+  if (!isDesktop.value) return 'التاريخ'
+  if (!model.value?.start) return 'التاريخ'
 
   const start = df.format(model.value.start.toDate(getLocalTimeZone()))
   if (!model.value.end) return start
@@ -47,6 +53,15 @@ const updateStartValue = (startDate: DateRange['start']) => {
     model.value = { start: startDate, end: undefined }
   }
 }
+
+const selectedValues = computed(() => {
+  let count = 0
+
+  if (model.value?.start) count++
+  if (model.value?.end) count++
+
+  return count
+})
 </script>
 
 <template>
@@ -65,7 +80,21 @@ const updateStartValue = (startDate: DateRange['start']) => {
           "
         >
           <CalendarIcon class="h-4 w-4 shrink-0 ltr:mr-2 rtl:ml-2" />
-          {{ formattedDateRange }}
+          <span class="font-medium">{{ formattedDateRange }}</span>
+          <template v-if="selectedValues && !isDesktop">
+            <Separator orientation="vertical" class="mx-2 h-4" />
+            <Badge
+              variant="secondary"
+              class="rounded-sm px-1 font-normal lg:hidden"
+            >
+              {{ selectedValues }}
+            </Badge>
+            <div class="hidden space-x-1 lg:flex">
+              <Badge variant="secondary" class="rounded-sm px-1 font-normal">
+                {{ selectedValues }}
+              </Badge>
+            </div>
+          </template>
         </Button>
       </PopoverTrigger>
       <PopoverContent class="w-auto p-0" align="end">
