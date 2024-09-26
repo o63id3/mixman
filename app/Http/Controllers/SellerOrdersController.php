@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
-use App\Events\NewOrder;
+use App\Jobs\SendNewOrderTelegramMassage;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -25,8 +25,7 @@ final class SellerOrdersController
             'status' => OrderStatusEnum::Pending,
         ]);
 
-        // defer(fn () => event(new NewOrder($order)));
-        event(new NewOrder($order));
+        SendNewOrderTelegramMassage::dispatch($order);
 
         return back();
     }
