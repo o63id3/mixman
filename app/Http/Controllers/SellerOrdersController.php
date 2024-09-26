@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
+use App\Events\NewOrder;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -19,10 +20,13 @@ final class SellerOrdersController
     {
         $seller = type($request->user())->as(User::class);
 
-        Order::create([
+        $order = Order::create([
             'seller_id' => $seller->id,
             'status' => OrderStatusEnum::Pending,
         ]);
+
+        // defer(fn () => event(new NewOrder($order)));
+        event(new NewOrder($order));
 
         return back();
     }
