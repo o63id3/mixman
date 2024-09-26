@@ -6,7 +6,7 @@ namespace App\Enums;
 
 enum OrderStatusEnum: string
 {
-    case Pending = 'طلب جديد';
+    case Pending = 'معلق';
     case Completed = 'مكتمل';
     case Returned = 'مرجع';
 
@@ -18,7 +18,7 @@ enum OrderStatusEnum: string
     public static function toArray(): array
     {
         return [
-            self::Pending->value => 'طلب جديد',
+            self::Pending->value => 'معلق',
             self::Completed->value => 'مكتمل',
             self::Returned->value => 'Never',
         ];

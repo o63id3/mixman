@@ -127,11 +127,11 @@ function useFilteringAndSorting(
 </script>
 
 <template>
-  <div class="mb-4 overflow-hidden overflow-x-auto px-4 lg:px-0">
+  <div class="mb-4 overflow-x-auto px-4 lg:px-0">
     <slot :table="table" name="toolBar" />
   </div>
   <div
-    class="overflow-hidden overflow-x-auto border bg-white shadow-sm lg:rounded-md"
+    class="scrollbar-hide overflow-x-auto border bg-white shadow-sm lg:rounded-md"
   >
     <Table>
       <TableHeader class="bg-gray-100">

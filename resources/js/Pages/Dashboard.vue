@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import {
@@ -31,6 +31,10 @@ const props = defineProps<{
     region: string
     amount: number
   }
+  max_seller_income?: {
+    seller: string
+    amount: number
+  }
   sellers_count?: number
   total_income?: number
 }>()
@@ -39,62 +43,89 @@ const user = usePage().props.auth.user
 
 interface Card {
   title: string
-  value: string | number
+  value: Component
   description?: string
   icon: Component
   visible: boolean
 }
 
-const cards: Array<Card> = [
+interface Group {
+  title: string
+  cards: Array<Card>
+}
+
+const groups: Array<Group> = [
   {
-    title: 'الديون المستحقة',
-    value: `${formatMoney(props.total_debuts)} شيكل`,
-    icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: props.total_debuts !== 0,
+    title: 'إحصائيات عامة',
+    cards: [
+      {
+        title: 'الديون المستحقة',
+        value: h('span', `${formatMoney(props.total_debuts)} شيكل`),
+        icon: h(DollarSign, { class: 'text-green-500' }),
+        visible: props.total_debuts !== 0,
+      },
+      {
+        title: 'أكبر دين',
+        value: h('span', props.max_debut_seller?.seller?.name ?? ''),
+        description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
+        icon: h(DollarSign, { class: 'text-green-500' }),
+        visible: user.admin,
+      },
+      {
+        title: 'الطلبات المعلقة',
+        value: h(
+          Link,
+          { href: `/orders?filter[status]=معلق`, class: 'hover:underline' },
+          `${props.number_of_pending_orders} طلب`,
+        ),
+        icon: h(CircleDashed, { class: 'text-yellow-500' }),
+        visible: true,
+      },
+      {
+        title: 'الباعة',
+        value: h('span', `${props.sellers_count} بائع`),
+        icon: UserRound,
+        visible: user.admin,
+      },
+    ],
   },
   {
-    title: 'أكبر دين',
-    value: props.max_debut_seller?.seller?.name ?? '',
-    description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
-    icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin,
-  },
-  {
-    title: 'مدخول الأسبوع الماضي',
-    value: `${formatMoney(props.total_income)} شيكل`,
-    icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin,
-  },
-  {
-    title: 'أكبر مدخول منطقة الأسبوع الماضي',
-    value: props.max_region_income?.region ?? '',
-    description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
-    icon: h(DollarSign, { class: 'text-green-500' }),
-    visible: user.admin,
-  },
-  {
-    title: 'الباعة',
-    value: `${props.sellers_count} بائع`,
-    icon: UserRound,
-    visible: user.admin,
-  },
-  {
-    title: 'الطلبات المعلقة',
-    value: `${props.number_of_pending_orders} طلب`,
-    icon: h(CircleDashed, { class: 'text-yellow-500' }),
-    visible: true,
-  },
-  {
-    title: 'الطلبات المكتملة الأسبوع الماضي',
-    value: `${props.number_of_completed_orders_last_week} طلب`,
-    icon: h(CircleCheck, { class: 'text-green-500' }),
-    visible: true,
-  },
-  {
-    title: 'الطلبات المرجعة الأسبوع الماضي',
-    value: `${props.number_of_returned_orders_last_week} طلب`,
-    icon: h(CircleFadingArrowUp, { class: 'text-red-500' }),
-    visible: true,
+    title: 'إحصائيات الأسبوع الماضي',
+    cards: [
+      {
+        title: 'صافي المدخول',
+        value: h('span', `${formatMoney(props.total_income)} شيكل`),
+        icon: h(DollarSign, { class: 'text-green-500' }),
+        visible: user.admin,
+      },
+      {
+        title: 'أكبر مدخول منطقة',
+        value: h('span', props.max_region_income?.region ?? ''),
+        description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
+        icon: h(DollarSign, { class: 'text-green-500' }),
+        visible: user.admin,
+      },
+      {
+        title: 'أكبر مدخول بائع',
+        value: h('span', props.max_seller_income?.seller ?? ''),
+        description: `${formatMoney(props.max_seller_income?.amount)} شيكل`,
+        icon: h(DollarSign, { class: 'text-green-500' }),
+        visible: user.admin,
+      },
+
+      {
+        title: 'الطلبات المكتملة',
+        value: h('span', `${props.number_of_completed_orders_last_week} طلب`),
+        icon: h(CircleCheck, { class: 'text-green-500' }),
+        visible: true,
+      },
+      {
+        title: 'الطلبات المرجعة',
+        value: h('span', `${props.number_of_returned_orders_last_week} طلب`),
+        icon: h(CircleFadingArrowUp, { class: 'text-red-500' }),
+        visible: true,
+      },
+    ],
   },
 ]
 
@@ -105,47 +136,62 @@ const form = useForm({})
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
-    <div class="grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-      <Card v-if="!user.admin" class="rounded-none sm:col-span-2 sm:rounded-xl">
-        <CardHeader class="pb-3">
-          <CardTitle>طلباتي</CardTitle>
-          <CardDescription class="max-w-lg text-balance leading-relaxed">
-            بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Button
-            @click="
-              form.post(route('seller-orders.store'), {
-                preserveScroll: true,
-                onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
-              })
-            "
-            :disabled="form.processing"
+    <div class="space-y-8">
+      <div>
+        <h2 class="px-4 font-semibold"># الطلبات</h2>
+        <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+          <Card
+            v-if="!user.admin"
+            class="rounded-none sm:col-span-2 sm:rounded-xl"
           >
-            طلب كروت
-          </Button>
-        </CardFooter>
-      </Card>
-      <Card
-        class="rounded-none sm:rounded-xl"
-        v-for="card in cards.filter((card) => card.visible)"
-      >
-        <CardHeader
-          class="flex flex-row items-center justify-between space-y-0 pb-2"
-        >
-          <CardTitle class="text-sm font-medium">
-            {{ card.title }}
-          </CardTitle>
-          <component :is="card.icon" class="h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">{{ card.value }}</div>
-          <p v-if="card.description" class="text-xs text-muted-foreground">
-            {{ card.description }}
-          </p>
-        </CardContent>
-      </Card>
+            <CardHeader class="pb-3">
+              <CardTitle>طلباتي</CardTitle>
+              <CardDescription class="max-w-lg text-balance leading-relaxed">
+                بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
+              </CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Button
+                @click="
+                  form.post(route('seller-orders.store'), {
+                    preserveScroll: true,
+                    onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
+                  })
+                "
+                :disabled="form.processing"
+              >
+                طلب كروت
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+      <div v-for="group in groups" :key="group.title">
+        <h2 class="px-4 font-semibold"># {{ group.title }}</h2>
+        <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+          <Card
+            class="rounded-none sm:rounded-xl"
+            v-for="card in group.cards.filter((card) => card.visible)"
+          >
+            <CardHeader
+              class="flex flex-row items-center justify-between space-y-0 pb-2"
+            >
+              <CardTitle class="text-sm font-medium">
+                {{ card.title }}
+              </CardTitle>
+              <component :is="card.icon" class="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div class="text-2xl font-bold">
+                <component :is="card.value" />
+              </div>
+              <p v-if="card.description" class="text-xs text-muted-foreground">
+                {{ card.description }}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   </AuthenticatedLayout>
 </template>

@@ -85,6 +85,24 @@ final class DashboardService
     }
 
     /**
+     * Get the max region income between two dates.
+     */
+    public function getMaxSellerIncome($start = null, $end = null): array
+    {
+        $seller = Seller::query()
+            ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
+                $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
+            }], 'amount')
+            ->orderByDesc('total_amount')
+            ->first();
+
+        return [
+            'seller' => $seller->name,
+            'amount' => $seller ? $seller->total_amount : 0,
+        ];
+    }
+
+    /**
      * Get additional statistics for admin users.
      */
     public function getAdminStatistics(): array
@@ -95,6 +113,7 @@ final class DashboardService
         return [
             'max_debut_seller' => $this->getMaxDebutSeller(),
             'max_region_income' => $this->getMaxRegionIncome($startOfLastWeek, $endOfLastWeek),
+            'max_seller_income' => $this->getMaxSellerIncome($startOfLastWeek, $endOfLastWeek),
             'sellers_count' => $this->getSellersCount(),
             'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
         ];

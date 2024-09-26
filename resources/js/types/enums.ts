@@ -23,8 +23,8 @@ export const active = [
 
 export const orderStatues = [
   {
-    value: 'طلب جديد',
-    label: 'طلب جديد',
+    value: 'معلق',
+    label: 'معلق',
     icon: h(CircleDashed, { class: 'text-yellow-500' }),
   },
   {
