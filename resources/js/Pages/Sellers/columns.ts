@@ -52,9 +52,8 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => `${formatMoney(row.getValue('balance'))} شيكل`,
     enableHiding: false,
   },
-
-  {
-    id: 'actions',
-    cell: ({ row }) => h(RegionsRowActions, { row }),
-  },
+  //   {
+  //     id: 'actions',
+  //     cell: ({ row }) => h(RegionsRowActions, { row }),
+  //   },
 ]

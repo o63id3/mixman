@@ -95,8 +95,8 @@ export const columns: ColumnDef<Order>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => h(OrdersRowActions, { row }),
-  },
+  //   {
+  //     id: 'actions',
+  //     cell: ({ row }) => h(OrdersRowActions, { row }),
+  //   },
 ]

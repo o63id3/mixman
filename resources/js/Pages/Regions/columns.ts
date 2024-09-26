@@ -31,8 +31,8 @@ export const columns: ColumnDef<Region>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => h(RegionsRowActions, { row }),
-  },
+  //   {
+  //     id: 'actions',
+  //     cell: ({ row }) => h(RegionsRowActions, { row }),
+  //   },
 ]

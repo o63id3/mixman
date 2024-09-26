@@ -77,8 +77,8 @@ export const columns: ColumnDef<Card>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => h(CardsRowActions, { row }),
-  },
+  //   {
+  //     id: 'actions',
+  //     cell: ({ row }) => h(CardsRowActions, { row }),
+  //   },
 ]

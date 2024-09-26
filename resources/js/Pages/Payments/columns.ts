@@ -59,8 +59,8 @@ export const columns: ColumnDef<Payment>[] = [
         title: 'التاريخ',
       }),
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => h(PaymentsRowActions, { row }),
-  },
+  //   {
+  //     id: 'actions',
+  //     cell: ({ row }) => h(PaymentsRowActions, { row }),
+  //   },
 ]
