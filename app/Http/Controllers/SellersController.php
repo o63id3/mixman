@@ -22,12 +22,14 @@ final class SellersController
     /**
      * Display a listing of the resource.
      */
-    public function index(SellerFilter $filter): Response
+    public function index(Request $request, SellerFilter $filter): Response
     {
         Gate::authorize('viewAny', Seller::class);
 
+        $user = type($request->user())->as(User::class);
+
         $sellers = Seller::query()
-            ->filter($filter)
+            ->filter($filter, $user)
             ->latest()
             ->withBalance()
             ->with(['region:id,name'])

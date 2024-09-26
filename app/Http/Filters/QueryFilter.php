@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Filters;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -85,8 +86,12 @@ abstract class QueryFilter
      *
      * @var Builder
      */
-    final public function apply(Builder $builder): Builder
+    final public function apply(Builder $builder, User $user): Builder
     {
+        if (! $user->isAdmin()) {
+            return $builder;
+        }
+
         $this->builder = $builder;
 
         foreach ($this->request->all() as $key => $values) {

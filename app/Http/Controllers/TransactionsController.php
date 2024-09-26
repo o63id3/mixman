@@ -25,7 +25,7 @@ final class TransactionsController
         $transactions = Transaction::query()
             ->with('seller')
             ->visibleTo($user)
-            ->filter($filter)
+            ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 

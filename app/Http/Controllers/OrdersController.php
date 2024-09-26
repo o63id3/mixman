@@ -30,14 +30,14 @@ final class OrdersController
     {
         Gate::authorize('viewAny', Order::class);
 
-        $seller = type($request->user())->as(User::class);
+        $user = type($request->user())->as(User::class);
 
         $orders = Order::query()
             ->with(['seller', 'action'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
-            ->visibleTo($seller)
-            ->filter($filter)
+            ->visibleTo($user)
+            ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 

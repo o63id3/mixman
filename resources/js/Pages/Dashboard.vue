@@ -73,11 +73,13 @@ const groups: Array<Group> = [
       },
       {
         title: 'الطلبات المعلقة',
-        value: h(
-          Link,
-          { href: `/orders?filter[status]=معلق`, class: 'hover:underline' },
-          `${props.number_of_pending_orders} طلب`,
-        ),
+        value: user.admin
+          ? h(
+              Link,
+              { href: `/orders?filter[status]=معلق` },
+              `${props.number_of_pending_orders} طلب`,
+            )
+          : h('span', `${props.number_of_pending_orders} طلب`),
         icon: h(CircleDashed, { class: 'text-yellow-500' }),
         visible: true,
       },

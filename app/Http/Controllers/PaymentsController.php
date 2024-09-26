@@ -25,12 +25,12 @@ final class PaymentsController
     {
         Gate::authorize('viewAny', Payment::class);
 
-        $seller = type($request->user())->as(User::class);
+        $user = type($request->user())->as(User::class);
 
         $payments = Payment::query()
             ->with(['seller', 'registerer'])
-            ->visibleTo($seller)
-            ->filter($filter)
+            ->visibleTo($user)
+            ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
