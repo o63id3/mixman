@@ -11,7 +11,7 @@ import { Input } from '@/Components/ui/input'
 
 <template>
   <FormField v-slot="{ componentField }" name="name">
-    <FormItem>
+    <FormItem class="col-span-full">
       <FormLabel>اسم المنطقة</FormLabel>
       <FormControl>
         <Input type="text" v-bind="componentField" />

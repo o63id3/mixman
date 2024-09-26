@@ -9,6 +9,7 @@ use App\Http\Filters\OrderFilter;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\SellerResource;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Seller;
@@ -106,11 +107,11 @@ final class OrdersController
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Edit', [
-            'sellers' => Seller::get(),
+            'sellers' => fn () => Gate::allows('update', $order) ? SellerResource::collection(Seller::get()) : null,
             'order' => OrderResource::make($order),
             'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
-            'cards' => CardResource::collection(Card::get()),
+            'cards' => fn () => Gate::allows('update', $order) ? CardResource::collection(Card::get()) : null,
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),

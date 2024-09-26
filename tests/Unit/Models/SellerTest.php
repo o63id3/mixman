@@ -49,7 +49,7 @@ test('with balance', function () {
     ]);
 
     $seller = Seller::withBalance()->find($seller->id);
-    expect($seller->balance)->toBe(0);
+    expect((int) $seller->balance)->toBe(0);
 
     // Completed do sum
     $order = Order::factory()->recycle($seller)->create(['status' => OrderStatusEnum::Completed]);
@@ -59,7 +59,7 @@ test('with balance', function () {
     ]);
 
     $seller = Seller::withBalance()->find($seller->id);
-    expect($seller->balance)->toBe((int) -$item->total_price_for_seller);
+    expect((int) $seller->balance)->toBe((int) -$item->total_price_for_seller);
 
     // Returned do sum in positive
     $order = Order::factory()->recycle($seller)->create(['status' => OrderStatusEnum::Returned]);
@@ -69,12 +69,12 @@ test('with balance', function () {
     ]);
 
     $seller = Seller::withBalance()->find($seller->id);
-    expect($seller->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller));
+    expect((int) $seller->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller));
 
     $payment = Payment::factory()->recycle($seller)->create();
 
     $seller = Seller::withBalance()->find($seller->id);
-    expect($seller->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller + $payment->amount));
+    expect((int) $seller->balance)->toBe((int) (-$item->total_price_for_seller + $returned->total_price_for_seller + $payment->amount));
 });
 
 test('load balance', function () {
@@ -87,10 +87,10 @@ test('load balance', function () {
     ]);
 
     $seller->loadBalance();
-    expect($seller->balance)->toBe((int) -$item->total_price_for_seller);
+    expect((int) $seller->balance)->toBe((int) -$item->total_price_for_seller);
 
     $payment = Payment::factory()->recycle($seller)->create();
 
     $seller->loadBalance();
-    expect($seller->balance)->toBe((int) (-$item->total_price_for_seller + $payment->amount));
+    expect((int) $seller->balance)->toBe((int) (-$item->total_price_for_seller + $payment->amount));
 });

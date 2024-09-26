@@ -31,7 +31,7 @@ arch('models')
     ])->ignoring('App\Models\Concerns');
 
 arch('ensure factories', function () {
-    expect($models = getModels())->toHaveCount(8);
+    expect($models = getModels())->toHaveCount(9);
 
     foreach ($models as $model) {
         if ($model === Transaction::class) {

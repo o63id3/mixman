@@ -16,17 +16,19 @@ import {
   SelectValue,
 } from '@/Components/ui/select'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import { Card, User } from '@/types'
+import { Card, Order, User } from '@/types'
 import { orderStatues } from '@/types/enums'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircle } from 'lucide-vue-next'
 import Button from '@/Components/ui/button/Button.vue'
+import Input from '@/Components/ui/input/Input.vue'
 
 const emit = defineEmits(['select'])
 
-const props = defineProps<{
-  sellers: Array<User>
-  cards: Array<Card>
+defineProps<{
+  order?: Order
+  sellers?: Array<User>
+  cards?: Array<Card>
   selected?: number
   hiddenCards?: boolean
   disabled?: boolean
@@ -38,7 +40,7 @@ const props = defineProps<{
     <FormItem>
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox
-        v-if="!disabled"
+        v-if="sellers"
         :options="
           sellers.map((seller) => ({
             value: seller.id,
@@ -50,12 +52,7 @@ const props = defineProps<{
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />
-      <div
-        v-else
-        class="flex h-9 w-full cursor-not-allowed select-none items-center rounded-md border border-input bg-transparent px-3 py-1 text-base opacity-50 shadow-sm transition-colors sm:text-sm"
-      >
-        {{ sellers.find((seller) => seller.id === props.selected)?.name }}
-      </div>
+      <Input v-else :model-value="order?.seller.name" disabled />
       <FormMessage />
     </FormItem>
   </FormField>
@@ -86,7 +83,11 @@ const props = defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField v-if="!hiddenCards" v-slot="{ componentField }" name="cards">
+  <FormField
+    v-if="!hiddenCards && cards"
+    v-slot="{ componentField }"
+    name="cards"
+  >
     <FormItem class="col-span-full">
       <FormLabel>الكروت</FormLabel>
       <FormControl class="col-span-full">
@@ -101,27 +102,25 @@ const props = defineProps<{
           v-model:packages="card.number_of_packages"
           v-model:cardsPerPackage="card.number_of_cards_per_package"
         />
-        <div>
-          <Button
-            type="button"
-            variant="outline"
-            @click="
-              componentField.modelValue.push({
-                card_id: '1',
-                number_of_packages: 1,
-                number_of_cards_per_package: 120,
-              })
-            "
-          >
-            <PlusCircle class="w-5" />
-          </Button>
-        </div>
+        <Button
+          type="button"
+          variant="outline"
+          @click="
+            componentField.modelValue.push({
+              card_id: '1',
+              number_of_packages: 1,
+              number_of_cards_per_package: 120,
+            })
+          "
+        >
+          <PlusCircle class="w-5" />
+        </Button>
       </FormControl>
       <FormMessage />
     </FormItem>
   </FormField>
   <FormField v-slot="{ componentField }" name="notes">
-    <FormItem class="md:col-span-2">
+    <FormItem class="col-span-full">
       <FormLabel>ملاحظات</FormLabel>
       <FormControl>
         <Textarea v-bind="componentField" :disabled="disabled" />

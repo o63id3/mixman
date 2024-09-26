@@ -16,9 +16,9 @@ import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 const props = defineProps<{
   order: Order
   items: Array<OrderItem>
-  sellers: Array<User>
+  sellers?: Array<User>
   statuses: Array<string>
-  cards: Array<Card>
+  cards?: Array<Card>
   can: {
     addItem: boolean
     update: boolean
@@ -79,6 +79,7 @@ const onSubmit = handleSubmit((values) => {
       <OrderForm
         hidden-cards
         :disabled="!can.update"
+        :order="order"
         :sellers="sellers"
         :cards="cards"
         :selected="values.seller_id"
