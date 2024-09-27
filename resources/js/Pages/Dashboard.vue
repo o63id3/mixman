@@ -141,13 +141,10 @@ const form = useForm({})
 
   <AuthenticatedLayout>
     <div class="space-y-8">
-      <div>
+      <div v-if="!user.admin">
         <h2 class="px-4 font-semibold"># الطلبات</h2>
         <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-          <Card
-            v-if="!user.admin"
-            class="rounded-none sm:col-span-2 sm:rounded-xl"
-          >
+          <Card class="rounded-none sm:col-span-2 sm:rounded-xl">
             <CardHeader class="pb-3">
               <CardTitle>طلباتي</CardTitle>
               <CardDescription class="max-w-lg text-balance leading-relaxed">
