@@ -27,7 +27,7 @@ final class SendNewOrderTelegramMassage implements ShouldQueue
     {
         $appURL = config('app.url');
         $url = "{$appURL}orders/{$this->order->id}/edit";
-        $message = "البائع *{$this->order->seller->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط التالي {$url}";
+        $message = "*{$this->order->seller->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: {$url}";
 
         $telegram
             ->users(explode(',', config('telegram.NOTIFIED_USERS')))
