@@ -8,12 +8,12 @@ import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
@@ -22,7 +22,7 @@ export const columns: ColumnDef<User>[] = [
       h(
         Link,
         {
-          href: `${route('sellers.edit', row.getValue('id'))}`,
+          href: `${route('sellers.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {

@@ -7,16 +7,28 @@ import { formatMoney } from '@/lib/money'
 import OrderItemsRowActions from './OrderItemsRowActions.vue'
 
 export const columns: ColumnDef<OrderItem>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'card.name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الفئة' }),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'total_price_for_seller',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, {
+        column,
+        title: 'اجمالي السعر للبائع',
+      }),
+    cell: ({ row }) =>
+      `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
     enableSorting: false,
     enableHiding: false,
   },
@@ -37,18 +49,6 @@ export const columns: ColumnDef<OrderItem>[] = [
         column,
         title: 'الكروت في الرزمة الواحدة',
       }),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'total_price_for_seller',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'اجمالي السعر للبائع',
-      }),
-    cell: ({ row }) =>
-      `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
     enableSorting: false,
     enableHiding: false,
   },

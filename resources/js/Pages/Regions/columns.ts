@@ -7,12 +7,12 @@ import { Region } from '@/types'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Region>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
@@ -21,7 +21,7 @@ export const columns: ColumnDef<Region>[] = [
       h(
         Link,
         {
-          href: `${route('regions.edit', row.getValue('id'))}`,
+          href: `${route('regions.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {

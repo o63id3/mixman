@@ -6,12 +6,12 @@ import { User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
@@ -20,7 +20,7 @@ export const columns: ColumnDef<User>[] = [
       h(
         Link,
         {
-          href: `${route('admins.edit', row.getValue('id'))}`,
+          href: `${route('admins.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {

@@ -7,12 +7,12 @@ import { Payment, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'seller',
     header: ({ column }) =>
@@ -21,7 +21,7 @@ export const columns: ColumnDef<Payment>[] = [
       h(
         Link,
         {
-          href: `${route('payments.edit', row.getValue('id'))}`,
+          href: `${route('payments.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {

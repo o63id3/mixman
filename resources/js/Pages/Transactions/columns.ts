@@ -9,12 +9,12 @@ import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Transaction>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  //   {
+  //     accessorKey: 'id',
+  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
+  //     enableSorting: false,
+  //     enableHiding: false,
+  //   },
   {
     accessorKey: 'seller',
     header: ({ column }) =>
@@ -23,7 +23,7 @@ export const columns: ColumnDef<Transaction>[] = [
       h(
         Link,
         {
-          href: `${route(`${row.getValue('type')}s.edit`, row.getValue('id'))}`,
+          href: `${route(`${row.getValue('type')}s.edit`, row.original.id)}`,
           class: 'hover:underline',
         },
         {
