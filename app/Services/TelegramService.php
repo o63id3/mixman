@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use TelegramBot\Api\BotApi;
+use TelegramBot\Api\Exception;
 
 final class TelegramService
 {
@@ -67,7 +69,11 @@ final class TelegramService
         }
 
         foreach ($this->users as $user) {
-            $this->bot->sendMessage($user, $this->message, $parseMode);
+            try {
+                $this->bot->sendMessage($user, $this->message, $parseMode);
+            } catch (Exception $e) {
+                Log::channel('telegram')->debug($e->getMessage());
+            }
         }
     }
 }
