@@ -60,14 +60,14 @@ final class TelegramService
     /**
      * Send the message.
      */
-    public function send(): void
+    public function send($parseMode = null): void
     {
         if (! $this->bot || ! $this->message) {
             return;
         }
 
         foreach ($this->users as $user) {
-            $this->bot->sendMessage($user, $this->message);
+            $this->bot->sendMessage($user, $this->message, $parseMode);
         }
     }
 }
