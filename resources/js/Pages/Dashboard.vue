@@ -11,7 +11,7 @@ import {
   UserRound,
 } from 'lucide-vue-next'
 import { User } from '@/types'
-import { Component, h } from 'vue'
+import { h } from 'vue'
 import { formatMoney } from '@/lib/money'
 import CardDescription from '@/Components/ui/card/CardDescription.vue'
 import CardFooter from '@/Components/ui/card/CardFooter.vue'
@@ -43,9 +43,9 @@ const user = usePage().props.auth.user
 
 interface Card {
   title: string
-  value: Component
+  value: any
   description?: string
-  icon: Component
+  icon: any
   visible: boolean
 }
 
@@ -76,8 +76,10 @@ const groups: Array<Group> = [
         value: user.admin
           ? h(
               Link,
-              { href: `/orders?filter[status]=معلق` },
-              `${props.number_of_pending_orders} طلب`,
+              { href: `/orders?filter[status]=معلق`, class: 'hover:underline' },
+              {
+                default: () => `${props.number_of_pending_orders} طلب`,
+              },
             )
           : h('span', `${props.number_of_pending_orders} طلب`),
         icon: h(CircleDashed, { class: 'text-yellow-500' }),
@@ -86,7 +88,7 @@ const groups: Array<Group> = [
       {
         title: 'الباعة',
         value: h('span', `${props.sellers_count} بائع`),
-        icon: UserRound,
+        icon: h(UserRound),
         visible: user.admin,
       },
     ],
@@ -174,6 +176,7 @@ const form = useForm({})
           <Card
             class="rounded-none sm:rounded-xl"
             v-for="card in group.cards.filter((card) => card.visible)"
+            :key="card.title"
           >
             <CardHeader
               class="flex flex-row items-center justify-between space-y-0 pb-2"

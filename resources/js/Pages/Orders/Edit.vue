@@ -53,7 +53,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <Head title="orders" />
+  <Head title="Orders" />
 
   <AuthenticatedLayout>
     <template #header>
