@@ -30,6 +30,6 @@ final class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict(! app()->isProduction());
 
-        RateLimiter::for('seller-orders', fn (Request $request) => Limit::perDay(config('settings.seller_orders_per_day'))->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('seller-orders', fn (Request $request) => app()->isProduction() ? Limit::perDay(config('settings.seller_orders_per_day'))->by($request->user()?->id ?: $request->ip()) : Limit::none());
     }
 }
