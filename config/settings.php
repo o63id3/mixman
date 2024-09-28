@@ -15,4 +15,15 @@ return [
     */
 
     'pagination_size' => env('PAGINATION_SIZE', 10),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Seller orders per day
+    |--------------------------------------------------------------------------
+    |
+    | This value is the default rate limit for seller orders per day.
+    |
+    */
+
+    'seller_orders_per_day' => env('SELLER_ORDERS_PER_DAY', 1),
 ];
