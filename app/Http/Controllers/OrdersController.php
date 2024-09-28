@@ -106,6 +106,9 @@ final class OrdersController
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
+        OrderResource::withoutWrapping();
+        OrderItemResource::withoutWrapping();
+
         return Inertia::render('Orders/Edit', [
             'sellers' => fn () => Gate::allows('update', $order) ? SellerResource::collection(Seller::get()) : null,
             'order' => OrderResource::make($order),

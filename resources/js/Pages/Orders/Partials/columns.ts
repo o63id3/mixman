@@ -60,9 +60,6 @@ export const columns: ColumnDef<OrderItem>[] = [
 
 export const summaryFields = [
   { key: 'id', label: '' },
-  { key: 'id', label: '' },
-  { key: 'id', label: '' },
-  { key: 'id', label: '' },
   {
     key: 'total_price_for_seller',
     label: 'اجمالي السعر للبائع',

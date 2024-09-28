@@ -15,7 +15,7 @@ module.exports = {
 
   theme: {
     fontFamily: {
-      sans: ['Cairo', 'sans-serif'],
+      sans: ['Cairo'],
     },
     container: {
       center: true,

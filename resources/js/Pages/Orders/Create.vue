@@ -35,7 +35,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    status: 'طلب جديد',
+    status: 'معلق',
     cards: [
       {
         card_id: String(props.cards[0]?.id),

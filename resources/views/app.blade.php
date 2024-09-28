@@ -13,7 +13,7 @@
     @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
   </head>
-  <body class="rtl antialiased rtl:text-right">
+  <body class="antialiased rtl:text-right">
     @inertia
     <div id="toaster"></div>
   </body>

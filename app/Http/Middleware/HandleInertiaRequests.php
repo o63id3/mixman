@@ -35,7 +35,7 @@ final class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'pendingOrders' => Order::pending()->count(),
+            'pendingOrders' => $request->user() ? Order::visibleTo($request->user())->pending()->count() : null,
             'auth' => [
                 'user' => $request->user() ? UserResource::make($request->user())->withPermissions() : null,
             ],
