@@ -32,4 +32,16 @@ final class Transaction extends Model
 
         return $query->where('seller_id', $user->id);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'amount' => 'float',
+        ];
+    }
 }

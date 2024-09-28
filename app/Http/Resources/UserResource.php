@@ -16,6 +16,27 @@ use Illuminate\Http\Resources\Json\JsonResource;
 final class UserResource extends JsonResource
 {
     /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = null;
+
+    protected bool $withPermissions = false;
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function withPermissions()
+    {
+        $this->withPermissions = true;
+
+        return $this;
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -31,7 +52,7 @@ final class UserResource extends JsonResource
             'admin' => $this->admin,
             'contact_info' => $this->contact_info,
             'notes' => $this->notes,
-            'can' => [
+            'can' => $this->when($this->withPermissions, fn () => [
                 'sellers' => [
                     'viewAny' => $this->resource->can('viewAny', User::class),
                 ],
@@ -54,6 +75,7 @@ final class UserResource extends JsonResource
                     'viewAny' => $this->resource->can('viewAny', Payment::class),
                 ],
             ],
+            ),
         ];
     }
 }

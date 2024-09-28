@@ -6,7 +6,6 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
 use App\Models\Order;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -34,18 +33,11 @@ final class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        if (auth()->check()) {
-            $user = type($request->user())->as(User::class);
-            UserResource::withoutWrapping();
-            // $user->loadBalance();
-            $user = UserResource::make($user);
-        }
-
         return [
             ...parent::share($request),
             'pendingOrders' => Order::pending()->count(),
             'auth' => [
-                'user' => $user ?? null,
+                'user' => $request->user() ? UserResource::make($request->user())->withPermissions() : null,
             ],
         ];
     }
