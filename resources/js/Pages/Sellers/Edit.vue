@@ -18,6 +18,8 @@ const props = defineProps<{
   regions: Array<Region>
   can: {
     delete: boolean
+    activate: boolean
+    deactivate: boolean
   }
 }>()
 
@@ -72,7 +74,7 @@ const onSubmit = handleSubmit((values) => {
     <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
       <template #buttons>
         <DeleteLink
-          v-if="seller.active"
+          v-if="seller.active && can.deactivate"
           :href="route('users.deactivate', seller.id)"
           @success="toast({ title: 'تم تعطيل حساب البائع' })"
           method="POST"
@@ -80,7 +82,7 @@ const onSubmit = handleSubmit((values) => {
           تعطيل الحساب
         </DeleteLink>
         <SecondaryLink
-          v-else
+          v-else-if="!seller.active && can.activate"
           method="DELETE"
           :href="route('users.activate', seller.id)"
           @success="toast({ title: 'تم تفعيل حساب البائع' })"

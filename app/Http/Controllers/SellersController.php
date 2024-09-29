@@ -92,7 +92,9 @@ final class SellersController
             'seller' => UserResource::make($seller),
             'regions' => Region::all(),
             'can' => [
-                'delete' => Gate::allows('delete', User::class),
+                'delete' => Gate::allows('delete', Seller::class),
+                'activate' => Gate::allows('activate', User::class),
+                'deactivate' => Gate::allows('deactivate', User::class),
             ],
         ]);
     }
