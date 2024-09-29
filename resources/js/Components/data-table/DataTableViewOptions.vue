@@ -35,10 +35,10 @@ const columns = computed(() =>
       <Button
         variant="outline"
         size="sm"
-        class="ml-auto hidden h-8 lg:flex rtl:flex-row-reverse"
+        class="hidden h-8 lg:flex ltr:ml-auto rtl:mr-auto"
       >
-        <MixerHorizontalIcon class="mr-2 h-4 w-4" />
         الحقول
+        <MixerHorizontalIcon class="h-4 w-4 ltr:ml-2 rtl:mr-2" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[150px]">
@@ -48,7 +48,6 @@ const columns = computed(() =>
       <DropdownMenuCheckboxItem
         v-for="column in columns"
         :key="column.id"
-        class="capitalize"
         :checked="column.getIsVisible()"
         @update:checked="(value) => column.toggleVisibility(!!value)"
       >

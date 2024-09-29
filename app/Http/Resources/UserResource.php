@@ -9,6 +9,7 @@ use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -72,7 +73,7 @@ final class UserResource extends JsonResource
                     'viewAny' => $this->resource->can('viewAny', Payment::class),
                 ],
                 'transactions' => [
-                    'viewAny' => $this->resource->can('viewAny', Payment::class),
+                    'viewAny' => $this->resource->can('viewAny', Transaction::class),
                 ],
             ],
             ),

@@ -6,7 +6,7 @@ import TransactionsRowActions from './Partials/TransactionsRowActions.vue'
 import { Transaction, User } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Transaction>[] = [
   //   {
@@ -20,16 +20,18 @@ export const columns: ColumnDef<Transaction>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
     cell: ({ row }) =>
-      h(
-        Link,
-        {
-          href: `${route(`${row.getValue('type')}s.edit`, row.original.id)}`,
-          class: 'hover:underline',
-        },
-        {
-          default: () => row.getValue<User>('seller').name,
-        },
-      ),
+      usePage().props.auth.user.admin || row.original.type === 'order'
+        ? h(
+            Link,
+            {
+              href: `${route(`${row.getValue('type')}s.edit`, row.original.id)}`,
+              class: 'hover:underline',
+            },
+            {
+              default: () => row.getValue<User>('seller').name,
+            },
+          )
+        : row.getValue<User>('seller').name,
     enableSorting: false,
     enableHiding: false,
   },

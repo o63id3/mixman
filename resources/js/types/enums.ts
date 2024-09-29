@@ -3,6 +3,7 @@ import {
   CircleDashed,
   CircleFadingArrowUp,
   HandCoins,
+  RotateCcw,
   ShoppingCart,
   XCircle,
 } from 'lucide-vue-next'
