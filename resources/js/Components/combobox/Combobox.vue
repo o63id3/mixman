@@ -84,7 +84,9 @@ function filter(value: string, search: string) {
                     )
                   "
                 />
-                <div class="flex-1 rtl:text-right">
+                <div
+                  class="rtl:truncate-rtl flex-1 ltr:truncate rtl:text-right"
+                >
                   {{ option.label }}
                 </div>
               </div>

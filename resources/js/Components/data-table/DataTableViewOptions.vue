@@ -109,7 +109,9 @@ const getColumnName = (columnId: string) => {
         :checked="column.getIsVisible()"
         @update:checked="(value) => toggleColumnVisibility(column.id, value)"
       >
-        <span class="truncate">{{ getColumnName(column.id) }}</span>
+        <span class="rtl:truncate-rtl ltr:truncate">{{
+          getColumnName(column.id)
+        }}</span>
       </DropdownMenuCheckboxItem>
     </DropdownMenuContent>
   </DropdownMenu>
