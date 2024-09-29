@@ -8,6 +8,7 @@ import { Button } from '@/Components/ui/button'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import { columns } from './columns'
+import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 defineProps<{
   admins: Paginator<User>
@@ -34,7 +35,11 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="admins.data" :columns="columns"> </DataTable>
+      <DataTable :data="admins.data" :columns="columns">
+        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
+          <DataTableToolbar :table="table" />
+        </template>
+      </DataTable>
       <DataTablePagination :links="admins.links" :meta="admins.meta" />
     </div>
   </AuthenticatedLayout>
