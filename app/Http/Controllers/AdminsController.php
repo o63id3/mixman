@@ -65,6 +65,8 @@ final class AdminsController
      */
     public function edit(Admin $admin): Response
     {
+        AdminResource::withoutWrapping();
+
         return Inertia::render('Admins/Edit', [
             'admin' => AdminResource::make($admin),
             'can' => [

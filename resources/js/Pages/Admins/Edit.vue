@@ -11,6 +11,7 @@ import { User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import AdminForm from './Partials/AdminForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
+import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
   admin: User
@@ -69,12 +70,21 @@ const onSubmit = handleSubmit((values) => {
     <UpdateFormLayout @submit="onSubmit" :can-update="can.update">
       <template #buttons>
         <DeleteLink
-          v-if="can.delete"
-          :href="route('admins.destroy', admin.id)"
-          @success="toast({ title: 'تم حذف المستخدم' })"
+          v-if="admin.active"
+          :href="route('users.deactivate', admin.id)"
+          @success="toast({ title: 'تم تعطيل الحساب' })"
+          method="POST"
         >
-          حذف
+          تعطيل الحساب
         </DeleteLink>
+        <SecondaryLink
+          v-else
+          method="DELETE"
+          :href="route('users.activate', admin.id)"
+          @success="toast({ title: 'تم تفعيل الحساب' })"
+        >
+          تفعيل الحساب
+        </SecondaryLink>
       </template>
 
       <AdminForm :disabled="!can.update" />

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeactivatedUsersController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware('auth')->group(function () {
+    Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');
+    Route::delete('/users/{user}', [DeactivatedUsersController::class, 'destroy'])->name('users.activate');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/sellers', [SellersController::class, 'index'])->name('sellers.index');

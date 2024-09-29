@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 final class User extends Authenticatable
 {
@@ -60,6 +61,29 @@ final class User extends Authenticatable
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'registered_by');
+    }
+
+    /**
+     * Activate the user.
+     */
+    public function activate(): void
+    {
+        $this->active = true;
+        $this->save();
+
+    }
+
+    /**
+     * Deactivate the user.
+     */
+    public function deactivate(): void
+    {
+        $this->active = false;
+        $this->save();
+
+        DB::table('sessions')
+            ->where('user_id', $this->id)
+            ->delete();
     }
 
     /**

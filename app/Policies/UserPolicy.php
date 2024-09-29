@@ -39,4 +39,20 @@ final class UserPolicy
     {
         return $user->isAdmin();
     }
+
+    /**
+     * Determine whether the user can deactivate the model.
+     */
+    public function deactivate(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can activate the model.
+     */
+    public function activate(User $user): bool
+    {
+        return $user->isAdmin();
+    }
 }

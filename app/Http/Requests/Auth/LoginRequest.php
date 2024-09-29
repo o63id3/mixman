@@ -51,6 +51,16 @@ final class LoginRequest extends FormRequest
             ]);
         }
 
+        if (! Auth::user()->active) {
+            RateLimiter::hit($this->throttleKey());
+
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'username' => trans('auth.inactive'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

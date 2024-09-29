@@ -10,6 +10,8 @@ import { toast } from '@/Components/ui/toast'
 import { Region, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import SellerForm from './Partials/SellerForm.vue'
+import DeleteLink from '@/Components/links/DeleteLink.vue'
+import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
   seller: User
@@ -40,7 +42,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    region_id: String(props.seller.region.id),
+    region_id: String(props.seller.region?.id),
     name: props.seller.name,
     username: props.seller.username,
     contact_info: props.seller.contact_info ?? undefined,
@@ -68,6 +70,25 @@ const onSubmit = handleSubmit((values) => {
     </template>
 
     <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
+      <template #buttons>
+        <DeleteLink
+          v-if="seller.active"
+          :href="route('users.deactivate', seller.id)"
+          @success="toast({ title: 'تم تعطيل حساب البائع' })"
+          method="POST"
+        >
+          تعطيل الحساب
+        </DeleteLink>
+        <SecondaryLink
+          v-else
+          method="DELETE"
+          :href="route('users.activate', seller.id)"
+          @success="toast({ title: 'تم تفعيل حساب البائع' })"
+        >
+          تفعيل الحساب
+        </SecondaryLink>
+      </template>
+
       <SellerForm :regions="regions" />
     </UpdateFormLayout>
   </AuthenticatedLayout>
