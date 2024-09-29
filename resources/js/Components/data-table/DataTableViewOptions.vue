@@ -13,12 +13,14 @@ import {
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
 import { usePage } from '@inertiajs/vue3'
+import { useI18n } from 'vue-i18n'
 
 interface DataTableViewOptionsProps {
   table: Table<TData>
 }
 
 const props = defineProps<DataTableViewOptionsProps>()
+const { t } = useI18n()
 
 const columns = computed(() =>
   props.table
@@ -79,6 +81,10 @@ watch(
   () => saveColumnVisibility(),
   { deep: true },
 )
+
+const getColumnName = (columnId: string) => {
+  return t(`columns.${columnId}`, columnId)
+}
 </script>
 
 <template>
@@ -87,7 +93,7 @@ watch(
       <Button
         variant="outline"
         size="sm"
-        class="hidden h-8 lg:flex ltr:ml-auto rtl:mr-auto"
+        class="flex h-8 ltr:ml-auto rtl:mr-auto"
       >
         الحقول
         <MixerHorizontalIcon class="h-4 w-4 ltr:ml-2 rtl:mr-2" />
@@ -103,7 +109,7 @@ watch(
         :checked="column.getIsVisible()"
         @update:checked="(value) => toggleColumnVisibility(column.id, value)"
       >
-        <span class="truncate">{{ column.id }}</span>
+        <span class="truncate">{{ getColumnName(column.id) }}</span>
       </DropdownMenuCheckboxItem>
     </DropdownMenuContent>
   </DropdownMenu>

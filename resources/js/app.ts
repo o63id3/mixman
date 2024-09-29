@@ -7,6 +7,17 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import Toaster from './Components/ui/toast/Toaster.vue'
 
+import { createI18n } from 'vue-i18n'
+import ar from './locales/ar.json'
+const i18n = createI18n({
+  legacy: false,
+  locale: 'ar',
+  fallbackLocale: 'ar',
+  messages: {
+    ar,
+  },
+})
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
 createInertiaApp({
@@ -19,6 +30,7 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     createApp({ render: () => h(App, props) })
       .use(plugin)
+      .use(i18n)
       .use(ZiggyVue)
       .mount(el)
 

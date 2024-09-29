@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "created_at": "التاريخ",
+    "amount": "المبلغ",
+    "status": "الحالة",
+    "type": "نوع الحركة",
+    "action": "تم اتخاذ الاجراء بواسطة",
+    "total_price_for_consumer": "السعر للمستهلك",
+    "active": "الحالة"
+  }
+}
