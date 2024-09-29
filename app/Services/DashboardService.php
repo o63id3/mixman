@@ -11,6 +11,7 @@ use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 final class DashboardService
@@ -110,13 +111,14 @@ final class DashboardService
         $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
 
-        return [
+        return Cache::remember('dashboard_admin_statistics', now()->addDay(), fn () => [
             'max_debut_seller' => $this->getMaxDebutSeller(),
             'max_region_income' => $this->getMaxRegionIncome($startOfLastWeek, $endOfLastWeek),
             'max_seller_income' => $this->getMaxSellerIncome($startOfLastWeek, $endOfLastWeek),
             'sellers_count' => $this->getSellersCount(),
             'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
-        ];
+        ]
+        );
     }
 
     /**
@@ -145,11 +147,12 @@ final class DashboardService
      */
     public function getReturnedOrdersCount($user, $start = null, $end = null): int
     {
-        return Order::query()
+        return (int) Cache::remember('getReturnedOrdersCount', now()->addDay(), fn () => Order::query()
             ->visibleTo($user)
             ->returned()
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
-            ->count();
+            ->count()
+        );
     }
 
     /**
@@ -157,11 +160,12 @@ final class DashboardService
      */
     public function getCompletedOrdersCount($user, $start = null, $end = null): int
     {
-        return Order::query()
+        return (int) Cache::remember('getCompletedOrdersCount', now()->addDay(), fn () => Order::query()
             ->visibleTo($user)
             ->completed()
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
-            ->count();
+            ->count()
+        );
     }
 
     /**
@@ -171,6 +175,8 @@ final class DashboardService
     {
         $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
+
+        Cache::remember('number_of_completed_orders_last_week', now()->addDay(), fn () => $this->getCompletedOrdersCount($user, $startOfLastWeek, $endOfLastWeek));
 
         return [
             'total_debuts' => $this->getTotalDebut($user),
