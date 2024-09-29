@@ -28,14 +28,12 @@ export const columns: ColumnDef<User>[] = [
           default: () => row.getValue('name'),
         },
       ),
-    enableHiding: false,
     enableSorting: false,
   },
   {
     accessorKey: 'username',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'اسم المستخدم' }),
-    enableHiding: false,
     enableSorting: false,
   },
   {

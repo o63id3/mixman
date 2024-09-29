@@ -1,11 +1,21 @@
 {
   "columns": {
+    "name": "الاسم",
+    "seller": "الاسم",
+    "region": "المنطقة",
+    "balance": "صافي الحساب",
+    "username": "اسم المستخدم",
+    "price_for_consumer": "السعر للمستهلك",
+    "price_for_seller": "السعر للبائع",
     "created_at": "التاريخ",
+    "updated_at": "التاريخ",
     "amount": "المبلغ",
     "status": "الحالة",
     "type": "نوع الحركة",
     "action": "تم اتخاذ الاجراء بواسطة",
-    "total_price_for_consumer": "السعر للمستهلك",
+    "registerer": "تم الاستلام بواسطة",
+    "total_price_for_consumer": "اجمالي السعر للمستهلك",
+    "total_price_for_seller": "اجمالي السعر للبائع",
     "active": "الحالة"
   }
 }

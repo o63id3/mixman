@@ -8,6 +8,7 @@ import { Button } from '@/Components/ui/button'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import { columns } from './columns'
+import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 defineProps<{
   cards: Paginator<Card>
@@ -36,7 +37,11 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="cards.data" :columns="columns" />
+      <DataTable :data="cards.data" :columns="columns">
+        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
+          <DataTableToolbar :table="table" />
+        </template>
+      </DataTable>
       <DataTablePagination :links="cards.links" :meta="cards.meta" />
     </div>
   </AuthenticatedLayout>

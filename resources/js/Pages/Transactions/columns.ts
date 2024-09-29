@@ -33,7 +33,6 @@ export const columns: ColumnDef<Transaction>[] = [
           )
         : row.getValue<User>('seller').name,
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'type',

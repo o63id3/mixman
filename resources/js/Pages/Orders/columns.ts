@@ -31,7 +31,6 @@ export const columns: ColumnDef<Order>[] = [
         },
       ),
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'status',
@@ -74,7 +73,6 @@ export const columns: ColumnDef<Order>[] = [
       row.original.total_price_for_seller
         ? `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`
         : '-',
-    enableHiding: false,
   },
   {
     accessorKey: 'total_price_for_consumer',
@@ -97,7 +95,6 @@ export const columns: ColumnDef<Order>[] = [
         title: 'التاريخ',
       }),
     enableSorting: false,
-    enableHiding: false,
   },
   //   {
   //     id: 'actions',

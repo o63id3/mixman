@@ -30,7 +30,6 @@ export const columns: ColumnDef<Card>[] = [
         },
       ),
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'price_for_consumer',
@@ -41,7 +40,6 @@ export const columns: ColumnDef<Card>[] = [
       }),
     cell: ({ row }) => `${row.getValue('price_for_consumer')} شيكل`,
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'price_for_seller',
@@ -52,7 +50,6 @@ export const columns: ColumnDef<Card>[] = [
       }),
     cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
     enableSorting: false,
-    enableHiding: false,
   },
   //   {
   //     accessorKey: 'active',
