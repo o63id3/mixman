@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData">
 import type { Table } from '@tanstack/vue-table'
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { MixerHorizontalIcon } from '@radix-icons/vue'
 
 import { Button } from '@/Components/ui/button'
@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
+import { usePage } from '@inertiajs/vue3'
 
 interface DataTableViewOptionsProps {
   table: Table<TData>
@@ -26,6 +27,57 @@ const columns = computed(() =>
       (column) =>
         typeof column.accessorFn !== 'undefined' && column.getCanHide(),
     ),
+)
+
+const saveColumnVisibility = () => {
+  const visibilityState = props.table.getAllColumns().reduce(
+    (acc, column) => {
+      acc[column.id] = column.getIsVisible()
+      return acc
+    },
+    {} as Record<string, boolean>,
+  )
+
+  localStorage.setItem(
+    `${usePage().url}_tableColumnVisibility`,
+    JSON.stringify(visibilityState),
+  )
+}
+
+const loadColumnVisibility = () => {
+  const savedVisibility = localStorage.getItem(
+    `${usePage().url}_tableColumnVisibility`,
+  )
+  if (savedVisibility) {
+    const parsedVisibility = JSON.parse(savedVisibility) as Record<
+      string,
+      boolean
+    >
+    props.table.getAllColumns().forEach((column) => {
+      const isVisible = parsedVisibility[column.id]
+      if (typeof isVisible === 'boolean') {
+        column.toggleVisibility(isVisible)
+      }
+    })
+  }
+}
+
+const toggleColumnVisibility = (columnId: string, isVisible: boolean) => {
+  const column = props.table.getColumn(columnId)
+  if (column) {
+    column.toggleVisibility(isVisible)
+    saveColumnVisibility()
+  }
+}
+
+onMounted(() => {
+  loadColumnVisibility()
+})
+
+watch(
+  () => columns.value.map((column) => column.getIsVisible()),
+  () => saveColumnVisibility(),
+  { deep: true },
 )
 </script>
 
@@ -49,7 +101,7 @@ const columns = computed(() =>
         v-for="column in columns"
         :key="column.id"
         :checked="column.getIsVisible()"
-        @update:checked="(value) => column.toggleVisibility(!!value)"
+        @update:checked="(value) => toggleColumnVisibility(column.id, value)"
       >
         <span class="truncate">{{ column.id }}</span>
       </DropdownMenuCheckboxItem>
