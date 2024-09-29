@@ -3,7 +3,6 @@ import { Button } from '@/Components/ui/button'
 
 defineProps<{
   canUpdate?: boolean
-  canDelete?: boolean
 }>()
 </script>
 
@@ -16,9 +15,7 @@ defineProps<{
         </div>
         <div class="flex gap-2">
           <Button v-if="canUpdate" type="submit"> تعديل </Button>
-          <div v-if="canDelete">
-            <slot name="deleteBtn" />
-          </div>
+          <slot name="buttons" />
         </div>
       </form>
     </div>

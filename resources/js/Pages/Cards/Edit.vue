@@ -63,9 +63,10 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" can-update :can-delete="can.delete">
-      <template #deleteBtn>
+    <UpdateFormLayout @submit="onSubmit" can-update>
+      <template #buttons>
         <DeleteLink
+          v-if="can.delete"
           :href="route('cards.destroy', card.id)"
           @success="toast({ title: 'تم حذف الطلب' })"
         >

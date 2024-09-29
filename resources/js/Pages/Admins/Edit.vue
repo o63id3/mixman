@@ -66,13 +66,10 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout
-      @submit="onSubmit"
-      :can-update="can.update"
-      :can-delete="can.delete"
-    >
-      <template #deleteBtn>
+    <UpdateFormLayout @submit="onSubmit" :can-update="can.update">
+      <template #buttons>
         <DeleteLink
+          v-if="can.delete"
           :href="route('admins.destroy', admin.id)"
           @success="toast({ title: 'تم حذف المستخدم' })"
         >
