@@ -111,7 +111,17 @@ const groups: Array<Group> = [
       },
       {
         title: 'أكبر مدخول بائع',
-        value: h('span', props.max_seller_income?.seller ?? ''),
+        value: h('div', [
+          h('span', props.max_seller_income?.seller),
+          // h(
+          //   'span',
+          //   {
+          //     class:
+          //       'text-xs tracking-wide font-normal mr-1 text-muted-foreground',
+          //   },
+          //   `(${props.max_seller_income?.seller})`,
+          // ),
+        ]),
         description: `${formatMoney(props.max_seller_income?.amount)} شيكل`,
         icon: h(DollarSign, { class: 'text-green-500' }),
         visible: user.admin,
