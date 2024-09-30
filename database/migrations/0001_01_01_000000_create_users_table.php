@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
+            $table->string('telegram')->nullable();
             $table->boolean('admin')->default(false);
             $table->float('seller_percentage')->nullable();
             $table->boolean('active')->default(true);

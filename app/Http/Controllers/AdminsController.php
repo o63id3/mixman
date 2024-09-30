@@ -51,8 +51,9 @@ final class AdminsController
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
-            'contact_info' => ['string'],
-            'notes' => ['string'],
+            'telegram' => ['sometimes'],
+            'contact_info' => ['sometimes'],
+            'notes' => ['sometimes'],
         ]);
 
         Admin::create($validated);
@@ -87,8 +88,9 @@ final class AdminsController
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($admin->id)],
             'password' => ['string', 'min:4'],
-            'contact_info' => ['string'],
-            'notes' => ['string'],
+            'telegram' => ['sometimes'],
+            'contact_info' => ['sometimes'],
+            'notes' => ['sometimes'],
         ]);
 
         $admin->update($validated);

@@ -21,6 +21,7 @@ final class AdminResource extends JsonResource
             'name' => $this->name,
             'username' => $this->username,
             'active' => $this->active,
+            'telegram' => $this->telegram,
             'contact_info' => $this->contact_info,
             'notes' => $this->notes,
         ];

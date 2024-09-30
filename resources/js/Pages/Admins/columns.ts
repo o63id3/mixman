@@ -37,6 +37,12 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'telegram',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'حساب التلغرام' }),
+    enableSorting: false,
+  },
+  {
     accessorKey: 'active',
     header: ({ column }) =>
       h(DataTableColumnHeader, {

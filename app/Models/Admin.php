@@ -22,6 +22,7 @@ final class Admin extends Model
         'password',
         'contact_info',
         'notes',
+        'telegram',
     ];
 
     /**

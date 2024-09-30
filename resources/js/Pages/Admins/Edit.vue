@@ -33,6 +33,7 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
       .optional(),
+    telegram: z.string().optional(),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),
@@ -44,6 +45,7 @@ const { handleSubmit, setErrors } = useForm({
     name: props.admin.name,
     username: props.admin.username,
     contact_info: props.admin.contact_info ?? undefined,
+    telegram: props.admin.telegram ?? undefined,
     notes: props.admin.notes ?? undefined,
   },
 })

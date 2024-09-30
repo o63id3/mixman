@@ -8,6 +8,7 @@ export interface User {
   active: boolean
   contact_info: string
   percentage: number
+  telegram: string
   notes: string
   can: {
     sellers: {

@@ -57,6 +57,15 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
+  <FormField v-slot="{ componentField }" name="telegram">
+    <FormItem class="col-span-full">
+      <FormLabel>حساب التلغرام</FormLabel>
+      <FormControl>
+        <Input type="text" v-bind="componentField" :disabled="disabled" />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  </FormField>
   <FormField v-slot="{ componentField }" name="contact_info">
     <FormItem class="md:col-span-2">
       <FormLabel>بيانات التواصل</FormLabel>

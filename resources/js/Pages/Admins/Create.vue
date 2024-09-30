@@ -22,6 +22,7 @@ const formSchema = toTypedSchema(
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),
+    telegram: z.string().optional(),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),
