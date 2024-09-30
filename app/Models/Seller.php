@@ -27,6 +27,7 @@ final class Seller extends Model
         'region_id',
         'contact_info',
         'notes',
+        'seller_percentage',
     ];
 
     /**
@@ -109,6 +110,12 @@ final class Seller extends Model
 
         $setTotalPrices = function ($model) {
             $model->admin = false;
+
+            if (! $model->seller_percentage) {
+                $model->seller_percentage = 0.1;
+            } else {
+                $model->seller_percentage = round($model->seller_percentage / 100, 2);
+            }
         };
 
         self::creating($setTotalPrices);

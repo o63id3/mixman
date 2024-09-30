@@ -34,6 +34,7 @@ final class SellerFactory extends Factory
             'contact_info' => 'contact info',
             'notes' => 'notes',
             'active' => true,
+            'seller_percentage' => random_int(10, 15),
             'remember_token' => Str::random(10),
         ];
     }

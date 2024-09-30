@@ -42,6 +42,15 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'seller_percentage',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, {
+        column,
+        title: 'نسبة الربح',
+      }),
+    cell: ({ row }) => `%${Math.round(row.original.percentage * 100)}`,
+  },
+  {
     accessorKey: 'balance',
     header: ({ column }) =>
       h(DataTableColumnHeader, {

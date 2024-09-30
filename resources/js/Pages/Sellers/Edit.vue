@@ -36,6 +36,10 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
       .optional(),
+    seller_percentage: z
+      .number({ message: 'هذا الحقل مطلوب' })
+      .min(1, { message: 'نسبة الربح يجب أن تكون أكبر من 1' })
+      .max(100, { message: 'نسبة الربح يجب أن تكون أقل من 100' }),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),
@@ -47,6 +51,7 @@ const { handleSubmit, setErrors } = useForm({
     region_id: String(props.seller.region?.id),
     name: props.seller.name,
     username: props.seller.username,
+    seller_percentage: Math.round(props.seller.percentage * 100),
     contact_info: props.seller.contact_info ?? undefined,
     notes: props.seller.notes ?? undefined,
   },

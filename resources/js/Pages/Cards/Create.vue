@@ -16,7 +16,7 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
-    price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    // price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )

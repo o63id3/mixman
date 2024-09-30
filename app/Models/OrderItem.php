@@ -57,7 +57,7 @@ final class OrderItem extends Model
             $card = Card::find($model->card_id);
 
             $model->total_price_for_consumer = $card->price_for_consumer * $model->quantity;
-            $model->total_price_for_seller = $card->price_for_seller * $model->quantity;
+            $model->total_price_for_seller = ($card->price_for_consumer * (1 - $model->order->seller->seller_percentage)) * $model->quantity;
         };
 
         self::creating($setTotalPrices);

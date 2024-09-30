@@ -24,6 +24,10 @@ const formSchema = toTypedSchema(
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),
+    seller_percentage: z
+      .number({ message: 'هذا الحقل مطلوب' })
+      .min(1, { message: 'نسبة الربح يجب أن تكون أكبر من 1' })
+      .max(100, { message: 'نسبة الربح يجب أن تكون أقل من 100' }),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),

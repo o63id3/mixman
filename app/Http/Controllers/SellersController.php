@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\SellerFilter;
 use App\Http\Resources\SellerResource;
-use App\Http\Resources\UserResource;
 use App\Models\Region;
 use App\Models\Seller;
 use App\Models\User;
@@ -68,6 +67,7 @@ final class SellersController
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'region_id' => ['required', Rule::exists('regions', 'id')],
+            'seller_percentage' => ['required', 'numeric', 'min:1', 'max:100'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
             'contact_info' => ['string'],
@@ -82,14 +82,16 @@ final class SellersController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $seller): Response
+    public function edit(Seller $seller): Response
     {
         Gate::authorize('update', Seller::class);
 
         $seller->load('region');
 
+        SellerResource::withoutWrapping();
+
         return Inertia::render('Sellers/Edit', [
-            'seller' => UserResource::make($seller),
+            'seller' => SellerResource::make($seller),
             'regions' => Region::all(),
             'can' => [
                 'delete' => Gate::allows('delete', Seller::class),
