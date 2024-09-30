@@ -29,8 +29,8 @@ return new class extends Migration
                 COALESCE(
                     SUM(
                         CASE
-                            WHEN status = 'مرجع' THEN order_items.total_price_for_seller
                             WHEN status = 'مكتمل' THEN -order_items.total_price_for_seller
+                            WHEN status = 'مرجع' THEN 0
                             WHEN status = 'طلب جديد' THEN 0
                         END
                     ),

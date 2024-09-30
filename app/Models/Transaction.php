@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,7 @@ final class Transaction extends Model
             return $query;
         }
 
-        return $query->where('seller_id', $user->id);
+        return $query->where('seller_id', $user->id)->where('status', '!=', OrderStatusEnum::Returned);
     }
 
     /**
