@@ -25,7 +25,7 @@ final class SellerOrdersController
             'status' => OrderStatusEnum::Pending,
         ]);
 
-        SendNewOrderTelegramMassage::dispatchSync($order);
+        SendNewOrderTelegramMassage::dispatch($order);
 
         return back();
     }
