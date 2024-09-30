@@ -21,7 +21,7 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
     </FormItem>
   </FormField>
   <FormField v-slot="{ componentField }" name="price_for_consumer">
-    <FormItem>
+    <FormItem class="col-span-full">
       <FormLabel>السعر للمستهلك</FormLabel>
       <FormControl>
         <Input type="number" step="0.01" v-bind="componentField" />
@@ -29,7 +29,7 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField v-slot="{ componentField }" name="price_for_seller">
+  <!-- <FormField v-slot="{ componentField }" name="price_for_seller">
     <FormItem>
       <FormLabel>السعر للبائع</FormLabel>
       <FormControl>
@@ -37,7 +37,7 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
       </FormControl>
       <FormMessage />
     </FormItem>
-  </FormField>
+  </FormField> -->
   <FormField v-slot="{ componentField }" name="notes">
     <FormItem class="col-span-full">
       <FormLabel>ملاحظات</FormLabel>

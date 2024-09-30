@@ -23,7 +23,7 @@ final class CardFactory extends Factory
         return [
             'name' => $this->faker->words(3, true),
             'price_for_consumer' => $price,
-            'price_for_seller' => $price * 0.9,
+            // 'price_for_seller' => $price * 0.9,
             'active' => $this->faker->randomElement([true, false]),
             'notes' => $this->faker->realText(),
         ];

@@ -22,6 +22,7 @@ final class SellerResource extends JsonResource
             'name' => $this->name,
             'username' => $this->username,
             'active' => $this->active,
+            'percentage' => $this->seller_percentage,
             'balance' => $this->whenHas('balance'),
             'contact_info' => $this->contact_info,
             'notes' => $this->notes,

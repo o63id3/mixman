@@ -41,16 +41,16 @@ export const columns: ColumnDef<Card>[] = [
     cell: ({ row }) => `${row.getValue('price_for_consumer')} شيكل`,
     enableSorting: false,
   },
-  {
-    accessorKey: 'price_for_seller',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'السعر للبائع',
-      }),
-    cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
-    enableSorting: false,
-  },
+  //   {
+  //     accessorKey: 'price_for_seller',
+  //     header: ({ column }) =>
+  //       h(DataTableColumnHeader, {
+  //         column,
+  //         title: 'السعر للبائع',
+  //       }),
+  //     cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
+  //     enableSorting: false,
+  //   },
   //   {
   //     accessorKey: 'active',
   //     header: ({ column }) =>

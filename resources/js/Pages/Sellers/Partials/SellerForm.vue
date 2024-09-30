@@ -82,8 +82,20 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
+  <FormField v-slot="{ componentField }" name="seller_percentage">
+    <FormItem class="col-span-full">
+      <FormLabel>نسبة الربح (%)</FormLabel>
+      <FormControl>
+        <Input type="number" min="0" max="100" v-bind="componentField" />
+      </FormControl>
+      <FormDescription>
+        سيتم استخدام هذه القيمة في احتساب قيمة الطلبات.
+      </FormDescription>
+      <FormMessage />
+    </FormItem>
+  </FormField>
   <FormField v-slot="{ componentField }" name="contact_info">
-    <FormItem class="md:col-span-2">
+    <FormItem class="col-span-full">
       <FormLabel>بيانات التواصل</FormLabel>
       <FormControl>
         <Textarea v-bind="componentField" />
@@ -92,7 +104,7 @@ defineProps<{
     </FormItem>
   </FormField>
   <FormField v-slot="{ componentField }" name="notes">
-    <FormItem class="md:col-span-2">
+    <FormItem class="col-span-full">
       <FormLabel>ملاحظات</FormLabel>
       <FormControl>
         <Textarea v-bind="componentField" />

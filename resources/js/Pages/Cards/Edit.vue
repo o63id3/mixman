@@ -10,8 +10,6 @@ import { toast } from '@/Components/ui/toast'
 import { Card } from '@/types'
 import CardForm from './Partials/CardForm.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import { cn } from '@/lib/utils'
-import { buttonVariants } from '@/Components/ui/button'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 
 const props = defineProps<{
@@ -28,7 +26,7 @@ const formSchema = toTypedSchema(
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     active: z.boolean(),
     price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
-    price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    // price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )
@@ -38,7 +36,7 @@ const { handleSubmit, setErrors } = useForm({
   initialValues: {
     name: props.card.name,
     price_for_consumer: props.card.price_for_consumer,
-    price_for_seller: props.card.price_for_seller,
+    // price_for_seller: props.card.price_for_seller,
     active: props.card.active,
     notes: props.card.notes ?? undefined,
   },

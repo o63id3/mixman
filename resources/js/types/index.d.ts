@@ -7,6 +7,7 @@ export interface User {
   admin: boolean
   active: boolean
   contact_info: string
+  percentage: number
   notes: string
   can: {
     sellers: {
@@ -43,7 +44,7 @@ export interface Card {
   name: string
   active: boolean
   price_for_consumer: number
-  price_for_seller: number
+  //   price_for_seller: number
   notes: string
 }
 

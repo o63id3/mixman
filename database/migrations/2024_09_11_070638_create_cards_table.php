@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->float('price_for_consumer');
-            $table->float('price_for_seller');
+            // $table->float('price_for_seller');
             $table->boolean('active')->default(true);
             $table->longText('notes')->nullable();
             $table->timestamps();

@@ -9,6 +9,7 @@ use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -35,31 +36,27 @@ final class DatabaseSeeder extends Seeder
             'name' => 'المشروع',
         ]]);
 
-        $sellers = User::factory(15)->recycle($regions)->create(['admin' => false]);
+        $sellers = Seller::factory(15)->recycle($regions)->create();
 
         $cards = Card::factory()->createMany([[
             'name' => 'كرت فئة 1 شيكل',
             'price_for_consumer' => 1,
-            'price_for_seller' => 0.9,
+            // 'price_for_seller' => 0.9,
             'active' => true,
         ], [
             'name' => 'كرت فئة 3 شيكل',
             'price_for_consumer' => 3,
-            'price_for_seller' => 3 * 0.9,
+            // 'price_for_seller' => 3 * 0.9,
             'active' => true,
         ], [
             'name' => 'كرت فئة 5 شيكل',
             'price_for_consumer' => 5,
-            'price_for_seller' => 5 * 0.9,
+            // 'price_for_seller' => 5 * 0.9,
             'active' => true,
         ]]);
 
         Order::factory(100)
-            ->state(function () use ($sellers) {
-                return [
-                    'seller_id' => $sellers->random()->id,
-                ];
-            })
+            ->recycle($sellers)
             ->recycle($admin)
             ->hasItems(3)
             ->recycle($cards)
@@ -67,11 +64,7 @@ final class DatabaseSeeder extends Seeder
             ->create();
 
         Order::factory(100)
-            ->state(function () use ($sellers) {
-                return [
-                    'seller_id' => $sellers->random()->id,
-                ];
-            })
+            ->recycle($sellers)
             ->recycle($admin)
             ->hasItems(3)
             ->recycle($cards)
@@ -79,11 +72,7 @@ final class DatabaseSeeder extends Seeder
             ->create();
 
         Order::factory(20)
-            ->state(function () use ($sellers) {
-                return [
-                    'seller_id' => $sellers->random()->id,
-                ];
-            })
+            ->recycle($sellers)
             ->recycle($admin)
             ->hasItems(1)
             ->recycle($cards)
@@ -91,11 +80,7 @@ final class DatabaseSeeder extends Seeder
             ->create();
 
         Payment::factory(100)
-            ->state(function () use ($sellers) {
-                return [
-                    'seller_id' => $sellers->random()->id,
-                ];
-            })
+            ->recycle($sellers)
             ->recycle($admin)
             ->create();
 

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->boolean('admin')->default(false);
+            $table->float('seller_percentage')->nullable();
             $table->boolean('active')->default(true);
             $table->longText('contact_info')->nullable();
             $table->longText('notes')->nullable();
