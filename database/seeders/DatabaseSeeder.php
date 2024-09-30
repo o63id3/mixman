@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\OrderStatusEnum;
-use App\Models\Admin;
 use App\Models\Card;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
 use App\Models\Seller;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
@@ -20,10 +20,12 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Admin::factory()->create([
+        $admin = User::factory()->create([
+            'region_id' => null,
             'name' => 'المسؤول',
             'username' => 'admin',
             'password' => '1',
+            'admin' => true,
         ]);
 
         if (app()->isProduction()) {
