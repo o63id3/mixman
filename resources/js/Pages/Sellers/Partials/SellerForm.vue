@@ -88,6 +88,15 @@ defineProps<{
       <FormControl>
         <Input type="number" min="0" max="100" v-bind="componentField" />
       </FormControl>
+      <FormMessage />
+    </FormItem>
+  </FormField>
+  <FormField v-slot="{ componentField }" name="seller_percentage">
+    <FormItem class="col-span-full">
+      <FormLabel>نسبة الربح (%)</FormLabel>
+      <FormControl>
+        <Input type="number" min="0" max="100" v-bind="componentField" />
+      </FormControl>
       <FormDescription>
         سيتم استخدام هذه القيمة في احتساب قيمة الطلبات.
       </FormDescription>
