@@ -24,7 +24,6 @@ final class DatabaseSeeder extends Seeder
             'name' => 'المسؤول',
             'username' => 'admin',
             'password' => '1',
-            'admin' => true,
         ]);
 
         if (app()->isProduction()) {
