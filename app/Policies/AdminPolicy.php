@@ -14,7 +14,7 @@ final class AdminPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -22,7 +22,7 @@ final class AdminPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -34,7 +34,7 @@ final class AdminPolicy
             return $user->id === $admin->id;
         }
 
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -46,6 +46,6 @@ final class AdminPolicy
             return $user->id === $admin->id;
         }
 
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 }

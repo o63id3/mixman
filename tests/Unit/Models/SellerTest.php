@@ -12,7 +12,7 @@ use App\Models\Seller;
 test('is admin', function () {
     $seller = Seller::factory()->create();
 
-    expect($seller->isAdmin())->toBeFalse();
+    expect($seller->isAhmed())->toBeFalse();
 });
 
 test('region', function () {

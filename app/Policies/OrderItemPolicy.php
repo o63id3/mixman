@@ -14,7 +14,7 @@ final class OrderItemPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -22,6 +22,6 @@ final class OrderItemPolicy
      */
     public function delete(User $user, OrderItem $orderItem): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,9 +43,9 @@ final class User extends Authenticatable
     /**
      * Check if the user is admin.
      */
-    public function isAdmin(): bool
+    public function isAhmed(): bool
     {
-        return $this->admin;
+        return $this->role === RoleEnum::Ahmed->value;
     }
 
     /**

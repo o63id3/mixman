@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Network;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,8 +17,9 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'seller_id')->constrained('users');
-            $table->foreignIdFor(User::class, 'registered_by')->constrained('users');
+            $table->foreignIdFor(User::class, 'recipient_id')->constrained('users');
+            $table->foreignIdFor(User::class, 'user_id')->constrained('users');
+            $table->foreignIdFor(Network::class)->constrained('networks');
             $table->integer('amount');
             $table->longText('notes')->nullable();
             $table->timestamps();

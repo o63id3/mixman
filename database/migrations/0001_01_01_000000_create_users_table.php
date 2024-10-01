@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Region;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,24 +14,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('regions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
-
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Region::class)->nullable()->constrained('regions')->nullOnDelete();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('telegram')->nullable();
-            $table->boolean('admin')->default(false);
-            $table->float('seller_percentage')->nullable();
+            $table->enum('role', array_column(RoleEnum::cases(), 'value'));
             $table->boolean('active')->default(true);
             $table->longText('contact_info')->nullable();
-            $table->longText('notes')->nullable();
+            $table->float('seller_percentage')->nullable()->default(0.1);
             $table->rememberToken();
             $table->timestamps();
         });

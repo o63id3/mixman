@@ -27,12 +27,7 @@ const links: Array<Link> = [
   {
     route: 'admins.index',
     label: 'المستخدمين',
-    visible: user.can.admins.viewAny,
-  },
-  {
-    route: 'regions.index',
-    label: 'المناطق',
-    visible: user.can.regions.viewAny,
+    visible: user.can.users.viewAny,
   },
   {
     route: 'cards.index',
@@ -40,9 +35,9 @@ const links: Array<Link> = [
     visible: user.can.cards.viewAny,
   },
   {
-    route: 'sellers.index',
-    label: 'الباعة',
-    visible: user.can.sellers.viewAny,
+    route: 'networks.index',
+    label: 'الشبكات',
+    visible: user.can.networks.viewAny,
   },
   {
     route: 'orders.index',
@@ -56,10 +51,35 @@ const links: Array<Link> = [
     visible: user.can.payments.viewAny,
   },
   {
-    route: 'transactions.index',
-    label: 'الحركات',
-    visible: user.can.transactions.viewAny,
+    route: 'expenses.index',
+    label: 'النفقات',
+    visible: user.can.expenses.viewAny,
   },
+  // {
+  //   route: 'regions.index',
+  //   label: 'المناطق',
+  //   visible: user.can.regions.viewAny,
+  // },
+  // {
+  //   route: 'cards.index',
+  //   label: 'الكروت',
+  //   visible: user.can.cards.viewAny,
+  // },
+  // {
+  //   route: 'sellers.index',
+  //   label: 'الباعة',
+  //   visible: user.can.sellers.viewAny,
+  // },
+  // {
+  //   route: 'payments.index',
+  //   label: 'المدفوعات',
+  //   visible: user.can.payments.viewAny,
+  // },
+  // {
+  //   route: 'transactions.index',
+  //   label: 'الحركات',
+  //   visible: user.can.transactions.viewAny,
+  // },
 ]
 </script>
 

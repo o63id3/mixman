@@ -33,9 +33,9 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         $orders = Order::query()
-            ->with(['seller', 'action'])
-            ->withSum('items as total_price_for_seller', 'total_price_for_seller')
-            ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
+            ->with(['orderer', 'manager'])
+            // ->withSum('items as total_price_for_seller', 'total_price_for_seller')
+            // ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -44,7 +44,7 @@ final class OrdersController
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'statuses' => OrderStatusEnum::cases(),
-            'sellers' => Seller::all(),
+            'sellers' => User::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [

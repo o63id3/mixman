@@ -14,7 +14,7 @@ final class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -22,7 +22,7 @@ final class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $user->isAdmin() || $order->seller_id === $user->id;
+        return $user->isAhmed() || $order->seller_id === $user->id;
     }
 
     /**
@@ -30,7 +30,7 @@ final class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -38,7 +38,7 @@ final class OrderPolicy
      */
     public function createItems(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -47,10 +47,10 @@ final class OrderPolicy
     public function update(User $user, Order $order): bool
     {
         // if ($order->completed()) {
-        //     return $user->isAdmin();
+        //     return $user->isAhmed();
         // }
 
-        return $user->isAdmin()/*|| $user->id === $order->seller_id*/;
+        return $user->isAhmed()/*|| $user->id === $order->seller_id*/;
     }
 
     /**
@@ -59,9 +59,9 @@ final class OrderPolicy
     public function delete(User $user, Order $order): bool
     {
         if ($order->completed()) {
-            return $user->isAdmin();
+            return $user->isAhmed();
         }
 
-        return $user->isAdmin()/*|| $user->id === $order->seller_id*/;
+        return $user->isAhmed()/*|| $user->id === $order->seller_id*/;
     }
 }

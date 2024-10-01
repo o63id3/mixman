@@ -1,13 +1,33 @@
 import {
+  BaggageClaim,
   CircleCheck,
   CircleDashed,
   CircleFadingArrowUp,
   HandCoins,
-  RotateCcw,
   ShoppingCart,
+  UserCog,
+  Users,
   XCircle,
 } from 'lucide-vue-next'
 import { h } from 'vue'
+
+export const roles = [
+  {
+    value: 'ahmed',
+    label: 'مدير ',
+    icon: h(UserCog, { class: 'text-green-500' }),
+  },
+  {
+    value: 'partner',
+    label: 'شريك',
+    icon: h(Users, { class: 'text-blue-500' }),
+  },
+  {
+    value: 'seller',
+    label: 'بائع',
+    icon: h(BaggageClaim, { class: 'text-yellow-500' }),
+  },
+]
 
 export const active = [
   {

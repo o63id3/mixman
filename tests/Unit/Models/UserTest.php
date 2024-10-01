@@ -11,7 +11,7 @@ test('is admin', function () {
     $user = Seller::factory()->create();
     $admin = User::factory()->admin()->create();
 
-    expect($admin->isAdmin())->toBeTrue()->and($user->isAdmin())->toBeFalse();
+    expect($admin->isAhmed())->toBeTrue()->and($user->isAhmed())->toBeFalse();
 });
 
 test('region', function () {

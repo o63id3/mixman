@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Models\Admin;
-use App\Models\Card;
-use App\Models\Order;
-use App\Models\Payment;
-use App\Models\Region;
-use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -46,34 +39,29 @@ final class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'region' => $this->whenLoaded('region', fn () => RegionResource::make($this->region)),
             'name' => $this->name,
-            'username' => $this->username,
-            'active' => $this->active,
-            'admin' => $this->admin,
-            'contact_info' => $this->contact_info,
-            'notes' => $this->notes,
+            'username' => $this->whenHas('username'),
+            'active' => $this->whenHas('active'),
+            'role' => $this->whenHas('role'),
+            'contact_info' => $this->whenHas('contact_info'),
             'can' => $this->when($this->withPermissions, fn () => [
-                'sellers' => [
-                    'viewAny' => $this->resource->can('viewAny', User::class),
-                ],
-                'admins' => [
-                    'viewAny' => $this->resource->can('viewAny', Admin::class),
-                ],
-                'regions' => [
-                    'viewAny' => $this->resource->can('viewAny', Region::class),
+                'users' => [
+                    'viewAny' => $this->resource->isAhmed(),
                 ],
                 'cards' => [
-                    'viewAny' => $this->resource->can('viewAny', Card::class),
+                    'viewAny' => $this->resource->isAhmed(),
+                ],
+                'networks' => [
+                    'viewAny' => $this->resource->isAhmed(),
                 ],
                 'orders' => [
-                    'viewAny' => $this->resource->can('viewAny', Order::class),
+                    'viewAny' => $this->resource->isAhmed(),
                 ],
                 'payments' => [
-                    'viewAny' => $this->resource->can('viewAny', Payment::class),
+                    'viewAny' => $this->resource->isAhmed(),
                 ],
-                'transactions' => [
-                    'viewAny' => $this->resource->can('viewAny', Transaction::class),
+                'expenses' => [
+                    'viewAny' => $this->resource->isAhmed(),
                 ],
             ],
             ),

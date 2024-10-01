@@ -13,7 +13,7 @@ final class PaymentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -21,7 +21,7 @@ final class PaymentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -29,7 +29,7 @@ final class PaymentPolicy
      */
     public function update(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -37,6 +37,6 @@ final class PaymentPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 }

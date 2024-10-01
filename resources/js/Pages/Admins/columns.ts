@@ -4,7 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { User } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { active } from '@/types/enums'
+import { active, roles } from '@/types/enums'
 
 export const columns: ColumnDef<User>[] = [
   //   {
@@ -37,11 +37,29 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'telegram',
+    accessorKey: 'role',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'حساب التلغرام' }),
+      h(DataTableColumnHeader, { column, title: 'الصلاحية' }),
+    cell: ({ row }) => {
+      const role = roles.find(
+        (role: any) => role.value === row.getValue('role'),
+      )
+
+      if (!role) return null
+
+      return h('div', { class: 'flex items-center gap-2' }, [
+        role.icon && h(role.icon),
+        h('span', { class: ' text-muted-foreground' }, role.label),
+      ])
+    },
     enableSorting: false,
   },
+  //   {
+  //     accessorKey: 'telegram',
+  //     header: ({ column }) =>
+  //       h(DataTableColumnHeader, { column, title: 'حساب التلغرام' }),
+  //     enableSorting: false,
+  //   },
   {
     accessorKey: 'active',
     header: ({ column }) =>

@@ -28,7 +28,7 @@ final class PaymentsController
         $user = type($request->user())->as(User::class);
 
         $payments = Payment::query()
-            ->with(['seller', 'registerer'])
+            ->with(['recipient', 'user'])
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -36,7 +36,7 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'sellers' => Seller::all(),
+            'sellers' => User::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [

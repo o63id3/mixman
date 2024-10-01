@@ -30,7 +30,7 @@ final class Payment extends Model
      */
     public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
     {
-        if ($user->isAdmin()) {
+        if ($user->isAhmed()) {
             return $query;
         }
 
@@ -40,16 +40,24 @@ final class Payment extends Model
     /**
      * Get seller.
      */
-    public function seller(): BelongsTo
+    public function recipient(): BelongsTo
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(User::class, 'recipient_id');
     }
 
     /**
      * Get registerer.
      */
-    public function registerer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'registered_by');
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get registerer.
+     */
+    public function network(): BelongsTo
+    {
+        return $this->belongsTo(Network::class);
     }
 }

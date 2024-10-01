@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,7 +16,7 @@ final class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = '1';
 
     /**
      * Define the model's default state.
@@ -28,12 +27,8 @@ final class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'region_id' => Region::factory(),
             'username' => fake()->unique()->username(),
             'password' => self::$password ??= Hash::make('password'),
-            'contact_info' => 'contact info',
-            'notes' => 'notes',
-            'admin' => false,
             'active' => true,
             'remember_token' => Str::random(10),
         ];

@@ -16,7 +16,7 @@ export const columns: ColumnDef<Order>[] = [
   //     enableHiding: false,
   //   },
   {
-    accessorKey: 'seller',
+    accessorKey: 'orderer',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
     cell: ({ row }) =>
@@ -27,9 +27,16 @@ export const columns: ColumnDef<Order>[] = [
           class: 'hover:underline',
         },
         {
-          default: () => row.getValue<User>('seller').name,
+          default: () => row.original.orderer.name,
         },
       ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'manager',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'مدير الطلب' }),
+    cell: ({ row }) => row.original.manager.name,
     enableSorting: false,
   },
   {
@@ -52,16 +59,16 @@ export const columns: ColumnDef<Order>[] = [
       ])
     },
   },
-  {
-    accessorKey: 'action',
-    accessorFn: (order) => order.action?.name,
-    header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'تم اتخاذ الاجراء بواسطة',
-      }),
-    enableSorting: false,
-  },
+  //   {
+  //     accessorKey: 'action',
+  //     accessorFn: (order) => order.action?.name,
+  //     header: ({ column }) =>
+  //       h(DataTableColumnHeader, {
+  //         column,
+  //         title: 'تم اتخاذ الاجراء بواسطة',
+  //       }),
+  //     enableSorting: false,
+  //   },
   {
     accessorKey: 'total_price_for_seller',
     header: ({ column }) =>

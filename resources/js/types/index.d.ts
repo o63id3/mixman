@@ -11,16 +11,13 @@ export interface User {
   telegram: string
   notes: string
   can: {
-    sellers: {
-      viewAny: boolean
-    }
-    admins: {
-      viewAny: boolean
-    }
-    regions: {
+    users: {
       viewAny: boolean
     }
     cards: {
+      viewAny: boolean
+    }
+    networks: {
       viewAny: boolean
     }
     orders: {
@@ -29,10 +26,66 @@ export interface User {
     payments: {
       viewAny: boolean
     }
-    transactions: {
+    expenses: {
       viewAny: boolean
     }
+    // regions: {
+    //   viewAny: boolean
+    // }
+    // cards: {
+    //   viewAny: boolean
+    // }
+    // payments: {
+    //   viewAny: boolean
+    // }
+    // transactions: {
+    //   viewAny: boolean
+    // }
   }
+}
+
+export interface Network {
+  id: number
+  name: string
+  manager?: User
+  internet_price_per_week: number
+  active: boolean
+}
+
+export interface Order {
+  id: number
+  status: 'معلق' | 'مكتمل' | 'مرجع'
+  orderer: User
+  manager: User
+  network: Network
+  total_price_for_seller: number
+  total_price_for_consumer: number
+  notes: string
+  updated_at: string
+  can: {
+    view: boolean
+    update: boolean
+    delete: boolean
+  }
+}
+
+export interface Payment {
+  id: number
+  recipient: User
+  user: User
+  network: Network
+  amount: number
+  notes: string
+  created_at: string
+}
+
+export interface Expense {
+  id: number
+  user: User
+  network: Network
+  amount: number
+  description: string
+  created_at: string
 }
 
 export interface Region {
@@ -49,22 +102,6 @@ export interface Card {
   notes: string
 }
 
-export interface Order {
-  id: number
-  seller: User
-  status: 'طلب جديد' | 'مكتمل' | 'مرجع'
-  action?: User
-  total_price_for_seller: number
-  total_price_for_consumer: number
-  notes: string
-  updated_at: string
-  can: {
-    view: boolean
-    update: boolean
-    delete: boolean
-  }
-}
-
 export interface OrderItem {
   id: number
   order: Order
@@ -77,15 +114,6 @@ export interface OrderItem {
   can: {
     delete: boolean
   }
-}
-
-export interface Payment {
-  id: number
-  seller: User
-  registerer: User
-  amount: number
-  notes: string
-  created_at: string
 }
 
 export interface Transaction {

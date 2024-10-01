@@ -27,7 +27,7 @@ final class Transaction extends Model
      */
     public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
     {
-        if ($user->isAdmin()) {
+        if ($user->isAhmed()) {
             return $query;
         }
 

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AdminResource;
+use App\Http\Resources\UserResource;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -20,14 +22,14 @@ final class AdminsController
      */
     public function index(): Response
     {
-        Gate::authorize('viewAny', Admin::class);
+        Gate::authorize('viewAny', User::class);
 
-        $admins = Admin::query()
+        $admins = User::query()
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Admins/Index', [
-            'admins' => AdminResource::collection($admins),
+            'admins' => UserResource::collection($admins),
             'can' => [
                 'create' => Gate::allows('create', Admin::class),
             ],

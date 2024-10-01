@@ -28,12 +28,12 @@ defineProps<{
     <template #header>
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          الطلبيات
+          الطلبات
           <span class="text-xs tracking-wide">({{ orders.meta.total }})</span>
         </h2>
         <div v-if="can.create">
           <Link :href="route('orders.create')">
-            <Button> إنشاء طلبية </Button>
+            <Button> إنشاء طلب </Button>
           </Link>
         </div>
       </div>

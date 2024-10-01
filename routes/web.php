@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeactivatedUsersController;
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\NetworksController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
@@ -51,6 +53,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admins/{admin}', [AdminsController::class, 'update'])->name('admins.update');
 
     Route::delete('/admins/{admin}', [AdminsController::class, 'destroy'])->name('admins.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/networks', [NetworksController::class, 'index'])->name('networks.index');
+
+    Route::get('/networks/create', [NetworksController::class, 'create'])->name('networks.create');
+    Route::post('/networks', [NetworksController::class, 'store'])->name('networks.store');
+
+    Route::get('/networks/{network}/edit', [NetworksController::class, 'edit'])->name('networks.edit');
+    Route::patch('/networks/{network}', [NetworksController::class, 'update'])->name('networks.update');
+
+    Route::delete('/networks/{network}', [NetworksController::class, 'destroy'])->name('networks.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -109,6 +123,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/payments/{payment}', [PaymentsController::class, 'update'])->name('payments.update');
 
     Route::delete('/payments/{payment}', [PaymentsController::class, 'destroy'])->name('payments.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
+
+    Route::get('/expenses/create', [ExpensesController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses', [ExpensesController::class, 'store'])->name('expenses.store');
+
+    Route::get('/expenses/{expense}/edit', [ExpensesController::class, 'edit'])->name('expenses.edit');
+    Route::patch('/expenses/{expense}', [ExpensesController::class, 'update'])->name('expenses.update');
+
+    Route::delete('/expenses/{expense}', [ExpensesController::class, 'destroy'])->name('expenses.destroy');
 });
 
 Route::middleware('auth')->group(function () {

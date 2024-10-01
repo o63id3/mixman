@@ -88,7 +88,7 @@ abstract class QueryFilter
      */
     final public function apply(Builder $builder, User $user): Builder
     {
-        if (! $user->isAdmin()) {
+        if (! $user->isAhmed()) {
             return $builder;
         }
 

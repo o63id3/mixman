@@ -13,7 +13,7 @@ final class CardPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -21,7 +21,7 @@ final class CardPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -29,7 +29,7 @@ final class CardPolicy
      */
     public function update(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 
     /**
@@ -37,6 +37,6 @@ final class CardPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isAhmed();
     }
 }

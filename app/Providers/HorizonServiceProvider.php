@@ -34,7 +34,7 @@ final class HorizonServiceProvider extends HorizonApplicationServiceProvider
                 'admin',
             ]);
 
-            // return $user->isAdmin();
+            // return $user->isAhmed();
         });
     }
 }

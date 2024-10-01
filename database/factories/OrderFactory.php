@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\OrderStatusEnum;
-use App\Models\Seller;
+use App\Models\Network;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,13 +21,13 @@ final class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $createdAt = $this->faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
+        $createdAt = fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
 
         return [
-            'seller_id' => Seller::factory(),
-            'action_by' => User::factory(),
-            'status' => $this->faker->randomElement(OrderStatusEnum::cases()),
-            'notes' => $this->faker->realText(),
+            'orderer_id' => User::factory(),
+            'manager_id' => User::factory(),
+            'network_id' => Network::factory(),
+            'status' => fake()->randomElement(OrderStatusEnum::cases()),
             'created_at' => $createdAt,
             'updated_at' => $createdAt,
         ];

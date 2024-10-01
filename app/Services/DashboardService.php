@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
-use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
@@ -21,7 +20,7 @@ final class DashboardService
      */
     public function getStatistics(User $user): array
     {
-        if (! $user->isAdmin()) {
+        if (! $user->isAhmed()) {
             return $this->getGeneralStatistics($user);
         }
 
@@ -52,16 +51,16 @@ final class DashboardService
      */
     public function getMaxRegionIncome($start = null, $end = null): array
     {
-        $region = Region::query()
-            ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
-                $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
-            }], 'amount')
-            ->orderByDesc('total_amount')
-            ->first();
+        // $region = Region::query()
+        //     ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
+        //         $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
+        //     }], 'amount')
+        //     ->orderByDesc('total_amount')
+        //     ->first();
 
         return [
-            'region' => $region->name,
-            'amount' => $region ? $region->total_amount : 0,
+            // 'region' => $region->name,
+            // 'amount' => $region ? $region->total_amount : 0,
         ];
     }
 
@@ -82,7 +81,7 @@ final class DashboardService
      */
     public function getSellersCount(): int
     {
-        return Seller::count();
+        return 0;
     }
 
     /**
@@ -90,17 +89,19 @@ final class DashboardService
      */
     public function getMaxSellerIncome($start = null, $end = null): array
     {
-        $seller = Seller::query()
-            ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
-                $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
-            }], 'amount')
-            ->orderByDesc('total_amount')
-            ->first();
+        // $seller = Seller::query()
+        //     ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
+        //         $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
+        //     }], 'amount')
+        //     ->orderByDesc('total_amount')
+        //     ->first();
 
-        return [
-            'seller' => $seller->name,
-            'amount' => $seller ? $seller->total_amount : 0,
-        ];
+        // return [
+        //     'seller' => $seller->name,
+        //     'amount' => $seller ? $seller->total_amount : 0,
+        // ];
+
+        return [];
     }
 
     /**

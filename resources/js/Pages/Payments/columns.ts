@@ -14,7 +14,7 @@ export const columns: ColumnDef<Payment>[] = [
   //     enableHiding: false,
   //   },
   {
-    accessorKey: 'seller',
+    accessorKey: 'recipient',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الاسم' }),
     cell: ({ row }) =>
@@ -25,19 +25,19 @@ export const columns: ColumnDef<Payment>[] = [
           class: 'hover:underline',
         },
         {
-          default: () => row.getValue<User>('seller').name,
+          default: () => row.original.recipient.name,
         },
       ),
     enableSorting: false,
   },
   {
-    accessorKey: 'registerer',
+    accessorKey: ' user',
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
-        title: 'تم الاستلام بواسطة',
+        title: 'المستلم',
       }),
-    cell: ({ row }) => row.getValue<User>('registerer')?.name,
+    cell: ({ row }) => row.original.user.name,
     enableSorting: false,
   },
   {

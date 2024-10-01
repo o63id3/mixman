@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Card;
+use App\Models\Network;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +19,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'seller_id')->constrained('users');
-            $table->foreignIdFor(User::class, 'action_by')->nullable()->constrained('users');
+            $table->foreignIdFor(User::class, 'orderer_id')->constrained('users');
+            $table->foreignIdFor(User::class, 'manager_id')->constrained('users');
+            $table->foreignIdFor(Network::class)->constrained('networks');
             $table->string('status');
             $table->longText('notes')->nullable();
             $table->timestamps();
