@@ -9,10 +9,9 @@ use App\Http\Filters\OrderFilter;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
-use App\Http\Resources\SellerResource;
+use App\Http\Resources\UserResource;
 use App\Models\Card;
 use App\Models\Order;
-use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,8 +33,8 @@ final class OrdersController
 
         $orders = Order::query()
             ->with(['orderer', 'manager'])
-            // ->withSum('items as total_price_for_seller', 'total_price_for_seller')
-            // ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
+            ->withSum('items as total_price_for_seller', 'total_price_for_seller')
+            ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -61,7 +60,7 @@ final class OrdersController
         Gate::authorize('create', Order::class);
 
         return Inertia::render('Orders/Create', [
-            'sellers' => Seller::get(),
+            'sellers' => User::whereNotNull('network_id')->get(['id', 'name']),
             'cards' => Card::all(),
             'statuses' => OrderStatusEnum::cases(),
         ]);
@@ -75,7 +74,7 @@ final class OrdersController
         Gate::authorize('create', Order::class);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('sellers', 'id')],
+            'orderer_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'cards' => ['required', 'array'],
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
@@ -87,7 +86,10 @@ final class OrdersController
         $cards = $validated['cards'];
         unset($validated['cards']);
 
-        $validated['action_by'] = $request->user()->id;
+        $orderer = User::find($validated['orderer_id'], ['network_id']);
+
+        $validated['manager_id'] = $request->user()->id;
+        $validated['network_id'] = $orderer->network_id;
 
         $order = Order::create($validated);
         $order->items()->createMany($cards);
@@ -102,7 +104,7 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['seller', 'action', 'items', 'items.card']);
+        $order->load(['orderer', 'manager', 'items', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
@@ -110,7 +112,7 @@ final class OrdersController
         OrderItemResource::withoutWrapping();
 
         return Inertia::render('Orders/Edit', [
-            'sellers' => fn () => Gate::allows('update', $order) ? SellerResource::collection(Seller::get()) : null,
+            'users' => fn () => Gate::allows('update', $order) ? UserResource::collection(User::get()) : null,
             'order' => OrderResource::make($order),
             'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
@@ -131,12 +133,15 @@ final class OrdersController
         Gate::authorize('update', $order);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('sellers', 'id')],
+            'orderer_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['string'],
         ]);
 
-        $validated['action_by'] = $request->user()->id;
+        $orderer = User::find($validated['orderer_id'], ['network_id']);
+
+        $validated['manager_id'] = $request->user()->id;
+        $validated['network_id'] = $orderer->network_id;
 
         $order->update($validated);
 

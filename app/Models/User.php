@@ -71,7 +71,7 @@ final class User extends Authenticatable
      */
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class, 'registered_by');
+        return $this->hasMany(Payment::class, 'recipient_id');
     }
 
     /**

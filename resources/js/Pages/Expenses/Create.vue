@@ -7,15 +7,19 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import PaymentForm from './Partials/PaymentForm.vue'
+import ExpenseForm from './Partials/ExpenseForm.vue'
+import { Network } from '@/types'
+
+defineProps<{
+  networks: Array<Network>
+}>()
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    description: z.string({ message: 'هذا الحقل مطلوب' }),
+    network_id: z.string({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().optional(),
   }),
 )
 
@@ -24,23 +28,19 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.post(route('payments.store'), values, {
+  router.post(route('expenses.store'), values, {
     preserveScroll: true,
     onSuccess: () => {
-      toast({ title: 'تم إدخال الدفعة المالية' })
+      toast({ title: 'تم إدخال المصروف' })
       resetForm()
     },
     onError: (errors) => setErrors(errors),
   })
 })
-
-defineProps<{
-  sellers: Array<User>
-}>()
 </script>
 
 <template>
-  <Head title="Payments" />
+  <Head title="Expenses" />
 
   <AuthenticatedLayout>
     <template #header>
@@ -50,11 +50,7 @@ defineProps<{
     </template>
 
     <CreateFormLayout @submit="onSubmit">
-      <PaymentForm
-        :sellers="sellers"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
-      />
+      <ExpenseForm :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

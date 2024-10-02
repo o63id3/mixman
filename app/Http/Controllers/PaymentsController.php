@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Filters\PaymentFilter;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
-use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,7 +52,7 @@ final class PaymentsController
         Gate::authorize('create', Payment::class);
 
         return Inertia::render('Payments/Create', [
-            'sellers' => Seller::get(),
+            'sellers' => User::whereNotNull('network_id')->get(['id', 'name']),
         ]);
     }
 
@@ -65,12 +64,17 @@ final class PaymentsController
         Gate::authorize('create', Payment::class);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('sellers', 'id')],
+            'user_id' => ['required', Rule::exists('users', 'id')],
             'amount' => ['required', 'numeric'],
             'notes' => ['string'],
         ]);
 
-        $request->user()->payments()->create($validated);
+        $validated['network_id'] = User::find($validated['user_id'], ['network_id'])->network_id;
+
+        $request
+            ->user()
+            ->payments()
+            ->create($validated);
 
         return back();
     }
@@ -82,12 +86,12 @@ final class PaymentsController
     {
         Gate::authorize('update', $payment);
 
-        $payment->load(['seller', 'registerer']);
+        $payment->load(['recipient', 'user']);
 
         PaymentResource::withoutWrapping();
 
         return Inertia::render('Payments/Edit', [
-            'sellers' => Seller::get(),
+            'sellers' => User::get(['id', 'name']),
             'payment' => PaymentResource::make($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),
@@ -103,7 +107,7 @@ final class PaymentsController
         Gate::authorize('update', $payment);
 
         $validated = $request->validate([
-            'seller_id' => ['required', Rule::exists('sellers', 'id')],
+            'user_id' => ['required', Rule::exists('users', 'id')],
             'amount' => ['required', 'numeric'],
             'notes' => ['string'],
         ]);

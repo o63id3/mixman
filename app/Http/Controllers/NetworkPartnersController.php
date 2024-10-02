@@ -59,6 +59,9 @@ final class NetworkPartnersController
         if ($network->manager?->is($partner)) {
             $network->manager_id = null;
             $network->save();
+
+            $partner->network_id = null;
+            $partner->save();
         }
 
         $network

@@ -22,7 +22,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
     notes: z.string().optional(),
   }),
@@ -31,7 +31,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    seller_id: props.payment.seller.id,
+    user_id: props.payment.user.id,
     amount: props.payment.amount,
     notes: props.payment.notes ?? undefined,
   },
@@ -71,8 +71,8 @@ const onSubmit = handleSubmit((values) => {
 
       <PaymentForm
         :sellers="sellers"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
+        :selected="values.user_id"
+        @select="(selected: number) => setFieldValue('user_id', selected)"
       />
     </UpdateFormLayout>
   </AuthenticatedLayout>

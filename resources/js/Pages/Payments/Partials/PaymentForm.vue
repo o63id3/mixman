@@ -20,7 +20,7 @@ defineProps<{
 </script>
 
 <template>
-  <FormField name="seller_id">
+  <FormField name="user_id">
     <FormItem class="flex flex-col gap-2">
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox

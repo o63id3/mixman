@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import PaymentsRowActions from './Partials/PaymentsRowActions.vue'
 import { Payment, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
+import { formatMoney } from '@/lib/money'
 
 export const columns: ColumnDef<Payment>[] = [
   //   {
@@ -16,7 +17,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'recipient',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم' }),
+      h(DataTableColumnHeader, { column, title: 'المستلم' }),
     cell: ({ row }) =>
       h(
         Link,
@@ -35,7 +36,7 @@ export const columns: ColumnDef<Payment>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
-        title: 'المستلم',
+        title: 'الاسم',
       }),
     cell: ({ row }) => row.original.user.name,
     enableSorting: false,
@@ -47,7 +48,7 @@ export const columns: ColumnDef<Payment>[] = [
         column,
         title: 'المبلغ',
       }),
-    cell: ({ row }) => `${row.getValue('amount')} شيكل`,
+    cell: ({ row }) => `${formatMoney(row.original.amount)} شيكل`,
   },
   {
     accessorKey: 'created_at',

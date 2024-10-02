@@ -10,6 +10,9 @@ import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   expenses: Paginator<Expense>
+  can: {
+    create: boolean
+  }
 }>()
 </script>
 
@@ -20,14 +23,14 @@ defineProps<{
     <template #header>
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          النفقات
+          المصروفات
           <span class="text-xs tracking-wide">({{ expenses.meta.total }})</span>
         </h2>
-        <!-- <div v-if="can.create">
+        <div v-if="can.create">
           <Link :href="route('expenses.create')">
-            <Button> إنشاء </Button>
+            <Button> إضافة </Button>
           </Link>
-        </div> -->
+        </div>
       </div>
     </template>
 

@@ -52,7 +52,7 @@ const links: Array<Link> = [
   },
   {
     route: 'expenses.index',
-    label: 'النفقات',
+    label: 'المصروفات',
     visible: user.can.expenses.viewAny,
   },
   // {

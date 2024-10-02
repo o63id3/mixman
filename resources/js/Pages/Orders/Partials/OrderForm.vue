@@ -36,7 +36,7 @@ defineProps<{
 </script>
 
 <template>
-  <FormField name="seller_id">
+  <FormField name="orderer_id">
     <FormItem>
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox
@@ -52,7 +52,7 @@ defineProps<{
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />
-      <Input v-else :model-value="order?.seller.name" disabled />
+      <Input v-else :model-value="order?.orderer.name" disabled />
       <FormMessage />
     </FormItem>
   </FormField>

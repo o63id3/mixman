@@ -21,7 +21,7 @@ export const columns: ColumnDef<Expense>[] = [
       h(
         Link,
         {
-          href: `${route('payments.edit', row.original.id)}`,
+          href: `${route('expenses.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {

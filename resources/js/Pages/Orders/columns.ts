@@ -74,7 +74,7 @@ export const columns: ColumnDef<Order>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
-        title: 'اجمالي السعر للبائع',
+        title: 'اجمالي السعر',
       }),
     cell: ({ row }) =>
       row.original.total_price_for_seller

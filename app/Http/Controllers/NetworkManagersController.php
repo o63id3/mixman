@@ -18,6 +18,9 @@ final class NetworkManagersController
         $network->manager_id = $user->id;
         $network->save();
 
+        $user->network_id = $network->id;
+        $user->save();
+
         return back();
     }
 

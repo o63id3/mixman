@@ -13,7 +13,7 @@ import PaymentForm from './Partials/PaymentForm.vue'
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
     notes: z.string().optional(),
   }),
@@ -52,8 +52,8 @@ defineProps<{
     <CreateFormLayout @submit="onSubmit">
       <PaymentForm
         :sellers="sellers"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
+        :selected="values.user_id"
+        @select="(selected: number) => setFieldValue('user_id', selected)"
       />
     </CreateFormLayout>
   </AuthenticatedLayout>

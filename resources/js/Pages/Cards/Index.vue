@@ -30,7 +30,7 @@ defineProps<{
         </h2>
         <div v-if="can.create">
           <Link :href="route('cards.create')">
-            <Button> إنشاء كرت </Button>
+            <Button> إضافة </Button>
           </Link>
         </div>
       </div>

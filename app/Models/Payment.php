@@ -20,7 +20,8 @@ final class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'seller_id',
+        'user_id',
+        'network_id',
         'amount',
         'notes',
     ];

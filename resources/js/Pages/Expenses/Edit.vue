@@ -7,14 +7,14 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Payment, User } from '@/types'
+import { Data, Expense, Network, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
-import PaymentForm from './Partials/PaymentForm.vue'
+import ExpenseForm from './Partials/ExpenseForm.vue'
 
 const props = defineProps<{
-  payment: Payment
-  sellers: Array<User>
+  expense: Data<Expense>
+  networks: Array<Network>
   can: {
     delete: boolean
   }
@@ -22,26 +22,26 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    description: z.string({ message: 'هذا الحقل مطلوب' }),
+    network_id: z.string({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().optional(),
   }),
 )
 
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    seller_id: props.payment.seller.id,
-    amount: props.payment.amount,
-    notes: props.payment.notes ?? undefined,
+    description: props.expense.data.description,
+    network_id: String(props.expense.data.network.id),
+    amount: props.expense.data.amount,
   },
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.patch(route('payments.update', props.payment.id), values, {
+  router.patch(route('expenses.update', props.expense.data.id), values, {
     preserveScroll: true,
     onSuccess: () => {
-      toast({ title: 'تم تعديل الدفعة المالية' })
+      toast({ title: 'تم تعديل المصروف' })
     },
     onError: (errors) => setErrors(errors),
   })
@@ -49,12 +49,12 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <Head title="Payments" />
+  <Head title="Expenses" />
 
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية رقم {{ payment.id }}
+        دفعة مالية رقم {{ expense.data.id }}
       </h2>
     </template>
 
@@ -62,18 +62,14 @@ const onSubmit = handleSubmit((values) => {
       <template #buttons>
         <DeleteLink
           v-if="can.delete"
-          :href="route('payments.destroy', payment.id)"
-          @success="toast({ title: 'تم حذف الدفعة' })"
+          :href="route('expenses.destroy', expense.data.id)"
+          @success="toast({ title: 'تم حذف المصروف' })"
         >
           حذف
         </DeleteLink>
       </template>
 
-      <PaymentForm
-        :sellers="sellers"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
-      />
+      <ExpenseForm :networks="networks" />
     </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>

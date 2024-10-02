@@ -16,7 +16,7 @@ import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 const props = defineProps<{
   order: Order
   items: Array<OrderItem>
-  sellers?: Array<User>
+  users?: Array<User>
   statuses: Array<string>
   cards?: Array<Card>
   can: {
@@ -28,7 +28,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    orderer_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
     notes: z.string().optional(),
   }),
@@ -37,7 +37,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    seller_id: props.order.seller.id,
+    orderer_id: props.order.orderer.id,
     status: props.order.status,
     notes: props.order.notes ?? undefined,
   },
@@ -46,6 +46,7 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
 const onSubmit = handleSubmit((values) => {
   router.patch(route('orders.update', props.order.id), values, {
     preserveScroll: true,
+    preserveState: false,
     onSuccess: () => toast({ title: 'تم تعديل الطلب' }),
     onError: (errors) => setErrors(errors),
   })
@@ -59,6 +60,9 @@ const onSubmit = handleSubmit((values) => {
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
         طلب رقم: {{ order.id }}
+        <span class="text-xs font-normal tracking-wide">
+          ({{ order.manager.name }})
+        </span>
       </h2>
     </template>
 
@@ -77,10 +81,10 @@ const onSubmit = handleSubmit((values) => {
         hidden-cards
         :disabled="!can.update"
         :order="order"
-        :sellers="sellers"
+        :sellers="users"
         :cards="cards"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
+        :selected="values.orderer_id"
+        @select="(selected: number) => setFieldValue('orderer_id', selected)"
       />
     </UpdateFormLayout>
 

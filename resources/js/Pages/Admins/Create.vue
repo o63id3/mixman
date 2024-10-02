@@ -37,6 +37,9 @@ const formSchema = toTypedSchema(
 
 const { handleSubmit, resetForm, setErrors, values } = useForm({
   validationSchema: formSchema,
+  initialValues: {
+    percentage: 10,
+  },
 })
 
 const onSubmit = handleSubmit((values) => {

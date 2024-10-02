@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    seller_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    orderer_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
     cards: z.array(
       z.object({
@@ -49,6 +49,7 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
 const onSubmit = handleSubmit((values) => {
   router.post(route('orders.store'), values, {
     preserveScroll: true,
+    preserveState: false,
     onSuccess: () => {
       toast({ title: 'تم إنشاء الطلب' })
       resetForm()
@@ -72,8 +73,8 @@ const onSubmit = handleSubmit((values) => {
       <OrderForm
         :sellers="sellers"
         :cards="cards"
-        :selected="values.seller_id"
-        @select="(selected: number) => setFieldValue('seller_id', selected)"
+        :selected="values.orderer_id"
+        @select="(selected: number) => setFieldValue('orderer_id', selected)"
       />
     </CreateFormLayout>
   </AuthenticatedLayout>

@@ -14,6 +14,18 @@ final class Expense extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'network_id',
+        'user_id',
+        'description',
+        'amount',
+    ];
+
+    /**
      * Scope the payments depending on user role.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
