@@ -25,7 +25,7 @@ const links: Array<Link> = [
     visible: true,
   },
   {
-    route: 'admins.index',
+    route: 'users.index',
     label: 'المستخدمين',
     visible: user.can.users.viewAny,
   },

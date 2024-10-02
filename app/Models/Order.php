@@ -46,7 +46,7 @@ final class Order extends Model
             return $query;
         }
 
-        return $query->where('seller_id', $user->id);
+        return $query->where('orderer_id', $user->id)->orWhere('manager_id', $user->id);
     }
 
     /**

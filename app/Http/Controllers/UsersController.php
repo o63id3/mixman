@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
 use App\Http\Resources\UserResource;
-use App\Models\Admin;
 use App\Models\Network;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +15,7 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
-final class AdminsController
+final class UsersController
 {
     /**
      * Display a listing of the resource.
@@ -25,14 +24,14 @@ final class AdminsController
     {
         Gate::authorize('viewAny', User::class);
 
-        $admins = User::query()
+        $users = User::query()
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
-        return Inertia::render('Admins/Index', [
-            'admins' => UserResource::collection($admins),
+        return Inertia::render('Users/Index', [
+            'users' => UserResource::collection($users),
             'can' => [
-                'create' => Gate::allows('create', Admin::class),
+                'create' => Gate::allows('create', User::class),
             ],
         ]);
     }
@@ -42,7 +41,7 @@ final class AdminsController
      */
     public function create(): Response
     {
-        return Inertia::render('Admins/Create', [
+        return Inertia::render('Users/Create', [
             'networks' => Network::all('id', 'name'),
         ]);
     }
@@ -75,16 +74,16 @@ final class AdminsController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $admin): Response
+    public function edit(User $user): Response
     {
-        $admin->load('network');
+        $user->load('network');
 
-        return Inertia::render('Admins/Edit', [
-            'admin' => UserResource::make($admin),
+        return Inertia::render('Users/Edit', [
+            'user' => UserResource::make($user),
             'networks' => Network::all('id', 'name'),
             'can' => [
-                'update' => Gate::allows('update', $admin),
-                'delete' => Gate::allows('delete', $admin),
+                'update' => Gate::allows('update', $user),
+                'delete' => Gate::allows('delete', $user),
             ],
         ]);
     }
@@ -92,13 +91,13 @@ final class AdminsController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $admin): RedirectResponse
+    public function update(Request $request, User $user): RedirectResponse
     {
-        Gate::authorize('update', $admin);
+        Gate::authorize('update', $user);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
-            'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($admin->id)],
+            'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($user->id)],
             'password' => ['string', 'min:4'],
             'role' => ['required', Rule::enum(RoleEnum::class)],
             'percentage' => ['required_if:role,seller', 'numeric'],
@@ -111,7 +110,7 @@ final class AdminsController
             $validated['percentage'] /= 100;
         }
 
-        $admin->update($validated);
+        $user->update($validated);
 
         return back();
     }
@@ -119,12 +118,12 @@ final class AdminsController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin): RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
-        Gate::authorize('delete', $admin);
+        Gate::authorize('delete', $user);
 
-        $admin->delete();
+        $user->delete();
 
-        return to_route('admins.index');
+        return to_route('users.index');
     }
 }

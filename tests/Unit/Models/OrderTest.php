@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
-use App\Models\Seller;
 use App\Models\User;
 
 test('completed', function () {

@@ -43,7 +43,7 @@ const { handleSubmit, resetForm, setErrors, values } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.post(route('admins.store'), values, {
+  router.post(route('users.store'), values, {
     preserveScroll: true,
     onSuccess: () => {
       toast({ title: 'تم إنشاء المستخدم' })

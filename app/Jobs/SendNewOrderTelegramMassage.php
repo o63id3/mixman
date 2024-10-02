@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Models\Admin;
 use App\Models\Order;
+use App\Models\User;
 use App\Services\TelegramService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -30,7 +30,7 @@ final class SendNewOrderTelegramMassage implements ShouldQueue
         $url = "{$appURL}orders/{$this->order->id}/edit";
         $message = "*{$this->order->seller->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: \n{$url}";
 
-        $users = Admin::query()
+        $users = User::query()
             ->whereNotNull('telegram')
             ->get('telegram')
             ->pluck('telegram')

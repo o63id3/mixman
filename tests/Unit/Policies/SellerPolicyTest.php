@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Seller;
 use App\Models\User;
 
 test('view any', function () {

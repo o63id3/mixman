@@ -2,11 +2,9 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import RegionsRowActions from './Partials/SellersRowActions.vue'
 import { User } from '@/types'
-import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
-import { active } from '@/types/enums'
+import { active, roles } from '@/types/enums'
 
 export const columns: ColumnDef<User>[] = [
   //   {
@@ -23,42 +21,45 @@ export const columns: ColumnDef<User>[] = [
       h(
         Link,
         {
-          href: `${route('sellers.edit', row.original.id)}`,
+          href: `${route('users.edit', row.original.id)}`,
           class: 'hover:underline',
         },
         {
           default: () => row.getValue('name'),
         },
       ),
-  },
-  {
-    accessorKey: 'region',
-    accessorFn: (seller) => seller.region?.name,
-    header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'المنطقة',
-      }),
     enableSorting: false,
   },
   {
-    accessorKey: 'seller_percentage',
+    accessorKey: 'username',
     header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'نسبة الربح',
-      }),
-    cell: ({ row }) => `%${Math.round(row.original.percentage * 100)}`,
+      h(DataTableColumnHeader, { column, title: 'اسم المستخدم' }),
+    enableSorting: false,
   },
   {
-    accessorKey: 'balance',
+    accessorKey: 'role',
     header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'صافي الحساب',
-      }),
-    cell: ({ row }) => `${formatMoney(row.getValue('balance'))} شيكل`,
+      h(DataTableColumnHeader, { column, title: 'الصلاحية' }),
+    cell: ({ row }) => {
+      const role = roles.find(
+        (role: any) => role.value === row.getValue('role'),
+      )
+
+      if (!role) return null
+
+      return h('div', { class: 'flex items-center gap-2' }, [
+        role.icon && h(role.icon),
+        h('span', { class: ' text-muted-foreground' }, role.label),
+      ])
+    },
+    enableSorting: false,
   },
+  //   {
+  //     accessorKey: 'telegram',
+  //     header: ({ column }) =>
+  //       h(DataTableColumnHeader, { column, title: 'حساب التلغرام' }),
+  //     enableSorting: false,
+  //   },
   {
     accessorKey: 'active',
     header: ({ column }) =>
@@ -80,8 +81,4 @@ export const columns: ColumnDef<User>[] = [
       ])
     },
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(RegionsRowActions, { row }),
-  //   },
 ]

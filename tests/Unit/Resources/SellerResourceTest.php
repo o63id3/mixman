@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Resources\RegionResource;
 use App\Http\Resources\SellerResource;
-use App\Models\Seller;
 
 test('make', function () {
     $seller = Seller::factory()->create();

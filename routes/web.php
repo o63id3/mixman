@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeactivatedUsersController;
@@ -16,8 +15,8 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\SellerOrdersController;
-use App\Http\Controllers\SellersController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
@@ -31,30 +30,10 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
+    Route::resource('users', UsersController::class)->except('show');
+
     Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');
     Route::delete('/users/{user}', [DeactivatedUsersController::class, 'destroy'])->name('users.activate');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/sellers', [SellersController::class, 'index'])->name('sellers.index');
-
-    Route::get('/sellers/create', [SellersController::class, 'create'])->name('sellers.create');
-    Route::post('/sellers', [SellersController::class, 'store'])->name('sellers.store');
-
-    Route::get('/sellers/{seller}/edit', [SellersController::class, 'edit'])->name('sellers.edit');
-    Route::patch('/sellers/{seller}', [SellersController::class, 'update'])->name('sellers.update');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/admins', [AdminsController::class, 'index'])->name('admins.index');
-
-    Route::get('/admins/create', [AdminsController::class, 'create'])->name('admins.create');
-    Route::post('/admins', [AdminsController::class, 'store'])->name('admins.store');
-
-    Route::get('/admins/{admin}/edit', [AdminsController::class, 'edit'])->name('admins.edit');
-    Route::patch('/admins/{admin}', [AdminsController::class, 'update'])->name('admins.update');
-
-    Route::delete('/admins/{admin}', [AdminsController::class, 'destroy'])->name('admins.destroy');
 });
 
 Route::middleware('auth')->group(function () {

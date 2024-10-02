@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Order;
-use App\Models\Seller;
 use App\Models\User;
 use App\Services\DashboardService;
 

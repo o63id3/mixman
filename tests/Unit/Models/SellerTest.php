@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Region;
-use App\Models\Seller;
 
 test('is admin', function () {
     $seller = Seller::factory()->create();

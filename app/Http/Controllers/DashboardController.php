@@ -19,6 +19,7 @@ final class DashboardController
     {
         $user = type($request->user())->as(User::class);
 
-        return Inertia::render('Dashboard', $service->getStatistics($user));
+        // return Inertia::render('Dashboard', $service->getStatistics($user));
+        return Inertia::render('Dashboard');
     }
 }

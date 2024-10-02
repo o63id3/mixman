@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\TransactionFilter;
 use App\Http\Resources\TransactionResource;
-use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;

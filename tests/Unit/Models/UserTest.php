@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Payment;
 use App\Models\Region;
-use App\Models\Seller;
 use App\Models\User;
 
 test('is admin', function () {

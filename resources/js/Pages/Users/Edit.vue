@@ -7,14 +7,14 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Data, Network, User } from '@/types'
+import { Network, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import AdminForm from './Partials/AdminForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
-  admin: User
+  user: User
   networks: Array<Network>
   can: {
     update: boolean
@@ -45,18 +45,18 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors, values } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    name: props.admin.name,
-    username: props.admin.username,
-    role: props.admin.role,
-    network_id: String(props.admin.network?.id),
-    percentage: props.admin.percentage,
-    contact_info: props.admin.contact_info ?? undefined,
-    notes: props.admin.notes ?? undefined,
+    name: props.user.name,
+    username: props.user.username,
+    role: props.user.role,
+    network_id: String(props.user.network?.id),
+    percentage: Math.round(props.user.percentage * 100),
+    contact_info: props.user.contact_info ?? undefined,
+    notes: props.user.notes ?? undefined,
   },
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.patch(route('admins.update', props.admin.id), values, {
+  router.patch(route('users.update', props.user.id), values, {
     preserveScroll: true,
     onSuccess: () => toast({ title: 'تم تعديل المستخدم' }),
     onError: (errors) => setErrors(errors),
@@ -65,20 +65,20 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <Head title="Admins" />
+  <Head title="Users" />
 
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        {{ admin.name }}
+        {{ user.name }}
       </h2>
     </template>
 
     <UpdateFormLayout @submit="onSubmit" :can-update="can.update">
       <template #buttons>
         <DeleteLink
-          v-if="admin.active"
-          :href="route('users.deactivate', admin.id)"
+          v-if="user.active"
+          :href="route('users.deactivate', user.id)"
           @success="toast({ title: 'تم تعطيل الحساب' })"
           method="POST"
         >
@@ -87,7 +87,7 @@ const onSubmit = handleSubmit((values) => {
         <SecondaryLink
           v-else
           method="DELETE"
-          :href="route('users.activate', admin.id)"
+          :href="route('users.activate', user.id)"
           @success="toast({ title: 'تم تفعيل الحساب' })"
         >
           تفعيل الحساب

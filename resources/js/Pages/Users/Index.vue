@@ -1,61 +1,46 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Filters, Paginator, Region, User } from '@/types'
+import { Paginator, User } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import { columns } from './columns'
-import Toolbar from './Partials/Toolbar.vue'
+import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 defineProps<{
-  sellers: Paginator<User>
-  regions: Array<Region>
-  filters: Filters
-  sorts: string
-  can: {
-    create: boolean
-  }
+  users: Paginator<User>
+  can: { create: boolean }
 }>()
 </script>
 
 <template>
-  <Head title="Sellers" />
+  <Head title="Admins" />
 
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          الباعة
-          <span class="text-xs tracking-wide">({{ sellers.meta.total }})</span>
+          المستخدمين
+          <span class="text-xs tracking-wide">({{ users.meta.total }})</span>
         </h2>
         <div v-if="can.create">
-          <Link :href="route('sellers.create')">
-            <Button> إنشاء بائع </Button>
+          <Link :href="route('users.create')">
+            <Button> إنشاء مستخدم </Button>
           </Link>
         </div>
       </div>
     </template>
 
     <div class="space-y-4">
-      <DataTable
-        :data="sellers.data"
-        :columns="columns"
-        :initial-filters="filters"
-        :initial-sorts="sorts"
-      >
+      <DataTable :data="users.data" :columns="columns">
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
-          <Toolbar :table="table" :regions="regions" />
+          <DataTableToolbar :table="table" />
         </template>
       </DataTable>
-      <DataTablePagination
-        :links="sellers.links"
-        :meta="sellers.meta"
-        :filters="filters"
-        :sorts="sorts"
-      />
+      <DataTablePagination :links="users.links" :meta="users.meta" />
     </div>
   </AuthenticatedLayout>
 </template>
