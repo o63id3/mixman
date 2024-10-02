@@ -9,11 +9,8 @@ use App\Enums\RoleEnum;
 use App\Models\Card;
 use App\Models\Expense;
 use App\Models\Network;
-use App\Models\NetworkPartner;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\Region;
-use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -30,47 +27,35 @@ final class DatabaseSeeder extends Seeder
             'role' => RoleEnum::Ahmed,
         ]);
 
-        $networks = Network::factory(2)
-            ->create();
-
-        NetworkPartner::factory(4)->recycle($networks[0])->create();
-        NetworkPartner::factory(4)->recycle($networks[1])->create();
-
-        Card::factory(5)->create();
-        Order::factory(5)->recycle($networks)->create();
-        Payment::factory(5)->recycle($networks)->create();
-        Expense::factory(5)->recycle($networks)->create();
-
         if (app()->isProduction()) {
             return;
         }
 
-        // $regions = Region::factory()->createMany([[
-        //     'name' => 'كمال عدوان',
-        // ], [
-        //     'name' => 'الفالوجا',
-        // ], [
-        //     'name' => 'المشروع',
-        // ]]);
+        Card::factory()->createMany([[
+            'name' => 'كرت فئة 1 شيكل',
+            'price_for_consumer' => 1,
+            'active' => true,
+        ], [
+            'name' => 'كرت فئة 3 شيكل',
+            'price_for_consumer' => 3,
+            'active' => true,
+        ], [
+            'name' => 'كرت فئة 5 شيكل',
+            'price_for_consumer' => 5,
+            'active' => true,
+        ]]);
 
-        // $sellers = Seller::factory(15)->recycle($regions)->create();
+        $partners = User::factory(4)->set('role', RoleEnum::Partner)->create();
+        $network1 = Network::factory()->set('manager_id', $partners->random())->set('name', 'كمال عدوان')->create();
+        $network1->partners()->attach($partners, ['share' => 0.25]);
 
-        // $cards = Card::factory()->createMany([[
-        //     'name' => 'كرت فئة 1 شيكل',
-        //     'price_for_consumer' => 1,
-        //     // 'price_for_seller' => 0.9,
-        //     'active' => true,
-        // ], [
-        //     'name' => 'كرت فئة 3 شيكل',
-        //     'price_for_consumer' => 3,
-        //     // 'price_for_seller' => 3 * 0.9,
-        //     'active' => true,
-        // ], [
-        //     'name' => 'كرت فئة 5 شيكل',
-        //     'price_for_consumer' => 5,
-        //     // 'price_for_seller' => 5 * 0.9,
-        //     'active' => true,
-        // ]]);
+        $partners = User::factory(4)->set('role', RoleEnum::Partner)->create();
+        $network2 = Network::factory()->set('manager_id', $partners->random())->set('name', 'مدرسة أبو حسين')->create();
+        $network2->partners()->attach($partners, ['share' => 0.25]);
+
+        Order::factory(5)->recycle([$network1, $network2])->create();
+        Payment::factory(5)->recycle([$network1, $network2])->create();
+        Expense::factory(5)->recycle([$network1, $network2])->create();
 
         // Order::factory(100)
         //     ->recycle($sellers)
