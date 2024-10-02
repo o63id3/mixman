@@ -7,10 +7,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Network extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'internet_price_per_week',
+    ];
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function partners(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'network_partners')->withPivot('share');
+    }
 
     /**
      * Get the network manager.

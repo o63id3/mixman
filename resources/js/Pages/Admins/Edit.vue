@@ -7,7 +7,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { User } from '@/types'
+import { Data, Network, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import AdminForm from './Partials/AdminForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
@@ -15,6 +15,7 @@ import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
   admin: User
+  networks: Array<Network>
   can: {
     update: boolean
     delete: boolean
@@ -33,19 +34,23 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
       .optional(),
-    telegram: z.string().optional(),
+    role: z.string({ message: 'هذا الحقل مطلوب' }),
+    network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
+    percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),
 )
 
-const { handleSubmit, setErrors } = useForm({
+const { handleSubmit, setErrors, values } = useForm({
   validationSchema: formSchema,
   initialValues: {
     name: props.admin.name,
     username: props.admin.username,
+    role: props.admin.role,
+    network_id: String(props.admin.network?.id),
+    percentage: props.admin.percentage,
     contact_info: props.admin.contact_info ?? undefined,
-    telegram: props.admin.telegram ?? undefined,
     notes: props.admin.notes ?? undefined,
   },
 })
@@ -89,7 +94,11 @@ const onSubmit = handleSubmit((values) => {
         </SecondaryLink>
       </template>
 
-      <AdminForm :disabled="!can.update" />
+      <AdminForm
+        :disabled="!can.update"
+        :role="values.role"
+        :networks="networks"
+      />
     </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>

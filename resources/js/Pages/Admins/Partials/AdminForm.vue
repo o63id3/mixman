@@ -7,20 +7,59 @@ import {
   FormMessage,
   FormDescription,
 } from '@/Components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
+import { roles } from '@/types/enums'
+import { Network } from '@/types'
 
 defineProps<{
   disabled?: boolean
+  networks: Array<Network>
+  role?: string
 }>()
 </script>
 
 <template>
   <FormField v-slot="{ componentField }" name="name">
-    <FormItem class="col-span-full">
+    <FormItem>
       <FormLabel>الاسم</FormLabel>
       <FormControl>
         <Input type="text" v-bind="componentField" :disabled="disabled" />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  </FormField>
+  <FormField v-slot="{ componentField }" name="role">
+    <FormItem>
+      <FormLabel>الصلاحية</FormLabel>
+      <FormControl>
+        <Select v-bind="componentField">
+          <SelectTrigger>
+            <SelectValue placeholder="اختر صلاحية" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem
+                v-for="role in roles"
+                :key="role.value"
+                :value="role.value"
+              >
+                <div class="flex items-center justify-end gap-1">
+                  {{ role.label }}
+                  <component :is="role.icon" class="w-4" />
+                </div>
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </FormControl>
       <FormMessage />
     </FormItem>
@@ -57,11 +96,43 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField v-slot="{ componentField }" name="telegram">
-    <FormItem class="col-span-full">
-      <FormLabel>حساب التلغرام</FormLabel>
+  <FormField
+    v-if="role === 'seller'"
+    v-slot="{ componentField }"
+    name="network_id"
+  >
+    <FormItem>
+      <FormLabel>الشبكة</FormLabel>
       <FormControl>
-        <Input type="text" v-bind="componentField" :disabled="disabled" />
+        <Select v-bind="componentField">
+          <SelectTrigger>
+            <SelectValue placeholder="اختر  الشبكة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem
+                v-for="network in networks"
+                :key="network.id"
+                :value="String(network.id)"
+              >
+                {{ network.name }}
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  </FormField>
+  <FormField
+    v-if="role === 'seller'"
+    v-slot="{ componentField }"
+    name="percentage"
+  >
+    <FormItem>
+      <FormLabel>حصة البائع (%)</FormLabel>
+      <FormControl>
+        <Input type="number" v-bind="componentField" :disabled="disabled" />
       </FormControl>
       <FormMessage />
     </FormItem>

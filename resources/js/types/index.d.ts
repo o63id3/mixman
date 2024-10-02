@@ -1,6 +1,7 @@
 export interface User {
   id: number
   region: Region
+  network: Network
   name: string
   username: string
   balance: number
@@ -8,8 +9,10 @@ export interface User {
   active: boolean
   contact_info: string
   percentage: number
+  role: string
   telegram: string
   notes: string
+  share: number
   can: {
     users: {
       viewAny: boolean
@@ -48,6 +51,7 @@ export interface Network {
   id: number
   name: string
   manager?: User
+  partners?: Array<User>
   internet_price_per_week: number
   active: boolean
 }
@@ -152,6 +156,10 @@ export interface Paginator<T> {
   data: Array<T>
   meta: Meta
   links: Links
+}
+
+export interface Data<T> {
+  data: T
 }
 
 export type PageProps<

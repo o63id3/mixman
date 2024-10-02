@@ -7,6 +7,8 @@ use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeactivatedUsersController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\NetworkManagersController;
+use App\Http\Controllers\NetworkPartnersController;
 use App\Http\Controllers\NetworksController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
@@ -65,6 +67,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/networks/{network}', [NetworksController::class, 'update'])->name('networks.update');
 
     Route::delete('/networks/{network}', [NetworksController::class, 'destroy'])->name('networks.destroy');
+
+    Route::post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
+
+    Route::get('/networks/{network}/partners', [NetworkPartnersController::class, 'create'])->name('network.partners.create');
+    Route::post('/networks/{network}/partners', [NetworkPartnersController::class, 'store'])->name('network.partners.store');
+    Route::delete('/networks/{network}/partners/{partner}', [NetworkPartnersController::class, 'destroy'])->name('network.partners.destroy');
 });
 
 Route::middleware('auth')->group(function () {

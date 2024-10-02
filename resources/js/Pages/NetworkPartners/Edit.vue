@@ -10,7 +10,7 @@ import { toast } from '@/Components/ui/toast'
 import { Data, Network } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import NetworkForm from './Partials/NetworkForm.vue'
-import { columns, summaryFields } from './partners'
+import { columns } from './partners'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import Button from '@/Components/ui/button/Button.vue'
 
@@ -63,7 +63,7 @@ const onSubmit = handleSubmit((values) => {
           </span>
         </h2>
         <div v-if="can.createPartner">
-          <Link :href="route('network.partners.create', props.network.data.id)">
+          <Link :href="route('network.partners.create', network.data.id)">
             <Button> إضافة شريك </Button>
           </Link>
         </div>
@@ -99,10 +99,7 @@ const onSubmit = handleSubmit((values) => {
       <DataTable
         v-if="network.data.partners"
         :data="network.data.partners"
-        :columns="columns(network)"
-        :summaryFields="
-          network.data.partners.length ? summaryFields : undefined
-        "
+        :columns="columns"
       />
     </div>
   </AuthenticatedLayout>

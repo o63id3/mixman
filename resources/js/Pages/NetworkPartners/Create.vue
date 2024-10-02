@@ -9,14 +9,21 @@ import * as z from 'zod'
 import { toast } from '@/Components/ui/toast'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import NetworkForm from './Partials/NetworkForm.vue'
+import NetworkPartnersForm from './Partials/NetworkPartnersForm.vue'
+import { Data, Network, User } from '@/types'
+
+const props = defineProps<{
+  network: Data<Network>
+  partners: Array<User>
+}>()
 
 const formSchema = toTypedSchema(
   z.object({
-    name: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
-    internet_price_per_week: z.any().optional(),
+    user_id: z.string({ message: 'هذا الحقل مطلوب' }),
+    share: z
+      .number({ message: 'هذا الحقل مطلوب' })
+      .min(1, { message: 'يجب أن يكون أكبر من 1' })
+      .max(100, { message: 'يجب أن يكون أقل من 100' }),
   }),
 )
 
@@ -25,10 +32,10 @@ const { handleSubmit, resetForm, setErrors } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.post(route('networks.store'), values, {
+  router.post(route('network.partners.store', props.network.data.id), values, {
     preserveScroll: true,
     onSuccess: () => {
-      toast({ title: 'تم إنشاء الشبكة' })
+      toast({ title: 'تم إضافة الشريك' })
       resetForm()
     },
     onError: (errors) => setErrors(errors),
@@ -37,17 +44,20 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <Head title="Admins" />
+  <Head title="Partners" />
 
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        شبكة جديدة
+        إضافة شريك
+        <span class="text-xs font-normal tracking-wide">
+          ({{ network.data.name }})
+        </span>
       </h2>
     </template>
 
     <CreateFormLayout @submit="onSubmit">
-      <NetworkForm />
+      <NetworkPartnersForm :partners="partners" />
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

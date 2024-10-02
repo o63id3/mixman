@@ -12,7 +12,7 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
 
 <template>
   <FormField v-slot="{ componentField }" name="name">
-    <FormItem class="col-span-full">
+    <FormItem>
       <FormLabel>اسم الكرت</FormLabel>
       <FormControl>
         <Input type="text" v-bind="componentField" />
@@ -21,7 +21,7 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
     </FormItem>
   </FormField>
   <FormField v-slot="{ componentField }" name="price_for_consumer">
-    <FormItem class="col-span-full">
+    <FormItem>
       <FormLabel>السعر للمستهلك</FormLabel>
       <FormControl>
         <Input type="number" step="0.01" v-bind="componentField" />

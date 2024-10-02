@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AdminResource;
+use App\Enums\RoleEnum;
 use App\Http\Resources\UserResource;
 use App\Models\Admin;
+use App\Models\Network;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,7 +42,9 @@ final class AdminsController
      */
     public function create(): Response
     {
-        return Inertia::render('Admins/Create');
+        return Inertia::render('Admins/Create', [
+            'networks' => Network::all('id', 'name'),
+        ]);
     }
 
     /**
@@ -53,12 +56,18 @@ final class AdminsController
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
-            'telegram' => ['sometimes'],
+            'role' => ['required', Rule::enum(RoleEnum::class)],
+            'percentage' => ['required_if:role,seller', 'numeric'],
+            'network_id' => ['required_if:role,seller', 'exists:networks,id'],
             'contact_info' => ['sometimes'],
             'notes' => ['sometimes'],
         ]);
 
-        Admin::create($validated);
+        if (array_key_exists('percentage', $validated)) {
+            $validated['percentage'] /= 100;
+        }
+
+        User::create($validated);
 
         return back();
     }
@@ -66,12 +75,13 @@ final class AdminsController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin): Response
+    public function edit(User $admin): Response
     {
-        AdminResource::withoutWrapping();
+        $admin->load('network');
 
         return Inertia::render('Admins/Edit', [
-            'admin' => AdminResource::make($admin),
+            'admin' => UserResource::make($admin),
+            'networks' => Network::all('id', 'name'),
             'can' => [
                 'update' => Gate::allows('update', $admin),
                 'delete' => Gate::allows('delete', $admin),
@@ -82,7 +92,7 @@ final class AdminsController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin): RedirectResponse
+    public function update(Request $request, User $admin): RedirectResponse
     {
         Gate::authorize('update', $admin);
 
@@ -90,10 +100,16 @@ final class AdminsController
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($admin->id)],
             'password' => ['string', 'min:4'],
-            'telegram' => ['sometimes'],
+            'role' => ['required', Rule::enum(RoleEnum::class)],
+            'percentage' => ['required_if:role,seller', 'numeric'],
+            'network_id' => ['required_if:role,seller', 'exists:networks,id'],
             'contact_info' => ['sometimes'],
             'notes' => ['sometimes'],
         ]);
+
+        if (array_key_exists('percentage', $validated)) {
+            $validated['percentage'] /= 100;
+        }
 
         $admin->update($validated);
 

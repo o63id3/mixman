@@ -10,6 +10,11 @@ import { toast } from '@/Components/ui/toast'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import AdminForm from './Partials/AdminForm.vue'
+import { Network } from '@/types'
+
+defineProps<{
+  networks: Array<Network>
+}>()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -22,13 +27,15 @@ const formSchema = toTypedSchema(
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),
-    telegram: z.string().optional(),
+    role: z.string({ message: 'هذا الحقل مطلوب' }),
+    network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
+    percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
     contact_info: z.string().optional(),
     notes: z.string().optional(),
   }),
 )
 
-const { handleSubmit, resetForm, setErrors } = useForm({
+const { handleSubmit, resetForm, setErrors, values } = useForm({
   validationSchema: formSchema,
 })
 
@@ -55,7 +62,7 @@ const onSubmit = handleSubmit((values) => {
     </template>
 
     <CreateFormLayout @submit="onSubmit">
-      <AdminForm />
+      <AdminForm :role="values.role" :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

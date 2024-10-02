@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NetworkResource;
 use App\Models\Network;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,23 +29,37 @@ final class NetworksController
 
         return Inertia::render('Networks/Index', [
             'networks' => NetworkResource::collection($networks),
+            'can' => [
+                'create' => auth()->user()->isAhmed(),
+            ],
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        // Gate::authorize('create', Region::class);
+
+        return Inertia::render('Networks/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        // Gate::authorize('create', Region::class);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'min:2', Rule::unique('networks', 'name')],
+            'internet_price_per_week' => ['numeric'],
+        ]);
+
+        Network::create($validated);
+
+        return back();
     }
 
     /**
@@ -57,9 +73,18 @@ final class NetworksController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Network $network)
+    public function edit(Network $network): Response
     {
-        //
+        // Gate::authorize('update', Region::class);
+
+        $network->load('partners:id,name', 'manager:id,name');
+
+        return Inertia::render('Networks/Edit', [
+            'network' => NetworkResource::make($network),
+            'can' => [
+                'createPartner' => auth()->user()->isAhmed(),
+            ],
+        ]);
     }
 
     /**
@@ -67,7 +92,16 @@ final class NetworksController
      */
     public function update(Request $request, Network $network)
     {
-        //
+        // Gate::authorize('create', Region::class);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'min:2', Rule::unique('networks', 'name')->ignore($network->id)],
+            'internet_price_per_week' => ['nullable', 'numeric'],
+        ]);
+
+        $network->update($validated);
+
+        return back();
     }
 
     /**

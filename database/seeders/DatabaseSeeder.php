@@ -9,6 +9,7 @@ use App\Enums\RoleEnum;
 use App\Models\Card;
 use App\Models\Expense;
 use App\Models\Network;
+use App\Models\NetworkPartner;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Region;
@@ -28,10 +29,17 @@ final class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'role' => RoleEnum::Ahmed,
         ]);
-        Network::factory(2)->create();
-        Order::factory(10)->create();
-        Payment::factory(10)->create();
-        Expense::factory(10)->create();
+
+        $networks = Network::factory(2)
+            ->create();
+
+        NetworkPartner::factory(4)->recycle($networks[0])->create();
+        NetworkPartner::factory(4)->recycle($networks[1])->create();
+
+        Card::factory(5)->create();
+        Order::factory(5)->recycle($networks)->create();
+        Payment::factory(5)->recycle($networks)->create();
+        Expense::factory(5)->recycle($networks)->create();
 
         if (app()->isProduction()) {
             return;

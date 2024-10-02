@@ -166,5 +166,10 @@ return [
 
         'seller_id' => 'نقطة البيع',
         'status' => 'الحالة',
+
+        'network_id' => ' الشبكة',
+        'percentage' => 'حصة البائع',
+        'role' => 'الصلاحية',
+        'seller' => 'بائع',
     ],
 ];

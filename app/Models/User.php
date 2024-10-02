@@ -25,9 +25,11 @@ final class User extends Authenticatable
         'name',
         'username',
         'password',
-        'region_id',
+        'role',
         'contact_info',
         'notes',
+        'percentage',
+        'network_id',
     ];
 
     /**
@@ -54,6 +56,14 @@ final class User extends Authenticatable
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * Get the seller region.
+     */
+    public function network(): BelongsTo
+    {
+        return $this->belongsTo(Network::class);
     }
 
     /**

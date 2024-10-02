@@ -16,10 +16,13 @@ final class NetworkResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($this->partners);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'manager' => $this->whenLoaded('manager', fn () => UserResource::make($this->manager)),
+            'partners' => $this->whenLoaded('partners', fn () => UserResource::collection($this->partners)),
             'internet_price_per_week' => $this->internet_price_per_week,
             'active' => $this->active,
         ];
