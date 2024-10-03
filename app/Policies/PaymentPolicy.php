@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
+use App\Models\Payment;
 use App\Models\User;
 
 final class PaymentPolicy
@@ -13,7 +15,7 @@ final class PaymentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager() || $user->role !== RoleEnum::Partner->value;
     }
 
     /**
@@ -21,15 +23,15 @@ final class PaymentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isAhmed() || $user->isManager();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Payment $payment): bool
     {
-        return $user->isAhmed();
+        return $user->isAhmed() || $payment->recipient_id === $user->id;
     }
 
     /**

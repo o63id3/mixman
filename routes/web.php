@@ -78,20 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/orders-items/{item}', [OrderItemsController::class, 'destroy'])->name('order-items.destroy');
 });
 
+Route::middleware('auth')->resource('payments', PaymentsController::class)->except('show');
+
 Route::middleware('auth')->group(function () {
     Route::middleware(['throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/payments', [PaymentsController::class, 'index'])->name('payments.index');
-
-    Route::get('/payments/create', [PaymentsController::class, 'create'])->name('payments.create');
-    Route::post('/payments', [PaymentsController::class, 'store'])->name('payments.store');
-
-    Route::get('/payments/{payment}/edit', [PaymentsController::class, 'edit'])->name('payments.edit');
-    Route::patch('/payments/{payment}', [PaymentsController::class, 'update'])->name('payments.update');
-
-    Route::delete('/payments/{payment}', [PaymentsController::class, 'destroy'])->name('payments.destroy');
 });
 
 Route::middleware('auth')->group(function () {

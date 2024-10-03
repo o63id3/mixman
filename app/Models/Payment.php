@@ -29,13 +29,13 @@ final class Payment extends Model
     /**
      * Scope the payments depending on user role.
      */
-    public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
+    public function scopeVisibleTo(Builder $query, User $user): Builder
     {
         if ($user->isAhmed()) {
             return $query;
         }
 
-        return $query->where('seller_id', $user->id);
+        return $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id);
     }
 
     /**

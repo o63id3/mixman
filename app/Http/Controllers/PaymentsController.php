@@ -35,7 +35,7 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'users' => User::all(),
+            'users' => User::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [
@@ -47,12 +47,14 @@ final class PaymentsController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
         Gate::authorize('create', Payment::class);
 
+        $user = type($request->user())->as(User::class);
+
         return Inertia::render('Payments/Create', [
-            'users' => User::whereNotNull('network_id')->get(['id', 'name']),
+            'users' => User::visibleTo($user)->whereNotNull('network_id')->get(['id', 'name']),
         ]);
     }
 
@@ -82,16 +84,17 @@ final class PaymentsController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Payment $payment): Response
+    public function edit(Request $request, Payment $payment): Response
     {
         Gate::authorize('update', $payment);
+        $user = type($request->user())->as(User::class);
 
         $payment->load(['recipient', 'user']);
 
         PaymentResource::withoutWrapping();
 
         return Inertia::render('Payments/Edit', [
-            'users' => User::get(['id', 'name']),
+            'users' => User::visibleTo($user)->get(['id', 'name']),
             'payment' => PaymentResource::make($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),

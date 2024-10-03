@@ -82,6 +82,11 @@ export interface Payment {
   amount: number
   notes: string
   created_at: string
+  can: {
+    view: boolean
+    update: boolean
+    delete: boolean
+  }
 }
 
 export interface Expense {

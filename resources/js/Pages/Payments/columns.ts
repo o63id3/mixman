@@ -2,33 +2,28 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import PaymentsRowActions from './Partials/PaymentsRowActions.vue'
-import { Payment, User } from '@/types'
+import { Payment } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { formatMoney } from '@/lib/money'
 
 export const columns: ColumnDef<Payment>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: 'recipient',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'المستلم' }),
     cell: ({ row }) =>
-      h(
-        Link,
-        {
-          href: `${route('payments.edit', row.original.id)}`,
-          class: 'hover:underline',
-        },
-        {
-          default: () => row.original.recipient.name,
-        },
-      ),
+      row.original.can.update
+        ? h(
+            Link,
+            {
+              href: `${route('payments.edit', row.original.id)}`,
+              class: 'hover:underline',
+            },
+            {
+              default: () => row.original.recipient.name,
+            },
+          )
+        : row.original.recipient.name,
     enableSorting: false,
   },
   {
@@ -58,8 +53,4 @@ export const columns: ColumnDef<Payment>[] = [
         title: 'التاريخ',
       }),
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(PaymentsRowActions, { row }),
-  //   },
 ]
