@@ -17,7 +17,9 @@ import Button from '@/Components/ui/button/Button.vue'
 const props = defineProps<{
   network: Data<Network>
   can: {
+    assignManager: boolean
     createPartner: boolean
+    deletePartner: boolean
   }
 }>()
 
@@ -75,31 +77,11 @@ const onSubmit = handleSubmit((values) => {
     </UpdateFormLayout>
 
     <div class="mt-4">
-      <div class="flex items-center justify-between px-4">
-        <p class="text-sm font-medium tracking-wide"># الشركاء</p>
-        <!-- <Button
-            class="text-xs tracking-wide"
-            size="xs"
-            :variant="addingForm ? 'outline' : 'default'"
-            @click="addingForm = !addingForm"
-            v-if="canAddItem"
-          >
-            <X v-if="addingForm" class="w-3 text-red-500" />
-            <span v-else>إضافة رزم</span>
-          </Button> -->
-      </div>
-      <!-- <AddItemsForm
-          v-if="addingForm && canAddItem && cards"
-          class="mt-4 overflow-hidden bg-white p-6 text-gray-900 shadow-sm sm:rounded-lg"
-          :cards="cards"
-          :order="order"
-          @success="addingForm = false"
-        /> -->
-      <!-- v-else -->
+      <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
       <DataTable
         v-if="network.data.partners"
         :data="network.data.partners"
-        :columns="columns(network)"
+        :columns="columns(network, can.deletePartner, can.assignManager)"
         :summaryFields="
           network.data.partners.length ? summaryFields : undefined
         "

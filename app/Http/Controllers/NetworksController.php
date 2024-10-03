@@ -6,8 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NetworkResource;
 use App\Models\Network;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,12 +19,14 @@ final class NetworksController
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        // Gate::authorize('viewAny', User::class);
+        Gate::authorize('viewAny', Network::class);
+
+        $user = type($request->user())->as(User::class);
 
         $networks = Network::query()
-            // ->whereNot('role', RoleEnum::Seller)
+            ->visibleTo($user)
             ->with('manager:id,name')
             ->latest()
             ->paginate(config('settings.pagination_size'));
@@ -30,7 +34,8 @@ final class NetworksController
         return Inertia::render('Networks/Index', [
             'networks' => NetworkResource::collection($networks),
             'can' => [
-                'create' => auth()->user()->isAhmed(),
+                'create' => Gate::allows('create', Network::class),
+                'update' => Gate::allows('update', Network::class),
             ],
         ]);
     }
@@ -40,7 +45,7 @@ final class NetworksController
      */
     public function create(): Response
     {
-        // Gate::authorize('create', Region::class);
+        Gate::authorize('create', Network::class);
 
         return Inertia::render('Networks/Create');
     }
@@ -50,7 +55,7 @@ final class NetworksController
      */
     public function store(Request $request): RedirectResponse
     {
-        // Gate::authorize('create', Region::class);
+        Gate::authorize('create', Network::class);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', Rule::unique('networks', 'name')],
@@ -67,7 +72,13 @@ final class NetworksController
      */
     public function show(Network $network)
     {
-        //
+        Gate::authorize('view', $network);
+
+        $network->load('partners:id,name', 'manager:id,name');
+
+        return Inertia::render('Networks/Show', [
+            'network' => NetworkResource::make($network),
+        ]);
     }
 
     /**
@@ -75,14 +86,16 @@ final class NetworksController
      */
     public function edit(Network $network): Response
     {
-        // Gate::authorize('update', Region::class);
+        Gate::authorize('update', Network::class);
 
         $network->load('partners:id,name', 'manager:id,name');
 
         return Inertia::render('Networks/Edit', [
             'network' => NetworkResource::make($network),
             'can' => [
-                'createPartner' => auth()->user()->isAhmed(),
+                'assignManager' => Gate::allows('assignManager', Network::class),
+                'createPartner' => Gate::allows('createPartner', Network::class),
+                'deletePartner' => Gate::allows('deletePartner', Network::class),
             ],
         ]);
     }
@@ -92,7 +105,7 @@ final class NetworksController
      */
     public function update(Request $request, Network $network)
     {
-        // Gate::authorize('create', Region::class);
+        Gate::authorize('update', Network::class);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', Rule::unique('networks', 'name')->ignore($network->id)],

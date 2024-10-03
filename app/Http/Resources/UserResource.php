@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Network;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 final class UserResource extends JsonResource
 {
@@ -45,16 +48,16 @@ final class UserResource extends JsonResource
             'role' => $this->whenHas('role'),
             'contact_info' => $this->whenHas('contact_info'),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
-            'percentage' => $this->whenHas('percentage'),
+            'percentage' => $this->whenHas('percentage', fn () => $this->percentage * 100),
             'share' => $this->whenPivotLoaded('network_partners', fn () => $this->pivot->share),
             'can' => $this->when($this->withPermissions, fn () => [
                 'users' => [
-                    'viewAny' => $this->resource->isAhmed(),
-                ],
-                'cards' => [
-                    'viewAny' => $this->resource->isAhmed(),
+                    'viewAny' => Gate::allows('viewAny', User::class),
                 ],
                 'networks' => [
+                    'viewAny' => Gate::allows('viewAny', Network::class),
+                ],
+                'cards' => [
                     'viewAny' => $this->resource->isAhmed(),
                 ],
                 'orders' => [

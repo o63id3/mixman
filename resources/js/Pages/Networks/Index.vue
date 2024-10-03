@@ -14,6 +14,7 @@ defineProps<{
   networks: Paginator<Network>
   can: {
     create: boolean
+    update: boolean
   }
 }>()
 </script>
@@ -37,7 +38,7 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="networks.data" :columns="columns">
+      <DataTable :data="networks.data" :columns="columns(can.update)">
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
           <DataTableToolbar :table="table" />
         </template>

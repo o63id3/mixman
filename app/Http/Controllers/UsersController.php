@@ -20,11 +20,14 @@ final class UsersController
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', User::class);
 
+        $user = type($request->user())->as(User::class);
+
         $users = User::query()
+            ->visibleTo($user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 

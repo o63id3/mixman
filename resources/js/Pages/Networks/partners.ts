@@ -6,7 +6,11 @@ import { Data, Network, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import NetworkPartnerActions from './Partials/NetworkPartnerActions.vue'
 
-export function columns(network: Data<Network>): ColumnDef<User>[] {
+export function columns(
+  network: Data<Network>,
+  canDelete?: boolean,
+  canAssignManager?: boolean,
+): ColumnDef<User>[] {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'name',
@@ -20,7 +24,7 @@ export function columns(network: Data<Network>): ColumnDef<User>[] {
           },
           [
             h('span', row.original.name),
-            network.data.manager?.id !== row.original.id
+            network.data.manager?.id !== row.original.id && canAssignManager
               ? h(
                   Link,
                   {
@@ -48,11 +52,14 @@ export function columns(network: Data<Network>): ColumnDef<User>[] {
       enableSorting: false,
       enableHiding: false,
     },
-    {
+  ]
+
+  if (canDelete) {
+    columns.push({
       id: 'actions',
       cell: ({ row }) => h(NetworkPartnerActions, { row, network }),
-    },
-  ]
+    })
+  }
 
   return columns
 }

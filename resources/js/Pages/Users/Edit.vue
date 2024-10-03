@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -48,8 +48,8 @@ const { handleSubmit, setErrors, values } = useForm({
     name: props.user.name,
     username: props.user.username,
     role: props.user.role,
-    network_id: String(props.user.network?.id),
-    percentage: Math.round(props.user.percentage * 100),
+    network_id: props.user.network ? String(props.user.network?.id) : undefined,
+    percentage: props.user.percentage,
     contact_info: props.user.contact_info ?? undefined,
     notes: props.user.notes ?? undefined,
   },

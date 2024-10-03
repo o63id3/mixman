@@ -37,15 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/networks', [NetworksController::class, 'index'])->name('networks.index');
-
-    Route::get('/networks/create', [NetworksController::class, 'create'])->name('networks.create');
-    Route::post('/networks', [NetworksController::class, 'store'])->name('networks.store');
-
-    Route::get('/networks/{network}/edit', [NetworksController::class, 'edit'])->name('networks.edit');
-    Route::patch('/networks/{network}', [NetworksController::class, 'update'])->name('networks.update');
-
-    Route::delete('/networks/{network}', [NetworksController::class, 'destroy'])->name('networks.destroy');
+    Route::resource('networks', NetworksController::class)->except('delete');
 
     Route::post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
 

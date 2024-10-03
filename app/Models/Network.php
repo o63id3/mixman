@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,18 @@ final class Network extends Model
     public function partners(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'network_partners')->withPivot('share');
+    }
+
+    /**
+     * Scope the users to sellers only.
+     */
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->whereIn('id', $user->networks()->get(['networks.id'])->pluck('id'));
     }
 
     /**

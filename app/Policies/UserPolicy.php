@@ -13,7 +13,7 @@ final class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
@@ -21,7 +21,7 @@ final class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
@@ -29,7 +29,7 @@ final class UserPolicy
      */
     public function update(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
@@ -37,7 +37,7 @@ final class UserPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
@@ -45,7 +45,7 @@ final class UserPolicy
      */
     public function deactivate(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
@@ -53,6 +53,6 @@ final class UserPolicy
      */
     public function activate(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 }

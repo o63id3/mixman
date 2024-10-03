@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,6 +53,24 @@ final class User extends Authenticatable
     }
 
     /**
+     * Check if the user is admin.
+     */
+    public function isManager(): bool
+    {
+        return $this->isAhmed()
+            || ($this->role === RoleEnum::Partner->value && $this->network_id !== null);
+    }
+
+    /**
+     * Check if the user is admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isAhmed()
+            || $this->role === RoleEnum::Partner->value;
+    }
+
+    /**
      * Get the seller region.
      */
     public function region(): BelongsTo
@@ -64,6 +84,26 @@ final class User extends Authenticatable
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);
+    }
+
+    /**
+     * Scope the users to sellers only.
+     */
+    public function scopeVisibleTo(Builder $query, self $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->where('network_id', $user->network_id)->where('role', RoleEnum::Seller);
+    }
+
+    /**
+     * Get the seller region.
+     */
+    public function networks(): BelongsToMany
+    {
+        return $this->belongsToMany(Network::class, 'network_partners');
     }
 
     /**
