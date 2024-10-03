@@ -20,7 +20,7 @@ defineProps<{
   <Head title="Orders" />
 
   <AuthenticatedLayout>
-    <Card>
+    <Card class="rounded-none sm:rounded-xl">
       <CardHeader>
         <CardTitle>معلومات الطلب</CardTitle>
       </CardHeader>
