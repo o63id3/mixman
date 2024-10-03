@@ -26,7 +26,9 @@ final class OrderResource extends JsonResource
             'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),
+            'created_at_date' => $this->created_at,
             'updated_at' => $this->updated_at->diffForHumans(),
+            'updated_at_date' => $this->updated_at,
 
             'can' => [
                 'update' => Gate::allows('update', $this->resource),

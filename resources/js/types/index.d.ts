@@ -55,7 +55,9 @@ export interface Order {
   total_price_for_seller: number
   total_price_for_consumer: number
   notes: string
+  created_at_date: string
   updated_at: string
+  updated_at_date: string
   items: Array<OrderItem>
   can: {
     view: boolean

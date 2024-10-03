@@ -130,9 +130,7 @@ function useFilteringAndSorting(
   <div class="mb-4 overflow-x-auto px-4 lg:px-0">
     <slot :table="table" name="toolBar" />
   </div>
-  <div
-    class="scrollbar-hide overflow-x-auto border bg-white shadow-sm lg:rounded-md"
-  >
+  <div class="overflow-x-auto border bg-white shadow-sm lg:rounded-md">
     <Table>
       <TableHeader class="bg-gray-100">
         <TableRow

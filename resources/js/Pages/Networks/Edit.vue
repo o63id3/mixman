@@ -7,7 +7,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Data, Network } from '@/types'
+import { Network } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import NetworkForm from './Partials/NetworkForm.vue'
 import { columns, summaryFields } from './partners'

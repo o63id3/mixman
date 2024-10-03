@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\OrderStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\Order;
 use App\Models\User;
@@ -23,7 +24,8 @@ final class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $order->orderer_id === $user->id
+        return $user->isAhmed()
+            || $order->orderer_id === $user->id
             || $order->manager_id === $user->id;
     }
 
@@ -36,29 +38,18 @@ final class OrderPolicy
     }
 
     /**
-     * Determine whether the user can create items for the model.
-     */
-    public function createItems(User $user, Order $order): bool
-    {
-        if ($user->isAhmed()) {
-            return true;
-        }
-
-        return $user->isManager()
-            && $order->manager_id === $user->id;
-    }
-
-    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Order $order): bool
     {
-        if ($user->isAhmed()) {
-            return true;
+        if (
+            $order->status !== OrderStatusEnum::Pending
+            && ! $order->created_at->isToday()
+        ) {
+            return false;
         }
 
-        return $user->isManager()
-            && $order->manager_id === $user->id;
+        return $order->manager_id === $user->id;
     }
 
     /**
@@ -66,10 +57,14 @@ final class OrderPolicy
      */
     public function delete(User $user, Order $order): bool
     {
-        if ($order->completed()) {
-            return $user->isAhmed();
-        }
+        return $this->update($user, $order);
+    }
 
-        return $user->isAhmed()/*|| $user->id === $order->seller_id*/;
+    /**
+     * Determine whether the user can create items for the model.
+     */
+    public function createItems(User $user, Order $order): bool
+    {
+        return $this->update($user, $order);
     }
 }
