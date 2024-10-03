@@ -31,7 +31,7 @@ final class DatabaseSeeder extends Seeder
             return;
         }
 
-        Card::factory()->createMany([[
+        $cards = Card::factory()->createMany([[
             'name' => 'كرت فئة 1 شيكل',
             'price_for_consumer' => 1,
             'active' => true,
@@ -53,7 +53,7 @@ final class DatabaseSeeder extends Seeder
         $network2 = Network::factory()->set('manager_id', $partners->random())->set('name', 'مدرسة أبو حسين')->create();
         $network2->partners()->attach($partners, ['share' => 0.25]);
 
-        Order::factory(5)->recycle([$network1, $network2])->create();
+        Order::factory(5)->recycle([$network1, $network2])->hasItems(3)->recycle($cards)->create();
         Payment::factory(5)->recycle([$network1, $network2])->create();
         Expense::factory(5)->recycle([$network1, $network2])->create();
 
