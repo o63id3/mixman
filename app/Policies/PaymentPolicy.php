@@ -24,7 +24,8 @@ final class PaymentPolicy
     public function view(User $user, Payment $payment): bool
     {
         return $user->isAhmed()
-            || $payment->recipient_id === $user->id;
+            || $payment->recipient_id === $user->id
+            || $payment->user_id === $user->id;
     }
 
     /**

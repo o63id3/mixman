@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\RoleEnum;
 use App\Models\Expense;
 use App\Models\User;
 
@@ -15,7 +14,7 @@ final class ExpensePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isManager() || $user->role !== RoleEnum::Partner->value;
+        return $user->isManager();
     }
 
     /**
@@ -23,7 +22,8 @@ final class ExpensePolicy
      */
     public function view(User $user, Expense $expense): bool
     {
-        return $user->isAhmed();
+        return $user->isAhmed()
+            || $expense->user_id === $user->id;
     }
 
     /**
