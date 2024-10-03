@@ -72,6 +72,7 @@ export interface Payment {
   amount: number
   notes: string
   created_at: string
+  created_at_date: string
   can: {
     view: boolean
     update: boolean

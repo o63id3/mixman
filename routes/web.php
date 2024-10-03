@@ -32,7 +32,7 @@ Route::middleware('auth')->resource('users', UsersController::class)->except('sh
 Route::middleware('auth')->resource('networks', NetworksController::class)->except('delete');
 Route::middleware('auth')->resource('cards', CardsController::class)->except('show');
 Route::middleware('auth')->resource('orders', OrdersController::class);
-Route::middleware('auth')->resource('payments', PaymentsController::class)->except('show');
+Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class)->except('show');
 
 Route::middleware('auth')->group(function () {

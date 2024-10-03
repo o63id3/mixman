@@ -25,6 +25,7 @@ final class PaymentResource extends JsonResource
             'amount' => $this->amount,
             'notes' => $this->notes,
             'created_at' => $this->created_at->diffForHumans(),
+            'created_at_date' => $this->created_at,
 
             'can' => [
                 'update' => Gate::allows('update', $this->resource),

@@ -82,6 +82,20 @@ final class PaymentsController
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Payment $payment)
+    {
+        Gate::authorize('view', $payment);
+
+        $payment->load(['recipient', 'user']);
+
+        return Inertia::render('Payments/Show', [
+            'payment' => PaymentResource::single($payment),
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request, Payment $payment): Response

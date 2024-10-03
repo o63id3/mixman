@@ -12,18 +12,16 @@ export const columns: ColumnDef<Payment>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'المستلم' }),
     cell: ({ row }) =>
-      row.original.can.update
-        ? h(
-            Link,
-            {
-              href: `${route('payments.edit', row.original.id)}`,
-              class: 'hover:underline',
-            },
-            {
-              default: () => row.original.recipient.name,
-            },
-          )
-        : row.original.recipient.name,
+      h(
+        Link,
+        {
+          href: `${route(`payments.${row.original.can.update ? 'edit' : 'show'}`, row.original.id)}`,
+          class: 'hover:underline',
+        },
+        {
+          default: () => row.original.recipient.name,
+        },
+      ),
     enableSorting: false,
   },
   {

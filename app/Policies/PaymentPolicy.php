@@ -19,6 +19,15 @@ final class PaymentPolicy
     }
 
     /**
+     * Determine whether the user can view any models.
+     */
+    public function view(User $user, Payment $payment): bool
+    {
+        return $user->isAhmed()
+            || $payment->recipient_id === $user->id;
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
@@ -31,7 +40,9 @@ final class PaymentPolicy
      */
     public function update(User $user, Payment $payment): bool
     {
-        return $user->isAhmed() || $payment->recipient_id === $user->id;
+        return ($user->isAhmed()
+            || $payment->recipient_id === $user->id)
+            && $payment->created_at->isToday();
     }
 
     /**
