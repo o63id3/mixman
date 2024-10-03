@@ -14,7 +14,7 @@ import { User } from '@/types'
 const emit = defineEmits(['select'])
 
 defineProps<{
-  sellers: Array<User>
+  users: Array<User>
   selected?: number
 }>()
 </script>
@@ -25,7 +25,7 @@ defineProps<{
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox
         :options="
-          sellers.map((seller) => ({
+          users.map((seller) => ({
             value: seller.id,
             label: seller.name,
           }))

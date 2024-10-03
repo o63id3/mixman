@@ -27,7 +27,7 @@ const emit = defineEmits(['select'])
 
 defineProps<{
   order?: Order
-  sellers?: Array<User>
+  users?: Array<User>
   cards?: Array<Card>
   selected?: number
   hiddenCards?: boolean
@@ -40,9 +40,9 @@ defineProps<{
     <FormItem>
       <FormLabel>نقطة البيع</FormLabel>
       <Combobox
-        v-if="sellers"
+        v-if="users"
         :options="
-          sellers.map((seller) => ({
+          users.map((seller) => ({
             value: seller.id,
             label: seller.name,
           }))

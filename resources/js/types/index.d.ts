@@ -66,6 +66,7 @@ export interface Order {
   total_price_for_consumer: number
   notes: string
   updated_at: string
+  items: Array<OrderItem>
   can: {
     view: boolean
     update: boolean

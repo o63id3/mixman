@@ -14,7 +14,7 @@ it('renders the edit page for admin', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Payments/Edit')
             ->has('payment')
-            ->has('sellers')
+            ->has('users')
         );
 });
 

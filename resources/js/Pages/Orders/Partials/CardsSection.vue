@@ -8,7 +8,6 @@ import { Card, Order, OrderItem } from '@/types'
 import { columns, summaryFields } from './columns'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import AddItemsForm from './AddItemsForm.vue'
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 defineProps<{
   order: Order
@@ -45,7 +44,7 @@ const addingForm = ref(false)
     <DataTable
       v-else
       :data="items"
-      :columns="columns"
+      :columns="columns(canAddItem)"
       :summaryFields="items.length ? summaryFields : undefined"
     />
   </div>

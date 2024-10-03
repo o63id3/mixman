@@ -14,7 +14,7 @@ it('renders the edit page for admin', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Orders/Edit')
             ->has('order')
-            ->has('sellers')
+            ->has('users')
         );
 });
 

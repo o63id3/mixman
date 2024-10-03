@@ -66,9 +66,9 @@ const links: Array<Link> = [
   //   visible: user.can.cards.viewAny,
   // },
   // {
-  //   route: 'sellers.index',
+  //   route: 'users.index',
   //   label: 'الباعة',
-  //   visible: user.can.sellers.viewAny,
+  //   visible: user.can.users.viewAny,
   // },
   // {
   //   route: 'payments.index',

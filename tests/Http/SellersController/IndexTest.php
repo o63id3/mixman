@@ -9,10 +9,10 @@ it('renders the index page for admin', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
-        ->get(route('sellers.index'))
+        ->get(route('users.index'))
         ->assertInertia(fn (Assert $page) => $page
             ->component('Sellers/Index')
-            ->has('sellers')
+            ->has('users')
         );
 });
 
@@ -20,6 +20,6 @@ it('does not render the index page for seller', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->get(route('sellers.index'))
+        ->get(route('users.index'))
         ->assertForbidden();
 });

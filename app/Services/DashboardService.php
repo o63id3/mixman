@@ -77,7 +77,7 @@ final class DashboardService
     }
 
     /**
-     * Get the sellers count.
+     * Get the users count.
      */
     public function getSellersCount(): int
     {
@@ -116,7 +116,7 @@ final class DashboardService
             'max_debut_seller' => $this->getMaxDebutSeller(),
             'max_region_income' => $this->getMaxRegionIncome($startOfLastWeek, $endOfLastWeek),
             'max_seller_income' => $this->getMaxSellerIncome($startOfLastWeek, $endOfLastWeek),
-            'sellers_count' => $this->getSellersCount(),
+            'users_count' => $this->getSellersCount(),
             'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
         ]
         );

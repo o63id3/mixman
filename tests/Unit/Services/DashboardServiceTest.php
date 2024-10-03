@@ -18,7 +18,7 @@ todo('get total income');
 
 todo('get max region income');
 
-test('get sellers count', function () {
+test('get users count', function () {
     User::factory(5)->admin()->create();
     Seller::factory(5)->create();
 

@@ -35,7 +35,7 @@ const onSubmit = handleSubmit((values) => {
 })
 
 defineProps<{
-  sellers: Array<User>
+  users: Array<User>
 }>()
 </script>
 
@@ -51,7 +51,7 @@ defineProps<{
 
     <CreateFormLayout @submit="onSubmit">
       <PaymentForm
-        :sellers="sellers"
+        :users="users"
         :selected="values.user_id"
         @select="(selected: number) => setFieldValue('user_id', selected)"
       />

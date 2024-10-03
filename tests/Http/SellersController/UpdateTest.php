@@ -18,7 +18,7 @@ it('allows an authorized user to update a seller', function () {
     ];
 
     $this->actingAs($user)
-        ->patch(route('sellers.update', User::factory()->create()), $data)
+        ->patch(route('users.update', User::factory()->create()), $data)
         ->assertRedirect();
 
     unset($data['password']);
@@ -29,7 +29,7 @@ it('fails validation when required fields are missing', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
-        ->patch(route('sellers.update', User::factory()->create()))
+        ->patch(route('users.update', User::factory()->create()))
         ->assertSessionHasErrors(['name']);
 });
 
@@ -44,7 +44,7 @@ it('fails validation when fields are not applicable', function ($name, $region, 
     ];
 
     $this->actingAs($user)
-        ->patch(route('sellers.update', User::factory()->create()), $data)
+        ->patch(route('users.update', User::factory()->create()), $data)
         ->assertSessionHasErrors(['name', 'region_id', 'username', 'password']);
 })->with([
     [1, 1000, 123, 1233],
@@ -62,7 +62,7 @@ it('fails validation when the name field is not unique', function () {
     ];
 
     $this->actingAs($user)
-        ->patch(route('sellers.update', User::factory()->create()), $data)
+        ->patch(route('users.update', User::factory()->create()), $data)
         ->assertSessionHasErrors(['username']);
 });
 
@@ -70,6 +70,6 @@ it('prevents unauthorized users from updating a seller', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->patch(route('sellers.update', User::factory()->create()))
+        ->patch(route('users.update', User::factory()->create()))
         ->assertForbidden();
 });

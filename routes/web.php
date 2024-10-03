@@ -70,17 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cards/{card}', [CardsController::class, 'destroy'])->name('cards.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
-
-    Route::get('/orders/create', [OrdersController::class, 'create'])->name('orders.create');
-    Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
-
-    Route::get('/orders/{order}/edit', [OrdersController::class, 'edit'])->name('orders.edit');
-    Route::patch('/orders/{order}', [OrdersController::class, 'update'])->name('orders.update');
-
-    Route::delete('/orders/{order}', [OrdersController::class, 'destroy'])->name('orders.destroy');
-});
+Route::middleware('auth')->resource('orders', OrdersController::class);
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/items', [OrderItemsController::class, 'store'])->name('order-items.store');

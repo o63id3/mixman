@@ -10,7 +10,7 @@ import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   payments: Paginator<Payment>
-  sellers: Array<User>
+  users: Array<User>
   filters: Filters
   sorts: string
   can: {
@@ -45,7 +45,7 @@ defineProps<{
         :initial-sorts="sorts"
       >
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
-          <Toolbar :table="table" :sellers="sellers" />
+          <Toolbar :table="table" :users="users" />
         </template>
       </DataTable>
       <DataTablePagination

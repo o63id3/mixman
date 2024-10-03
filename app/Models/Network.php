@@ -33,7 +33,7 @@ final class Network extends Model
     }
 
     /**
-     * Scope the users to sellers only.
+     * Scope the users to users only.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {

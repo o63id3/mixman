@@ -58,7 +58,7 @@ final class DatabaseSeeder extends Seeder
         Expense::factory(5)->recycle([$network1, $network2])->create();
 
         // Order::factory(100)
-        //     ->recycle($sellers)
+        //     ->recycle($users)
         //     ->recycle($admin)
         //     ->hasItems(3)
         //     ->recycle($cards)
@@ -66,7 +66,7 @@ final class DatabaseSeeder extends Seeder
         //     ->create();
 
         // Order::factory(100)
-        //     ->recycle($sellers)
+        //     ->recycle($users)
         //     ->recycle($admin)
         //     ->hasItems(3)
         //     ->recycle($cards)
@@ -74,7 +74,7 @@ final class DatabaseSeeder extends Seeder
         //     ->create();
 
         // Order::factory(20)
-        //     ->recycle($sellers)
+        //     ->recycle($users)
         //     ->recycle($admin)
         //     ->hasItems(1)
         //     ->recycle($cards)
@@ -82,7 +82,7 @@ final class DatabaseSeeder extends Seeder
         //     ->create();
 
         // Payment::factory(100)
-        //     ->recycle($sellers)
+        //     ->recycle($users)
         //     ->recycle($admin)
         //     ->create();
 

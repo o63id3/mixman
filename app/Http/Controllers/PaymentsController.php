@@ -35,7 +35,7 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'sellers' => User::all(),
+            'users' => User::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [
@@ -52,7 +52,7 @@ final class PaymentsController
         Gate::authorize('create', Payment::class);
 
         return Inertia::render('Payments/Create', [
-            'sellers' => User::whereNotNull('network_id')->get(['id', 'name']),
+            'users' => User::whereNotNull('network_id')->get(['id', 'name']),
         ]);
     }
 
@@ -91,7 +91,7 @@ final class PaymentsController
         PaymentResource::withoutWrapping();
 
         return Inertia::render('Payments/Edit', [
-            'sellers' => User::get(['id', 'name']),
+            'users' => User::get(['id', 'name']),
             'payment' => PaymentResource::make($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),

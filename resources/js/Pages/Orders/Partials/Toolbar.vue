@@ -9,7 +9,7 @@ import DataTableDateRangeFilter from '@/Components/data-table/DataTableDateRange
 
 interface DataTableToolbarProps {
   table: Table<Order>
-  sellers: Array<User>
+  users: Array<User>
 }
 
 defineProps<DataTableToolbarProps>()
@@ -23,7 +23,7 @@ defineProps<DataTableToolbarProps>()
         :column="table.getColumn('seller')"
         title="البائع"
         :options="
-          sellers.map((seller) => ({
+          users.map((seller) => ({
             label: seller.name,
             value: String(seller.id),
           }))

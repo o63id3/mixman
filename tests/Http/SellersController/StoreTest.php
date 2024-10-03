@@ -18,7 +18,7 @@ it('allows an authorized user to create a seller', function () {
     ];
 
     $this->actingAs($user)
-        ->post(route('sellers.store'), $data)
+        ->post(route('users.store'), $data)
         ->assertRedirect();
 
     unset($data['password']);
@@ -29,7 +29,7 @@ it('fails validation when required fields are missing', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
-        ->post(route('sellers.store'))
+        ->post(route('users.store'))
         ->assertSessionHasErrors(['name', 'region_id', 'username', 'password']);
 });
 
@@ -44,7 +44,7 @@ it('fails validation when fields are not applicable', function ($name, $region, 
     ];
 
     $this->actingAs($user)
-        ->post(route('sellers.store'), $data)
+        ->post(route('users.store'), $data)
         ->assertSessionHasErrors(['name', 'region_id', 'username', 'password']);
 })->with([
     [1, 1000, 123, 1233],
@@ -62,7 +62,7 @@ it('fails validation when the username field is not unique', function () {
     ];
 
     $this->actingAs($user)
-        ->post(route('sellers.store'), $data)
+        ->post(route('users.store'), $data)
         ->assertSessionHasErrors(['username']);
 });
 
@@ -70,6 +70,6 @@ it('prevents unauthorized users from creating a seller', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->post(route('sellers.store'))
+        ->post(route('users.store'))
         ->assertForbidden();
 });

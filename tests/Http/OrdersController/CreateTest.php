@@ -12,7 +12,7 @@ it('renders the create page for admin', function () {
         ->get(route('orders.create'))
         ->assertInertia(fn (Assert $page) => $page
             ->component('Orders/Create')
-            ->has('sellers')
+            ->has('users')
             ->has('cards')
         );
 });

@@ -3,27 +3,21 @@ import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import OrdersRowActions from './Partials/OrdersRowActions.vue'
-import { Order, User } from '@/types'
+import { Order } from '@/types'
 import { orderStatues } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Order>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: 'orderer',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم' }),
+      h(DataTableColumnHeader, { column, title: 'المستفيد' }),
     cell: ({ row }) =>
       h(
         Link,
         {
-          href: `${route('orders.edit', row.original.id)}`,
+          href: `${route(`orders.${row.original.can.update ? 'edit' : 'show'}`, row.original.id)}`,
           class: 'hover:underline',
         },
         {
@@ -59,16 +53,6 @@ export const columns: ColumnDef<Order>[] = [
       ])
     },
   },
-  //   {
-  //     accessorKey: 'action',
-  //     accessorFn: (order) => order.action?.name,
-  //     header: ({ column }) =>
-  //       h(DataTableColumnHeader, {
-  //         column,
-  //         title: 'تم اتخاذ الاجراء بواسطة',
-  //       }),
-  //     enableSorting: false,
-  //   },
   {
     accessorKey: 'total_price_for_seller',
     header: ({ column }) =>
@@ -103,8 +87,4 @@ export const columns: ColumnDef<Order>[] = [
       }),
     enableSorting: false,
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(OrdersRowActions, { row }),
-  //   },
 ]

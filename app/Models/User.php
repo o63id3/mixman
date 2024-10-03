@@ -87,7 +87,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Scope the users to sellers only.
+     * Scope the users to users only.
      */
     public function scopeVisibleTo(Builder $query, self $user): Builder
     {

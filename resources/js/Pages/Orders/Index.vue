@@ -12,7 +12,7 @@ import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   orders: Paginator<Order>
-  sellers: Array<User>
+  users: Array<User>
   filters: Filters
   sorts: string
   can: {
@@ -29,7 +29,9 @@ defineProps<{
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
           الطلبات
-          <span class="text-xs tracking-wide">({{ orders.meta.total }})</span>
+          <span class="text-xs font-normal tracking-wide">
+            ({{ orders.meta.total }})
+          </span>
         </h2>
         <div v-if="can.create">
           <Link :href="route('orders.create')">
@@ -47,7 +49,7 @@ defineProps<{
         :initial-sorts="sorts"
       >
         <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
-          <Toolbar :table="table" :sellers="sellers" />
+          <Toolbar :table="table" :users="users" />
         </template>
       </DataTable>
       <DataTablePagination

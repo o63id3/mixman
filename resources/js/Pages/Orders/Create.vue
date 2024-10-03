@@ -1,4 +1,5 @@
 <script setup lang="ts">
+'users'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 
@@ -12,7 +13,7 @@ import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import OrderForm from './Partials/OrderForm.vue'
 
 const props = defineProps<{
-  sellers: Array<User>
+  users: Array<User>
   cards: Array<Card>
   statuses: Array<string>
 }>()
@@ -71,7 +72,7 @@ const onSubmit = handleSubmit((values) => {
 
     <CreateFormLayout @submit="onSubmit">
       <OrderForm
-        :sellers="sellers"
+        :users="users"
         :cards="cards"
         :selected="values.orderer_id"
         @select="(selected: number) => setFieldValue('orderer_id', selected)"

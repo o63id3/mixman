@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Order;
 use App\Models\User;
 
@@ -14,7 +15,7 @@ final class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager() || $user->role !== RoleEnum::Partner->value;
     }
 
     /**
@@ -22,7 +23,8 @@ final class OrderPolicy
      */
     public function view(User $user, Order $order): bool
     {
-        return $user->isAhmed() || $order->seller_id === $user->id;
+        return $order->orderer_id === $user->id
+            || $order->manager_id === $user->id;
     }
 
     /**
@@ -30,15 +32,20 @@ final class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isManager();
     }
 
     /**
      * Determine whether the user can create items for the model.
      */
-    public function createItems(User $user): bool
+    public function createItems(User $user, Order $order): bool
     {
-        return $user->isAhmed();
+        if ($user->isAhmed()) {
+            return true;
+        }
+
+        return $user->isManager()
+            && $order->manager_id === $user->id;
     }
 
     /**
@@ -46,11 +53,12 @@ final class OrderPolicy
      */
     public function update(User $user, Order $order): bool
     {
-        // if ($order->completed()) {
-        //     return $user->isAhmed();
-        // }
+        if ($user->isAhmed()) {
+            return true;
+        }
 
-        return $user->isAhmed()/*|| $user->id === $order->seller_id*/;
+        return $user->isManager()
+            && $order->manager_id === $user->id;
     }
 
     /**

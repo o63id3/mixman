@@ -81,7 +81,7 @@ const onSubmit = handleSubmit((values) => {
         hidden-cards
         :disabled="!can.update"
         :order="order"
-        :sellers="users"
+        :users="users"
         :cards="cards"
         :selected="values.orderer_id"
         @select="(selected: number) => setFieldValue('orderer_id', selected)"

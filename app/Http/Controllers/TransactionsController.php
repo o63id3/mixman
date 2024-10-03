@@ -30,7 +30,7 @@ final class TransactionsController
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'sellers' => Seller::all(),
+            'users' => Seller::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
         ]);

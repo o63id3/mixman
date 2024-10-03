@@ -23,9 +23,9 @@ final class Region extends Model
     ];
 
     /**
-     * Get the region sellers.
+     * Get the region users.
      */
-    public function sellers(): HasMany
+    public function users(): HasMany
     {
         return $this->hasMany(Seller::class);
     }

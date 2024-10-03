@@ -43,7 +43,7 @@ final class OrdersController
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'statuses' => OrderStatusEnum::cases(),
-            'sellers' => User::all(),
+            'users' => User::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [
@@ -55,13 +55,15 @@ final class OrdersController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
         Gate::authorize('create', Order::class);
 
+        $user = type($request->user())->as(User::class);
+
         return Inertia::render('Orders/Create', [
-            'sellers' => User::whereNotNull('network_id')->get(['id', 'name']),
-            'cards' => Card::all(),
+            'users' => User::visibleTo($user)->get(['id', 'name']),
+            'cards' => Card::all('id', 'name'),
             'statuses' => OrderStatusEnum::cases(),
         ]);
     }
@@ -98,11 +100,27 @@ final class OrdersController
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Order $order)
+    {
+        Gate::authorize('view', $order);
+
+        $order->load(['orderer', 'manager', 'items', 'items.card']);
+        $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
+            ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
+
+        return Inertia::render('Orders/Show', [
+            'order' => OrderResource::make($order),
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Order $order): Response
     {
-        Gate::authorize('view', $order);
+        Gate::authorize('update', $order);
 
         $order->load(['orderer', 'manager', 'items', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
@@ -120,7 +138,7 @@ final class OrdersController
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),
-                'addItem' => Gate::allows('createItems', Order::class),
+                'addItem' => Gate::allows('createItems', $order),
             ],
         ]);
     }

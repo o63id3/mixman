@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 final class OrderResource extends JsonResource
 {
@@ -22,9 +23,14 @@ final class OrderResource extends JsonResource
             'orderer' => $this->whenLoaded('orderer', fn () => UserResource::make($this->orderer)),
             'manager' => $this->whenLoaded('manager', fn () => UserResource::make($this->manager)),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
+            'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),
             'updated_at' => $this->updated_at->diffForHumans(),
+
+            'can' => [
+                'update' => Gate::allows('update', $this->resource),
+            ],
         ];
     }
 }

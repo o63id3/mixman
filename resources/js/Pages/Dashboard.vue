@@ -35,7 +35,7 @@ const props = defineProps<{
     seller: string
     amount: number
   }
-  sellers_count?: number
+  users_count?: number
   total_income?: number
 }>()
 
@@ -87,7 +87,7 @@ const groups: Array<Group> = [
       },
       {
         title: 'الباعة',
-        value: h('span', `${props.sellers_count} بائع`),
+        value: h('span', `${props.users_count} بائع`),
         icon: h(UserRound),
         visible: user.admin,
       },
