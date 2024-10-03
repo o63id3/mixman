@@ -18,10 +18,13 @@ final class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'seller' => SellerResource::single($this->seller),
+            'user' => UserResource::single($this->user),
+            'manager' => UserResource::single($this->manager),
+            'network' => UserResource::single($this->network),
             'amount' => $this->amount,
+            'description' => $this->description,
             'type' => $this->type,
-            'status' => $this->status,
+            // 'status' => $this->status,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

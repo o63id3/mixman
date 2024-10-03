@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\Network;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -72,6 +73,9 @@ final class UserResource extends JsonResource
                 ],
                 'expenses' => [
                     'viewAny' => Gate::allows('viewAny', Expense::class),
+                ],
+                'transactions' => [
+                    'viewAny' => Gate::allows('viewAny', Transaction::class),
                 ],
             ],
             ),

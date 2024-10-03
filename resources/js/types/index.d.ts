@@ -31,9 +31,9 @@ export interface User {
     expenses: {
       viewAny: boolean
     }
-    // transactions: {
-    //   viewAny: boolean
-    // }
+    transactions: {
+      viewAny: boolean
+    }
   }
 }
 
@@ -122,10 +122,13 @@ export interface OrderItem {
 
 export interface Transaction {
   id: number
-  seller: User
+  user: User
+  manager: User
+  network: Network
   amount: number
-  type: 'payment' | 'order'
-  status: 'طلب جديد' | 'مكتمل' | 'مرجع' | ''
+  description: string
+  type: 'payment' | 'order' | 'expense'
+  //   status: 'طلب جديد' | 'مكتمل' | 'مرجع' | ''
   created_at: string
 }
 

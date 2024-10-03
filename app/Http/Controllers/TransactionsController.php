@@ -22,7 +22,7 @@ final class TransactionsController
         $user = type($request->user())->as(User::class);
 
         $transactions = Transaction::query()
-            ->with('seller')
+            ->with('user', 'manager', 'network')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -30,7 +30,7 @@ final class TransactionsController
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'users' => Seller::all(),
+            'users' => User::all(),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
         ]);

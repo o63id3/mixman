@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\OrderStatusEnum;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -17,21 +16,40 @@ final class Transaction extends Model
     /**
      * Get the seller.
      */
-    public function seller(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the seller.
+     */
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    /**
+     * Get the seller.
+     */
+    public function network(): BelongsTo
+    {
+        return $this->belongsTo(Network::class);
     }
 
     /**
      * Scope the users to users only.
      */
-    public function scopeVisibleTo(Builder $query, User|Seller $user): Builder
+    public function scopeVisibleTo(Builder $query, User $user): Builder
     {
         if ($user->isAhmed()) {
             return $query;
         }
 
-        return $query->where('seller_id', $user->id)->where('status', '!=', OrderStatusEnum::Returned);
+        return $query
+            ->where('user_id', $user->id)
+            ->orWhere('manager_id', $user->id)
+            ->orWhereIn('id', $user->networks()->get(['networks.id'])->pluck('id'));
     }
 
     /**

@@ -55,31 +55,11 @@ const links: Array<Link> = [
     label: 'المصروفات',
     visible: user.can.expenses.viewAny,
   },
-  // {
-  //   route: 'regions.index',
-  //   label: 'المناطق',
-  //   visible: user.can.regions.viewAny,
-  // },
-  // {
-  //   route: 'cards.index',
-  //   label: 'الكروت',
-  //   visible: user.can.cards.viewAny,
-  // },
-  // {
-  //   route: 'users.index',
-  //   label: 'الباعة',
-  //   visible: user.can.users.viewAny,
-  // },
-  // {
-  //   route: 'payments.index',
-  //   label: 'المدفوعات',
-  //   visible: user.can.payments.viewAny,
-  // },
-  // {
-  //   route: 'transactions.index',
-  //   label: 'الحركات',
-  //   visible: user.can.transactions.viewAny,
-  // },
+  {
+    route: 'transactions.index',
+    label: 'الحركات',
+    visible: user.can.transactions.viewAny,
+  },
 ]
 </script>
 

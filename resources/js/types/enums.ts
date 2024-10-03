@@ -71,4 +71,9 @@ export const transactionTypes = [
     label: 'دفعة',
     icon: h(HandCoins, { class: 'text-green-500' }),
   },
+  {
+    value: 'expense',
+    label: 'مصروف',
+    icon: h(HandCoins, { class: 'text-red-500' }),
+  },
 ]

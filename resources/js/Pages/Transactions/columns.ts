@@ -2,36 +2,28 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import TransactionsRowActions from './Partials/TransactionsRowActions.vue'
 import { Transaction, User } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
 import { Link, usePage } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Transaction>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
-    accessorKey: 'seller',
+    accessorKey: 'user.name',
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: 'الاسم' }),
-    cell: ({ row }) =>
-      usePage().props.auth.user.admin || row.original.type === 'order'
-        ? h(
-            Link,
-            {
-              href: `${route(`${row.getValue('type')}s.edit`, row.original.id)}`,
-              class: 'hover:underline',
-            },
-            {
-              default: () => row.getValue<User>('seller').name,
-            },
-          )
-        : row.getValue<User>('seller').name,
+      h(DataTableColumnHeader, { column, title: 'المستفيد' }),
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'manager.name',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'المدير' }),
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'network.name',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'الشبكة' }),
     enableSorting: false,
   },
   {
@@ -54,26 +46,26 @@ export const columns: ColumnDef<Transaction>[] = [
       ])
     },
   },
-  {
-    accessorKey: 'status',
-    header: ({ column }) =>
-      h(DataTableColumnHeader, {
-        column,
-        title: 'الحالة',
-      }),
-    cell: ({ row }) => {
-      const status = orderStatues.find(
-        (status: any) => status.value === row.getValue('status'),
-      )
+  //   {
+  //     accessorKey: 'status',
+  //     header: ({ column }) =>
+  //       h(DataTableColumnHeader, {
+  //         column,
+  //         title: 'الحالة',
+  //       }),
+  //     cell: ({ row }) => {
+  //       const status = orderStatues.find(
+  //         (status: any) => status.value === row.getValue('status'),
+  //       )
 
-      if (!status) return null
+  //       if (!status) return null
 
-      return h('div', { class: 'flex items-center gap-2' }, [
-        status.icon && h(status.icon),
-        h('span', { class: ' text-muted-foreground' }, status.label),
-      ])
-    },
-  },
+  //       return h('div', { class: 'flex items-center gap-2' }, [
+  //         status.icon && h(status.icon),
+  //         h('span', { class: ' text-muted-foreground' }, status.label),
+  //       ])
+  //     },
+  //   },
   {
     accessorKey: 'amount',
     header: ({ column }) =>
@@ -87,6 +79,14 @@ export const columns: ColumnDef<Transaction>[] = [
         : '-',
   },
   {
+    accessorKey: 'description',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, {
+        column,
+        title: 'الوصف',
+      }),
+  },
+  {
     accessorKey: 'created_at',
     header: ({ column }) =>
       h(DataTableColumnHeader, {
@@ -94,8 +94,4 @@ export const columns: ColumnDef<Transaction>[] = [
         title: 'التاريخ',
       }),
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(TransactionsRowActions, { row }),
-  //   },
 ]
