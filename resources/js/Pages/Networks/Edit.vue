@@ -15,7 +15,7 @@ import DataTable from '@/Components/data-table/DataTable.vue'
 import Button from '@/Components/ui/button/Button.vue'
 
 const props = defineProps<{
-  network: Data<Network>
+  network: Network
   can: {
     assignManager: boolean
     createPartner: boolean
@@ -35,13 +35,13 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    name: props.network.data.name,
-    internet_price_per_week: props.network.data.internet_price_per_week,
+    name: props.network.name,
+    internet_price_per_week: props.network.internet_price_per_week,
   },
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.patch(route('networks.update', props.network.data.id), values, {
+  router.patch(route('networks.update', props.network.id), values, {
     preserveScroll: true,
     onSuccess: () => toast({ title: 'تم تعديل الشبكة' }),
     onError: (errors) => setErrors(errors),
@@ -56,12 +56,12 @@ const onSubmit = handleSubmit((values) => {
     <template #header>
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          {{ network.data.name }}
+          {{ network.name }}
           <span
-            v-if="network.data.manager"
+            v-if="network.manager"
             class="text-xs font-normal tracking-wide"
           >
-            ({{ network.data.manager.name }})
+            ({{ network.manager.name }})
           </span>
         </h2>
       </div>
@@ -76,18 +76,16 @@ const onSubmit = handleSubmit((values) => {
         <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
         <Link
           v-if="can.createPartner"
-          :href="route('network.partners.create', props.network.data.id)"
+          :href="route('network.partners.create', props.network.id)"
         >
           <Button class="text-xs tracking-wide" size="xs"> إضافة شريك </Button>
         </Link>
       </div>
       <DataTable
-        v-if="network.data.partners"
-        :data="network.data.partners"
+        v-if="network.partners"
+        :data="network.partners"
         :columns="columns(network, can.deletePartner, can.assignManager)"
-        :summaryFields="
-          network.data.partners.length ? summaryFields : undefined
-        "
+        :summaryFields="network.partners.length ? summaryFields : undefined"
       />
     </div>
   </AuthenticatedLayout>

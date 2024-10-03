@@ -8,7 +8,7 @@ use App\Models\Card;
 test('make', function () {
     $card = Card::factory()->create();
 
-    $resource = CardResource::make($card)->resolve();
+    $resource = CardResource::single($card)->resolve();
 
     expect($resource)->toBe([
         'id' => $card->id,

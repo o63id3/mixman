@@ -51,7 +51,7 @@ final class UserResource extends JsonResource
             'active' => $this->whenHas('active'),
             'role' => $this->whenHas('role'),
             'contact_info' => $this->whenHas('contact_info'),
-            'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
+            'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'percentage' => $this->whenHas('percentage', fn () => $this->percentage * 100),
             'share' => $this->whenPivotLoaded('network_partners', fn () => $this->pivot->share),
             'can' => $this->when($this->withPermissions, fn () => [

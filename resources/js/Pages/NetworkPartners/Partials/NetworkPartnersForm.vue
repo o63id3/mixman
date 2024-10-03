@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
-import { Network, User } from '@/types'
+import { User } from '@/types'
 
 const emit = defineEmits(['select'])
 

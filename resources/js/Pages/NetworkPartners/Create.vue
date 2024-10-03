@@ -10,13 +10,13 @@ import { toast } from '@/Components/ui/toast'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import NetworkPartnersForm from './Partials/NetworkPartnersForm.vue'
-import { Data, Network, User } from '@/types'
+import { Network, User } from '@/types'
 
 import { AlertCircle } from 'lucide-vue-next'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 
 const props = defineProps<{
-  network: Data<Network>
+  network: Network
   partners: Array<User>
   remainingShare: number
 }>()
@@ -36,7 +36,7 @@ const { handleSubmit, resetForm, setErrors } = useForm({
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.post(route('network.partners.store', props.network.data.id), values, {
+  router.post(route('network.partners.store', props.network.id), values, {
     preserveScroll: true,
     onSuccess: () => {
       toast({ title: 'تم إضافة الشريك' })
@@ -55,7 +55,7 @@ const onSubmit = handleSubmit((values) => {
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
         إضافة شريك
         <span class="text-xs font-normal tracking-wide">
-          ({{ network.data.name }})
+          ({{ network.name }})
         </span>
       </h2>
     </template>
@@ -67,7 +67,7 @@ const onSubmit = handleSubmit((values) => {
         <div v-if="remainingShare">
           نسبة الحصص المتبقية في
           <span class="font-bold">
-            {{ network.data.name }}
+            {{ network.name }}
           </span>
           هي
           <span class="font-bold">{{ Math.round(remainingShare) }}%</span>

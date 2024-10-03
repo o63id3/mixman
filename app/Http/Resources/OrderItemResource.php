@@ -19,8 +19,8 @@ final class OrderItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'order' => $this->whenLoaded('order', fn () => OrderResource::make($this->order)),
-            'card' => $this->whenLoaded('card', fn () => CardResource::make($this->card)),
+            'order' => $this->whenLoaded('order', fn () => OrderResource::single($this->order)),
+            'card' => $this->whenLoaded('card', fn () => CardResource::single($this->card)),
             'number_of_packages' => $this->number_of_packages,
             'number_of_cards_per_package' => $this->number_of_cards_per_package,
             'quantity' => $this->quantity,

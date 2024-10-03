@@ -82,7 +82,7 @@ final class UsersController
         $user->load('network');
 
         return Inertia::render('Users/Edit', [
-            'user' => UserResource::make($user),
+            'user' => UserResource::single($user),
             'networks' => Network::all('id', 'name'),
             'can' => [
                 'update' => Gate::allows('update', $user),

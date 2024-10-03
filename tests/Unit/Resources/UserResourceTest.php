@@ -11,11 +11,11 @@ test('make', function () {
 
     $user->load(['region']);
 
-    $resource = UserResource::make($user)->resolve();
+    $resource = UserResource::single($user)->resolve();
 
     expect($resource)
         ->toHaveKey('id', $user->id)
-        ->toHaveKey('region', RegionResource::make($user->region))
+        ->toHaveKey('region', RegionResource::single($user->region))
         ->toHaveKey('name', $user->name)
         ->toHaveKey('username', $user->username)
         ->toHaveKey('active', $user->active)

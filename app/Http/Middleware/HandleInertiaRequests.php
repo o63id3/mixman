@@ -37,7 +37,7 @@ final class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'pendingOrders' => $request->user() ? Order::visibleTo($request->user())->pending()->count() : null,
             'auth' => [
-                'user' => $request->user() ? UserResource::make($request->user())->withPermissions() : null,
+                'user' => $request->user() ? UserResource::single($request->user())->withPermissions() : null,
             ],
         ];
     }

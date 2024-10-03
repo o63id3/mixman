@@ -18,7 +18,7 @@ final class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'seller' => SellerResource::make($this->seller),
+            'seller' => SellerResource::single($this->seller),
             'amount' => $this->amount,
             'type' => $this->type,
             'status' => $this->status,

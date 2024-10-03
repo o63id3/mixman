@@ -2,12 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3'
 
-import { Data, Order } from '@/types'
+import { Order } from '@/types'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import { columns, summaryFields } from './Partials/columns'
 
 defineProps<{
-  order: Data<Order>
+  order: Order
 }>()
 </script>
 
@@ -17,15 +17,15 @@ defineProps<{
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        طلب رقم: {{ order.data.id }}
+        طلب رقم: {{ order.id }}
       </h2>
     </template>
 
     <p class="px-4 text-sm font-medium tracking-wide"># الكروت</p>
     <DataTable
-      :data="order.data.items"
+      :data="order.items"
       :columns="columns(false)"
-      :summaryFields="order.data.items.length ? summaryFields : undefined"
+      :summaryFields="order.items.length ? summaryFields : undefined"
     />
   </AuthenticatedLayout>
 </template>

@@ -7,13 +7,13 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Data, Expense, Network, User } from '@/types'
+import { Expense, Network } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
 const props = defineProps<{
-  expense: Data<Expense>
+  expense: Expense
   networks: Array<Network>
   can: {
     delete: boolean
@@ -28,17 +28,17 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit, setErrors, values, setFieldValue } = useForm({
+const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    description: props.expense.data.description,
-    network_id: String(props.expense.data.network.id),
-    amount: props.expense.data.amount,
+    description: props.expense.description,
+    network_id: String(props.expense.network.id),
+    amount: props.expense.amount,
   },
 })
 
 const onSubmit = handleSubmit((values) => {
-  router.patch(route('expenses.update', props.expense.data.id), values, {
+  router.patch(route('expenses.update', props.expense.id), values, {
     preserveScroll: true,
     onSuccess: () => {
       toast({ title: 'تم تعديل المصروف' })
@@ -54,7 +54,7 @@ const onSubmit = handleSubmit((values) => {
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية رقم {{ expense.data.id }}
+        دفعة مالية رقم {{ expense.id }}
       </h2>
     </template>
 
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit((values) => {
       <template #buttons>
         <DeleteLink
           v-if="can.delete"
-          :href="route('expenses.destroy', expense.data.id)"
+          :href="route('expenses.destroy', expense.id)"
           @success="toast({ title: 'تم حذف المصروف' })"
         >
           حذف

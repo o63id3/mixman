@@ -14,13 +14,13 @@ test('make', function () {
     $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
         ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
-    $resource = OrderResource::make($order)->resolve();
+    $resource = OrderResource::single($order)->resolve();
 
     expect($resource)
         ->toHaveKey('id', $order->id)
         ->toHaveKey('status', $order->status)
-        ->toHaveKey('seller', SellerResource::make($order->seller))
-        ->toHaveKey('action', $order->action ? UserResource::make($order->action) : null)
+        ->toHaveKey('seller', SellerResource::single($order->seller))
+        ->toHaveKey('action', $order->action ? UserResource::single($order->action) : null)
         ->toHaveKey('total_price_for_seller', $order->total_price_for_seller)
         ->toHaveKey('total_price_for_consumer', $order->total_price_for_consumer)
         ->toHaveKey('updated_at', $order->updated_at->diffForHumans())

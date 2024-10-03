@@ -22,7 +22,7 @@ final readonly class PasswordController
         ]);
 
         $request->user()->update([
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::single($validated['password']),
         ]);
 
         return back();

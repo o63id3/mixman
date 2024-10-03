@@ -77,7 +77,7 @@ final class NetworksController
         $network->load('partners:id,name', 'manager:id,name');
 
         return Inertia::render('Networks/Show', [
-            'network' => NetworkResource::make($network),
+            'network' => NetworkResource::single($network),
         ]);
     }
 
@@ -91,7 +91,7 @@ final class NetworksController
         $network->load('partners:id,name', 'manager:id,name');
 
         return Inertia::render('Networks/Edit', [
-            'network' => NetworkResource::make($network),
+            'network' => NetworkResource::single($network),
             'can' => [
                 'assignManager' => Gate::allows('assignManager', Network::class),
                 'createPartner' => Gate::allows('createPartner', Network::class),

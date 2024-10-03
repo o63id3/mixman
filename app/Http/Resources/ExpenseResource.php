@@ -18,8 +18,8 @@ final class ExpenseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->whenLoaded('user', fn () => UserResource::make($this->user)),
-            'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
+            'user' => $this->whenLoaded('user', fn () => UserResource::single($this->user)),
+            'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'description' => $this->description,
             'amount' => $this->amount,
             'created_at' => $this->created_at->diffForHumans(),

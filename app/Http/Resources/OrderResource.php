@@ -20,9 +20,9 @@ final class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'orderer' => $this->whenLoaded('orderer', fn () => UserResource::make($this->orderer)),
-            'manager' => $this->whenLoaded('manager', fn () => UserResource::make($this->manager)),
-            'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
+            'orderer' => $this->whenLoaded('orderer', fn () => UserResource::single($this->orderer)),
+            'manager' => $this->whenLoaded('manager', fn () => UserResource::single($this->manager)),
+            'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),

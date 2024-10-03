@@ -12,12 +12,12 @@ test('make', function () {
 
     $item->load(['order', 'card']);
 
-    $resource = OrderItemResource::make($item)->resolve();
+    $resource = OrderItemResource::single($item)->resolve();
 
     expect($resource)
         ->toHaveKey('id', $item->id)
-        ->toHaveKey('order', OrderResource::make($item->order))
-        ->toHaveKey('card', CardResource::make($item->card))
+        ->toHaveKey('order', OrderResource::single($item->order))
+        ->toHaveKey('card', CardResource::single($item->card))
         ->toHaveKey('number_of_packages', $item->number_of_packages)
         ->toHaveKey('number_of_cards_per_package', $item->number_of_cards_per_package)
         ->toHaveKey('quantity', $item->quantity)

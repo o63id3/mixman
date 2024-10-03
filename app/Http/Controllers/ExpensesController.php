@@ -91,7 +91,7 @@ final class ExpensesController
 
         return Inertia::render('Expenses/Edit', [
             'networks' => Network::all(['id', 'name']),
-            'expense' => ExpenseResource::make($expense),
+            'expense' => ExpenseResource::single($expense),
             'can' => [
                 'delete' => true,
             ],

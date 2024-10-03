@@ -2,12 +2,12 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import { Data, Network, User } from '@/types'
+import { Network, User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import NetworkPartnerActions from './Partials/NetworkPartnerActions.vue'
 
 export function columns(
-  network: Data<Network>,
+  network: Network,
   canDelete?: boolean,
   canAssignManager?: boolean,
 ): ColumnDef<User>[] {
@@ -24,13 +24,13 @@ export function columns(
           },
           [
             h('span', row.original.name),
-            network.data.manager?.id !== row.original.id && canAssignManager
+            network.manager?.id !== row.original.id && canAssignManager
               ? h(
                   Link,
                   {
                     method: 'post',
                     as: 'button',
-                    href: `/networks/${network.data.id}/managers/${row.original.id}`,
+                    href: `/networks/${network.id}/managers/${row.original.id}`,
                     class:
                       'hover:underline text-xs tracking-wide text-muted-foreground',
                   },

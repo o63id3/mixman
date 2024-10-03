@@ -12,12 +12,12 @@ test('make', function () {
 
     $payment->load(['seller', 'registerer']);
 
-    $resource = PaymentResource::make($payment)->resolve();
+    $resource = PaymentResource::single($payment)->resolve();
 
     expect($resource)
         ->toHaveKey('id', $payment->id)
-        ->toHaveKey('seller', SellerResource::make($payment->seller))
-        ->toHaveKey('registerer', UserResource::make($payment->registerer))
+        ->toHaveKey('seller', SellerResource::single($payment->seller))
+        ->toHaveKey('registerer', UserResource::single($payment->registerer))
         ->toHaveKey('amount', $payment->amount)
         ->toHaveKey('notes', $payment->notes)
         ->toHaveKey('created_at', $payment->created_at->diffForHumans());

@@ -19,9 +19,9 @@ final class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'recipient' => $this->whenLoaded('recipient', fn () => UserResource::make($this->recipient)),
-            'user' => $this->whenLoaded('user', fn () => UserResource::make($this->user)),
-            'network' => $this->whenLoaded('network', fn () => NetworkResource::make($this->network)),
+            'recipient' => $this->whenLoaded('recipient', fn () => UserResource::single($this->recipient)),
+            'user' => $this->whenLoaded('user', fn () => UserResource::single($this->user)),
+            'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'amount' => $this->amount,
             'notes' => $this->notes,
             'created_at' => $this->created_at->diffForHumans(),

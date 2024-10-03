@@ -70,10 +70,8 @@ final class CardsController
     {
         Gate::authorize('update', Card::class);
 
-        CardResource::withoutWrapping();
-
         return Inertia::render('Cards/Edit', [
-            'card' => CardResource::make($card),
+            'card' => CardResource::single($card),
             'can' => [
                 'delete' => Gate::allows('delete', Card::class),
             ],

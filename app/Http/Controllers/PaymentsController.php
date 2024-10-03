@@ -91,11 +91,9 @@ final class PaymentsController
 
         $payment->load(['recipient', 'user']);
 
-        PaymentResource::withoutWrapping();
-
         return Inertia::render('Payments/Edit', [
             'users' => User::visibleTo($user)->get(['id', 'name']),
-            'payment' => PaymentResource::make($payment),
+            'payment' => PaymentResource::single($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),
             ],

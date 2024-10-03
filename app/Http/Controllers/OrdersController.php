@@ -111,7 +111,7 @@ final class OrdersController
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Show', [
-            'order' => OrderResource::make($order),
+            'order' => OrderResource::single($order),
         ]);
     }
 
@@ -126,12 +126,9 @@ final class OrdersController
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
-        OrderResource::withoutWrapping();
-        OrderItemResource::withoutWrapping();
-
         return Inertia::render('Orders/Edit', [
             'users' => fn () => Gate::allows('update', $order) ? UserResource::collection(User::get()) : null,
-            'order' => OrderResource::make($order),
+            'order' => OrderResource::single($order),
             'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
             'cards' => fn () => Gate::allows('update', $order) ? CardResource::collection(Card::get()) : null,
