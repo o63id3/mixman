@@ -84,17 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
-
-    Route::get('/expenses/create', [ExpensesController::class, 'create'])->name('expenses.create');
-    Route::post('/expenses', [ExpensesController::class, 'store'])->name('expenses.store');
-
-    Route::get('/expenses/{expense}/edit', [ExpensesController::class, 'edit'])->name('expenses.edit');
-    Route::patch('/expenses/{expense}', [ExpensesController::class, 'update'])->name('expenses.update');
-
-    Route::delete('/expenses/{expense}', [ExpensesController::class, 'destroy'])->name('expenses.destroy');
-});
+Route::middleware('auth')->resource('expenses', ExpensesController::class)->except('show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/transactions', TransactionsController::class)->name('transactions.index');

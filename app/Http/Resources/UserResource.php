@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Models\Card;
+use App\Models\Expense;
 use App\Models\Network;
 use App\Models\Order;
 use App\Models\Payment;
@@ -70,7 +71,7 @@ final class UserResource extends JsonResource
                     'viewAny' => Gate::allows('viewAny', Payment::class),
                 ],
                 'expenses' => [
-                    'viewAny' => $this->resource->isAhmed(),
+                    'viewAny' => Gate::allows('viewAny', Expense::class),
                 ],
             ],
             ),

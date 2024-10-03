@@ -10,6 +10,7 @@ use App\Models\Network;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,21 +21,20 @@ final class ExpensesController
      */
     public function index(Request $request): Response
     {
-        // Gate::authorize('viewAny', Payment::class);
+        Gate::authorize('viewAny', Expense::class);
 
         $user = type($request->user())->as(User::class);
 
         $expenses = Expense::query()
             ->with(['user', 'network'])
             ->visibleTo($user)
-            // ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Expenses/Index', [
             'expenses' => ExpenseResource::collection($expenses),
             'can' => [
-                'create' => true,
+                'create' => Gate::authorize('create', Expense::class),
             ],
         ]);
     }
@@ -42,12 +42,14 @@ final class ExpensesController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        // Gate::authorize('create', Order::class);
+        Gate::authorize('create', Expense::class);
+
+        $user = type($request->user())->as(User::class);
 
         return Inertia::render('Expenses/Create', [
-            'networks' => Network::all(['id', 'name']),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
         ]);
     }
 
@@ -56,6 +58,8 @@ final class ExpensesController
      */
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('create', Expense::class);
+
         $validated = $request->validate([
             'network_id' => ['required', 'exists:networks,id'],
             'description' => ['required'],
@@ -81,7 +85,7 @@ final class ExpensesController
      */
     public function edit(Expense $expense): Response
     {
-        // Gate::authorize('update', $payment);
+        Gate::authorize('update', $expense);
 
         $expense->load(['user', 'network']);
 
@@ -99,6 +103,8 @@ final class ExpensesController
      */
     public function update(Request $request, Expense $expense): RedirectResponse
     {
+        Gate::authorize('update', $expense);
+
         $validated = $request->validate([
             'network_id' => ['required', 'exists:networks,id'],
             'description' => ['required'],
@@ -116,7 +122,7 @@ final class ExpensesController
      */
     public function destroy(Expense $expense): RedirectResponse
     {
-        // Authorize
+        Gate::authorize('delete', $expense);
 
         $expense->delete();
 
