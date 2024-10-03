@@ -73,14 +73,6 @@ final class User extends Authenticatable
     /**
      * Get the seller region.
      */
-    public function region(): BelongsTo
-    {
-        return $this->belongsTo(Region::class);
-    }
-
-    /**
-     * Get the seller region.
-     */
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);

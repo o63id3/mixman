@@ -1,6 +1,5 @@
 export interface User {
   id: number
-  region: Region
   network: Network
   name: string
   username: string
@@ -32,15 +31,6 @@ export interface User {
     expenses: {
       viewAny: boolean
     }
-    // regions: {
-    //   viewAny: boolean
-    // }
-    // cards: {
-    //   viewAny: boolean
-    // }
-    // payments: {
-    //   viewAny: boolean
-    // }
     // transactions: {
     //   viewAny: boolean
     // }
@@ -96,11 +86,6 @@ export interface Expense {
   amount: number
   description: string
   created_at: string
-}
-
-export interface Region {
-  id: number
-  name: string
 }
 
 export interface Card {
