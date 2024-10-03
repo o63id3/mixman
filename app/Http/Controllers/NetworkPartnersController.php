@@ -10,6 +10,7 @@ use App\Models\Network;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,7 +21,7 @@ final class NetworkPartnersController
      */
     public function create(Network $network): Response
     {
-        // Gate::authorize('create', Region::class);
+        Gate::authorize('createPartner', Network::class);
 
         return Inertia::render('NetworkPartners/Create', [
             'network' => NetworkResource::make($network),
@@ -33,7 +34,7 @@ final class NetworkPartnersController
      */
     public function store(Request $request, Network $network): RedirectResponse
     {
-        // Gate::authorize('create', Region::class);
+        Gate::authorize('createPartner', Network::class);
 
         $validated = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
@@ -54,7 +55,7 @@ final class NetworkPartnersController
      */
     public function destroy(Network $network, User $partner): RedirectResponse
     {
-        // Gate::authorize('delete', Region::class);
+        Gate::authorize('deletePartner', Network::class);
 
         if ($network->manager?->is($partner)) {
             $network->manager_id = null;

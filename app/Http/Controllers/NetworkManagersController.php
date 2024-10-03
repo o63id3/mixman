@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Network;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 
 final class NetworkManagersController
 {
@@ -15,6 +16,8 @@ final class NetworkManagersController
      */
     public function store(Network $network, User $user): RedirectResponse
     {
+        Gate::authorize('assignManager', Network::class);
+
         $network->manager_id = $user->id;
         $network->save();
 
