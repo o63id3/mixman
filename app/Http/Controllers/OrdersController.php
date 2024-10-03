@@ -62,7 +62,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         return Inertia::render('Orders/Create', [
-            'users' => User::visibleTo($user)->get(['id', 'name']),
+            'users' => User::visibleTo($user)->whereNotNull('network_id')->get(['id', 'name']),
             'cards' => Card::all('id', 'name'),
             'statuses' => OrderStatusEnum::cases(),
         ]);

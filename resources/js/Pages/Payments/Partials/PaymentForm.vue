@@ -22,7 +22,7 @@ defineProps<{
 <template>
   <FormField name="user_id">
     <FormItem class="flex flex-col gap-2">
-      <FormLabel>نقطة البيع</FormLabel>
+      <FormLabel>المستفيد</FormLabel>
       <Combobox
         :options="
           users.map((seller) => ({
@@ -30,8 +30,8 @@ defineProps<{
             label: seller.name,
           }))
         "
-        choose-title="اختر بائع..."
-        search-placeholder="ابحث عن نقطة بيع"
+        choose-title="اختر مستفيد..."
+        search-placeholder="ابحث عن مستفيد"
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />

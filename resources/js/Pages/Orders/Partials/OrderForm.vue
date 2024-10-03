@@ -38,7 +38,7 @@ defineProps<{
 <template>
   <FormField name="orderer_id">
     <FormItem>
-      <FormLabel>نقطة البيع</FormLabel>
+      <FormLabel>المستفيد</FormLabel>
       <Combobox
         v-if="users"
         :options="
@@ -47,7 +47,7 @@ defineProps<{
             label: seller.name,
           }))
         "
-        choose-title="اختر بائع..."
+        choose-title="اختر مستفيد..."
         search-placeholder="ابحث عن نقطة بيع"
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
