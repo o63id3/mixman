@@ -27,7 +27,9 @@ defineProps<{
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
           الشبكات
-          <span class="text-xs tracking-wide">({{ networks.meta.total }})</span>
+          <span class="text-xs font-normal tracking-wide">
+            ({{ networks.meta.total }})
+          </span>
         </h2>
         <div v-if="can.create">
           <Link :href="route('networks.create')">

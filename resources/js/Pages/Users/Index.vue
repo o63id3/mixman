@@ -24,7 +24,9 @@ defineProps<{
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
           المستخدمين
-          <span class="text-xs tracking-wide">({{ users.meta.total }})</span>
+          <span class="text-xs font-normal tracking-wide">
+            ({{ users.meta.total }})
+          </span>
         </h2>
         <div v-if="can.create">
           <Link :href="route('users.create')">
