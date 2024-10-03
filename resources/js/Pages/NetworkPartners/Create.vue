@@ -12,9 +12,13 @@ import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import NetworkPartnersForm from './Partials/NetworkPartnersForm.vue'
 import { Data, Network, User } from '@/types'
 
+import { AlertCircle } from 'lucide-vue-next'
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
+
 const props = defineProps<{
   network: Data<Network>
   partners: Array<User>
+  remainingShare: number
 }>()
 
 const formSchema = toTypedSchema(
@@ -56,7 +60,23 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+      <AlertCircle class="h-4 w-4" />
+      <AlertTitle>انتباه!</AlertTitle>
+      <AlertDescription>
+        <div v-if="remainingShare">
+          نسبة الحصص المتبقية في
+          <span class="font-bold">
+            {{ network.data.name }}
+          </span>
+          هي
+          <span class="font-bold">{{ Math.round(remainingShare) }}%</span>
+        </div>
+        <span v-else>لا يوجد حصص متبقية!</span>
+      </AlertDescription>
+    </Alert>
+
+    <CreateFormLayout class="mt-2" @submit="onSubmit">
       <NetworkPartnersForm :partners="partners" />
     </CreateFormLayout>
   </AuthenticatedLayout>

@@ -26,6 +26,7 @@ final class NetworkPartnersController
         return Inertia::render('NetworkPartners/Create', [
             'network' => NetworkResource::make($network),
             'partners' => User::whereNot('role', RoleEnum::Seller)->whereNotIn('id', $network->partners->pluck('id'))->get(['id', 'name']),
+            'remainingShare' => (1 - $network->partners()->sum('share')) * 100,
         ]);
     }
 

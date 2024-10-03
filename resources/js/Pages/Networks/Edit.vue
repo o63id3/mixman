@@ -64,11 +64,6 @@ const onSubmit = handleSubmit((values) => {
             ({{ network.data.manager.name }})
           </span>
         </h2>
-        <div v-if="can.createPartner">
-          <Link :href="route('network.partners.create', props.network.data.id)">
-            <Button> إضافة شريك </Button>
-          </Link>
-        </div>
       </div>
     </template>
 
@@ -77,7 +72,15 @@ const onSubmit = handleSubmit((values) => {
     </UpdateFormLayout>
 
     <div class="mt-4">
-      <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
+      <div class="flex items-center justify-between px-4">
+        <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
+        <Link
+          v-if="can.createPartner"
+          :href="route('network.partners.create', props.network.data.id)"
+        >
+          <Button class="text-xs tracking-wide" size="xs"> إضافة شريك </Button>
+        </Link>
+      </div>
       <DataTable
         v-if="network.data.partners"
         :data="network.data.partners"
