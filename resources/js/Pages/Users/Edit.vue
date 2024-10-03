@@ -9,7 +9,7 @@ import * as z from 'zod'
 import { toast } from '@/Components/ui/toast'
 import { Network, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import AdminForm from './Partials/AdminForm.vue'
+import UserForm from './Partials/UserForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
@@ -94,7 +94,7 @@ const onSubmit = handleSubmit((values) => {
         </SecondaryLink>
       </template>
 
-      <AdminForm
+      <UserForm
         :disabled="!can.update"
         :role="values.role"
         :networks="networks"

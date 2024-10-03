@@ -9,7 +9,7 @@ import * as z from 'zod'
 import { toast } from '@/Components/ui/toast'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import AdminForm from './Partials/AdminForm.vue'
+import UserForm from './Partials/UserForm.vue'
 import { Network } from '@/types'
 
 defineProps<{
@@ -65,7 +65,7 @@ const onSubmit = handleSubmit((values) => {
     </template>
 
     <CreateFormLayout @submit="onSubmit">
-      <AdminForm :role="values.role" :networks="networks" />
+      <UserForm :role="values.role" :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>
