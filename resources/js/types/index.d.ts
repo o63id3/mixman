@@ -87,6 +87,12 @@ export interface Expense {
   amount: number
   description: string
   created_at: string
+  created_at_date: string
+  can: {
+    view: boolean
+    update: boolean
+    delete: boolean
+  }
 }
 
 export interface Card {

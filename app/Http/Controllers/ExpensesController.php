@@ -75,9 +75,15 @@ final class ExpensesController
     /**
      * Display the specified resource.
      */
-    public function show(Expense $expense)
+    public function show(Expense $expense): Response
     {
-        //
+        Gate::authorize('view', $expense);
+
+        $expense->load(['user', 'network']);
+
+        return Inertia::render('Expenses/Show', [
+            'expense' => ExpenseResource::single($expense),
+        ]);
     }
 
     /**

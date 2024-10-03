@@ -2,17 +2,10 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import PaymentsRowActions from './Partials/PaymentsRowActions.vue'
 import { Expense } from '@/types'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Expense>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: 'description',
     header: ({ column }) =>
@@ -21,7 +14,7 @@ export const columns: ColumnDef<Expense>[] = [
       h(
         Link,
         {
-          href: `${route('expenses.edit', row.original.id)}`,
+          href: `${route(`expenses.${row.original.can.update ? 'edit' : 'show'}`, row.original.id)}`,
           class: 'hover:underline',
         },
         {
@@ -67,8 +60,4 @@ export const columns: ColumnDef<Expense>[] = [
         title: 'التاريخ',
       }),
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(PaymentsRowActions, { row }),
-  //   },
 ]

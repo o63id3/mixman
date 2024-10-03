@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 final class ExpenseResource extends JsonResource
 {
@@ -23,6 +24,11 @@ final class ExpenseResource extends JsonResource
             'description' => $this->description,
             'amount' => $this->amount,
             'created_at' => $this->created_at->diffForHumans(),
+            'created_at_date' => $this->created_at,
+
+            'can' => [
+                'update' => Gate::allows('update', $this->resource),
+            ],
         ];
     }
 }

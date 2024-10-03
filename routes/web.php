@@ -33,7 +33,7 @@ Route::middleware('auth')->resource('networks', NetworksController::class)->exce
 Route::middleware('auth')->resource('cards', CardsController::class)->except('show');
 Route::middleware('auth')->resource('orders', OrdersController::class);
 Route::middleware('auth')->resource('payments', PaymentsController::class);
-Route::middleware('auth')->resource('expenses', ExpensesController::class)->except('show');
+Route::middleware('auth')->resource('expenses', ExpensesController::class);
 
 Route::middleware('auth')->group(function () {
     Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');

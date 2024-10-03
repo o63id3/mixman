@@ -39,7 +39,9 @@ final class ExpensePolicy
      */
     public function update(User $user, Expense $expense): bool
     {
-        return $user->isAhmed();
+        return ($user->isAhmed()
+            || $expense->user_id === $user->id)
+            && $expense->created_at->isToday();
     }
 
     /**
