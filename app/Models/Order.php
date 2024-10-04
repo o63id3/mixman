@@ -32,7 +32,15 @@ final class Order extends Model
      */
     public function completed(): bool
     {
-        return $this->status === OrderStatusEnum::Completed;
+        return $this->status === OrderStatusEnum::Completed || $this->status === OrderStatusEnum::Returned;
+    }
+
+    /**
+     * Check if the order state is complete
+     */
+    public function pending(): bool
+    {
+        return $this->status === OrderStatusEnum::Pending;
     }
 
     /**
@@ -120,6 +128,8 @@ final class Order extends Model
 
             $model->network_id = $user->network->id;
             $model->manager_id = $user->isManager() ? User::where('role', 'ahmed')->first(['id'])->id : $user->network->manager_id;
+
+            $model->completed_at = $model->isDirty('status') && $model->status === OrderStatusEnum::Pending ? null : now();
         };
 
         self::creating($setManagerAndNetwork);
@@ -135,6 +145,7 @@ final class Order extends Model
     {
         return [
             'status' => OrderStatusEnum::class,
+            'completed_at' => 'datetime',
         ];
     }
 }

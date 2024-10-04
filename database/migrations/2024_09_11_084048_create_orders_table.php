@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignIdFor(Network::class)->constrained('networks');
             $table->string('status');
             $table->longText('notes')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
 

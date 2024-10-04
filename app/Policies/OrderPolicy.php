@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\OrderStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\Order;
 use App\Models\User;
@@ -43,13 +42,12 @@ final class OrderPolicy
     public function update(User $user, Order $order): bool
     {
         if (
-            $order->status !== OrderStatusEnum::Pending
-            && ! $order->created_at->isToday()
+            $order->manager_id !== $user->id
         ) {
             return false;
         }
 
-        return $order->manager_id === $user->id;
+        return $order->pending() || $order->completed_at->isToday();
     }
 
     /**
