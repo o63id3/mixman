@@ -96,7 +96,7 @@ defineProps<{
             <p>{{ formatDate(order.created_at_date) }}</p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold">تاريخ آخر التحديث</h3>
+            <h3 class="text-lg font-semibold">تاريخ آخر تحديث</h3>
             <p>{{ formatDate(order.updated_at_date) }}</p>
           </div>
         </div>

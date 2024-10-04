@@ -48,7 +48,11 @@ defineProps<{
           <SelectContent>
             <SelectGroup>
               <SelectItem
-                v-for="role in roles"
+                v-for="role in roles.filter((role) =>
+                  $page.props.auth.user.role === 'ahmed'
+                    ? true
+                    : role.value === 'seller',
+                )"
                 :key="role.value"
                 :value="role.value"
               >
@@ -125,7 +129,7 @@ defineProps<{
     </FormItem>
   </FormField>
   <FormField
-    v-if="role === 'seller'"
+    v-if="role === 'seller' || role === 'partner'"
     v-slot="{ componentField }"
     name="percentage"
   >

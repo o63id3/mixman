@@ -42,10 +42,14 @@ final class UsersController
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        Gate::authorize('create', User::class);
+
+        $user = type($request->user())->as(User::class);
+
         return Inertia::render('Users/Create', [
-            'networks' => Network::all('id', 'name'),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
         ]);
     }
 
@@ -54,19 +58,27 @@ final class UsersController
      */
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('create', User::class);
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
             'password' => ['required', 'string', 'min:4'],
             'role' => ['required', Rule::enum(RoleEnum::class)],
             'percentage' => ['required_if:role,seller', 'numeric'],
-            'network_id' => ['required_if:role,seller', 'exists:networks,id'],
+            'network_id' => ['required_if:role,seller', 'required_if:role,partner', 'exists:networks,id'],
             'contact_info' => ['sometimes'],
             'notes' => ['sometimes'],
         ]);
 
         if (array_key_exists('percentage', $validated)) {
             $validated['percentage'] /= 100;
+        }
+
+        $user = type($request->user())->as(User::class);
+
+        if (! $user->isAhmed()) {
+            $validated['role'] = 'seller';
         }
 
         User::create($validated);
@@ -79,6 +91,8 @@ final class UsersController
      */
     public function edit(User $user): Response
     {
+        Gate::authorize('update', $user);
+
         $user->load('network');
 
         return Inertia::render('Users/Edit', [
