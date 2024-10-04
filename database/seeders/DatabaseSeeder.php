@@ -45,17 +45,41 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        $partners = User::factory(4)->set('role', RoleEnum::Partner)->create();
-        $network1 = Network::factory()->set('manager_id', $partners->random())->set('name', 'كمال عدوان')->create();
-        $network1->partners()->attach($partners, ['share' => 0.25]);
+        $partners1 = User::factory(4)->set('role', RoleEnum::Partner)->create();
+        $network1 = Network::factory()->set('manager_id', $partners1->first())->set('name', 'كمال عدوان')->create();
+        $partners1->first()->update(['network_id' => $network1->id]);
+        $network1->partners()->attach($partners1, ['share' => 0.25]);
 
-        $partners = User::factory(4)->set('role', RoleEnum::Partner)->create();
-        $network2 = Network::factory()->set('manager_id', $partners->random())->set('name', 'مدرسة أبو حسين')->create();
-        $network2->partners()->attach($partners, ['share' => 0.25]);
+        $partners2 = User::factory(4)->set('role', RoleEnum::Partner)->create();
+        $network2 = Network::factory()->set('manager_id', $partners2->first())->set('name', 'مدرسة أبو حسين')->create();
+        $partners2->first()->update(['network_id' => $network2->id]);
+        $network2->partners()->attach($partners2, ['share' => 0.25]);
 
-        Order::factory(5)->recycle([$network1, $network2])->hasItems(3)->recycle($cards)->create();
-        Payment::factory(5)->recycle([$network1, $network2])->create();
-        Expense::factory(5)->recycle([$network1, $network2])->create();
+        $sellers = User::factory(5)
+            ->recycle([$network1, $network2])
+            ->state(fn () => ['network_id' => collect([$network1, $network2])->random()])
+            ->set('role', RoleEnum::Seller)
+            ->create();
+
+        Order::factory(5)
+            ->recycle([$network1, $network2])
+            ->recycle([...$sellers, $partners1->first(), $partners2->first()])
+            ->hasItems(3)
+            ->recycle($cards)
+            ->create();
+
+        Payment::factory(5)
+            ->recycle([$network1, $network2])
+            ->state(fn () => ['recipient_id' => collect([$partners1->first(), $partners2->first(), 1])->random()])
+            ->state(fn () => ['user_id' => collect([...$sellers, $partners1->first(), $partners2->first()])->random()])
+            ->create();
+
+        Expense::factory(5)
+            ->recycle([$network1, $network2])
+            ->recycle([$partners1->first(), $partners2->first()])
+            ->create();
+
+        // Expense::factory(5)->recycle([$network1, $network2])->create();
 
         // Order::factory(100)
         //     ->recycle($users)

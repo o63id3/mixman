@@ -2,16 +2,16 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import { Transaction, User } from '@/types'
+import { Transaction } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
-import { Link, usePage } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Transaction>[] = [
   {
-    accessorKey: 'user.name',
+    accessorKey: 'user',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'المستفيد' }),
+    cell: ({ row }) => row.original.user?.name,
     enableSorting: false,
   },
   {
@@ -39,6 +39,18 @@ export const columns: ColumnDef<Transaction>[] = [
       )
 
       if (!type) return null
+
+      if (type.value === 'order') {
+        const status = orderStatues.find(
+          (status: any) => status.value === row.original.status,
+        )
+        if (!status) return null
+
+        return h('div', { class: 'flex items-center gap-2' }, [
+          status.icon && h(status.icon),
+          h('span', { class: ' text-muted-foreground' }, type.label),
+        ])
+      }
 
       return h('div', { class: 'flex items-center gap-2' }, [
         type.icon && h(type.icon),

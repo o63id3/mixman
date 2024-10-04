@@ -71,8 +71,6 @@ final class PaymentsController
             'notes' => ['string'],
         ]);
 
-        $validated['network_id'] = User::find($validated['user_id'], ['network_id'])->network_id;
-
         $request
             ->user()
             ->payments()
@@ -84,7 +82,7 @@ final class PaymentsController
     /**
      * Display the specified resource.
      */
-    public function show(Payment $payment)
+    public function show(Payment $payment): Response
     {
         Gate::authorize('view', $payment);
 

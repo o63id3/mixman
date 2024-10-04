@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\RoleEnum;
-use App\Models\Network;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +25,6 @@ final class PaymentFactory extends Factory
         return [
             'recipient_id' => User::factory(state: ['role' => RoleEnum::Ahmed]),
             'user_id' => User::factory(state: ['role' => RoleEnum::Partner]),
-            'network_id' => Network::factory(),
             'amount' => fake()->numberBetween(100, 1000),
             'created_at' => $createdAt,
             'updated_at' => $createdAt,

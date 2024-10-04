@@ -23,8 +23,6 @@ final class Order extends Model
      */
     protected $fillable = [
         'orderer_id',
-        'manager_id',
-        'network_id',
         'status',
         'notes',
     ];
@@ -103,6 +101,29 @@ final class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * This method is used to register any event listeners for the model,
+     * such as handling actions before a model is created or updated.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        $setManagerAndNetwork = function ($model) {
+            $user = User::with('network:id,manager_id')->find($model->orderer->id);
+
+            $model->network_id = $user->network->id;
+            $model->manager_id = $user->isManager() ? User::where('role', 'ahmed')->first(['id'])->id : $user->network->manager_id;
+        };
+
+        self::creating($setManagerAndNetwork);
+        self::updating($setManagerAndNetwork);
     }
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             SELECT
                 orders.id,
                 'order' AS type,
+                status,
                 orderer_id AS user_id,
                 manager_id,
                 network_id,
@@ -43,6 +44,7 @@ return new class extends Migration
             SELECT
                 id,
                 'payment' AS type,
+                NULL AS status,
                 user_id,
                 recipient_id AS manager_id,
                 network_id,
@@ -55,8 +57,9 @@ return new class extends Migration
             SELECT
                 id,
                 'expense' AS type,
-                user_id,
-                NULL AS manager_id,
+                NULL AS status,
+                NULL AS user_id,
+                user_id AS manager_id,
                 network_id,
                 amount,
                 description,

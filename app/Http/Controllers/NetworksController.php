@@ -70,7 +70,7 @@ final class NetworksController
     /**
      * Display the specified resource.
      */
-    public function show(Network $network)
+    public function show(Network $network): Response
     {
         Gate::authorize('view', $network);
 
@@ -115,13 +115,5 @@ final class NetworksController
         $network->update($validated);
 
         return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Network $network)
-    {
-        //
     }
 }

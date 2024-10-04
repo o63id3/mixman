@@ -24,7 +24,7 @@ final class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'description' => $this->description,
             'type' => $this->type,
-            // 'status' => $this->status,
+            'status' => $this->status,
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }

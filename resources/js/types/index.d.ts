@@ -4,7 +4,6 @@ export interface User {
   name: string
   username: string
   balance: number
-  admin: boolean
   active: boolean
   contact_info: string
   percentage: number
@@ -128,7 +127,7 @@ export interface Transaction {
   amount: number
   description: string
   type: 'payment' | 'order' | 'expense'
-  //   status: 'طلب جديد' | 'مكتمل' | 'مرجع' | ''
+  status: 'معلق' | 'مكتمل' | 'مرجع' | ''
   created_at: string
 }
 

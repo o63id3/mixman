@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\OrderStatusEnum;
-use App\Models\Network;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,8 +24,6 @@ final class OrderFactory extends Factory
 
         return [
             'orderer_id' => User::factory(),
-            'manager_id' => User::factory(),
-            'network_id' => Network::factory(),
             'status' => fake()->randomElement(OrderStatusEnum::cases()),
             'created_at' => $createdAt,
             'updated_at' => $createdAt,

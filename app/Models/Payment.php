@@ -21,7 +21,6 @@ final class Payment extends Model
      */
     protected $fillable = [
         'user_id',
-        'network_id',
         'amount',
         'notes',
     ];
@@ -60,5 +59,27 @@ final class Payment extends Model
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);
+    }
+
+    /**
+     * The "booting" method of the model.
+     *
+     * This method is used to register any event listeners for the model,
+     * such as handling actions before a model is created or updated.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        $setNetwork = function ($model) {
+            $user = User::with('network:id')->find($model->user->id);
+
+            $model->network_id = $user->network->id;
+        };
+
+        self::creating($setNetwork);
+        self::updating($setNetwork);
     }
 }

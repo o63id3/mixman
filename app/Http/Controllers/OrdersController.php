@@ -88,11 +88,6 @@ final class OrdersController
         $cards = $validated['cards'];
         unset($validated['cards']);
 
-        $orderer = User::find($validated['orderer_id'], ['network_id']);
-
-        $validated['manager_id'] = $request->user()->id;
-        $validated['network_id'] = $orderer->network_id;
-
         $order = Order::create($validated);
         $order->items()->createMany($cards);
 
@@ -102,7 +97,7 @@ final class OrdersController
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): Response
     {
         Gate::authorize('view', $order);
 
@@ -152,11 +147,6 @@ final class OrdersController
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['string'],
         ]);
-
-        $orderer = User::find($validated['orderer_id'], ['network_id']);
-
-        $validated['manager_id'] = $request->user()->id;
-        $validated['network_id'] = $orderer->network_id;
 
         $order->update($validated);
 
