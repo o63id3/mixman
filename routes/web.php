@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeactivatedNetworksController;
 use App\Http\Controllers\DeactivatedUsersController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\NetworkManagersController;
@@ -38,6 +39,11 @@ Route::middleware('auth')->resource('expenses', ExpensesController::class);
 Route::middleware('auth')->group(function () {
     Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');
     Route::delete('/users/{user}', [DeactivatedUsersController::class, 'destroy'])->name('users.activate');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/networks/{network}', [DeactivatedNetworksController::class, 'store'])->name('networks.deactivate');
+    Route::delete('/networks/{network}', [DeactivatedNetworksController::class, 'destroy'])->name('networks.activate');
 });
 
 Route::middleware('auth')->group(function () {

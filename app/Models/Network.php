@@ -22,6 +22,7 @@ final class Network extends Model
     protected $fillable = [
         'name',
         'internet_price_per_week',
+        'active',
     ];
 
     /**

@@ -88,7 +88,7 @@ const onSubmit = handleSubmit(submit)
           @success="toast({ title: 'تم تعطيل الحساب' })"
           method="POST"
         >
-          تعطيل الحساب
+          تعطيل
         </DeleteLink>
         <SecondaryLink
           v-else
@@ -96,7 +96,7 @@ const onSubmit = handleSubmit(submit)
           :href="route('users.activate', user.id)"
           @success="toast({ title: 'تم تفعيل الحساب' })"
         >
-          تفعيل الحساب
+          تفعيل
         </SecondaryLink>
       </template>
 

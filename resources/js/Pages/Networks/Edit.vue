@@ -13,6 +13,9 @@ import { columns, summaryFields } from './partners'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import Button from '@/Components/ui/button/Button.vue'
 import { useSubmit } from '@/Components/Composables/submit'
+import { toast } from '@/Components/ui/toast'
+import DeleteLink from '@/Components/links/DeleteLink.vue'
+import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
   network: Network
@@ -69,6 +72,25 @@ const onSubmit = handleSubmit(submit)
     </template>
 
     <UpdateFormLayout @submit="onSubmit" :loading="loading" :can-update="true">
+      <template #buttons>
+        <DeleteLink
+          v-if="network.active"
+          :href="route('networks.deactivate', network.id)"
+          @success="toast({ title: 'تم تعطيل الشبكة' })"
+          method="POST"
+        >
+          تعطيل
+        </DeleteLink>
+        <SecondaryLink
+          v-else
+          method="DELETE"
+          :href="route('networks.activate', network.id)"
+          @success="toast({ title: 'تم تفعيل الشبكة' })"
+        >
+          تفعيل
+        </SecondaryLink>
+      </template>
+
       <NetworkForm :disabled="!true" />
     </UpdateFormLayout>
 
