@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+
 import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
@@ -7,12 +8,15 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Card, Order, OrderItem, User } from '@/types'
-import OrderForm from './Partials/OrderForm.vue'
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
-import CardsSection from './Partials/CardsSection.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+
+import OrderForm from './Partials/OrderForm.vue'
+import CardsSection from './Partials/CardsSection.vue'
 import { useSubmit } from '@/Components/Composables/submit'
+
+import { Card, Order, OrderItem, User } from '@/types'
 
 const props = defineProps<{
   order: Order
@@ -67,7 +71,24 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
+    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+      <AlertCircle class="h-4 w-4" />
+      <AlertTitle>انتباه!</AlertTitle>
+      <AlertDescription>
+        <div
+          v-if="
+            order.can.update &&
+            (order.status === 'مكتمل' || order.status === 'مرجع')
+          "
+        >
+          يمكنك تعديل أو حذف هذا الطلب حتى الساعة
+          <span class="font-bold">12</span>!
+        </div>
+      </AlertDescription>
+    </Alert>
+
     <UpdateFormLayout
+      class="mt-4"
       @submit="onSubmit"
       :loading="loading"
       :can-update="can.update"

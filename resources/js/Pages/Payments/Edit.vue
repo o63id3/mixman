@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+
 import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
@@ -7,11 +8,15 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Payment, User } from '@/types'
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
+
 import PaymentForm from './Partials/PaymentForm.vue'
+
 import { useSubmit } from '@/Components/Composables/submit'
+
+import { Payment, User } from '@/types'
 
 const props = defineProps<{
   payment: Payment
@@ -58,7 +63,23 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :loading="loading" can-update>
+    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+      <AlertCircle class="h-4 w-4" />
+      <AlertTitle>انتباه!</AlertTitle>
+      <AlertDescription>
+        <div v-if="payment.can.update">
+          يمكنك تعديل أو حذف هذه الدفعة حتى الساعة
+          <span class="font-bold">12</span>!
+        </div>
+      </AlertDescription>
+    </Alert>
+
+    <UpdateFormLayout
+      class="mt-4"
+      @submit="onSubmit"
+      :loading="loading"
+      can-update
+    >
       <template #buttons>
         <DeleteLink
           v-if="can.delete"

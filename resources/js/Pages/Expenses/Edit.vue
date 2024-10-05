@@ -7,11 +7,15 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import { toast } from '@/Components/ui/toast'
-import { Expense, Network } from '@/types'
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
+
 import ExpenseForm from './Partials/ExpenseForm.vue'
+
 import { useSubmit } from '@/Components/Composables/submit'
+
+import { Expense, Network } from '@/types'
 
 const props = defineProps<{
   expense: Expense
@@ -58,7 +62,23 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :loading="loading" can-update>
+    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+      <AlertCircle class="h-4 w-4" />
+      <AlertTitle>انتباه!</AlertTitle>
+      <AlertDescription>
+        <div v-if="expense.can.update">
+          يمكنك تعديل أو حذف هذا المصروف حتى الساعة
+          <span class="font-bold">12</span>!
+        </div>
+      </AlertDescription>
+    </Alert>
+
+    <UpdateFormLayout
+      class="mt-4"
+      @submit="onSubmit"
+      :loading="loading"
+      can-update
+    >
       <template #buttons>
         <DeleteLink
           v-if="can.delete"
