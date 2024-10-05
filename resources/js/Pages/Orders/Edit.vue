@@ -12,6 +12,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
+import { AlertCircle } from 'lucide-vue-next'
+
 import OrderForm from './Partials/OrderForm.vue'
 import CardsSection from './Partials/CardsSection.vue'
 import { useSubmit } from '@/Components/Composables/submit'
@@ -71,19 +73,16 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+    <Alert
+      v-if="order.can.update && order.status !== 'معلق'"
+      class="rounded-none sm:rounded-xl"
+      variant="destructive"
+    >
       <AlertCircle class="h-4 w-4" />
       <AlertTitle>انتباه!</AlertTitle>
       <AlertDescription>
-        <div
-          v-if="
-            order.can.update &&
-            (order.status === 'مكتمل' || order.status === 'مرجع')
-          "
-        >
-          يمكنك تعديل أو حذف هذا الطلب حتى الساعة
-          <span class="font-bold">12</span>!
-        </div>
+        يمكنك تعديل أو حذف هذا الطلب حتى الساعة
+        <span class="font-bold">11:59</span>!
       </AlertDescription>
     </Alert>
 

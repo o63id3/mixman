@@ -17,6 +17,7 @@ import PaymentForm from './Partials/PaymentForm.vue'
 import { useSubmit } from '@/Components/Composables/submit'
 
 import { Payment, User } from '@/types'
+import { AlertCircle } from 'lucide-vue-next'
 
 const props = defineProps<{
   payment: Payment
@@ -63,14 +64,16 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <Alert class="rounded-none sm:rounded-xl" variant="destructive">
+    <Alert
+      v-if="payment.can.update"
+      class="rounded-none sm:rounded-xl"
+      variant="destructive"
+    >
       <AlertCircle class="h-4 w-4" />
       <AlertTitle>انتباه!</AlertTitle>
       <AlertDescription>
-        <div v-if="payment.can.update">
-          يمكنك تعديل أو حذف هذه الدفعة حتى الساعة
-          <span class="font-bold">12</span>!
-        </div>
+        يمكنك تعديل أو حذف هذه الدفعة حتى الساعة
+        <span class="font-bold">11:59</span>!
       </AlertDescription>
     </Alert>
 
