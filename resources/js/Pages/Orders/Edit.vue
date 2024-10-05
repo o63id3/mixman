@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -12,6 +12,7 @@ import OrderForm from './Partials/OrderForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import CardsSection from './Partials/CardsSection.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   order: Order
@@ -43,14 +44,14 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('orders.update', props.order.id), values, {
-    preserveScroll: true,
-    preserveState: false,
-    onSuccess: () => toast({ title: 'تم تعديل الطلب' }),
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('orders.update', props.order.id),
+  undefined,
+  setErrors,
+  'تم تعديل الطلب',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -66,7 +67,11 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :can-update="can.update">
+    <UpdateFormLayout
+      @submit="onSubmit"
+      :loading="loading"
+      :can-update="can.update"
+    >
       <template #buttons>
         <DeleteLink
           v-if="can.delete"

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { toast } from '@/Components/ui/toast'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 import { Network } from '@/types'
+import { useSubmit } from '@/Components/Composables/submit'
 
 defineProps<{
   networks: Array<Network>
@@ -27,16 +27,13 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('expenses.store'), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم إدخال المصروف' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('expenses.store'),
+  resetForm,
+  setErrors,
+  'تم إنشاء المصروف',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -49,7 +46,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <CreateFormLayout @submit="onSubmit" :loading="loading">
       <ExpenseForm :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>

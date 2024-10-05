@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -11,6 +11,7 @@ import { Card } from '@/types'
 import CardForm from './Partials/CardForm.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   card: Card
@@ -26,7 +27,6 @@ const formSchema = toTypedSchema(
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     active: z.boolean(),
     price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
-    // price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )
@@ -36,19 +36,19 @@ const { handleSubmit, setErrors } = useForm({
   initialValues: {
     name: props.card.name,
     price_for_consumer: props.card.price_for_consumer,
-    // price_for_seller: props.card.price_for_seller,
     active: props.card.active,
     notes: props.card.notes ?? undefined,
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('cards.update', props.card.id), values, {
-    preserveScroll: true,
-    onSuccess: () => toast({ title: 'تم تعديل الكرت' }),
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('cards.update', props.card.id),
+  undefined,
+  setErrors,
+  'تم تعديل الكرت',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -61,7 +61,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" can-update>
+    <UpdateFormLayout @submit="onSubmit" :loading="loading" can-update>
       <template #buttons>
         <DeleteLink
           v-if="can.delete"

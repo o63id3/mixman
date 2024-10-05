@@ -36,21 +36,19 @@ export default {
   >
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
-        <Button
-          variant="ghost"
-          size="sm"
-          class="-ml-3 h-8 data-[state=open]:bg-accent"
-        >
-          <span>{{ title }}</span>
-          <ArrowDownIcon
-            v-if="column.getIsSorted() === 'desc'"
-            class="ml-2 h-4 w-4"
-          />
-          <ArrowUpIcon
-            v-else-if="column.getIsSorted() === 'asc'"
-            class="ml-2 h-4 w-4"
-          />
-          <CaretSortIcon v-else class="ml-2 h-4 w-4" />
+        <Button variant="ghost" size="sm" class="-ml-3 h-8">
+          <div class="flex items-center">
+            <span>{{ title }}</span>
+            <ArrowDownIcon
+              v-if="column.getIsSorted() === 'desc'"
+              class="ml-2 h-4 w-4"
+            />
+            <ArrowUpIcon
+              v-else-if="column.getIsSorted() === 'asc'"
+              class="ml-2 h-4 w-4"
+            />
+            <CaretSortIcon v-else class="ml-2 h-4 w-4" />
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
@@ -92,7 +90,6 @@ export default {
   </div>
 
   <div v-else :class="$attrs.class">
-    <!-- <div :class="$attrs.class"> -->
     {{ title }}
   </div>
 </template>

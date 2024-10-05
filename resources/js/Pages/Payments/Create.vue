@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { toast } from '@/Components/ui/toast'
 import { User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
+import { useSubmit } from '@/Components/Composables/submit'
+
+defineProps<{
+  users: Array<User>
+}>()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -23,20 +27,13 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('payments.store'), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم إدخال الدفعة المالية' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
-
-defineProps<{
-  users: Array<User>
-}>()
+const { submit, loading } = useSubmit(
+  route('payments.store'),
+  resetForm,
+  setErrors,
+  'تم إدخال الدفعة المالية',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -49,7 +46,7 @@ defineProps<{
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <CreateFormLayout @submit="onSubmit" :loading="loading">
       <PaymentForm
         :users="users"
         :selected="values.user_id"

@@ -151,7 +151,7 @@ const form = useForm({})
 
   <AuthenticatedLayout>
     <div class="space-y-8">
-      <div v-if="!user.admin">
+      <div v-if="user.role !== 'ahmed'">
         <h2 class="px-4 font-semibold"># الطلبات</h2>
         <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
           <Card class="rounded-none sm:col-span-2 sm:rounded-xl">
@@ -170,6 +170,7 @@ const form = useForm({})
                   })
                 "
                 :disabled="form.processing"
+                :loading="form.processing"
               >
                 طلب كروت
               </Button>

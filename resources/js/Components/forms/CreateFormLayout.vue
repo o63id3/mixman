@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button'
+
+defineProps<{
+  loading?: boolean
+}>()
 </script>
 
 <template>
@@ -9,7 +13,9 @@ import { Button } from '@/Components/ui/button'
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <slot />
         </div>
-        <Button type="submit"> إنشاء </Button>
+        <Button type="submit" :loading="loading" :disabled="loading">
+          إنشاء
+        </Button>
       </form>
     </div>
   </div>

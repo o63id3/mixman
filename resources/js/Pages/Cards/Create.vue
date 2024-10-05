@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import { toast } from '@/Components/ui/toast'
 import CardForm from './Partials/CardForm.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -16,7 +16,6 @@ const formSchema = toTypedSchema(
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
-    // price_for_seller: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
     notes: z.string().optional(),
   }),
 )
@@ -25,16 +24,13 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('cards.store'), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم إنشاء الكرت' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('cards.store'),
+  resetForm,
+  setErrors,
+  'تم إنشاء الكرت',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -47,7 +43,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <CreateFormLayout @submit="onSubmit" :loading="loading">
       <CardForm />
     </CreateFormLayout>
   </AuthenticatedLayout>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -11,6 +11,7 @@ import { Payment, User } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   payment: Payment
@@ -37,15 +38,14 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('payments.update', props.payment.id), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم تعديل الدفعة المالية' })
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('payments.update', props.payment.id),
+  undefined,
+  setErrors,
+  'تم تعديل الدفعة المالية',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" can-update>
+    <UpdateFormLayout @submit="onSubmit" :loading="loading" can-update>
       <template #buttons>
         <DeleteLink
           v-if="can.delete"

@@ -3,6 +3,7 @@ import { Button } from '@/Components/ui/button'
 
 defineProps<{
   canUpdate?: boolean
+  loading?: boolean
 }>()
 </script>
 
@@ -14,7 +15,14 @@ defineProps<{
           <slot />
         </div>
         <div class="flex gap-2">
-          <Button v-if="canUpdate" type="submit"> تعديل </Button>
+          <Button
+            v-if="canUpdate"
+            type="submit"
+            :loading="loading"
+            :disabled="loading"
+          >
+            حفظ
+          </Button>
           <slot name="buttons" />
         </div>
       </form>

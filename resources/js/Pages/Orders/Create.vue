@@ -1,16 +1,15 @@
 <script setup lang="ts">
-'users'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { toast } from '@/Components/ui/toast'
 import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import OrderForm from './Partials/OrderForm.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   users: Array<User>
@@ -47,17 +46,13 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('orders.store'), values, {
-    preserveScroll: true,
-    preserveState: false,
-    onSuccess: () => {
-      toast({ title: 'تم إنشاء الطلب' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('orders.store'),
+  resetForm,
+  setErrors,
+  'تم إنشاء الطلب',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -70,7 +65,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <CreateFormLayout @submit="onSubmit" :loading="loading">
       <OrderForm
         :users="users"
         :cards="cards"

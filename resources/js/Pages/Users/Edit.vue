@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router, usePage } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -12,6 +12,7 @@ import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import UserForm from './Partials/UserForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import SecondaryLink from '@/Components/links/SecondaryLink.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   user: User
@@ -55,13 +56,14 @@ const { handleSubmit, setErrors, values } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('users.update', props.user.id), values, {
-    preserveScroll: true,
-    onSuccess: () => toast({ title: 'تم تعديل المستخدم' }),
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('users.update', props.user.id),
+  undefined,
+  setErrors,
+  'تم تعديل المستخدم',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -74,7 +76,11 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :can-update="can.update">
+    <UpdateFormLayout
+      @submit="onSubmit"
+      :loading="loading"
+      :can-update="can.update"
+    >
       <template #buttons>
         <DeleteLink
           v-if="user.active"

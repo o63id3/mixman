@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { toast } from '@/Components/ui/toast'
-
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import UserForm from './Partials/UserForm.vue'
 import { Network } from '@/types'
+import { useSubmit } from '@/Components/Composables/submit'
 
 defineProps<{
   networks: Array<Network>
@@ -42,16 +41,13 @@ const { handleSubmit, resetForm, setErrors, values } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('users.store'), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم إنشاء المستخدم' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('users.store'),
+  resetForm,
+  setErrors,
+  'تم إنشاء المستخدم',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -64,7 +60,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit">
+    <CreateFormLayout @submit="onSubmit" :loading="loading">
       <UserForm :role="values.role" :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>

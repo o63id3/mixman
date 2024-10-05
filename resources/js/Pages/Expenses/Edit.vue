@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -11,6 +11,7 @@ import { Expense, Network } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import ExpenseForm from './Partials/ExpenseForm.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   expense: Expense
@@ -37,15 +38,14 @@ const { handleSubmit, setErrors } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('expenses.update', props.expense.id), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم تعديل المصروف' })
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('expenses.update', props.expense.id),
+  undefined,
+  setErrors,
+  'تم تعديل المصروف',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit((values) => {
       </h2>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" can-update>
+    <UpdateFormLayout @submit="onSubmit" :loading="loading" can-update>
       <template #buttons>
         <DeleteLink
           v-if="can.delete"

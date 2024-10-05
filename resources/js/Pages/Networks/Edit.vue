@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, router } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import { toast } from '@/Components/ui/toast'
 import { Network } from '@/types'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import NetworkForm from './Partials/NetworkForm.vue'
 import { columns, summaryFields } from './partners'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import Button from '@/Components/ui/button/Button.vue'
+import { useSubmit } from '@/Components/Composables/submit'
 
 const props = defineProps<{
   network: Network
@@ -40,13 +40,14 @@ const { handleSubmit, setErrors } = useForm({
   },
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.patch(route('networks.update', props.network.id), values, {
-    preserveScroll: true,
-    onSuccess: () => toast({ title: 'تم تعديل الشبكة' }),
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('networks.update', props.network.id),
+  undefined,
+  setErrors,
+  'تم تعديل الشبكة',
+  'patch',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -67,13 +68,13 @@ const onSubmit = handleSubmit((values) => {
       </div>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :can-update="true">
+    <UpdateFormLayout @submit="onSubmit" :loading="loading" :can-update="true">
       <NetworkForm :disabled="!true" />
     </UpdateFormLayout>
 
     <div class="mt-4">
       <div class="flex items-center justify-between px-4">
-        <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
+        <p class="text-sm font-medium tracking-wide"># الشركاء</p>
         <Link
           v-if="can.createPartner"
           :href="route('network.partners.create', props.network.id)"

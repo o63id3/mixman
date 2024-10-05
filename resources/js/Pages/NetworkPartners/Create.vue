@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-
-import { toast } from '@/Components/ui/toast'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import NetworkPartnersForm from './Partials/NetworkPartnersForm.vue'
@@ -14,8 +12,9 @@ import { Network, User } from '@/types'
 
 import { AlertCircle } from 'lucide-vue-next'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
+import { useSubmit } from '@/Components/Composables/submit'
 
-const props = defineProps<{
+defineProps<{
   network: Network
   partners: Array<User>
   remainingShare: number
@@ -35,16 +34,13 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = handleSubmit((values) => {
-  router.post(route('network.partners.store', props.network.id), values, {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast({ title: 'تم إضافة الشريك' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  })
-})
+const { submit, loading } = useSubmit(
+  route('network.partners.store'),
+  resetForm,
+  setErrors,
+  'تم إضافة الشريك',
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -76,7 +72,7 @@ const onSubmit = handleSubmit((values) => {
       </AlertDescription>
     </Alert>
 
-    <CreateFormLayout class="mt-2" @submit="onSubmit">
+    <CreateFormLayout class="mt-2" @submit="onSubmit" :loading="loading">
       <NetworkPartnersForm :partners="partners" />
     </CreateFormLayout>
   </AuthenticatedLayout>
