@@ -22,7 +22,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
+require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,14 +30,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-
+Route::middleware('auth')->get('/', DashboardController::class)->name('dashboard');
 Route::middleware('auth')->resource('users', UsersController::class)->except('show');
 Route::middleware('auth')->resource('networks', NetworksController::class)->except('delete');
+Route::middleware('auth')->resource('network.partners', NetworkPartnersController::class)->only(['create', 'store', 'destroy']);
+Route::middleware('auth')->post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
 Route::middleware('auth')->resource('cards', CardsController::class)->except('show');
 Route::middleware('auth')->resource('orders', OrdersController::class);
 Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class);
+Route::middleware('auth')->get('/transactions', TransactionsController::class)->name('transactions.index');
+Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');
 
 Route::middleware('auth')->group(function () {
     Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');
@@ -47,13 +50,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/networks/{network}', [DeactivatedNetworksController::class, 'store'])->name('networks.deactivate');
     Route::delete('/networks/{network}', [DeactivatedNetworksController::class, 'destroy'])->name('networks.activate');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
-    Route::get('/networks/{network}/partners', [NetworkPartnersController::class, 'create'])->name('network.partners.create');
-    Route::post('/networks/{network}/partners', [NetworkPartnersController::class, 'store'])->name('network.partners.store');
-    Route::delete('/networks/{network}/partners/{partner}', [NetworkPartnersController::class, 'destroy'])->name('network.partners.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -68,12 +64,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/order-files/{file}', [OrderFilesController::class, 'destroy'])->name('order-files.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::middleware(['throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/transactions', TransactionsController::class)->name('transactions.index');
-});
-
-Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');
+Route::middleware(['auth', 'throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
