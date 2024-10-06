@@ -19,6 +19,7 @@ const row = computed(() => props.row.original)
     :href="route('order-files.destroy', row.id)"
     method="delete"
     as="button"
+    class="flex items-center"
   >
     <Trash2 class="size-5 rounded p-0.5 text-red-500 hover:bg-red-50" />
   </Link>

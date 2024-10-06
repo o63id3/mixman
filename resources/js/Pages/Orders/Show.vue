@@ -63,9 +63,6 @@ defineProps<{
                     <th class="whitespace-nowrap border p-2 text-right">
                       الحزم
                     </th>
-                    <th class="whitespace-nowrap border p-2 text-right">
-                      الكروت / حزمة
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,13 +71,16 @@ defineProps<{
                       {{ item.card.name }}
                     </td>
                     <td class="whitespace-nowrap border p-2">
-                      {{ formatMoney(item.total_price_for_seller) }} شيكل
+                      {{ formatMoney(item.total_price_for_seller) }}
+                      <span class="text-xs leading-none tracking-wide">
+                        شيكل
+                      </span>
                     </td>
                     <td class="whitespace-nowrap border p-2">
                       {{ item.number_of_packages }}
-                    </td>
-                    <td class="whitespace-nowrap border p-2">
-                      {{ item.number_of_cards_per_package }}
+                      <span class="text-xs leading-none tracking-wide"
+                        >({{ item.number_of_cards_per_package }})</span
+                      >
                     </td>
                   </tr>
                 </tbody>
