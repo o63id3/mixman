@@ -27,7 +27,7 @@ final class SendNewOrderTelegramMassage implements ShouldQueue
     public function handle(TelegramService $telegram): void
     {
         $appURL = config('app.url');
-        $url = "{$appURL}orders/{$this->order->id}/edit";
+        $url = "{$appURL}/orders/{$this->order->id}/edit";
         $message = "*{$this->order->seller->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: \n{$url}";
 
         $users = User::query()
