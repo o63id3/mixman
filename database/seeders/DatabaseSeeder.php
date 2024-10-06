@@ -21,6 +21,11 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->create([
+            'name' => 'النظام',
+            'username' => 'system',
+        ]);
+
         $admin = User::factory()->create([
             'name' => 'المسؤول',
             'username' => 'admin',
@@ -61,60 +66,28 @@ final class DatabaseSeeder extends Seeder
             ->set('role', RoleEnum::Seller)
             ->create();
 
-        Order::factory(5)
+        Order::factory(100)
             ->recycle([$network1, $network2])
             ->recycle([...$sellers, $partners1->first(), $partners2->first()])
             ->hasItems(3)
             ->recycle($cards)
             ->create();
 
-        Payment::factory(5)
+        Payment::factory(100)
             ->recycle([$network1, $network2])
             ->state(fn () => ['recipient_id' => collect([$partners1->first(), $partners2->first(), 1])->random()])
             ->state(fn () => ['user_id' => collect([...$sellers, $partners1->first(), $partners2->first()])->random()])
             ->create();
 
-        Expense::factory(5)
+        Expense::factory(100)
             ->recycle([$network1, $network2])
             ->recycle([$partners1->first(), $partners2->first()])
             ->create();
 
-        // Expense::factory(5)->recycle([$network1, $network2])->create();
-
-        // Order::factory(100)
-        //     ->recycle($users)
-        //     ->recycle($admin)
-        //     ->hasItems(3)
-        //     ->recycle($cards)
-        //     ->pending()
-        //     ->create();
-
-        // Order::factory(100)
-        //     ->recycle($users)
-        //     ->recycle($admin)
-        //     ->hasItems(3)
-        //     ->recycle($cards)
-        //     ->completed()
-        //     ->create();
-
-        // Order::factory(20)
-        //     ->recycle($users)
-        //     ->recycle($admin)
-        //     ->hasItems(1)
-        //     ->recycle($cards)
-        //     ->returned()
-        //     ->create();
-
-        // Payment::factory(100)
-        //     ->recycle($users)
-        //     ->recycle($admin)
-        //     ->create();
-
-        // Order::where('status', OrderStatusEnum::Pending)
-        //     ->where('created_at', '<', now()->subWeek())
-        //     ->update([
-        //         'status' => OrderStatusEnum::Completed,
-        //         'action_by' => $admin->id,
-        //     ]);
+        Order::where('status', OrderStatusEnum::Pending)
+            ->where('created_at', '<', now()->subWeek())
+            ->update([
+                'status' => OrderStatusEnum::Completed,
+            ]);
     }
 }

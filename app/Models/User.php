@@ -130,6 +130,16 @@ final class User extends Authenticatable
     }
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        self::addGlobalScope(function (Builder $builder) {
+            $builder->where('username', '!=', 'system');
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
