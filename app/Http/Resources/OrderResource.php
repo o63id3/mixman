@@ -24,6 +24,7 @@ final class OrderResource extends JsonResource
             'manager' => $this->whenLoaded('manager', fn () => UserResource::single($this->manager)),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items)),
+            'files' => $this->whenLoaded('files', fn () => OrderFileResource::collection($this->files)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),
             'created_at_date' => $this->created_at,

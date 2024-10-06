@@ -58,9 +58,35 @@ export interface Order {
   updated_at: string
   updated_at_date: string
   items: Array<OrderItem>
+  files: Array<OrderFile>
   can: {
     view: boolean
     update: boolean
+    delete: boolean
+  }
+}
+
+export interface OrderFile {
+  id: number
+  original_file_name: string
+  extension: string
+  size: number
+  can: {
+    download: boolean
+    delete: boolean
+  }
+}
+
+export interface OrderItem {
+  id: number
+  order: Order
+  card: Card
+  number_of_packages: number
+  number_of_cards_per_package: number
+  quantity: number
+  total_price_for_consumer: number
+  total_price_for_seller: number
+  can: {
     delete: boolean
   }
 }
@@ -103,20 +129,6 @@ export interface Card {
   price_for_consumer: number
   //   price_for_seller: number
   notes: string
-}
-
-export interface OrderItem {
-  id: number
-  order: Order
-  card: Card
-  number_of_packages: number
-  number_of_cards_per_package: number
-  quantity: number
-  total_price_for_consumer: number
-  total_price_for_seller: number
-  can: {
-    delete: boolean
-  }
 }
 
 export interface Transaction {

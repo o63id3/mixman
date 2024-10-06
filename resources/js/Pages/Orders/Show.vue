@@ -6,7 +6,7 @@ import { Order } from '@/types'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
-import { columns, summaryFields } from './Partials/columns'
+import { columns } from './Partials/filesColumns'
 import { formatDate } from '@/lib/date'
 import { orderStatues } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
@@ -103,11 +103,7 @@ defineProps<{
       </CardContent>
     </Card>
 
-    <!-- <p class="px-4 text-sm font-medium tracking-wide"># الكروت</p>
-    <DataTable
-      :data="order.items"
-      :columns="columns(false)"
-      :summaryFields="order.items.length ? summaryFields : undefined"
-    /> -->
+    <p class="mt-4 px-4 text-sm font-bold tracking-wide"># المرفقات</p>
+    <DataTable :data="order.files" :columns="columns" />
   </AuthenticatedLayout>
 </template>

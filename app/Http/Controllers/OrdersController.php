@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Enums\OrderStatusEnum;
 use App\Http\Filters\OrderFilter;
 use App\Http\Resources\CardResource;
-use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Models\Card;
@@ -101,7 +100,7 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['orderer', 'manager', 'items', 'items.card']);
+        $order->load(['orderer', 'manager', 'items', 'files', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
@@ -117,20 +116,22 @@ final class OrdersController
     {
         Gate::authorize('update', $order);
 
-        $order->load(['orderer', 'manager', 'items', 'items.card']);
+        $order->load(['orderer', 'manager', 'items', 'files', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Edit', [
             'users' => fn () => Gate::allows('update', $order) ? UserResource::collection(User::get()) : null,
             'order' => OrderResource::single($order),
-            'items' => OrderItemResource::collection($order->items),
             'statuses' => OrderStatusEnum::cases(),
             'cards' => fn () => Gate::allows('update', $order) ? CardResource::collection(Card::get()) : null,
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),
                 'addItem' => Gate::allows('createItems', $order),
+                'files' => [
+                    'create' => Gate::allows('create', $order),
+                ],
             ],
         ]);
     }

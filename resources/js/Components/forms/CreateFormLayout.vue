@@ -3,6 +3,8 @@ import { Button } from '@/Components/ui/button'
 
 defineProps<{
   loading?: boolean
+  disabled?: boolean
+  btnTitle?: string
 }>()
 </script>
 
@@ -13,8 +15,12 @@ defineProps<{
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <slot />
         </div>
-        <Button type="submit" :loading="loading" :disabled="loading">
-          إنشاء
+        <Button
+          type="submit"
+          :loading="loading"
+          :disabled="disabled || loading"
+        >
+          {{ btnTitle ?? 'إنشاء' }}
         </Button>
       </form>
     </div>

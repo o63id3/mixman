@@ -18,11 +18,11 @@ import OrderForm from './Partials/OrderForm.vue'
 import CardsSection from './Partials/CardsSection.vue'
 import { useSubmit } from '@/Components/Composables/submit'
 
-import { Card, Order, OrderItem, User } from '@/types'
+import { Card, Order, User } from '@/types'
+import FilesSection from './Partials/FilesSection.vue'
 
 const props = defineProps<{
   order: Order
-  items: Array<OrderItem>
   users?: Array<User>
   statuses: Array<string>
   cards?: Array<Card>
@@ -30,6 +30,9 @@ const props = defineProps<{
     addItem: boolean
     update: boolean
     delete: boolean
+    files: {
+      create: boolean
+    }
   }
 }>()
 
@@ -38,6 +41,7 @@ const formSchema = toTypedSchema(
     orderer_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
     notes: z.string().optional(),
+    files: z.array(z.string()).optional(),
   }),
 )
 
@@ -117,10 +121,12 @@ const onSubmit = handleSubmit(submit)
       class="mt-4"
       editing
       :can-update="can.update"
-      :items="items"
+      :items="order.items"
       :order="order"
       :cards="cards"
       :can-add-item="can.addItem"
     />
+
+    <FilesSection v-if="can.files.create" class="mt-4" :order="order" />
   </AuthenticatedLayout>
 </template>

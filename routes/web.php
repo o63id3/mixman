@@ -7,9 +7,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeactivatedNetworksController;
 use App\Http\Controllers\DeactivatedUsersController;
 use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\FileUploadsController;
 use App\Http\Controllers\NetworkManagersController;
 use App\Http\Controllers\NetworkPartnersController;
 use App\Http\Controllers\NetworksController;
+use App\Http\Controllers\OrderFileDownloadsController;
+use App\Http\Controllers\OrderFilesController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
@@ -55,7 +58,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/items', [OrderItemsController::class, 'store'])->name('order-items.store');
-    Route::delete('/orders-items/{item}', [OrderItemsController::class, 'destroy'])->name('order-items.destroy');
+    Route::delete('/order-items/{item}', [OrderItemsController::class, 'destroy'])->name('order-items.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/order-files/{file}', OrderFileDownloadsController::class)->name('order-files.download');
+
+    Route::post('/orders/{order}/files', [OrderFilesController::class, 'store'])->name('order-files.store');
+    Route::delete('/order-files/{file}', [OrderFilesController::class, 'destroy'])->name('order-files.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -65,3 +75,5 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/transactions', TransactionsController::class)->name('transactions.index');
 });
+
+Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');

@@ -65,4 +65,12 @@ final class OrderPolicy
     {
         return $this->update($user, $order);
     }
+
+    /**
+     * Determine whether the user can create files for the model.
+     */
+    public function createFiles(User $user, Order $order): bool
+    {
+        return $this->update($user, $order);
+    }
 }

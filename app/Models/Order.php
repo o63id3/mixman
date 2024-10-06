@@ -112,6 +112,14 @@ final class Order extends Model
     }
 
     /**
+     * Get the order items.
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(OrderFile::class);
+    }
+
+    /**
      * The "booting" method of the model.
      *
      * This method is used to register any event listeners for the model,
