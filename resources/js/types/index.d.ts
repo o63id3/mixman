@@ -11,29 +11,6 @@ export interface User {
   telegram: string
   notes: string
   share: number
-  can: {
-    users: {
-      viewAny: boolean
-    }
-    cards: {
-      viewAny: boolean
-    }
-    networks: {
-      viewAny: boolean
-    }
-    orders: {
-      viewAny: boolean
-    }
-    payments: {
-      viewAny: boolean
-    }
-    expenses: {
-      viewAny: boolean
-    }
-    transactions: {
-      viewAny: boolean
-    }
-  }
 }
 
 export interface Network {
@@ -178,6 +155,29 @@ export type PageProps<
   pendingOrders: number
   auth: {
     user: User
+    permissions: {
+      users: {
+        viewAny: boolean
+      }
+      cards: {
+        viewAny: boolean
+      }
+      networks: {
+        viewAny: boolean
+      }
+      orders: {
+        viewAny: boolean
+      }
+      payments: {
+        viewAny: boolean
+      }
+      expenses: {
+        viewAny: boolean
+      }
+      transactions: {
+        viewAny: boolean
+      }
+    }
   }
 }
 

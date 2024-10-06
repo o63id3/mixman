@@ -9,7 +9,7 @@ import { Link, usePage } from '@inertiajs/vue3'
 import Badge from '@/Components/ui/badge/Badge.vue'
 
 const showingNavigationDropdown = ref(false)
-const user = usePage().props.auth.user
+const auth = usePage().props.auth
 
 interface Link {
   route: string
@@ -27,38 +27,38 @@ const links: Array<Link> = [
   {
     route: 'users.index',
     label: 'المستخدمين',
-    visible: user.can.users.viewAny,
+    visible: auth.permissions.users.viewAny,
   },
   {
     route: 'cards.index',
     label: 'الكروت',
-    visible: user.can.cards.viewAny,
+    visible: auth.permissions.cards.viewAny,
   },
   {
     route: 'networks.index',
     label: 'الشبكات',
-    visible: user.can.networks.viewAny,
+    visible: auth.permissions.networks.viewAny,
   },
   {
     route: 'orders.index',
     label: 'الطلبات',
-    visible: user.can.orders.viewAny,
+    visible: auth.permissions.orders.viewAny,
     badge: usePage().props.pendingOrders,
   },
   {
     route: 'payments.index',
     label: 'المدفوعات',
-    visible: user.can.payments.viewAny,
+    visible: auth.permissions.payments.viewAny,
   },
   {
     route: 'expenses.index',
     label: 'المصروفات',
-    visible: user.can.expenses.viewAny,
+    visible: auth.permissions.expenses.viewAny,
   },
   {
     route: 'transactions.index',
     label: 'الحركات',
-    visible: user.can.transactions.viewAny,
+    visible: auth.permissions.transactions.viewAny,
   },
 ]
 </script>
