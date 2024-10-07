@@ -25,11 +25,13 @@ const isFiltered = computed(
       <Button
         v-if="isFiltered"
         variant="ghost"
-        class="flex h-8 items-end gap-1 px-2 lg:px-3"
+        class="h-8 gap-1 px-2 lg:px-3"
         @click="table.resetColumnFilters()"
       >
-        مسح
-        <Cross2Icon class="ml-2 h-4 w-4" />
+        <div class="flex items-end gap-x-1">
+          مسح
+          <Cross2Icon class="ml-2 h-4 w-4" />
+        </div>
       </Button>
     </div>
 

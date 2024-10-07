@@ -10,6 +10,7 @@ use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Models\Card;
+use App\Models\Network;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -31,7 +32,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         $orders = Order::query()
-            ->with(['orderer', 'manager'])
+            ->with(['orderer', 'manager', 'network'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
@@ -42,7 +43,9 @@ final class OrdersController
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'statuses' => OrderStatusEnum::cases(),
-            'users' => User::all(),
+            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [

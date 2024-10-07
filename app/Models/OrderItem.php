@@ -60,6 +60,7 @@ final class OrderItem extends Model
             $model->total_price_for_seller = ($card->price_for_consumer * (1 - $model->order->orderer->percentage)) * $model->quantity;
         };
 
-        self::saving($setTotalPrices);
+        self::creating($setTotalPrices);
+        self::updating($setTotalPrices);
     }
 }

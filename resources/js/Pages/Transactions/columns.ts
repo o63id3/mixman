@@ -15,12 +15,14 @@ export const columns: ColumnDef<Transaction>[] = [
     enableSorting: false,
   },
   {
+    id: 'manager',
     accessorKey: 'manager.name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'المدير' }),
     enableSorting: false,
   },
   {
+    id: 'network',
     accessorKey: 'network.name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الشبكة' }),

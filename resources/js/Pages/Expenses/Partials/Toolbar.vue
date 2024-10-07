@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { Payment, User } from '@/types'
+import { Expense, Network, User } from '@/types'
 import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilter.vue'
 
 import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 import DataTableDateRangeFilter from '@/Components/data-table/DataTableDateRangeFilter.vue'
 
 interface DataTableToolbarProps {
-  table: Table<Payment>
-  users: Array<User>
+  table: Table<Expense>
+  managers: Array<User>
+  networks: Array<Network>
 }
 
 defineProps<DataTableToolbarProps>()
@@ -18,17 +19,27 @@ defineProps<DataTableToolbarProps>()
   <DataTableToolbar :table="table">
     <div class="flex gap-2">
       <DataTableFacetedFilter
-        v-if="table.getColumn('seller')"
-        :column="table.getColumn('seller')"
-        title="البائع"
+        v-if="table.getColumn('user')"
+        :column="table.getColumn('user')"
+        title="المدخل"
         :options="
-          users.map((seller) => ({
-            label: seller.name,
-            value: String(seller.id),
+          managers.map((user) => ({
+            label: user.name,
+            value: String(user.id),
           }))
         "
       />
-
+      <DataTableFacetedFilter
+        v-if="table.getColumn('network')"
+        :column="table.getColumn('network')"
+        title="الشبكة"
+        :options="
+          networks.map((network) => ({
+            label: network.name,
+            value: String(network.id),
+          }))
+        "
+      />
       <DataTableDateRangeFilter
         v-if="table.getColumn('created_at')"
         :column="table.getColumn('created_at')"

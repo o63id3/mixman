@@ -34,6 +34,13 @@ export const columns: ColumnDef<Order>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'network',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'الشبكة' }),
+    cell: ({ row }) => row.original.network.name,
+    enableSorting: false,
+  },
+  {
     accessorKey: 'status',
     header: ({ column }) =>
       h(DataTableColumnHeader, {

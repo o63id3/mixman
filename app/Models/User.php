@@ -91,6 +91,24 @@ final class User extends Authenticatable
     }
 
     /**
+     * Scope the users to managers only.
+     */
+    public function scopeManager(Builder $query): Builder
+    {
+        return $query->where('role', RoleEnum::Ahmed)->orWhere(function (Builder $query) {
+            $query->where('role', RoleEnum::Partner)->whereNotNull('network_id');
+        });
+    }
+
+    /**
+     * Scope the users to managers only.
+     */
+    public function scopeBenefiter(Builder $query): Builder
+    {
+        return $query->whereNotNull('network_id');
+    }
+
+    /**
      * Get the seller region.
      */
     public function networks(): BelongsToMany

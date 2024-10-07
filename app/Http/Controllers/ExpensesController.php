@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\ExpenseFilter;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\Network;
@@ -19,7 +20,7 @@ final class ExpensesController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index(Request $request, ExpenseFilter $filter): Response
     {
         Gate::authorize('viewAny', Expense::class);
 
@@ -28,11 +29,16 @@ final class ExpensesController
         $expenses = Expense::query()
             ->with(['user', 'network'])
             ->visibleTo($user)
+            ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Expenses/Index', [
             'expenses' => ExpenseResource::collection($expenses),
+            'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
+            'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
             'can' => [
                 'create' => Gate::authorize('create', Expense::class),
             ],

@@ -6,18 +6,8 @@ namespace App\Http\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-final class PaymentFilter extends QueryFilter
+final class ExpenseFilter extends QueryFilter
 {
-    /**
-     * Filter the payment by the recipient id.
-     */
-    public function recipient($values): Builder
-    {
-        $ides = explode(',', $values);
-
-        return $this->builder->whereIn('recipient_id', $ides);
-    }
-
     /**
      * Filter the payment by the user id.
      */

@@ -75,19 +75,19 @@ final class DatabaseSeeder extends Seeder
 
         Payment::factory(100)
             ->recycle([$network1, $network2])
-            ->state(fn () => ['recipient_id' => collect([$partners1->first(), $partners2->first(), 1])->random()])
+            ->state(fn () => ['recipient_id' => collect([$partners1->first(), $partners2->first(), $admin])->random()])
             ->state(fn () => ['user_id' => collect([...$sellers, $partners1->first(), $partners2->first()])->random()])
             ->create();
 
         Expense::factory(100)
             ->recycle([$network1, $network2])
-            ->recycle([$partners1->first(), $partners2->first()])
+            ->recycle([$admin, $partners1->first(), $partners2->first()])
             ->create();
 
-        Order::where('status', OrderStatusEnum::Pending)
-            ->where('created_at', '<', now()->subWeek())
-            ->update([
-                'status' => OrderStatusEnum::Completed,
-            ]);
+        // Order::where('status', OrderStatusEnum::Pending)
+        //     ->where('created_at', '<', now()->subWeek())
+        //     ->update([
+        //         'status' => OrderStatusEnum::Completed,
+        //     ]);
     }
 }

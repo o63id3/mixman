@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Filters, Order, Paginator, User } from '@/types'
+import { Filters, Network, Order, Paginator, User } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
@@ -13,6 +13,8 @@ import Toolbar from './Partials/Toolbar.vue'
 defineProps<{
   orders: Paginator<Order>
   users: Array<User>
+  managers: Array<User>
+  networks: Array<Network>
   filters: Filters
   sorts: string
   can: {
@@ -48,8 +50,16 @@ defineProps<{
         :initial-filters="filters"
         :initial-sorts="sorts"
       >
-        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
-          <Toolbar :table="table" :users="users" />
+        <template
+          v-if="$page.props.auth.user.role === 'ahmed'"
+          #toolBar="{ table }"
+        >
+          <Toolbar
+            :table="table"
+            :users="users"
+            :managers="managers"
+            :networks="networks"
+          />
         </template>
       </DataTable>
       <DataTablePagination

@@ -18,6 +18,12 @@
     "total_price_for_seller": "اجمالي السعر للبائع",
     "seller_percentage": "نسبة الربح",
     "telegram": "حساب التلغرام",
+    "network": "الشبكة",
+    "manager": "مدير الطلب",
+    "orderer": "المستفيد",
+    "recipient": "المستلم",
+    "user": "الاسم",
+    "description": "الوصف",
     "active": "الحالة"
   }
 }

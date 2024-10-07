@@ -24,7 +24,7 @@ export const columns: ColumnDef<Expense>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: ' user',
+    accessorKey: 'user',
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
@@ -34,7 +34,7 @@ export const columns: ColumnDef<Expense>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: ' network',
+    accessorKey: 'network',
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,

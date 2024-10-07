@@ -79,22 +79,24 @@ const selectedValues = computed(() => {
             )
           "
         >
-          <CalendarIcon class="h-4 w-4 shrink-0 ltr:mr-2 rtl:ml-2" />
-          <span class="font-medium">{{ formattedDateRange }}</span>
-          <template v-if="selectedValues && !isDesktop">
-            <Separator orientation="vertical" class="mx-2 h-4" />
-            <Badge
-              variant="secondary"
-              class="rounded-sm px-1 font-normal lg:hidden"
-            >
-              {{ selectedValues }}
-            </Badge>
-            <div class="hidden space-x-1 lg:flex">
-              <Badge variant="secondary" class="rounded-sm px-1 font-normal">
+          <div class="flex">
+            <CalendarIcon class="h-4 w-4 shrink-0 ltr:mr-2 rtl:ml-2" />
+            <span class="font-medium">{{ formattedDateRange }}</span>
+            <template v-if="selectedValues && !isDesktop">
+              <Separator orientation="vertical" class="mx-2 h-4" />
+              <Badge
+                variant="secondary"
+                class="rounded-sm px-1 font-normal lg:hidden"
+              >
                 {{ selectedValues }}
               </Badge>
-            </div>
-          </template>
+              <div class="hidden space-x-1 lg:flex">
+                <Badge variant="secondary" class="rounded-sm px-1 font-normal">
+                  {{ selectedValues }}
+                </Badge>
+              </div>
+            </template>
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent class="w-auto p-0" align="end">

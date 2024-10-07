@@ -9,13 +9,33 @@ use Illuminate\Database\Eloquent\Builder;
 final class TransactionFilter extends QueryFilter
 {
     /**
-     * Filter the transaction by the seller id.
+     * Filter the transaction by the user id.
      */
-    public function seller($values): Builder
+    public function user($values): Builder
     {
         $ides = explode(',', $values);
 
-        return $this->builder->whereIn('seller_id', $ides);
+        return $this->builder->whereIn('user_id', $ides);
+    }
+
+    /**
+     * Filter the transaction by the manager id.
+     */
+    public function manager($values): Builder
+    {
+        $ides = explode(',', $values);
+
+        return $this->builder->whereIn('manager_id', $ides);
+    }
+
+    /**
+     * Filter the payment by the network id.
+     */
+    public function network($values): Builder
+    {
+        $ides = explode(',', $values);
+
+        return $this->builder->whereIn('network_id', $ides);
     }
 
     /**

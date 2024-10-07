@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\PaymentFilter;
 use App\Http\Resources\PaymentResource;
+use App\Models\Network;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -27,7 +28,7 @@ final class PaymentsController
         $user = type($request->user())->as(User::class);
 
         $payments = Payment::query()
-            ->with(['recipient', 'user'])
+            ->with(['recipient', 'user', 'network'])
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -35,7 +36,9 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'users' => User::visibleTo($user)->get(['id', 'name']),
+            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
             'can' => [

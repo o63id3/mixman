@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\TransactionFilter;
 use App\Http\Resources\TransactionResource;
+use App\Models\Network;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +31,9 @@ final class TransactionsController
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'users' => User::all(),
+            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
+            'networks' => Network::get(['id', 'name']),
             'filters' => $filter->filters,
             'sorts' => $filter->sorts,
         ]);

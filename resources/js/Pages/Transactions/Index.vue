@@ -2,7 +2,7 @@
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Filters, Paginator, Transaction, User } from '@/types'
+import { Filters, Network, Paginator, Transaction, User } from '@/types'
 import { Head } from '@inertiajs/vue3'
 import { columns } from './columns'
 import Toolbar from './Partials/Toolbar.vue'
@@ -10,6 +10,8 @@ import Toolbar from './Partials/Toolbar.vue'
 defineProps<{
   transactions: Paginator<Transaction>
   users: Array<User>
+  managers: Array<User>
+  networks: Array<Network>
   filters: Filters
   sorts: string
 }>()
@@ -35,8 +37,16 @@ defineProps<{
         :initialFilters="filters"
         :initialSorts="sorts"
       >
-        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
-          <Toolbar :table="table" :users="users" />
+        <template
+          v-if="$page.props.auth.user.role === 'ahmed'"
+          #toolBar="{ table }"
+        >
+          <Toolbar
+            :table="table"
+            :users="users"
+            :managers="managers"
+            :networks="networks"
+          />
         </template>
       </DataTable>
       <DataTablePagination

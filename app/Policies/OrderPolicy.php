@@ -47,7 +47,13 @@ final class OrderPolicy
             return false;
         }
 
-        return $order->pending() || $order->completed_at->isToday();
+        if (
+            $order->pending()
+        ) {
+            return true;
+        }
+
+        return $order->completed_at->isToday();
     }
 
     /**

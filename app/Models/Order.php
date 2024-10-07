@@ -140,7 +140,8 @@ final class Order extends Model
             $model->completed_at = $model->isDirty('status') && $model->status === OrderStatusEnum::Pending ? null : now();
         };
 
-        self::saving($setManagerAndNetwork);
+        self::creating($setManagerAndNetwork);
+        self::updating($setManagerAndNetwork);
     }
 
     /**

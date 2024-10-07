@@ -56,41 +56,42 @@ const filterFunction = (val: any[], term: string) => {
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" size="sm" class="h-8 border-dashed">
-        <PlusCircledIcon class="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-        {{ title }}
-        <template v-if="selectedValues.size > 0">
-          <Separator orientation="vertical" class="mx-2 h-4" />
-          <Badge
-            variant="secondary"
-            class="rounded-sm px-1 font-normal lg:hidden"
-          >
-            {{ selectedValues.size }}
-          </Badge>
-          <div class="hidden space-x-1 lg:flex">
+        <div class="flex">
+          <PlusCircledIcon class="h-4 w-4 ltr:mr-2 rtl:ml-2" />
+          {{ title }}
+          <template v-if="selectedValues.size > 0">
+            <Separator orientation="vertical" class="mx-2 h-4" />
             <Badge
-              v-if="selectedValues.size > 2"
               variant="secondary"
-              class="rounded-sm px-1 font-normal"
+              class="rounded-sm px-1 font-normal lg:hidden"
             >
-              {{ selectedValues.size }} مختار
+              {{ selectedValues.size }}
             </Badge>
-
-            <template v-else>
-              <div class="flex items-center gap-0.5">
-                <Badge
-                  v-for="option in options.filter((option) =>
-                    selectedValues.has(option.value),
-                  )"
-                  :key="option.value"
-                  variant="secondary"
-                  class="rounded-sm px-1 font-normal"
-                >
-                  {{ option.label }}
-                </Badge>
-              </div>
-            </template>
-          </div>
-        </template>
+            <div class="hidden space-x-1 lg:flex">
+              <Badge
+                v-if="selectedValues.size > 2"
+                variant="secondary"
+                class="rounded-sm px-1 font-normal"
+              >
+                {{ selectedValues.size }} مختار
+              </Badge>
+              <template v-else>
+                <div class="flex items-center gap-0.5">
+                  <Badge
+                    v-for="option in options.filter((option) =>
+                      selectedValues.has(option.value),
+                    )"
+                    :key="option.value"
+                    variant="secondary"
+                    class="rounded-sm px-1 font-normal"
+                  >
+                    {{ option.label }}
+                  </Badge>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-[200px] p-0" align="start">

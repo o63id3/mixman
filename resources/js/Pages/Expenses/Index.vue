@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Expense, Paginator } from '@/types'
+import { Expense, Network, Paginator, User } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
 import Button from '@/Components/ui/button/Button.vue'
 import { DataTable, DataTablePagination } from '@/Components/data-table/index'
 
 import { columns } from './columns'
+import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   expenses: Paginator<Expense>
+  managers: Array<User>
+  networks: Array<Network>
   can: {
     create: boolean
   }
@@ -36,7 +39,14 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="expenses.data" :columns="columns" />
+      <DataTable :data="expenses.data" :columns="columns">
+        <template
+          v-if="$page.props.auth.user.role === 'ahmed'"
+          #toolBar="{ table }"
+        >
+          <Toolbar :table="table" :managers="managers" :networks="networks" />
+        </template>
+      </DataTable>
       <DataTablePagination :links="expenses.links" :meta="expenses.meta" />
     </div>
   </AuthenticatedLayout>

@@ -25,13 +25,23 @@ export const columns: ColumnDef<Payment>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: ' user',
+    accessorKey: 'user',
     header: ({ column }) =>
       h(DataTableColumnHeader, {
         column,
         title: 'الاسم',
       }),
     cell: ({ row }) => row.original.user.name,
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'network',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, {
+        column,
+        title: 'الشبكة',
+      }),
+    cell: ({ row }) => row.original.network.name,
     enableSorting: false,
   },
   {
