@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\RoleEnum;
 use App\Models\Network;
 use App\Models\Order;
 use App\Models\Payment;
@@ -18,11 +19,11 @@ final class DashboardService
      */
     public function getStatistics(User $user): array
     {
-        if (! $user->isAhmed()) {
+        if (! $user->isManager()) {
             return $this->getGeneralStatistics($user);
         }
 
-        return array_merge($this->getGeneralStatistics($user), $this->getAdminStatistics());
+        return array_merge($this->getGeneralStatistics($user), $this->getAdminStatistics($user));
     }
 
     /**
@@ -48,11 +49,11 @@ final class DashboardService
     /**
      * Get the total income between two dates.
      */
-    public function getTotalIncome($start = null, $end = null): float
+    public function getTotalIncome(User $user, $start = null, $end = null): float
     {
-
         $income = (float) Payment::query()
-            ->visibleToAhmed()
+            // ->visibleToAhmed()
+            ->where('recipient_id', $user->id)
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
             ->sum('amount');
 
@@ -62,28 +63,27 @@ final class DashboardService
     /**
      * Get additional statistics for admin users.
      */
-    public function getAdminStatistics(): array
+    public function getAdminStatistics(User $user): array
     {
         $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
 
         return [
             'max_network_income' => $this->getMaxNetworkIncome($startOfLastWeek, $endOfLastWeek),
-            'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
+            'total_income' => $this->getTotalIncome($user, $startOfLastWeek, $endOfLastWeek),
         ];
     }
 
     /**
      * Get the total debut for all users (if admin) and seller debut (if seller).
      */
-    public function getTotalDebut($user): float
+    public function getTotalDebut(User $user): float
     {
         return (float) Transaction::query()
             ->visibleTo($user)
-            ->when($user->isAhmed(), fn ($query) => $query->where(fn ($query) => $query
-                ->where('manager_id', $user->id)
-                ->orWhere('user_id', $user->id)
-            ))
+            ->when($user->isManager(), fn ($query) => $query->where('manager_id', $user->id))
+            ->when($user->role === RoleEnum::Seller, fn ($query) => $query->where('user_id', $user->id))
+            ->when($user->isAhmed(), fn ($query) => $query->orWhere('type', 'expense'))
             ->sum('amount');
     }
 

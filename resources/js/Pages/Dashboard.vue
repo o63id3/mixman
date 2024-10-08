@@ -81,7 +81,10 @@ const groups: Array<Group> = [
         title: 'صافي المدخول',
         value: h('span', `${formatMoney(props.total_income)} شيكل`),
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: user.role === 'ahmed',
+        visible:
+          user.role !== 'seller' &&
+          props.total_income !== undefined &&
+          props.total_income > 0,
       },
       {
         title: 'أكبر مدخول شبكة',
