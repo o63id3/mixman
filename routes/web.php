@@ -17,8 +17,8 @@ use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SellerOrdersController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\UserOrdersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,4 +64,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/order-files/{file}', [OrderFilesController::class, 'destroy'])->name('order-files.destroy');
 });
 
-Route::middleware(['auth', 'throttle:seller-orders'])->post('/seller/orders', SellerOrdersController::class)->name('seller-orders.store');
+Route::middleware(['auth', 'throttle:seller-orders'])->post('/seller/orders', UserOrdersController::class)->name('seller-orders.store');

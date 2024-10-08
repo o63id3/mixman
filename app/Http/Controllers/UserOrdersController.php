@@ -11,17 +11,17 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-final class SellerOrdersController
+final class UserOrdersController
 {
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        $seller = type($request->user())->as(User::class);
+        $user = type($request->user())->as(User::class);
 
         $order = Order::create([
-            'seller_id' => $seller->id,
+            'orderer_id' => $user->id,
             'status' => OrderStatusEnum::Pending,
         ]);
 
