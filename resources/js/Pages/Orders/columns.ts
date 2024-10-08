@@ -7,6 +7,7 @@ import { Order } from '@/types'
 import { orderStatues } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
+import { formatDate } from '@/lib/date'
 
 export const columns: ColumnDef<Order>[] = [
   {
@@ -92,6 +93,7 @@ export const columns: ColumnDef<Order>[] = [
         column,
         title: 'التاريخ',
       }),
+    cell: ({ row }) => formatDate(row.original.updated_at_date, false),
     enableSorting: false,
   },
 ]

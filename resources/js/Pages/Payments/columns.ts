@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import { Payment } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { formatMoney } from '@/lib/money'
+import { formatDate } from '@/lib/date'
 
 export const columns: ColumnDef<Payment>[] = [
   {
@@ -60,5 +61,6 @@ export const columns: ColumnDef<Payment>[] = [
         column,
         title: 'التاريخ',
       }),
+    cell: ({ row }) => formatDate(row.original.created_at_date, false),
   },
 ]

@@ -104,7 +104,6 @@ export interface Card {
   name: string
   active: boolean
   price_for_consumer: number
-  //   price_for_seller: number
   notes: string
 }
 
@@ -118,6 +117,7 @@ export interface Transaction {
   type: 'payment' | 'order' | 'expense'
   status: 'معلق' | 'مكتمل' | 'مرجع' | ''
   created_at: string
+  created_at_date: string
 }
 
 interface Link {

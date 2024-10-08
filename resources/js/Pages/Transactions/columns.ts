@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import { Transaction } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatMoney } from '@/lib/money'
+import { formatDate } from '@/lib/date'
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -60,26 +61,6 @@ export const columns: ColumnDef<Transaction>[] = [
       ])
     },
   },
-  //   {
-  //     accessorKey: 'status',
-  //     header: ({ column }) =>
-  //       h(DataTableColumnHeader, {
-  //         column,
-  //         title: 'الحالة',
-  //       }),
-  //     cell: ({ row }) => {
-  //       const status = orderStatues.find(
-  //         (status: any) => status.value === row.getValue('status'),
-  //       )
-
-  //       if (!status) return null
-
-  //       return h('div', { class: 'flex items-center gap-2' }, [
-  //         status.icon && h(status.icon),
-  //         h('span', { class: ' text-muted-foreground' }, status.label),
-  //       ])
-  //     },
-  //   },
   {
     accessorKey: 'amount',
     header: ({ column }) =>
@@ -107,5 +88,6 @@ export const columns: ColumnDef<Transaction>[] = [
         column,
         title: 'التاريخ',
       }),
+    cell: ({ row }) => formatDate(row.original.created_at_date, false),
   },
 ]

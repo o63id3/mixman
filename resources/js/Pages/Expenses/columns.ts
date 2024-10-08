@@ -4,6 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { Expense } from '@/types'
 import { Link } from '@inertiajs/vue3'
+import { formatDate } from '@/lib/date'
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -59,5 +60,6 @@ export const columns: ColumnDef<Expense>[] = [
         column,
         title: 'التاريخ',
       }),
+    cell: ({ row }) => formatDate(row.original.created_at_date, false),
   },
 ]
