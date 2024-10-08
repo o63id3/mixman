@@ -61,6 +61,11 @@ defineProps<{
                     </th>
                     <th class="whitespace-nowrap border p-2 text-right">
                       الحزم
+                      <span
+                        class="text-xs font-normal leading-none tracking-wide"
+                      >
+                        (الكروت)
+                      </span>
                     </th>
                   </tr>
                 </thead>
@@ -77,9 +82,9 @@ defineProps<{
                     </td>
                     <td class="whitespace-nowrap border p-2">
                       {{ item.number_of_packages }}
-                      <span class="text-xs leading-none tracking-wide"
-                        >({{ item.number_of_cards_per_package }})</span
-                      >
+                      <span class="text-xs leading-none tracking-wide">
+                        ({{ item.number_of_cards_per_package }})
+                      </span>
                     </td>
                   </tr>
                 </tbody>
