@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\RoleEnum;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 
 final class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Filterable, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -101,6 +102,16 @@ final class User extends Authenticatable
     }
 
     /**
+     * Scope the users to users only.
+     */
+    public function scopeWithBalance(Builder $query): Builder
+    {
+        return $query->withSum(['transactions as balance' => function ($query) {
+            $query->whereHas('user', fn ($query) => $query->where('role', RoleEnum::Seller));
+        }], 'amount');
+    }
+
+    /**
      * Scope the users to managers only.
      */
     public function scopeBenefiter(Builder $query): Builder
@@ -122,6 +133,14 @@ final class User extends Authenticatable
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'recipient_id');
+    }
+
+    /**
+     * Get the seller region.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     /**

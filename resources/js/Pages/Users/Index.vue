@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { Paginator, User } from '@/types'
+import { Filters, Network, Paginator, User } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
 import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import { columns } from './columns'
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
+import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
   users: Paginator<User>
+  networks: Array<Network>
+  filters: Filters
+  sorts: string
   can: { create: boolean }
 }>()
 </script>
@@ -37,15 +40,25 @@ defineProps<{
     </template>
 
     <div class="space-y-4">
-      <DataTable :data="users.data" :columns="columns">
+      <DataTable
+        :data="users.data"
+        :columns="columns"
+        :initial-filters="filters"
+        :initial-sorts="sorts"
+      >
         <template
           v-if="$page.props.auth.user.role === 'ahmed'"
           #toolBar="{ table }"
         >
-          <DataTableToolbar :table="table" />
+          <Toolbar :table="table" :networks="networks" />
         </template>
       </DataTable>
-      <DataTablePagination :links="users.links" :meta="users.meta" />
+      <DataTablePagination
+        :links="users.links"
+        :meta="users.meta"
+        :initial-filters="filters"
+        :initial-sorts="sorts"
+      />
     </div>
   </AuthenticatedLayout>
 </template>

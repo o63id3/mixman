@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import { User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { active, roles } from '@/types/enums'
+import { formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -31,6 +32,13 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
+    id: 'network',
+    accessorKey: 'network.name',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'الشبكة' }),
+    enableSorting: false,
+  },
+  {
     accessorKey: 'role',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الصلاحية' }),
@@ -43,9 +51,23 @@ export const columns: ColumnDef<User>[] = [
 
       return h('div', { class: 'flex items-center gap-2' }, [
         role.icon && h(role.icon),
-        h('span', { class: ' text-muted-foreground' }, role.label),
+        h(
+          'span',
+          { class: ' text-muted-foreground' },
+          role.value === 'partner' && row.original.network
+            ? 'مدير مالي'
+            : role.label,
+        ),
       ])
     },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'balance',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'صافي الحساب' }),
+    cell: ({ row }) =>
+      row.original.balance ? `${formatMoney(row.original.balance)} شيكل` : '-',
     enableSorting: false,
   },
   {

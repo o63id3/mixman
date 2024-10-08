@@ -22,6 +22,7 @@ final class UserResource extends JsonResource
             'username' => $this->whenHas('username'),
             'active' => $this->whenHas('active'),
             'role' => $this->whenHas('role'),
+            'balance' => $this->whenHas('balance'),
             'contact_info' => $this->whenHas('contact_info'),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
             'percentage' => $this->whenHas('percentage', fn () => $this->percentage * 100),

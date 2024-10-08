@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,16 @@ final class Network extends Model
     }
 
     /**
+     * Scope the users to users only.
+     */
+    public function scopeWithBalance(Builder $query): Builder
+    {
+        return $query->withSum(['transactions as balance' => function ($query) {
+            $query->whereHas('user', fn ($query) => $query->whereIn('role', [RoleEnum::Ahmed, RoleEnum::Partner]));
+        }], 'amount');
+    }
+
+    /**
      * Get the network manager.
      */
     public function manager(): BelongsTo
@@ -76,6 +87,14 @@ final class Network extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(Expense::class);
+    }
+
+    /**
+     * Get the seller region.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     /**

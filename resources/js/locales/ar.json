@@ -24,6 +24,8 @@
     "recipient": "المستلم",
     "user": "الاسم",
     "description": "الوصف",
+    "role": "الصلاحية",
+    "internet_price_per_week": "سعر الانترنت أسبوعيا",
     "active": "الحالة"
   }
 }

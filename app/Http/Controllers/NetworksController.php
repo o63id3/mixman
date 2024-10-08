@@ -28,6 +28,7 @@ final class NetworksController
         $networks = Network::query()
             ->visibleTo($user)
             ->with('manager:id,name')
+            ->withBalance()
             ->latest()
             ->paginate(config('settings.pagination_size'));
 

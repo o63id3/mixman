@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
+use App\Http\Filters\UserFilter;
 use App\Http\Resources\UserResource;
 use App\Models\Network;
 use App\Models\User;
@@ -20,19 +21,25 @@ final class UsersController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): Response
+    public function index(Request $request, UserFilter $filter): Response
     {
         Gate::authorize('viewAny', User::class);
 
         $user = type($request->user())->as(User::class);
 
         $users = User::query()
+            ->with(['network'])
             ->visibleTo($user)
+            ->withBalance()
+            ->filter($filter, $user)
             ->latest()
             ->paginate(config('settings.pagination_size'));
 
         return Inertia::render('Users/Index', [
             'users' => UserResource::collection($users),
+            'networks' => Network::visibleTo($user)->get(['id', 'name']),
+            'filters' => $filter->filters,
+            'sorts' => $filter->sorts,
             'can' => [
                 'create' => Gate::allows('create', User::class),
             ],

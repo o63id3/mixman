@@ -19,6 +19,7 @@ export interface Network {
   manager?: User
   partners?: Array<User>
   internet_price_per_week: number
+  balance: number
   active: boolean
 }
 
