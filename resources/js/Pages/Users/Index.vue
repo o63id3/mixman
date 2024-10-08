@@ -38,7 +38,10 @@ defineProps<{
 
     <div class="space-y-4">
       <DataTable :data="users.data" :columns="columns">
-        <template v-if="$page.props.auth.user.admin" #toolBar="{ table }">
+        <template
+          v-if="$page.props.auth.user.role === 'ahmed'"
+          #toolBar="{ table }"
+        >
           <DataTableToolbar :table="table" />
         </template>
       </DataTable>

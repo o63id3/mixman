@@ -7,7 +7,7 @@ export interface User {
   active: boolean
   contact_info: string
   percentage: number
-  role: string
+  role: 'ahmed' | 'partner' | 'seller'
   telegram: string
   notes: string
   share: number

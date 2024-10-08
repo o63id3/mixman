@@ -12,11 +12,11 @@ import {
 } from 'lucide-vue-next'
 import { User } from '@/types'
 import { h } from 'vue'
-import { formatMoney } from '@/lib/money'
 import CardDescription from '@/Components/ui/card/CardDescription.vue'
 import CardFooter from '@/Components/ui/card/CardFooter.vue'
 import { toast } from '@/Components/ui/toast'
 import Button from '@/Components/ui/button/Button.vue'
+import { formatMoney } from '@/lib/formatters'
 
 const props = defineProps<{
   total_debuts: number
@@ -69,19 +69,23 @@ const groups: Array<Group> = [
         value: h('span', props.max_debut_seller?.seller?.name ?? ''),
         description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: user.admin,
+        visible: true,
       },
       {
         title: 'الطلبات المعلقة',
-        value: user.admin
-          ? h(
-              Link,
-              { href: `/orders?filter[status]=معلق`, class: 'hover:underline' },
-              {
-                default: () => `${props.number_of_pending_orders} طلب`,
-              },
-            )
-          : h('span', `${props.number_of_pending_orders} طلب`),
+        value:
+          user.role !== 'seller'
+            ? h(
+                Link,
+                {
+                  href: `/orders?filter[status]=معلق`,
+                  class: 'hover:underline',
+                },
+                {
+                  default: () => `${props.number_of_pending_orders} طلب`,
+                },
+              )
+            : h('span', `${props.number_of_pending_orders} طلب`),
         icon: h(CircleDashed, { class: 'text-yellow-500' }),
         visible: true,
       },
@@ -89,7 +93,7 @@ const groups: Array<Group> = [
         title: 'الباعة',
         value: h('span', `${props.users_count} بائع`),
         icon: h(UserRound),
-        visible: user.admin,
+        visible: true,
       },
     ],
   },
@@ -100,14 +104,14 @@ const groups: Array<Group> = [
         title: 'صافي المدخول',
         value: h('span', `${formatMoney(props.total_income)} شيكل`),
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: user.admin,
+        visible: true,
       },
       {
         title: 'أكبر مدخول منطقة',
         value: h('span', props.max_region_income?.region ?? ''),
         description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: user.admin,
+        visible: true,
       },
       {
         title: 'أكبر مدخول بائع',
@@ -124,7 +128,7 @@ const groups: Array<Group> = [
         ]),
         description: `${formatMoney(props.max_seller_income?.amount)} شيكل`,
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: user.admin,
+        visible: true,
       },
 
       {
