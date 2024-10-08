@@ -8,7 +8,6 @@ import {
   CircleDashed,
   CircleFadingArrowUp,
   DollarSign,
-  UserRound,
 } from 'lucide-vue-next'
 import { User } from '@/types'
 import { h } from 'vue'
@@ -23,19 +22,10 @@ const props = defineProps<{
   number_of_pending_orders: number
   number_of_returned_orders_last_week: number
   number_of_completed_orders_last_week: number
-  max_debut_seller?: {
-    seller: User
+  max_network_income?: {
+    network: string
     amount: number
   }
-  max_region_income?: {
-    region: string
-    amount: number
-  }
-  max_seller_income?: {
-    seller: string
-    amount: number
-  }
-  users_count?: number
   total_income?: number
 }>()
 
@@ -65,20 +55,13 @@ const groups: Array<Group> = [
         visible: props.total_debuts !== 0,
       },
       {
-        title: 'أكبر دين',
-        value: h('span', props.max_debut_seller?.seller?.name ?? ''),
-        description: `الدين المستحق ${formatMoney(props.max_debut_seller?.amount)} شيكل`,
-        icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: true,
-      },
-      {
         title: 'الطلبات المعلقة',
         value:
           user.role !== 'seller'
             ? h(
                 Link,
                 {
-                  href: `/orders?filter[status]=معلق`,
+                  href: `/orders?filter[status]=معلق&filter[manager]=${user.id}`,
                   class: 'hover:underline',
                 },
                 {
@@ -87,12 +70,6 @@ const groups: Array<Group> = [
               )
             : h('span', `${props.number_of_pending_orders} طلب`),
         icon: h(CircleDashed, { class: 'text-yellow-500' }),
-        visible: true,
-      },
-      {
-        title: 'الباعة',
-        value: h('span', `${props.users_count} بائع`),
-        icon: h(UserRound),
         visible: true,
       },
     ],
@@ -104,33 +81,15 @@ const groups: Array<Group> = [
         title: 'صافي المدخول',
         value: h('span', `${formatMoney(props.total_income)} شيكل`),
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: true,
+        visible: user.role !== 'seller',
       },
       {
-        title: 'أكبر مدخول منطقة',
-        value: h('span', props.max_region_income?.region ?? ''),
-        description: `${formatMoney(props.max_region_income?.amount)} شيكل`,
+        title: 'أكبر مدخول شبكة',
+        value: h('span', props.max_network_income?.network ?? ''),
+        description: `${formatMoney(props.max_network_income?.amount)} شيكل`,
         icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: true,
+        visible: user.role !== 'seller',
       },
-      {
-        title: 'أكبر مدخول بائع',
-        value: h('div', [
-          h('span', props.max_seller_income?.seller),
-          // h(
-          //   'span',
-          //   {
-          //     class:
-          //       'text-xs tracking-wide font-normal mr-1 text-muted-foreground',
-          //   },
-          //   `(${props.max_seller_income?.seller})`,
-          // ),
-        ]),
-        description: `${formatMoney(props.max_seller_income?.amount)} شيكل`,
-        icon: h(DollarSign, { class: 'text-green-500' }),
-        visible: true,
-      },
-
       {
         title: 'الطلبات المكتملة',
         value: h('span', `${props.number_of_completed_orders_last_week} طلب`),

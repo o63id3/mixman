@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +36,16 @@ final class Payment extends Model
         }
 
         return $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id);
+    }
+
+    /**
+     * Scope the payments depending on user role.
+     */
+    public function scopeVisibleToAhmed(Builder $query): Builder
+    {
+        return $query->whereHas('recipient', function (Builder $query) {
+            $query->where('role', RoleEnum::Ahmed);
+        });
     }
 
     /**

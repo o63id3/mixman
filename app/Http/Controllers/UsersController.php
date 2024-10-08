@@ -89,15 +89,17 @@ final class UsersController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user): Response
+    public function edit(Request $request, User $user): Response
     {
         Gate::authorize('update', $user);
+
+        $auth = type($request->user())->as(User::class);
 
         $user->load('network');
 
         return Inertia::render('Users/Edit', [
             'user' => UserResource::single($user),
-            'networks' => Network::all('id', 'name'),
+            'networks' => Network::visibleTo($auth)->get(['id', 'name']),
             'can' => [
                 'update' => Gate::allows('update', $user),
                 'delete' => Gate::allows('delete', $user),

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Network;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\Region;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 final class DashboardService
 {
@@ -28,39 +26,22 @@ final class DashboardService
     }
 
     /**
-     * Get the max seller debut.
+     * Get the max network income between two dates.
      */
-    public function getMaxDebutSeller(): array
+    public function getMaxNetworkIncome($start = null, $end = null): array
     {
-        $seller = Transaction::query()
-            ->select(['seller_id', DB::raw('SUM(amount) as total_amount')])
-            ->with('seller')
-            ->groupBy('seller_id')
-            ->orderBy('total_amount')
-            ->having('total_amount', '<', 0)
+        $network = Network::query()
+            ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
+                $query->when($start && $end, fn () => $query
+                    ->whereBetween('payments.created_at', [$start, $end]))
+                    ->visibleToAhmed();
+            }], 'amount')
+            ->orderByDesc('total_amount')
             ->first();
 
         return [
-            'seller' => $seller ? $seller->seller : null,
-            'amount' => $seller ? $seller->total_amount : 0,
-        ];
-    }
-
-    /**
-     * Get the max region income between two dates.
-     */
-    public function getMaxRegionIncome($start = null, $end = null): array
-    {
-        // $region = Region::query()
-        //     ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
-        //         $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
-        //     }], 'amount')
-        //     ->orderByDesc('total_amount')
-        //     ->first();
-
-        return [
-            // 'region' => $region->name,
-            // 'amount' => $region ? $region->total_amount : 0,
+            'network' => $network->name,
+            'amount' => $network ? $network->total_amount : 0,
         ];
     }
 
@@ -69,39 +50,13 @@ final class DashboardService
      */
     public function getTotalIncome($start = null, $end = null): float
     {
+
         $income = (float) Payment::query()
+            ->visibleToAhmed()
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
             ->sum('amount');
 
         return $income;
-    }
-
-    /**
-     * Get the users count.
-     */
-    public function getSellersCount(): int
-    {
-        return 0;
-    }
-
-    /**
-     * Get the max region income between two dates.
-     */
-    public function getMaxSellerIncome($start = null, $end = null): array
-    {
-        // $seller = Seller::query()
-        //     ->withSum(['payments as total_amount' => function ($query) use ($start, $end) {
-        //         $query->when($start && $end, fn () => $query->whereBetween('payments.created_at', [$start, $end]));
-        //     }], 'amount')
-        //     ->orderByDesc('total_amount')
-        //     ->first();
-
-        // return [
-        //     'seller' => $seller->name,
-        //     'amount' => $seller ? $seller->total_amount : 0,
-        // ];
-
-        return [];
     }
 
     /**
@@ -112,14 +67,10 @@ final class DashboardService
         $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
 
-        return Cache::remember('dashboard_admin_statistics', now()->addDay(), fn () => [
-            'max_debut_seller' => $this->getMaxDebutSeller(),
-            'max_region_income' => $this->getMaxRegionIncome($startOfLastWeek, $endOfLastWeek),
-            'max_seller_income' => $this->getMaxSellerIncome($startOfLastWeek, $endOfLastWeek),
-            'users_count' => $this->getSellersCount(),
+        return [
+            'max_network_income' => $this->getMaxNetworkIncome($startOfLastWeek, $endOfLastWeek),
             'total_income' => $this->getTotalIncome($startOfLastWeek, $endOfLastWeek),
-        ]
-        );
+        ];
     }
 
     /**
@@ -129,6 +80,10 @@ final class DashboardService
     {
         return (float) Transaction::query()
             ->visibleTo($user)
+            ->when($user->isAhmed(), fn ($query) => $query->where(fn ($query) => $query
+                ->where('manager_id', $user->id)
+                ->orWhere('user_id', $user->id)
+            ))
             ->sum('amount');
     }
 
@@ -139,6 +94,7 @@ final class DashboardService
     {
         return Order::query()
             ->visibleTo($user)
+            ->when($user->isAhmed(), fn ($query) => $query->where('manager_id', $user->id))
             ->pending()
             ->count();
     }
@@ -148,12 +104,12 @@ final class DashboardService
      */
     public function getReturnedOrdersCount($user, $start = null, $end = null): int
     {
-        return (int) Cache::remember('getReturnedOrdersCount', now()->addDay(), fn () => Order::query()
+        return Order::query()
             ->visibleTo($user)
-            ->returned()
+            ->when($user->isAhmed(), fn ($query) => $query->where('manager_id', $user->id))
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
-            ->count()
-        );
+            ->returned()
+            ->count();
     }
 
     /**
@@ -161,12 +117,12 @@ final class DashboardService
      */
     public function getCompletedOrdersCount($user, $start = null, $end = null): int
     {
-        return (int) Cache::remember('getCompletedOrdersCount', now()->addDay(), fn () => Order::query()
+        return Order::query()
             ->visibleTo($user)
-            ->completed()
+            ->when($user->isAhmed(), fn ($query) => $query->where('manager_id', $user->id))
             ->when($start && $end, fn ($query) => $query->whereBetween('created_at', [$start, $end]))
-            ->count()
-        );
+            ->completed()
+            ->count();
     }
 
     /**
@@ -176,8 +132,6 @@ final class DashboardService
     {
         $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
-
-        Cache::remember('number_of_completed_orders_last_week', now()->addDay(), fn () => $this->getCompletedOrdersCount($user, $startOfLastWeek, $endOfLastWeek));
 
         return [
             'total_debuts' => $this->getTotalDebut($user),
