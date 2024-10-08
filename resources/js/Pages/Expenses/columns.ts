@@ -4,7 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { Expense } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { formatDate } from '@/lib/formatters'
+import { formatDate, formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -51,7 +51,7 @@ export const columns: ColumnDef<Expense>[] = [
         column,
         title: 'المبلغ',
       }),
-    cell: ({ row }) => `${row.getValue('amount')} شيكل`,
+    cell: ({ row }) => `${formatMoney(row.original.amount)} شيكل`,
   },
   {
     accessorKey: 'created_at',

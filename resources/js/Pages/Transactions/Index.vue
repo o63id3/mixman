@@ -24,7 +24,7 @@ defineProps<{
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
         الحركات
-        <span class="text-xs tracking-wide">
+        <span class="text-xs font-normal tracking-wide">
           ({{ transactions.meta.total }})
         </span>
       </h2>

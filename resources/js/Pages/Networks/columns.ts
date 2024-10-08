@@ -5,6 +5,7 @@ import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader
 import { Network } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { active } from '@/types/enums'
+import { formatMoney } from '@/lib/formatters'
 
 export function columns(canUpdate: boolean): ColumnDef<Network>[] {
   const columns: ColumnDef<Network>[] = [
@@ -36,6 +37,8 @@ export function columns(canUpdate: boolean): ColumnDef<Network>[] {
       accessorKey: 'internet_price_per_week',
       header: ({ column }) =>
         h(DataTableColumnHeader, { column, title: 'سعر الانترنت أسبوعيا' }),
+      cell: ({ row }) =>
+        `${formatMoney(row.original.internet_price_per_week)} شيكل`,
       enableSorting: false,
     },
     {
