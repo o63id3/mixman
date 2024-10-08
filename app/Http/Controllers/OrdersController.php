@@ -6,9 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
 use App\Http\Filters\OrderFilter;
-use App\Http\Resources\CardResource;
 use App\Http\Resources\OrderResource;
-use App\Http\Resources\UserResource;
 use App\Models\Card;
 use App\Models\Network;
 use App\Models\Order;
@@ -64,7 +62,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         return Inertia::render('Orders/Create', [
-            'users' => User::visibleTo($user)->whereNotNull('network_id')->get(['id', 'name']),
+            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
             'cards' => Card::all('id', 'name'),
             'statuses' => OrderStatusEnum::cases(),
         ]);
@@ -115,25 +113,28 @@ final class OrdersController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order): Response
+    public function edit(Request $request, Order $order): Response
     {
         Gate::authorize('update', $order);
+
+        $user = type($request->user())->as(User::class);
 
         $order->load(['orderer', 'manager', 'items', 'files', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Edit', [
-            'users' => fn () => Gate::allows('update', $order) ? UserResource::collection(User::get()) : null,
             'order' => OrderResource::single($order),
-            'statuses' => OrderStatusEnum::cases(),
-            'cards' => fn () => Gate::allows('update', $order) ? CardResource::collection(Card::get()) : null,
+            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'cards' => Card::get(['id', 'name']),
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),
-                'addItem' => Gate::allows('createItems', $order),
+                'items' => [
+                    'create' => Gate::allows('createItems', $order),
+                ],
                 'files' => [
-                    'create' => Gate::allows('create', $order),
+                    'create' => Gate::allows('createFiles', $order),
                 ],
             ],
         ]);
