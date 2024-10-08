@@ -23,7 +23,8 @@ final class ExpensePolicy
     public function view(User $user, Expense $expense): bool
     {
         return $user->isAhmed()
-            || $expense->user_id === $user->id;
+            || $expense->user_id === $user->id
+            || $expense->network_id === $user->network_id;
     }
 
     /**

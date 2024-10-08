@@ -5,6 +5,7 @@ import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilt
 
 import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 import DataTableDateRangeFilter from '@/Components/data-table/DataTableDateRangeFilter.vue'
+import { usePage } from '@inertiajs/vue3'
 
 interface DataTableToolbarProps {
   table: Table<Transaction>
@@ -12,6 +13,8 @@ interface DataTableToolbarProps {
   managers: Array<User>
   networks: Array<Network>
 }
+
+const user = usePage().props.auth.user
 
 defineProps<DataTableToolbarProps>()
 </script>
@@ -42,7 +45,7 @@ defineProps<DataTableToolbarProps>()
         "
       />
       <DataTableFacetedFilter
-        v-if="table.getColumn('network')"
+        v-if="table.getColumn('network') && user.role === 'ahmed'"
         :column="table.getColumn('network')"
         title="الشبكة"
         :options="

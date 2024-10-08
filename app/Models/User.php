@@ -87,7 +87,7 @@ final class User extends Authenticatable
             return $query;
         }
 
-        return $query->where('network_id', $user->network_id)->where('role', RoleEnum::Seller);
+        return $query->where('network_id', $user->network_id);
     }
 
     /**

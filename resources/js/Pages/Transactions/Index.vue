@@ -24,9 +24,9 @@ defineProps<{
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
         الحركات
-        <span class="text-xs tracking-wide"
-          >({{ transactions.meta.total }})</span
-        >
+        <span class="text-xs tracking-wide">
+          ({{ transactions.meta.total }})
+        </span>
       </h2>
     </template>
 
@@ -38,7 +38,7 @@ defineProps<{
         :initialSorts="sorts"
       >
         <template
-          v-if="$page.props.auth.user.role === 'ahmed'"
+          v-if="$page.props.auth.user.role !== 'seller'"
           #toolBar="{ table }"
         >
           <Toolbar

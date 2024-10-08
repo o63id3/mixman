@@ -51,7 +51,7 @@ defineProps<{
         :initial-sorts="sorts"
       >
         <template
-          v-if="$page.props.auth.user.role === 'ahmed'"
+          v-if="$page.props.auth.user.role !== 'seller'"
           #toolBar="{ table }"
         >
           <Toolbar

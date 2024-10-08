@@ -56,7 +56,7 @@ const filterFunction = (val: any[], term: string) => {
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" size="sm" class="h-8 border-dashed">
-        <div class="flex">
+        <div class="flex items-center">
           <PlusCircledIcon class="h-4 w-4 ltr:mr-2 rtl:ml-2" />
           {{ title }}
           <template v-if="selectedValues.size > 0">

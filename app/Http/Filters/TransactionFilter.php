@@ -33,6 +33,10 @@ final class TransactionFilter extends QueryFilter
      */
     public function network($values): Builder
     {
+        if ($this->user->role !== 'ahmed') {
+            return $this->builder;
+        }
+
         $ides = explode(',', $values);
 
         return $this->builder->whereIn('network_id', $ides);

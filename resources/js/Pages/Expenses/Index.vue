@@ -41,7 +41,7 @@ defineProps<{
     <div class="space-y-4">
       <DataTable :data="expenses.data" :columns="columns">
         <template
-          v-if="$page.props.auth.user.role === 'ahmed'"
+          v-if="$page.props.auth.user.role !== 'seller'"
           #toolBar="{ table }"
         >
           <Toolbar :table="table" :managers="managers" :networks="networks" />

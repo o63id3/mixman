@@ -27,6 +27,11 @@ abstract class QueryFilter
     protected Builder $builder;
 
     /**
+     * Authenticated user.
+     */
+    protected User $user;
+
+    /**
      * Construct the request field.
      */
     public function __construct(
@@ -88,10 +93,11 @@ abstract class QueryFilter
      */
     final public function apply(Builder $builder, User $user): Builder
     {
-        if (! $user->isAhmed()) {
+        if (! $user->isManager()) {
             return $builder;
         }
 
+        $this->user = $user;
         $this->builder = $builder;
 
         foreach ($this->request->all() as $key => $values) {
