@@ -46,10 +46,11 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
 
 const { submit, loading } = useSubmit(
   route('payments.update', props.payment.id),
-  undefined,
-  setErrors,
-  'تم تعديل الدفعة المالية',
-  'patch',
+  {
+    method: 'patch',
+    onSuccess: () => toast({ title: 'تم تعديل الدفعة المالية' }),
+    onError: (errors) => setErrors(errors),
+  },
 )
 const onSubmit = handleSubmit(submit)
 </script>

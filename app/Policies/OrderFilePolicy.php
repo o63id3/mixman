@@ -22,6 +22,8 @@ final class OrderFilePolicy
      */
     public function delete(User $user, OrderFile $file): bool
     {
+        $file->load('order');
+
         return $user->can('update', $file->order);
     }
 }

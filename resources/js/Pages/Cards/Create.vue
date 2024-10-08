@@ -9,6 +9,7 @@ import * as z from 'zod'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import CardForm from './Partials/CardForm.vue'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -24,12 +25,14 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(
-  route('cards.store'),
-  resetForm,
-  setErrors,
-  'تم إنشاء الكرت',
-)
+const { submit, loading } = useSubmit(route('cards.store'), {
+  method: 'post',
+  onSuccess: () => {
+    toast({ title: 'تم إنشاء الكرت' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

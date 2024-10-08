@@ -10,6 +10,7 @@ import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 import { Network } from '@/types'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 defineProps<{
   networks: Array<Network>
@@ -27,12 +28,14 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(
-  route('expenses.store'),
-  resetForm,
-  setErrors,
-  'تم إنشاء المصروف',
-)
+const { submit, loading } = useSubmit(route('expenses.store'), {
+  method: 'post',
+  onSuccess: () => {
+    toast({ title: 'تم إنشاء المصروف' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

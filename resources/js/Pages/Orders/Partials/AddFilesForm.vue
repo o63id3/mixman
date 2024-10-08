@@ -14,10 +14,13 @@ import MultiFileUploader from '@/Components/file-upload/MultiFileUploader.vue'
 import { useSubmit } from '@/Composables/submit'
 import { Order } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+import { toast } from '@/Components/ui/toast'
 
 const props = defineProps<{
   order: Order
 }>()
+
+const emit = defineEmits(['success'])
 
 const formSchema = toTypedSchema(
   z.object({
@@ -34,7 +37,7 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit, setErrors, resetField, meta } = useForm({
+const { handleSubmit, setErrors, resetForm, meta } = useForm({
   validationSchema: formSchema,
   initialValues: {
     files: [],
@@ -43,9 +46,15 @@ const { handleSubmit, setErrors, resetField, meta } = useForm({
 
 const { submit, loading } = useSubmit(
   route('order-files.store', props.order.id),
-  resetField,
-  setErrors,
-  'تم إضافة الملفات',
+  {
+    method: 'post',
+    onSuccess: () => {
+      toast({ title: 'تم إضافة الملفات' })
+      resetForm()
+      emit('success')
+    },
+    onError: (errors) => setErrors(errors),
+  },
 )
 const onSubmit = handleSubmit(submit)
 </script>

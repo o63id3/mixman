@@ -10,6 +10,7 @@ import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import OrderForm from './Partials/OrderForm.vue'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 const props = defineProps<{
   users: Array<User>
@@ -46,12 +47,14 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   },
 })
 
-const { submit, loading } = useSubmit(
-  route('orders.store'),
-  resetForm,
-  setErrors,
-  'تم إنشاء الطلب',
-)
+const { submit, loading } = useSubmit(route('orders.store'), {
+  method: 'post',
+  onSuccess: () => {
+    toast({ title: 'تم إنشاء الطلب' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

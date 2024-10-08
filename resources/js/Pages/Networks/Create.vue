@@ -9,6 +9,7 @@ import * as z from 'zod'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import NetworkForm from './Partials/NetworkForm.vue'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -23,12 +24,14 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(
-  route('networks.store'),
-  resetForm,
-  setErrors,
-  'تم إنشاء الشبكة',
-)
+const { submit, loading } = useSubmit(route('networks.store'), {
+  method: 'post',
+  onSuccess: () => {
+    toast({ title: 'تم إنشاء الشبكة' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

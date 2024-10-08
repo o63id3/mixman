@@ -29,7 +29,7 @@ const adding = ref<boolean>(false)
       </Button>
     </div>
 
-    <AddFilesForm v-if="adding" :order="order" />
+    <AddFilesForm v-if="adding" :order="order" @success="adding = false" />
     <DataTable v-else :data="order.files" :columns="columns" />
   </div>
 </template>

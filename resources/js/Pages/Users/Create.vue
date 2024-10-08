@@ -10,6 +10,7 @@ import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import UserForm from './Partials/UserForm.vue'
 import { Network } from '@/types'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 defineProps<{
   networks: Array<Network>
@@ -41,12 +42,11 @@ const { handleSubmit, resetForm, setErrors, values } = useForm({
   },
 })
 
-const { submit, loading } = useSubmit(
-  route('users.store'),
-  resetForm,
-  setErrors,
-  'تم إنشاء المستخدم',
-)
+const { submit, loading } = useSubmit(route('users.store'), {
+  method: 'post',
+  onSuccess: () => toast({ title: 'تم إنشاء المستخدم' }),
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

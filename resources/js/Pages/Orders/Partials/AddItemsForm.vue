@@ -16,6 +16,7 @@ import { toast } from '@/Components/ui/toast'
 import { Card, Order } from '@/types'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircleIcon } from 'lucide-vue-next'
+import { useSubmit } from '@/Composables/submit'
 
 const props = defineProps<{
   order: Order
@@ -36,11 +37,7 @@ const addItemsSchema = toTypedSchema(
   }),
 )
 
-const {
-  handleSubmit: handleAddItems,
-  setErrors: setItemsErrors,
-  resetForm: resetAddItemsForm,
-} = useForm({
+const { handleSubmit, setErrors, resetForm } = useForm({
   validationSchema: addItemsSchema,
   initialValues: {
     cards: [
@@ -53,21 +50,23 @@ const {
   },
 })
 
-const onAddItemsSubmit = handleAddItems((values) => {
-  router.post(route('order-items.store', props.order.id), values, {
-    preserveScroll: true,
+const { submit, loading } = useSubmit(
+  route('order-items.store', props.order.id),
+  {
+    method: 'post',
     onSuccess: () => {
       toast({ title: 'تم إضافة الرزم' })
-      resetAddItemsForm()
+      resetForm()
       emit('success')
     },
-    onError: (errors) => setItemsErrors(errors),
-  })
-})
+    onError: (errors) => setErrors(errors),
+  },
+)
+const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <form class="space-y-6" @submit="onAddItemsSubmit">
+  <form class="space-y-6" @submit="onSubmit">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <FormField v-slot="{ componentField }" name="cards">
         <FormItem class="col-span-full">
@@ -103,6 +102,8 @@ const onAddItemsSubmit = handleAddItems((values) => {
         </FormItem>
       </FormField>
     </div>
-    <Button type="submit"> إضافة </Button>
+    <Button type="submit" :disabled="loading" :loading="loading">
+      إضافة
+    </Button>
   </form>
 </template>

@@ -10,6 +10,7 @@ import { User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 defineProps<{
   users: Array<User>
@@ -27,12 +28,14 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(
-  route('payments.store'),
-  resetForm,
-  setErrors,
-  'تم إدخال الدفعة المالية',
-)
+const { submit, loading } = useSubmit(route('payments.store'), {
+  method: 'post',
+  onSuccess: () => {
+    toast({ title: 'تم إدخال الدفعة المالية' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

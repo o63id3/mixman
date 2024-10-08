@@ -13,6 +13,7 @@ import { Network, User } from '@/types'
 import { AlertCircle } from 'lucide-vue-next'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import { useSubmit } from '@/Composables/submit'
+import { toast } from '@/Components/ui/toast'
 
 defineProps<{
   network: Network
@@ -34,12 +35,14 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(
-  route('network.partners.store'),
-  resetForm,
-  setErrors,
-  'تم إضافة الشريك',
-)
+const { submit, loading } = useSubmit(route('network.partners.store'), {
+  method: 'patch',
+  onSuccess: () => {
+    toast({ title: 'تم إضافة الشريك' })
+    resetForm()
+  },
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

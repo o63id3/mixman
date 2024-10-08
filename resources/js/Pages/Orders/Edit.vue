@@ -54,14 +54,11 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
     notes: props.order.notes ?? undefined,
   },
 })
-
-const { submit, loading } = useSubmit(
-  route('orders.update', props.order.id),
-  undefined,
-  setErrors,
-  'تم تعديل الطلب',
-  'patch',
-)
+const { submit, loading } = useSubmit(route('orders.update', props.order.id), {
+  method: 'patch',
+  onSuccess: () => toast({ title: 'تم تعديل الطلب' }),
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

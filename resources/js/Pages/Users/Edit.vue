@@ -56,13 +56,11 @@ const { handleSubmit, setErrors, values } = useForm({
   },
 })
 
-const { submit, loading } = useSubmit(
-  route('users.update', props.user.id),
-  undefined,
-  setErrors,
-  'تم تعديل المستخدم',
-  'patch',
-)
+const { submit, loading } = useSubmit(route('users.update', props.user.id), {
+  method: 'patch',
+  onSuccess: () => toast({ title: 'تم تعديل المستخدم' }),
+  onError: (errors) => setErrors(errors),
+})
 const onSubmit = handleSubmit(submit)
 </script>
 

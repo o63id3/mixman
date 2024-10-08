@@ -45,10 +45,11 @@ const { handleSubmit, setErrors } = useForm({
 
 const { submit, loading } = useSubmit(
   route('networks.update', props.network.id),
-  undefined,
-  setErrors,
-  'تم تعديل الشبكة',
-  'patch',
+  {
+    method: 'patch',
+    onSuccess: () => toast({ title: 'تم تعديل الشبكة' }),
+    onError: (errors) => setErrors(errors),
+  },
 )
 const onSubmit = handleSubmit(submit)
 </script>
