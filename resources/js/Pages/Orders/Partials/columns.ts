@@ -3,8 +3,8 @@ import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { OrderItem } from '@/types'
-import { formatMoney } from '@/lib/money'
 import OrderItemsRowActions from './OrderItemsRowActions.vue'
+import { formatMoney } from '@/lib/formatters'
 
 export function columns(canDelete: boolean): ColumnDef<OrderItem>[] {
   const columns: ColumnDef<OrderItem>[] = [

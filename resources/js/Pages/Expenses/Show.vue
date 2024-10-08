@@ -4,8 +4,7 @@ import { Head } from '@inertiajs/vue3'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
 import { Expense } from '@/types'
-import { formatMoney } from '@/lib/money'
-import { formatDate } from '@/lib/date'
+import { formatDate, formatMoney } from '@/lib/formatters'
 
 defineProps<{
   expense: Expense

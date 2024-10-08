@@ -7,12 +7,6 @@ import { Link } from '@inertiajs/vue3'
 import { active, roles } from '@/types/enums'
 
 export const columns: ColumnDef<User>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
@@ -54,12 +48,6 @@ export const columns: ColumnDef<User>[] = [
     },
     enableSorting: false,
   },
-  //   {
-  //     accessorKey: 'telegram',
-  //     header: ({ column }) =>
-  //       h(DataTableColumnHeader, { column, title: 'حساب التلغرام' }),
-  //     enableSorting: false,
-  //   },
   {
     accessorKey: 'active',
     header: ({ column }) =>

@@ -7,9 +7,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
 import DataTable from '@/Components/data-table/DataTable.vue'
 import { columns } from './Partials/filesColumns'
-import { formatDate } from '@/lib/date'
 import { orderStatues } from '@/types/enums'
-import { formatMoney } from '@/lib/money'
+import { formatDate, formatMoney } from '@/lib/formatters'
 
 defineProps<{
   order: Order

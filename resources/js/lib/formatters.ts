@@ -13,3 +13,9 @@ export function formatDate(date: string, withTime: boolean = true): string {
 
   return new Date(date).toLocaleString('ar-US', options)
 }
+
+export function formatMoney(money?: number): string {
+  if (!money) return ''
+
+  return new Intl.NumberFormat('en-US').format(money)
+}

@@ -4,8 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { Payment } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { formatMoney } from '@/lib/money'
-import { formatDate } from '@/lib/date'
+import { formatDate, formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<Payment>[] = [
   {

@@ -2,18 +2,10 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import CardsRowActions from './Partials/CardsRowActions.vue'
 import { Card } from '@/types'
-import { active } from '@/types/enums'
 import { Link } from '@inertiajs/vue3'
 
 export const columns: ColumnDef<Card>[] = [
-  //   {
-  //     accessorKey: 'id',
-  //     header: ({ column }) => h(DataTableColumnHeader, { column, title: '#' }),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
   {
     accessorKey: 'name',
     header: ({ column }) =>
@@ -42,16 +34,6 @@ export const columns: ColumnDef<Card>[] = [
     enableSorting: false,
   },
   //   {
-  //     accessorKey: 'price_for_seller',
-  //     header: ({ column }) =>
-  //       h(DataTableColumnHeader, {
-  //         column,
-  //         title: 'السعر للبائع',
-  //       }),
-  //     cell: ({ row }) => `${row.getValue('price_for_seller')} شيكل`,
-  //     enableSorting: false,
-  //   },
-  //   {
   //     accessorKey: 'active',
   //     header: ({ column }) =>
   //       h(DataTableColumnHeader, {
@@ -73,9 +55,5 @@ export const columns: ColumnDef<Card>[] = [
   //     },
   //     enableSorting: false,
   //     enableHiding: false,
-  //   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => h(CardsRowActions, { row }),
   //   },
 ]

@@ -4,7 +4,7 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { Expense } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { formatDate } from '@/lib/date'
+import { formatDate } from '@/lib/formatters'
 
 export const columns: ColumnDef<Expense>[] = [
   {

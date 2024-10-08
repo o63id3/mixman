@@ -2,12 +2,10 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import OrdersRowActions from './Partials/OrdersRowActions.vue'
 import { Order } from '@/types'
 import { orderStatues } from '@/types/enums'
-import { formatMoney } from '@/lib/money'
 import { Link } from '@inertiajs/vue3'
-import { formatDate } from '@/lib/date'
+import { formatDate, formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<Order>[] = [
   {
