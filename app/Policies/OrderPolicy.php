@@ -77,6 +77,6 @@ final class OrderPolicy
      */
     public function createFiles(User $user, Order $order): bool
     {
-        return $this->update($user, $order);
+        return $user->isAhmed() && $this->update($user, $order);
     }
 }
