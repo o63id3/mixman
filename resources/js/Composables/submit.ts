@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { toast } from '../ui/toast'
+import { toast } from '@/Components/ui/toast'
 
 export function useSubmit(
   href: string,

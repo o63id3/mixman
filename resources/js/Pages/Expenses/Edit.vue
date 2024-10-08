@@ -13,7 +13,7 @@ import DeleteLink from '@/Components/links/DeleteLink.vue'
 
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 import { Expense, Network } from '@/types'
 import { AlertCircle } from 'lucide-vue-next'

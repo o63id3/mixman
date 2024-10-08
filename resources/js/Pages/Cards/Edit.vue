@@ -11,7 +11,7 @@ import { Card } from '@/types'
 import CardForm from './Partials/CardForm.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 const props = defineProps<{
   card: Card

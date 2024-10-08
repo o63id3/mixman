@@ -14,7 +14,7 @@ import DeleteLink from '@/Components/links/DeleteLink.vue'
 
 import PaymentForm from './Partials/PaymentForm.vue'
 
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 import { Payment, User } from '@/types'
 import { AlertCircle } from 'lucide-vue-next'

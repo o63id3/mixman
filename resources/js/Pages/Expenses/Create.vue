@@ -9,7 +9,7 @@ import * as z from 'zod'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 import { Network } from '@/types'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 defineProps<{
   networks: Array<Network>

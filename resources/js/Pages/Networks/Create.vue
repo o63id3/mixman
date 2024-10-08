@@ -8,7 +8,7 @@ import * as z from 'zod'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import NetworkForm from './Partials/NetworkForm.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 const formSchema = toTypedSchema(
   z.object({

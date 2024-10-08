@@ -16,7 +16,7 @@ import { AlertCircle } from 'lucide-vue-next'
 
 import OrderForm from './Partials/OrderForm.vue'
 import CardsSection from './Partials/CardsSection.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 import { Card, Order, User } from '@/types'
 import FilesSection from './Partials/FilesSection.vue'
@@ -24,7 +24,6 @@ import FilesSection from './Partials/FilesSection.vue'
 const props = defineProps<{
   order: Order
   users?: Array<User>
-  statuses: Array<string>
   cards?: Array<Card>
   can: {
     update: boolean

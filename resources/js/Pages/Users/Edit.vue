@@ -12,7 +12,7 @@ import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import UserForm from './Partials/UserForm.vue'
 import DeleteLink from '@/Components/links/DeleteLink.vue'
 import SecondaryLink from '@/Components/links/SecondaryLink.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 const props = defineProps<{
   user: User

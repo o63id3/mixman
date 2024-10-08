@@ -9,7 +9,7 @@ import * as z from 'zod'
 import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import OrderForm from './Partials/OrderForm.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 const props = defineProps<{
   users: Array<User>

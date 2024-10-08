@@ -9,7 +9,7 @@ import * as z from 'zod'
 import { User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 
 defineProps<{
   users: Array<User>

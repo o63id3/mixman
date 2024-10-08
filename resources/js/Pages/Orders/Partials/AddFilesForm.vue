@@ -11,7 +11,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import MultiFileUploader from '@/Components/file-upload/MultiFileUploader.vue'
-import { useSubmit } from '@/Components/Composables/submit'
+import { useSubmit } from '@/Composables/submit'
 import { Order } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
