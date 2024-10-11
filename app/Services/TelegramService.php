@@ -40,6 +40,16 @@ final class TelegramService
     }
 
     /**
+     * Append new user.
+     */
+    public function user(string $user): self
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
      * Set users.
      */
     public function users(array $users): self

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
-use App\Jobs\SendNewOrderTelegramMassage;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\NewOrderNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 final class UserOrdersController
 {
@@ -25,7 +26,7 @@ final class UserOrdersController
             'status' => OrderStatusEnum::Pending,
         ]);
 
-        SendNewOrderTelegramMassage::dispatch($order);
+        Notification::sendNow($order->manager, new NewOrderNotification($order));
 
         return back();
     }
