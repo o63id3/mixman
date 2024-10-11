@@ -47,7 +47,7 @@ final class User extends Authenticatable
     ];
 
     /**
-     * Check if the user is admin.
+     * Check if the user is ahmed.
      */
     public function isAhmed(): bool
     {
@@ -55,7 +55,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Check if the user is admin.
+     * Check if the user is manager.
      */
     public function isManager(): bool
     {
@@ -64,16 +64,16 @@ final class User extends Authenticatable
     }
 
     /**
-     * Check if the user is admin.
+     * Check if the user is partner.
      */
-    public function isAdmin(): bool
+    public function isPartner(): bool
     {
         return $this->isAhmed()
             || $this->role === RoleEnum::Partner->value;
     }
 
     /**
-     * Get the seller region.
+     * Get the user network.
      */
     public function network(): BelongsTo
     {
@@ -81,7 +81,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Scope the users to users only.
+     * Scope the users visibility.
      */
     public function scopeVisibleTo(Builder $query, self $user): Builder
     {
@@ -103,7 +103,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Scope the users to users only.
+     * Calculate the sellers balance.
      */
     public function scopeWithBalance(Builder $query): Builder
     {
@@ -113,7 +113,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Scope the users to managers only.
+     * Scope the users to benefiters only.
      */
     public function scopeBenefiter(Builder $query): Builder
     {
@@ -121,7 +121,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Get the seller region.
+     * Get the networks that the user own shares in.
      */
     public function networks(): BelongsToMany
     {
@@ -129,7 +129,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Get the seller region.
+     * Get the orders.
      */
     public function orders(): HasMany
     {
@@ -137,7 +137,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Get the seller region.
+     * Get the payments that the user received.
      */
     public function payments(): HasMany
     {
@@ -145,7 +145,7 @@ final class User extends Authenticatable
     }
 
     /**
-     * Get the seller region.
+     * Get the user transactions.
      */
     public function transactions(): HasMany
     {

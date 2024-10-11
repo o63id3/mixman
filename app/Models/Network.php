@@ -28,7 +28,7 @@ final class Network extends Model
     ];
 
     /**
-     * The roles that belong to the user.
+     * Network partners.
      */
     public function partners(): BelongsToMany
     {
@@ -36,7 +36,7 @@ final class Network extends Model
     }
 
     /**
-     * Scope the users to users only.
+     * Scope the networks visibility.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {
@@ -48,7 +48,7 @@ final class Network extends Model
     }
 
     /**
-     * Scope the users to users only.
+     * Load the network balance.
      */
     public function scopeWithBalance(Builder $query): Builder
     {
@@ -66,7 +66,7 @@ final class Network extends Model
     }
 
     /**
-     * Get the seller region.
+     * Get the network payments.
      */
     public function payments(): HasMany
     {
@@ -74,7 +74,7 @@ final class Network extends Model
     }
 
     /**
-     * Get the seller region.
+     * Get the network reports.
      */
     public function reports(): HasMany
     {
@@ -82,7 +82,7 @@ final class Network extends Model
     }
 
     /**
-     * Get the seller region.
+     * Get the network expenses.
      */
     public function expenses(): HasMany
     {
@@ -90,7 +90,7 @@ final class Network extends Model
     }
 
     /**
-     * Get the seller region.
+     * Get the network transactions.
      */
     public function transactions(): HasMany
     {

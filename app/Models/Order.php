@@ -36,7 +36,7 @@ final class Order extends Model
     }
 
     /**
-     * Check if the order state is complete
+     * Check if the order state is pending
      */
     public function pending(): bool
     {
@@ -44,7 +44,7 @@ final class Order extends Model
     }
 
     /**
-     * Scope the users to users only.
+     * Scope the orders visibility.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {
@@ -56,7 +56,7 @@ final class Order extends Model
     }
 
     /**
-     * Check if the order state is complete
+     * Scope the orders to completed.
      */
     public function scopeCompleted(Builder $query): Builder
     {
@@ -64,7 +64,7 @@ final class Order extends Model
     }
 
     /**
-     * Check if the order state is complete
+     * Scope the orders to pending.
      */
     public function scopePending(Builder $query): Builder
     {
@@ -72,7 +72,7 @@ final class Order extends Model
     }
 
     /**
-     * Check if the order state is complete
+     * Scope the orders to returned.
      */
     public function scopeReturned(Builder $query): Builder
     {
@@ -80,7 +80,7 @@ final class Order extends Model
     }
 
     /**
-     * Get the seller.
+     * Get the user.
      */
     public function user(): BelongsTo
     {
@@ -88,7 +88,7 @@ final class Order extends Model
     }
 
     /**
-     * Get the seller.
+     * Get the manager.
      */
     public function manager(): BelongsTo
     {
@@ -96,7 +96,7 @@ final class Order extends Model
     }
 
     /**
-     * Get the seller.
+     * Get the network.
      */
     public function network(): BelongsTo
     {
@@ -112,7 +112,7 @@ final class Order extends Model
     }
 
     /**
-     * Get the order items.
+     * Get the order files.
      */
     public function files(): HasMany
     {

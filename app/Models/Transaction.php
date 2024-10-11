@@ -14,7 +14,7 @@ final class Transaction extends Model
     use Filterable;
 
     /**
-     * Get the seller.
+     * Get the user.
      */
     public function user(): BelongsTo
     {
@@ -22,7 +22,7 @@ final class Transaction extends Model
     }
 
     /**
-     * Get the seller.
+     * Get the manager.
      */
     public function manager(): BelongsTo
     {
@@ -30,7 +30,7 @@ final class Transaction extends Model
     }
 
     /**
-     * Get the seller.
+     * Get the network.
      */
     public function network(): BelongsTo
     {
@@ -38,7 +38,7 @@ final class Transaction extends Model
     }
 
     /**
-     * Scope the users to users only.
+     * Scope the transactions visibility.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {

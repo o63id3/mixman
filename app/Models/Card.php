@@ -19,7 +19,6 @@ final class Card extends Model
     protected $fillable = [
         'name',
         'price_for_consumer',
-        // 'price_for_seller',
         'active',
         'notes',
     ];

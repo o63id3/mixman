@@ -27,7 +27,7 @@ final class Expense extends Model
     ];
 
     /**
-     * Scope the payments depending on user role.
+     * Scope the expenses depending on user role.
      */
     public function scopeVisibleTo(Builder $query, User $user): Builder
     {
@@ -41,7 +41,7 @@ final class Expense extends Model
     }
 
     /**
-     * Get registerer.
+     * Get user.
      */
     public function user(): BelongsTo
     {
@@ -49,7 +49,7 @@ final class Expense extends Model
     }
 
     /**
-     * Get registerer.
+     * Get network.
      */
     public function network(): BelongsTo
     {

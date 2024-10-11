@@ -49,7 +49,7 @@ final class Payment extends Model
     }
 
     /**
-     * Get seller.
+     * Get recipient.
      */
     public function recipient(): BelongsTo
     {
@@ -57,7 +57,7 @@ final class Payment extends Model
     }
 
     /**
-     * Get registerer.
+     * Get user.
      */
     public function user(): BelongsTo
     {
@@ -65,7 +65,7 @@ final class Payment extends Model
     }
 
     /**
-     * Get registerer.
+     * Get network.
      */
     public function network(): BelongsTo
     {

@@ -14,7 +14,7 @@ final class NetworkPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->isPartner();
     }
 
     /**
