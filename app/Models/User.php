@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 
 #[ScopedBy([SystemUserScope::class])]
 final class User extends Authenticatable
@@ -34,7 +33,6 @@ final class User extends Authenticatable
         'password',
         'role',
         'contact_info',
-        'notes',
         'percentage',
         'network_id',
     ];
@@ -161,29 +159,6 @@ final class User extends Authenticatable
     public function scopeBenefiter(Builder $query): Builder
     {
         return $query->whereNotNull('network_id');
-    }
-
-    /**
-     * Activate the user.
-     */
-    public function activate(): void
-    {
-        $this->active = true;
-        $this->save();
-
-    }
-
-    /**
-     * Deactivate the user.
-     */
-    public function deactivate(): void
-    {
-        $this->active = false;
-        $this->save();
-
-        DB::table('sessions')
-            ->where('user_id', $this->id)
-            ->delete();
     }
 
     /**
