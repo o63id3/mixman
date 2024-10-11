@@ -21,9 +21,9 @@ return [
     | Seller orders per day
     |--------------------------------------------------------------------------
     |
-    | This value is the default rate limit for seller orders per day.
+    | This value is the default rate limit for user orders per day.
     |
     */
 
-    'seller_orders_per_day' => env('SELLER_ORDERS_PER_DAY', 1),
+    'user_orders_per_day' => env('USER_ORDERS_PER_DAY', 1),
 ];

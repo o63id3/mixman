@@ -8,7 +8,7 @@ it('allows an seller to create an order', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->post(route('seller-orders.store'))
+        ->post(route('user-orders.store'))
         ->assertSessionHasNoErrors()
         ->assertRedirect();
 
@@ -21,18 +21,18 @@ it('prevents a seller from creating more than one order within 24 hours', functi
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->post(route('seller-orders.store'))
+        ->post(route('user-orders.store'))
         ->assertSessionHasNoErrors()
         ->assertRedirect();
 
     $this->actingAs($user)
-        ->post(route('seller-orders.store'))
+        ->post(route('user-orders.store'))
         ->assertTooManyRequests();
 
     $this->travel(24)->hours();
 
     $this->actingAs($user)
-        ->post(route('seller-orders.store'))
+        ->post(route('user-orders.store'))
         ->assertSessionHasNoErrors()
         ->assertRedirect();
 

@@ -31,7 +31,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict(! app()->isProduction());
 
-        RateLimiter::for('seller-orders', fn (Request $request) => app()->isProduction() ? Limit::perDay(config('settings.seller_orders_per_day'))->by($request->user()?->id ?: $request->ip()) : Limit::none());
+        RateLimiter::for('user-orders', fn (Request $request) => app()->isProduction() ? Limit::perDay(config('settings.user_orders_per_day'))->by($request->user()?->id ?: $request->ip()) : Limit::none());
 
         JsonResource::macro('single', function ($resource) {
             JsonResource::withoutWrapping();

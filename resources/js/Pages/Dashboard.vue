@@ -129,7 +129,7 @@ const form = useForm({})
             <CardFooter>
               <Button
                 @click="
-                  form.post(route('seller-orders.store'), {
+                  form.post(route('user-orders.store'), {
                     preserveScroll: true,
                     preserveState: false,
                     onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
