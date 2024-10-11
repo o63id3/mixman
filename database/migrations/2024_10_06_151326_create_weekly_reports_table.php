@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('total_payments_amount');
             $table->float('total_expenses_amount');
             $table->float('network_income');
+            $table->json('partners_shares');
             $table->timestamp('start_from');
             $table->timestamp('end_at');
             $table->timestamps();

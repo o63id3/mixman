@@ -22,6 +22,7 @@ final class WeeklyReportResource extends JsonResource
             'total_payments_amount' => $this->total_payments_amount,
             'total_expenses_amount' => $this->total_expenses_amount,
             'network_income' => $this->network_income,
+            'partners_shares' => $this->whenHas('partners_shares'),
             'start_from_date' => $this->start_from,
             'end_at_date' => $this->end_at,
             'created_at_date' => $this->created_at,

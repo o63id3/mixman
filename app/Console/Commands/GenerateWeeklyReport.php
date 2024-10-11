@@ -56,9 +56,15 @@ final class GenerateWeeklyReport extends Command
             $this->info("Network {$network->name} net income: {$totalIncome}!");
 
             // calculate partners shares
+            $partnersShares = [];
             foreach ($network->partners as $partner) {
                 $share = $partner->pivot?->share;
                 $money = $share * $totalIncome;
+
+                $partnersShares[$partner->name] = [
+                    'share' => $partner->pivot->share,
+                    'benefit' => $totalIncome > 0 ? $totalIncome * $share : 0,
+                ];
 
                 if ($totalIncome > 0) {
                     $this->info("Partner {$partner->name}: {$share} * {$totalIncome} = {$money}!");
@@ -72,6 +78,7 @@ final class GenerateWeeklyReport extends Command
                 'total_payments_amount' => $network->total_payments_amount ?? 0,
                 'total_expenses_amount' => $network->total_expenses_amount ?? 0,
                 'network_income' => $totalIncome,
+                'partners_shares' => $partnersShares,
                 'start_from' => $startOfLastWeek,
                 'end_at' => $endOfLastWeek,
             ]);
