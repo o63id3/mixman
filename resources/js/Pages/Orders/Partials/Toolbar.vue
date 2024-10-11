@@ -24,8 +24,8 @@ defineProps<DataTableToolbarProps>()
   <DataTableToolbar :table="table" table-id="orders">
     <div class="flex gap-2">
       <DataTableFacetedFilter
-        v-if="table.getColumn('orderer')"
-        :column="table.getColumn('orderer')"
+        v-if="table.getColumn('user')"
+        :column="table.getColumn('user')"
         title="المستفيد"
         :options="
           users.map((user) => ({

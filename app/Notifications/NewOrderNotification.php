@@ -39,7 +39,7 @@ final class NewOrderNotification extends Notification
     {
         $appURL = config('app.url');
         $url = "{$appURL}/orders/{$this->order->id}/edit";
-        $message = "*{$this->order->orderer->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: \n{$url}";
+        $message = "*{$this->order->user->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: \n{$url}";
 
         return [
             'message' => $message,

@@ -30,7 +30,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         $orders = Order::query()
-            ->with(['orderer', 'manager', 'network'])
+            ->with(['user', 'manager', 'network'])
             ->withSum('items as total_price_for_seller', 'total_price_for_seller')
             ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
@@ -76,7 +76,7 @@ final class OrdersController
         Gate::authorize('create', Order::class);
 
         $validated = $request->validate([
-            'orderer_id' => ['required', Rule::exists('users', 'id')],
+            'user_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'cards' => ['required', 'array'],
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
@@ -101,7 +101,7 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['orderer', 'manager', 'items', 'files', 'items.card']);
+        $order->load(['user', 'manager', 'items', 'files', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
@@ -119,7 +119,7 @@ final class OrdersController
 
         $user = type($request->user())->as(User::class);
 
-        $order->load(['orderer', 'manager', 'items', 'files', 'items.card']);
+        $order->load(['user', 'manager', 'items', 'files', 'items.card']);
         $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
 
@@ -148,7 +148,7 @@ final class OrdersController
         Gate::authorize('update', $order);
 
         $validated = $request->validate([
-            'orderer_id' => ['required', Rule::exists('users', 'id')],
+            'user_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
             'notes' => ['string'],
         ]);

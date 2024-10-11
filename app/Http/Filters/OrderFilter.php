@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Builder;
 final class OrderFilter extends QueryFilter
 {
     /**
-     * Filter the order by the orderer id.
+     * Filter the order by the user id.
      */
-    public function orderer($values): Builder
+    public function user($values): Builder
     {
         $ides = explode(',', $values);
 
-        return $this->builder->whereIn('orderer_id', $ides);
+        return $this->builder->whereIn('user_id', $ides);
     }
 
     /**

@@ -22,7 +22,7 @@ final class UserOrdersController
         $user = type($request->user())->as(User::class);
 
         $order = Order::create([
-            'orderer_id' => $user->id,
+            'user_id' => $user->id,
             'status' => OrderStatusEnum::Pending,
         ]);
 

@@ -9,7 +9,7 @@ import { formatDate, formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<Order>[] = [
   {
-    accessorKey: 'orderer',
+    accessorKey: 'user',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'المستفيد' }),
     cell: ({ row }) =>
@@ -20,7 +20,7 @@ export const columns: ColumnDef<Order>[] = [
           class: 'hover:underline',
         },
         {
-          default: () => row.original.orderer.name,
+          default: () => row.original.user.name,
         },
       ),
     enableSorting: false,

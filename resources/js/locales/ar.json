@@ -27,7 +27,7 @@
   },
   "orders": {
     "columns": {
-      "orderer": "المستفيد",
+      "user": "المستفيد",
       "manager": "مدير الطلب",
       "network": "الشبكة",
       "status": "الحالة",

@@ -39,7 +39,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    orderer_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
     notes: z.string().optional(),
     files: z.array(z.string()).optional(),
@@ -49,7 +49,7 @@ const formSchema = toTypedSchema(
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    orderer_id: props.order.orderer.id,
+    user_id: props.order.user.id,
     status: props.order.status,
     notes: props.order.notes ?? undefined,
   },
@@ -110,8 +110,8 @@ const onSubmit = handleSubmit(submit)
         :order="order"
         :users="users"
         :cards="cards"
-        :selected="values.orderer_id"
-        @select="(selected: number) => setFieldValue('orderer_id', selected)"
+        :selected="values.user_id"
+        @select="(selected: number) => setFieldValue('user_id', selected)"
       />
     </UpdateFormLayout>
 

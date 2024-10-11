@@ -22,7 +22,7 @@ final class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'orderer_id',
+        'user_id',
         'status',
         'notes',
     ];
@@ -52,7 +52,7 @@ final class Order extends Model
             return $query;
         }
 
-        return $query->where(fn ($query) => $query->where('orderer_id', $user->id)->orWhere('manager_id', $user->id));
+        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('manager_id', $user->id));
     }
 
     /**
@@ -82,9 +82,9 @@ final class Order extends Model
     /**
      * Get the seller.
      */
-    public function orderer(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'orderer_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -132,7 +132,7 @@ final class Order extends Model
         parent::boot();
 
         $setManagerAndNetwork = function ($model) {
-            $user = User::with('network:id,manager_id')->find($model->orderer->id);
+            $user = User::with('network:id,manager_id')->find($model->user->id);
 
             $model->network_id = $user->network->id;
             $model->manager_id = $user->isManager() ? User::where('role', 'ahmed')->first(['id'])->id : $user->network->manager_id;

@@ -24,7 +24,7 @@ final class OrderFactory extends Factory
         $createdAt = fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
 
         return [
-            'orderer_id' => User::factory(),
+            'user_id' => User::factory(),
             'network_id' => Network::factory(),
             'status' => fake()->randomElement(OrderStatusEnum::cases()),
             'created_at' => $createdAt,

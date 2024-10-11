@@ -27,7 +27,7 @@ defineProps<{
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <h3 class="text-lg font-semibold">المستفيد</h3>
-            <p>{{ order.orderer.name }}</p>
+            <p>{{ order.user.name }}</p>
           </div>
           <div>
             <h3 class="text-lg font-semibold">مدير الطلب</h3>

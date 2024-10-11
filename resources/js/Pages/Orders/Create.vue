@@ -20,7 +20,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    orderer_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
     cards: z.array(
       z.object({
@@ -72,8 +72,8 @@ const onSubmit = handleSubmit(submit)
       <OrderForm
         :users="users"
         :cards="cards"
-        :selected="values.orderer_id"
-        @select="(selected: number) => setFieldValue('orderer_id', selected)"
+        :selected="values.user_id"
+        @select="(selected: number) => setFieldValue('user_id', selected)"
       />
     </CreateFormLayout>
   </AuthenticatedLayout>

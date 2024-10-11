@@ -27,7 +27,7 @@ export interface Network {
 export interface Order {
   id: number
   status: 'معلق' | 'مكتمل' | 'مرجع'
-  orderer: User
+  user: User
   manager: User
   network: Network
   total_price_for_seller: number

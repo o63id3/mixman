@@ -24,7 +24,7 @@ final class OrderPolicy
     public function view(User $user, Order $order): bool
     {
         return $user->isAhmed()
-            || $order->orderer_id === $user->id
+            || $order->user_id === $user->id
             || $order->manager_id === $user->id;
     }
 

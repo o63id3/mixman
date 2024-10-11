@@ -19,7 +19,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'orderer_id')->constrained('users');
+            $table->foreignIdFor(User::class)->constrained('users');
             $table->foreignIdFor(User::class, 'manager_id')->constrained('users');
             $table->foreignIdFor(Network::class)->constrained('networks');
             $table->string('status');

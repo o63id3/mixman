@@ -18,7 +18,7 @@ return new class extends Migration
                 orders.id,
                 'order' AS type,
                 status,
-                orderer_id AS user_id,
+                user_id,
                 manager_id,
                 network_id,
                 COALESCE(
@@ -38,7 +38,7 @@ return new class extends Migration
                 LEFT JOIN order_items ON orders.id = order_items.order_id
             GROUP BY
                 orders.id,
-                orders.orderer_id,
+                orders.user_id,
                 orders.created_at
             UNION
             SELECT
