@@ -35,7 +35,7 @@ defineProps<DataTableToolbarProps>()
         "
       />
       <DataTableFacetedFilter
-        v-if="table.getColumn('manager') && user.role === 'ahmed'"
+        v-if="table.getColumn('manager')"
         :column="table.getColumn('manager')"
         title="مدير الطلب"
         :options="

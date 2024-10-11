@@ -23,10 +23,6 @@ final class OrderFilter extends QueryFilter
      */
     public function manager($values): Builder
     {
-        if ($this->user->role !== 'ahmed') {
-            return $this->builder;
-        }
-
         $ides = explode(',', $values);
 
         return $this->builder->whereIn('manager_id', $ides);
