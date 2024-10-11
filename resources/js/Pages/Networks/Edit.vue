@@ -3,9 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 import { Link } from '@inertiajs/vue3'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import NetworkForm from './Partials/NetworkForm.vue'
 
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
@@ -28,23 +26,10 @@ const props = defineProps<{
   }
 }>()
 
-const { handleSubmit, setErrors } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    name: props.network.name,
-    internet_price_per_week: props.network.internet_price_per_week,
-  },
-})
-
-const { submit, loading } = useSubmit(
-  route('networks.update', props.network.id),
-  {
-    method: 'patch',
-    onSuccess: () => toast({ title: 'تم تعديل الشبكة' }),
-    onError: (errors) => setErrors(errors),
-  },
-)
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  name: props.network.name,
+  internet_price_per_week: props.network.internet_price_per_week,
+}
 </script>
 
 <template>
@@ -63,7 +48,13 @@ const onSubmit = handleSubmit(submit)
       </div>
     </template>
 
-    <UpdateFormLayout @submit="onSubmit" :loading="loading" :can-update="true">
+    <UpdateFormLayout
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      :route="route('networks.update', network.id)"
+      @success="toast({ title: 'تم تعديل الشبكة' })"
+      can-update
+    >
       <template #buttons>
         <DeleteLink
           v-if="network.active"

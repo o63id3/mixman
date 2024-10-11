@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import OrderForm from './Partials/OrderForm.vue'
 
 import { toast } from '@/Components/ui/toast'
@@ -34,20 +32,11 @@ const props = defineProps<{
   }
 }>()
 
-const { handleSubmit, setErrors, values, setFieldValue } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    user_id: props.order.user.id,
-    status: props.order.status,
-    notes: props.order.notes,
-  },
-})
-const { submit, loading } = useSubmit(route('orders.update', props.order.id), {
-  method: 'patch',
-  onSuccess: () => toast({ title: 'تم تعديل الطلب' }),
-  onError: (errors) => setErrors(errors),
-})
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  user_id: props.order.user.id,
+  status: props.order.status,
+  notes: props.order.notes,
+}
 </script>
 
 <template>
@@ -76,8 +65,10 @@ const onSubmit = handleSubmit(submit)
 
     <UpdateFormLayout
       class="mt-4"
-      @submit="onSubmit"
-      :loading="loading"
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      :route="route('orders.update', order.id)"
+      @success="toast({ title: 'تم تعديل الطلب' })"
       :can-update="can.update"
     >
       <template #buttons>
@@ -90,15 +81,17 @@ const onSubmit = handleSubmit(submit)
         </DeleteLink>
       </template>
 
-      <OrderForm
-        hidden-cards
-        :disabled="!can.update"
-        :order="order"
-        :users="users"
-        :cards="cards"
-        :selected="values.user_id"
-        @select="(selected: number) => setFieldValue('user_id', selected)"
-      />
+      <template #default="{ values, setFieldValue }">
+        <OrderForm
+          hidden-cards
+          :disabled="!can.update"
+          :order="order"
+          :users="users"
+          :cards="cards"
+          :selected="values.user_id"
+          @select="(selected: number) => setFieldValue('user_id', selected)"
+        />
+      </template>
     </UpdateFormLayout>
 
     <CardsSection

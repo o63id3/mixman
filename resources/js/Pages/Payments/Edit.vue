@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import PaymentForm from './Partials/PaymentForm.vue'
 
 import { toast } from '@/Components/ui/toast'
@@ -23,24 +21,11 @@ const props = defineProps<{
   }
 }>()
 
-const { handleSubmit, setErrors, values, setFieldValue } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    user_id: props.payment.user.id,
-    amount: props.payment.amount,
-    notes: props.payment.notes,
-  },
-})
-
-const { submit, loading } = useSubmit(
-  route('payments.update', props.payment.id),
-  {
-    method: 'patch',
-    onSuccess: () => toast({ title: 'تم تعديل الدفعة المالية' }),
-    onError: (errors) => setErrors(errors),
-  },
-)
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  user_id: props.payment.user.id,
+  amount: props.payment.amount,
+  notes: props.payment.notes,
+}
 </script>
 
 <template>
@@ -66,8 +51,10 @@ const onSubmit = handleSubmit(submit)
 
     <UpdateFormLayout
       class="mt-4"
-      @submit="onSubmit"
-      :loading="loading"
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      :route="route('payments.update', payment.id)"
+      @success="toast({ title: 'تم تعديل الدفعة المالية' })"
       can-update
     >
       <template #buttons>
@@ -80,11 +67,13 @@ const onSubmit = handleSubmit(submit)
         </DeleteLink>
       </template>
 
-      <PaymentForm
-        :users="users"
-        :selected="values.user_id"
-        @select="(selected: number) => setFieldValue('user_id', selected)"
-      />
+      <template #default="{ values, setFieldValue }">
+        <PaymentForm
+          :users="users"
+          :selected="values.user_id"
+          @select="(selected: number) => setFieldValue('user_id', selected)"
+        />
+      </template>
     </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>

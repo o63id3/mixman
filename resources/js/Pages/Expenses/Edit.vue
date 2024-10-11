@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import { toast } from '@/Components/ui/toast'
@@ -22,24 +20,11 @@ const props = defineProps<{
   }
 }>()
 
-const { handleSubmit, setErrors } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    description: props.expense.description,
-    network_id: String(props.expense.network.id),
-    amount: props.expense.amount,
-  },
-})
-
-const { submit, loading } = useSubmit(
-  route('expenses.update', props.expense.id),
-  {
-    method: 'patch',
-    onSuccess: () => toast({ title: 'تم تعديل المصروف' }),
-    onError: (errors) => setErrors(errors),
-  },
-)
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  description: props.expense.description,
+  network_id: String(props.expense.network.id),
+  amount: props.expense.amount,
+}
 </script>
 
 <template>
@@ -65,8 +50,10 @@ const onSubmit = handleSubmit(submit)
 
     <UpdateFormLayout
       class="mt-4"
-      @submit="onSubmit"
-      :loading="loading"
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      :route="route('expenses.update', expense.id)"
+      @success="toast({ title: 'تم تعديل المصروف' })"
       can-update
     >
       <template #buttons>

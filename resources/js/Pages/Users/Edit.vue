@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
-import { useSubmit } from '@/Composables/submit'
 import { formSchema } from './definitions'
 import UserForm from './Partials/UserForm.vue'
 
@@ -21,25 +19,15 @@ const props = defineProps<{
   }
 }>()
 
-const { handleSubmit, setErrors, values } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    name: props.user.name,
-    username: props.user.username,
-    telegram: props.user.telegram,
-    role: props.user.role,
-    network_id: props.user.network ? String(props.user.network?.id) : undefined,
-    percentage: props.user.percentage,
-    contact_info: props.user.contact_info,
-  },
-})
-
-const { submit, loading } = useSubmit(route('users.update', props.user.id), {
-  method: 'patch',
-  onSuccess: () => toast({ title: 'تم تعديل المستخدم' }),
-  onError: (errors) => setErrors(errors),
-})
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  name: props.user.name,
+  username: props.user.username,
+  telegram: props.user.telegram,
+  role: props.user.role,
+  network_id: props.user.network ? String(props.user.network?.id) : undefined,
+  percentage: props.user.percentage,
+  contact_info: props.user.contact_info,
+}
 </script>
 
 <template>
@@ -51,8 +39,10 @@ const onSubmit = handleSubmit(submit)
     </template>
 
     <UpdateFormLayout
-      @submit="onSubmit"
-      :loading="loading"
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      :route="route('users.update', user.id)"
+      @success="toast({ title: 'تم تعديل المستخدم' })"
       :can-update="can.update"
     >
       <template #buttons>
@@ -74,11 +64,13 @@ const onSubmit = handleSubmit(submit)
         </SecondaryLink>
       </template>
 
-      <UserForm
-        :disabled="!can.update"
-        :role="values.role"
-        :networks="networks"
-      />
+      <template #default="{ values }">
+        <UserForm
+          :disabled="!can.update"
+          :role="values.role"
+          :networks="networks"
+        />
+      </template>
     </UpdateFormLayout>
   </AuthenticatedLayout>
 </template>
