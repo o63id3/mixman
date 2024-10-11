@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\RoleEnum;
+use App\Models\Scopes\SystemUserScope;
 use App\Traits\Filterable;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 
+#[ScopedBy([SystemUserScope::class])]
 final class User extends Authenticatable
 {
     use Filterable, HasFactory, Notifiable;
@@ -181,16 +184,6 @@ final class User extends Authenticatable
         DB::table('sessions')
             ->where('user_id', $this->id)
             ->delete();
-    }
-
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
-    {
-        self::addGlobalScope(function (Builder $builder) {
-            $builder->where('username', '!=', 'system');
-        });
     }
 
     /**
