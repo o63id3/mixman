@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\WeeklyReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Middleware;
@@ -66,6 +67,9 @@ final class HandleInertiaRequests extends Middleware
                     ],
                     'transactions' => [
                         'viewAny' => Gate::allows('viewAny', Transaction::class),
+                    ],
+                    'reports' => [
+                        'viewAny' => Gate::allows('viewAny', WeeklyReport::class),
                     ],
                 ],
             ],

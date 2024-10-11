@@ -122,6 +122,17 @@ export interface Transaction {
   created_at_date: string
 }
 
+export interface Report {
+  id: number
+  network: Network
+  total_payments_amount: number
+  total_expenses_amount: number
+  network_income: number
+  start_from_date: string
+  end_at_date: string
+  created_at_date: string
+}
+
 interface Link {
   active: boolean
   url: string
@@ -177,6 +188,9 @@ export type PageProps<
         viewAny: boolean
       }
       transactions: {
+        viewAny: boolean
+      }
+      reports: {
         viewAny: boolean
       }
     }

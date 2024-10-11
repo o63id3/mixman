@@ -60,6 +60,11 @@ const links: Array<Link> = [
     label: 'الحركات',
     visible: auth.permissions.transactions.viewAny,
   },
+  {
+    route: 'reports.index',
+    label: 'التقارير',
+    visible: auth.permissions.reports.viewAny,
+  },
 ]
 </script>
 

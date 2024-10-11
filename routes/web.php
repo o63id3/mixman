@@ -20,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserOrdersController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WeeklyReportsController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -40,6 +41,7 @@ Route::middleware('auth')->resource('orders', OrdersController::class);
 Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class);
 Route::middleware('auth')->get('/transactions', TransactionsController::class)->name('transactions.index');
+Route::middleware('auth')->get('/reports', [WeeklyReportsController::class, 'index'])->name('reports.index');
 Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');
 
 Route::middleware('auth')->group(function () {
