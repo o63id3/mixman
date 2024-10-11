@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { Table } from '@tanstack/vue-table'
-import { Network, Transaction, User } from '@/types'
+import { Network, User } from '@/types'
 import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilter.vue'
 
 import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
-import DataTableDateRangeFilter from '@/Components/data-table/DataTableDateRangeFilter.vue'
 import { usePage } from '@inertiajs/vue3'
 import { roles } from '@/types/enums'
 
@@ -36,12 +35,7 @@ defineProps<DataTableToolbarProps>()
         v-if="table.getColumn('role') && user.role === 'ahmed'"
         :column="table.getColumn('role')"
         title="الصلاحية"
-        :options="
-          roles.map((role) => ({
-            label: role.label,
-            value: String(role.value),
-          }))
-        "
+        :options="roles"
       />
     </div>
   </DataTableToolbar>
