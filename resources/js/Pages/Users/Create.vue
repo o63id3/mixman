@@ -29,7 +29,7 @@ const initialValues = {
     <CreateFormLayout
       :form-schema="formSchema"
       :initial-values="initialValues"
-      route="users.store"
+      :route="route('users.store')"
       @success="toast({ title: 'تم إنشاء المستخدم' })"
     >
       <template #default="{ values }">

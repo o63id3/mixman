@@ -19,7 +19,7 @@ import { toast } from '@/Components/ui/toast'
 
     <CreateFormLayout
       :form-schema="formSchema"
-      route="cards.store"
+      :route="route('cards.store')"
       @success="toast({ title: 'تم إنشاء الكرت' })"
     >
       <CardForm />

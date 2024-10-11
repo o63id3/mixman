@@ -74,7 +74,7 @@ const formSchema = toTypedSchema(
     <CreateFormLayout
       class="mt-2"
       :form-schema="formSchema"
-      route="network.partners.store"
+      :route="route('network.partners.store', network.id)"
       @success="toast({ title: 'تم إضافة الشريك' })"
     >
       <FormField v-slot="{ componentField }" name="user_id">

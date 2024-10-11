@@ -37,7 +37,7 @@ const initialValues = {
     <CreateFormLayout
       :form-schema="formSchema"
       :initial-values="initialValues"
-      route="orders.store"
+      :route="route('orders.store')"
       @success="toast({ title: 'تم إضافة الطلب' })"
     >
       <template #default="{ values, setFieldValue }">

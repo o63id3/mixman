@@ -24,7 +24,7 @@ defineProps<{
 
     <CreateFormLayout
       :form-schema="formSchema"
-      route="expenses.store"
+      :route="route('expenses.store')"
       @success="toast({ title: 'تم إنشاء المصروف' })"
     >
       <ExpenseForm :networks="networks" />

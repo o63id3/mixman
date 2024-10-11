@@ -19,7 +19,7 @@ const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   initialValues: props.initialValues,
 })
 
-const { submit, loading } = useSubmit(route(props.route), {
+const { submit, loading } = useSubmit(props.route, {
   method: 'post',
   onSuccess: () => {
     emit('success')

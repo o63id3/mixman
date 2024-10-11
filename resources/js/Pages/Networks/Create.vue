@@ -18,7 +18,7 @@ import { toast } from '@/Components/ui/toast'
 
     <CreateFormLayout
       :form-schema="formSchema"
-      route="networks.store"
+      :route="route('networks.store')"
       @success="toast({ title: 'تم إنشاء الشبكة' })"
     >
       <NetworkForm />

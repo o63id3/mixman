@@ -24,7 +24,7 @@ defineProps<{
 
     <CreateFormLayout
       :form-schema="formSchema"
-      route="payments.store"
+      :route="route('payments.store')"
       @success="toast({ title: 'تم إدخال الدفعة المالية' })"
     >
       <template #default="{ values, setFieldValue }">
