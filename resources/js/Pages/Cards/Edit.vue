@@ -27,7 +27,7 @@ const formSchema = toTypedSchema(
       .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
     active: z.boolean(),
     price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
-    notes: z.string().optional(),
+    notes: z.string().nullable().optional(),
   }),
 )
 
@@ -37,7 +37,7 @@ const { handleSubmit, setErrors } = useForm({
     name: props.card.name,
     price_for_consumer: props.card.price_for_consumer,
     active: props.card.active,
-    notes: props.card.notes ?? undefined,
+    notes: props.card.notes,
   },
 })
 

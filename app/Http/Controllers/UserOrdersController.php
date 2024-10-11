@@ -26,7 +26,7 @@ final class UserOrdersController
                 'status' => OrderStatusEnum::Pending,
             ]);
 
-        Notification::sendNow($order->manager, new NewOrderNotification($order));
+        Notification::send($order->manager, new NewOrderNotification($order));
 
         return back();
     }

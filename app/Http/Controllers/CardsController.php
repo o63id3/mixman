@@ -54,8 +54,7 @@ final class CardsController
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', Rule::unique('cards', 'name')],
             'price_for_consumer' => ['required', 'numeric'],
-            // 'price_for_seller' => ['required', 'numeric'],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         Card::create($validated);
@@ -88,8 +87,7 @@ final class CardsController
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', Rule::unique('cards', 'name')->ignore($card->id)],
             'price_for_consumer' => ['required', 'numeric'],
-            // 'price_for_seller' => ['required', 'numeric'],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $card->update($validated);

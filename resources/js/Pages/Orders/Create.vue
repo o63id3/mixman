@@ -29,7 +29,7 @@ const formSchema = toTypedSchema(
         number_of_cards_per_package: z.number(),
       }),
     ),
-    notes: z.string().optional(),
+    notes: z.string().nullable().optional(),
   }),
 )
 

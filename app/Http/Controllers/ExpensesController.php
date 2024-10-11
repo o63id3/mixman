@@ -72,8 +72,10 @@ final class ExpensesController
             'amount' => ['required', 'numeric'],
         ]);
 
-        $validated['user_id'] = $request->user()->id;
-        Expense::create($validated);
+        $request
+            ->user()
+            ->expenses()
+            ->create($validated);
 
         return back();
     }
@@ -105,7 +107,7 @@ final class ExpensesController
             'networks' => Network::all(['id', 'name']),
             'expense' => ExpenseResource::single($expense),
             'can' => [
-                'delete' => true,
+                'delete' => Gate::allows('delete', $expense),
             ],
         ]);
     }
@@ -123,7 +125,6 @@ final class ExpensesController
             'amount' => ['required', 'numeric'],
         ]);
 
-        $validated['user_id'] = $request->user()->id;
         $expense->update($validated);
 
         return back();

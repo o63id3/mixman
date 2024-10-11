@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderFile;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class OrderFileDownloadsController
@@ -24,6 +23,6 @@ final class OrderFileDownloadsController
             abort(404, 'File Not Found!');
         }
 
-        return Response::download($path, $file->original_file_name);
+        return response()->download($path, $file->original_file_name);
     }
 }

@@ -41,8 +41,8 @@ const formSchema = toTypedSchema(
   z.object({
     user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().optional(),
-    files: z.array(z.string()).optional(),
+    notes: z.string().nullable(),
+    files: z.array(z.string()).optional().optional(),
   }),
 )
 
@@ -51,7 +51,7 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   initialValues: {
     user_id: props.order.user.id,
     status: props.order.status,
-    notes: props.order.notes ?? undefined,
+    notes: props.order.notes,
   },
 })
 const { submit, loading } = useSubmit(route('orders.update', props.order.id), {

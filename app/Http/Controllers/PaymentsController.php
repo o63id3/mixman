@@ -71,7 +71,7 @@ final class PaymentsController
         $validated = $request->validate([
             'user_id' => ['required', Rule::exists('users', 'id')],
             'amount' => ['required', 'numeric'],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $request
@@ -125,7 +125,7 @@ final class PaymentsController
         $validated = $request->validate([
             'user_id' => ['required', Rule::exists('users', 'id')],
             'amount' => ['required', 'numeric'],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $payment->update($validated);

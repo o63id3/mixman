@@ -31,7 +31,7 @@ const formSchema = toTypedSchema(
   z.object({
     user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().optional(),
+    notes: z.string().nullable().optional(),
   }),
 )
 
@@ -40,7 +40,7 @@ const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   initialValues: {
     user_id: props.payment.user.id,
     amount: props.payment.amount,
-    notes: props.payment.notes ?? undefined,
+    notes: props.payment.notes,
   },
 })
 

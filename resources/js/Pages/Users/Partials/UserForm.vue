@@ -171,13 +171,4 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField v-slot="{ componentField }" name="notes">
-    <FormItem class="md:col-span-2">
-      <FormLabel>ملاحظات</FormLabel>
-      <FormControl>
-        <Textarea v-bind="componentField" :disabled="disabled" />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  </FormField>
 </template>

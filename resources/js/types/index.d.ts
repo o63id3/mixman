@@ -10,7 +10,6 @@ export interface User {
   percentage: number
   role: 'ahmed' | 'partner' | 'seller'
   telegram: string
-  notes: string
   share: number
 }
 

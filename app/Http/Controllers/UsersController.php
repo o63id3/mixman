@@ -76,7 +76,6 @@ final class UsersController
             'percentage' => ['required_if:role,seller', 'numeric'],
             'network_id' => ['required_if:role,seller', 'required_if:role,partner', 'exists:networks,id'],
             'contact_info' => ['nullable', 'string'],
-            'notes' => ['nullable', 'string'],
         ]);
 
         if (array_key_exists('percentage', $validated)) {
@@ -131,7 +130,6 @@ final class UsersController
             'percentage' => ['required_if:role,seller', 'numeric'],
             'network_id' => ['required_if:role,seller', 'exists:networks,id'],
             'contact_info' => ['nullable', 'string'],
-            'notes' => ['nullable', 'string'],
         ]);
 
         if (array_key_exists('percentage', $validated)) {

@@ -40,7 +40,6 @@ final class OrdersController
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
-            'statuses' => OrderStatusEnum::cases(),
             'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
             'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
             'networks' => Network::visibleTo($user)->get(['id', 'name']),
@@ -82,7 +81,7 @@ final class OrdersController
             'cards.*.card_id' => ['required', Rule::exists('cards', 'id')],
             'cards.*.number_of_packages' => ['required', 'numeric'],
             'cards.*.number_of_cards_per_package' => ['required', 'numeric'],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $cards = $validated['cards'];
@@ -101,8 +100,9 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['user', 'manager', 'cards', 'files', 'cards.card']);
-        $order->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
+        $order
+            ->load(['user', 'manager', 'cards', 'files', 'cards.card'])
+            ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Show', [
@@ -119,8 +119,9 @@ final class OrdersController
 
         $user = type($request->user())->as(User::class);
 
-        $order->load(['user', 'manager', 'cards', 'files', 'cards.card']);
-        $order->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
+        $order
+            ->load(['user', 'manager', 'cards', 'files', 'cards.card'])
+            ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Edit', [
@@ -150,7 +151,7 @@ final class OrdersController
         $validated = $request->validate([
             'user_id' => ['required', Rule::exists('users', 'id')],
             'status' => ['required', Rule::enum(OrderStatusEnum::class)],
-            'notes' => ['string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $order->update($validated);

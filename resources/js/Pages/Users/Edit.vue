@@ -31,7 +31,7 @@ const formSchema = toTypedSchema(
     username: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
-    telegram: z.string().optional(),
+    telegram: z.string().nullable(),
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
@@ -39,8 +39,7 @@ const formSchema = toTypedSchema(
     role: z.string({ message: 'هذا الحقل مطلوب' }),
     network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
     percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
-    contact_info: z.string().optional(),
-    notes: z.string().optional(),
+    contact_info: z.string().optional().nullable(),
   }),
 )
 
@@ -53,8 +52,7 @@ const { handleSubmit, setErrors, values } = useForm({
     role: props.user.role,
     network_id: props.user.network ? String(props.user.network?.id) : undefined,
     percentage: props.user.percentage,
-    contact_info: props.user.contact_info ?? undefined,
-    notes: props.user.notes ?? undefined,
+    contact_info: props.user.contact_info,
   },
 })
 

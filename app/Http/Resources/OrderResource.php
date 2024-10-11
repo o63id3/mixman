@@ -20,6 +20,7 @@ final class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
+            'notes' => $this->notes,
             'user' => $this->whenLoaded('user', fn () => UserResource::single($this->user)),
             'manager' => $this->whenLoaded('manager', fn () => UserResource::single($this->manager)),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),

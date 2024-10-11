@@ -20,7 +20,7 @@ const formSchema = toTypedSchema(
   z.object({
     user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().optional(),
+    notes: z.string().nullable().optional(),
   }),
 )
 

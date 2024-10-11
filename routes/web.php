@@ -16,7 +16,6 @@ use App\Http\Controllers\OrderFilesController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserOrdersController;
 use App\Http\Controllers\UsersController;
@@ -25,12 +24,6 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 Route::middleware('auth')->get('/', DashboardController::class)->name('dashboard');
 Route::middleware('auth')->resource('users', UsersController::class)->except('show');
 Route::middleware('auth')->resource('networks', NetworksController::class)->except('delete');
@@ -38,6 +31,7 @@ Route::middleware('auth')->resource('network.partners', NetworkPartnersControlle
 Route::middleware('auth')->post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
 Route::middleware('auth')->resource('cards', CardsController::class)->except('show');
 Route::middleware('auth')->resource('orders', OrdersController::class);
+Route::middleware(['auth', 'throttle:user-orders'])->post('/user/orders', UserOrdersController::class)->name('user-orders.store');
 Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class);
 Route::middleware('auth')->get('/transactions', TransactionsController::class)->name('transactions.index');
@@ -57,13 +51,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/cards', [OrderItemsController::class, 'store'])->name('order-cards.store');
     Route::delete('/order-cards/{card}', [OrderItemsController::class, 'destroy'])->name('order-cards.destroy');
-});
 
-Route::middleware('auth')->group(function () {
     Route::get('/order-files/{file}', OrderFileDownloadsController::class)->name('order-files.download');
-
     Route::post('/orders/{order}/files', [OrderFilesController::class, 'store'])->name('order-files.store');
     Route::delete('/order-files/{file}', [OrderFilesController::class, 'destroy'])->name('order-files.destroy');
 });
-
-Route::middleware(['auth', 'throttle:user-orders'])->post('/user/orders', UserOrdersController::class)->name('user-orders.store');
