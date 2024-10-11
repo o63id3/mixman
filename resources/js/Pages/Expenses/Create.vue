@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
@@ -14,20 +12,6 @@ import { Network } from '@/types'
 defineProps<{
   networks: Array<Network>
 }>()
-
-const { handleSubmit, resetForm, setErrors } = useForm({
-  validationSchema: formSchema,
-})
-
-const { submit, loading } = useSubmit(route('expenses.store'), {
-  method: 'post',
-  onSuccess: () => {
-    toast({ title: 'تم إنشاء المصروف' })
-    resetForm()
-  },
-  onError: (errors) => setErrors(errors),
-})
-const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -38,7 +22,11 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit" :loading="loading">
+    <CreateFormLayout
+      :form-schema="formSchema"
+      route="expenses.store"
+      @success="toast({ title: 'تم إنشاء المصروف' })"
+    >
       <ExpenseForm :networks="networks" />
     </CreateFormLayout>
   </AuthenticatedLayout>

@@ -1,27 +1,12 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
-import { useSubmit } from '@/Composables/submit'
 import CardForm from './Partials/CardForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+
 import { toast } from '@/Components/ui/toast'
-
-const { handleSubmit, resetForm, setErrors } = useForm({
-  validationSchema: formSchema,
-})
-
-const { submit, loading } = useSubmit(route('cards.store'), {
-  method: 'post',
-  onSuccess: () => {
-    toast({ title: 'تم إنشاء الكرت' })
-    resetForm()
-  },
-  onError: (errors) => setErrors(errors),
-})
-const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -32,7 +17,11 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit" :loading="loading">
+    <CreateFormLayout
+      :form-schema="formSchema"
+      route="cards.store"
+      @success="toast({ title: 'تم إنشاء الكرت' })"
+    >
       <CardForm />
     </CreateFormLayout>
   </AuthenticatedLayout>

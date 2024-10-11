@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { formSchema } from './definitions'
 import UserForm from './Partials/UserForm.vue'
-import { useSubmit } from '@/Composables/submit'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
@@ -15,19 +13,9 @@ defineProps<{
   networks: Array<Network>
 }>()
 
-const { handleSubmit, setErrors, values } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    percentage: 10,
-  },
-})
-
-const { submit, loading } = useSubmit(route('users.store'), {
-  method: 'post',
-  onSuccess: () => toast({ title: 'تم إنشاء المستخدم' }),
-  onError: (errors) => setErrors(errors),
-})
-const onSubmit = handleSubmit(submit)
+const initialValues = {
+  percentage: 10,
+}
 </script>
 
 <template>
@@ -38,8 +26,15 @@ const onSubmit = handleSubmit(submit)
       </h2>
     </template>
 
-    <CreateFormLayout @submit="onSubmit" :loading="loading">
-      <UserForm :role="values.role" :networks="networks" />
+    <CreateFormLayout
+      :form-schema="formSchema"
+      :initial-values="initialValues"
+      route="users.store"
+      @success="toast({ title: 'تم إنشاء المستخدم' })"
+    >
+      <template #default="{ values }">
+        <UserForm :role="values.role" :networks="networks" />
+      </template>
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

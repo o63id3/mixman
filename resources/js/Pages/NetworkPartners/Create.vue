@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
@@ -26,10 +25,9 @@ import { Network, User } from '@/types'
 
 import { AlertCircle } from 'lucide-vue-next'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import { useSubmit } from '@/Composables/submit'
 import { toast } from '@/Components/ui/toast'
 
-const props = defineProps<{
+defineProps<{
   network: Network
   partners: Array<User>
   remainingShare: number
@@ -44,23 +42,6 @@ const formSchema = toTypedSchema(
       .max(100, { message: 'يجب أن يكون أقل من 100' }),
   }),
 )
-
-const { handleSubmit, resetForm, setErrors } = useForm({
-  validationSchema: formSchema,
-})
-
-const { submit, loading } = useSubmit(
-  route('network.partners.store', props.network.id),
-  {
-    method: 'post',
-    onSuccess: () => {
-      toast({ title: 'تم إضافة الشريك' })
-      resetForm()
-    },
-    onError: (errors) => setErrors(errors),
-  },
-)
-const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
@@ -90,7 +71,12 @@ const onSubmit = handleSubmit(submit)
       </AlertDescription>
     </Alert>
 
-    <CreateFormLayout class="mt-2" @submit="onSubmit" :loading="loading">
+    <CreateFormLayout
+      class="mt-2"
+      :form-schema="formSchema"
+      route="network.partners.store"
+      @success="toast({ title: 'تم إضافة الشريك' })"
+    >
       <FormField v-slot="{ componentField }" name="user_id">
         <FormItem>
           <FormLabel>الشريك</FormLabel>
