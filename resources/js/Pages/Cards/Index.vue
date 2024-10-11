@@ -44,7 +44,7 @@ defineProps<{
           v-if="$page.props.auth.user.role === 'ahmed'"
           #toolBar="{ table }"
         >
-          <DataTableToolbar :table="table" />
+          <DataTableToolbar :table="table" table-id="cards" />
         </template>
       </DataTable>
       <DataTablePagination :links="cards.links" :meta="cards.meta" />

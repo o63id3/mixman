@@ -8,6 +8,7 @@ import DataTableViewOptions from './DataTableViewOptions.vue'
 
 interface DataTableToolbarProps {
   table: Table<TData>
+  tableId: string
 }
 
 const props = defineProps<DataTableToolbarProps>()
@@ -35,6 +36,6 @@ const isFiltered = computed(
       </Button>
     </div>
 
-    <DataTableViewOptions :table="table" />
+    <DataTableViewOptions :table="table" :table-id="tableId" />
   </div>
 </template>

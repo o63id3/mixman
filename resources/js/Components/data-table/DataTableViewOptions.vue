@@ -12,10 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
-import { usePage } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 
 interface DataTableViewOptionsProps {
+  tableId: string
   table: Table<TData>
 }
 
@@ -41,14 +41,14 @@ const saveColumnVisibility = () => {
   )
 
   localStorage.setItem(
-    `${usePage().url}_tableColumnVisibility`,
+    `${props.tableId}_tableColumnVisibility`,
     JSON.stringify(visibilityState),
   )
 }
 
 const loadColumnVisibility = () => {
   const savedVisibility = localStorage.getItem(
-    `${usePage().url}_tableColumnVisibility`,
+    `${props.tableId}_tableColumnVisibility`,
   )
   if (savedVisibility) {
     const parsedVisibility = JSON.parse(savedVisibility) as Record<
@@ -83,7 +83,7 @@ watch(
 )
 
 const getColumnName = (columnId: string) => {
-  return t(`columns.${columnId}`, columnId)
+  return t(`${props.tableId}.columns.${columnId}`, columnId)
 }
 </script>
 

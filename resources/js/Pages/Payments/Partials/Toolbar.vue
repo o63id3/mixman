@@ -20,7 +20,7 @@ defineProps<DataTableToolbarProps>()
 </script>
 
 <template>
-  <DataTableToolbar :table="table">
+  <DataTableToolbar :table="table" table-id="payments">
     <div class="flex gap-2">
       <DataTableFacetedFilter
         v-if="table.getColumn('recipient')"

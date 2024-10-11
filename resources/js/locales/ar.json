@@ -1,31 +1,68 @@
 {
-  "columns": {
-    "name": "الاسم",
-    "seller": "الاسم",
-    "region": "المنطقة",
-    "balance": "صافي الحساب",
-    "username": "اسم المستخدم",
-    "price_for_consumer": "السعر للمستهلك",
-    "price_for_seller": "السعر للبائع",
-    "created_at": "التاريخ",
-    "updated_at": "التاريخ",
-    "amount": "المبلغ",
-    "status": "الحالة",
-    "type": "نوع الحركة",
-    "action": "تم اتخاذ الاجراء بواسطة",
-    "registerer": "تم الاستلام بواسطة",
-    "total_price_for_consumer": "اجمالي السعر للمستهلك",
-    "total_price_for_seller": "اجمالي السعر للبائع",
-    "seller_percentage": "نسبة الربح",
-    "telegram": "حساب التلغرام",
-    "network": "الشبكة",
-    "manager": "مدير الطلب",
-    "orderer": "المستفيد",
-    "recipient": "المستلم",
-    "user": "الاسم",
-    "description": "الوصف",
-    "role": "الصلاحية",
-    "internet_price_per_week": "سعر الانترنت أسبوعيا",
-    "active": "الحالة"
+  "users": {
+    "columns": {
+      "name": "الاسم",
+      "username": "اسم المستخدم",
+      "telegram": "حساب التلغرام",
+      "network": "الشبكة",
+      "role": "الصلاحية",
+      "balance": "صافي الحساب",
+      "active": "الحالة"
+    }
+  },
+  "cards": {
+    "columns": {
+      "name": "الاسم",
+      "price_for_consumer": "السعر للمستهلك"
+    }
+  },
+  "networks": {
+    "columns": {
+      "name": "الاسم",
+      "manager": "المدير المالي",
+      "balance": "صافي الحساب",
+      "internet_price_per_week": "سعر الانترنت أسبوعيا",
+      "active": "الحالة"
+    }
+  },
+  "orders": {
+    "columns": {
+      "orderer": "المستفيد",
+      "manager": "مدير الطلب",
+      "network": "الشبكة",
+      "status": "الحالة",
+      "total_price_for_seller": "اجمالي السعر",
+      "total_price_for_consumer": "اجمالي السعر للمستهلك",
+      "updated_at": "التاريخ"
+    }
+  },
+  "payments": {
+    "columns": {
+      "recipient": "المستلم",
+      "user": "الاسم",
+      "network": "الشبكة",
+      "amount": "المبلغ",
+      "created_at": "التاريخ"
+    }
+  },
+  "expenses": {
+    "columns": {
+      "description": "الوصف",
+      "user": "تم الإدخال بواسطة",
+      "network": "الشبكة",
+      "amount": "المبلغ",
+      "created_at": "التاريخ"
+    }
+  },
+  "transactions": {
+    "columns": {
+      "user": "المستفيد",
+      "manager": "المدير",
+      "network": "الشبكة",
+      "type": "نوع الحركة",
+      "amount": "المبلغ",
+      "description": "الوصف",
+      "created_at": "التاريخ"
+    }
   }
 }
