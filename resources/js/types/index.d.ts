@@ -3,6 +3,7 @@ export interface User {
   network: Network
   name: string
   username: string
+  telegram: string
   balance: number
   active: boolean
   contact_info: string

@@ -101,6 +101,27 @@ defineProps<{
     </FormItem>
   </FormField>
   <FormField
+    v-if="['ahmed', 'partner'].includes(role ?? '')"
+    v-slot="{ componentField }"
+    name="telegram"
+  >
+    <FormItem>
+      <FormLabel>حساب التلغرام</FormLabel>
+      <FormControl>
+        <Input
+          type="text"
+          v-bind="componentField"
+          autocapitalize="none"
+          :disabled="disabled"
+        />
+      </FormControl>
+      <FormDescription>
+        سيتم استخدام هذا الحساب في إرسال الاشعارات.
+      </FormDescription>
+      <FormMessage />
+    </FormItem>
+  </FormField>
+  <FormField
     v-if="role === 'seller'"
     v-slot="{ componentField }"
     name="network_id"
@@ -129,7 +150,7 @@ defineProps<{
     </FormItem>
   </FormField>
   <FormField
-    v-if="role === 'seller' || role === 'partner'"
+    v-if="['seller', 'partner'].includes(role ?? '')"
     v-slot="{ componentField }"
     name="percentage"
   >

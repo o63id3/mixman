@@ -154,6 +154,7 @@ return [
     'attributes' => [
         'name' => 'الاسم',
         'username' => 'اسم المستخدم',
+        'telegram' => 'حساب التلغرام',
         'password' => 'كلمة المرور',
         'contact_info' => 'بيانات التواصل',
         'notes' => 'الملاحظات',

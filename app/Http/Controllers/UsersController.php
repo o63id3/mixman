@@ -70,12 +70,13 @@ final class UsersController
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
+            'telegram' => ['nullable', 'string', Rule::unique('users', 'telegram')],
             'password' => ['required', 'string', 'min:4'],
             'role' => ['required', Rule::enum(RoleEnum::class)],
             'percentage' => ['required_if:role,seller', 'numeric'],
             'network_id' => ['required_if:role,seller', 'required_if:role,partner', 'exists:networks,id'],
-            'contact_info' => ['sometimes'],
-            'notes' => ['sometimes'],
+            'contact_info' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         if (array_key_exists('percentage', $validated)) {
@@ -124,12 +125,13 @@ final class UsersController
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')->ignore($user->id)],
+            'telegram' => ['nullable', 'string', Rule::unique('users', 'telegram')->ignore($user->id)],
             'password' => ['string', 'min:4'],
             'role' => ['required', Rule::enum(RoleEnum::class)],
             'percentage' => ['required_if:role,seller', 'numeric'],
             'network_id' => ['required_if:role,seller', 'exists:networks,id'],
-            'contact_info' => ['sometimes'],
-            'notes' => ['sometimes'],
+            'contact_info' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         if (array_key_exists('percentage', $validated)) {

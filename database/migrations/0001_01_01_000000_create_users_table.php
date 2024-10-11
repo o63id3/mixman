@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
+            $table->string('telegram')->nullable()->unique();
             $table->string('password');
             $table->enum('role', array_column(RoleEnum::cases(), 'value'));
             $table->boolean('active')->default(true);

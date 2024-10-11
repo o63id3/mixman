@@ -20,6 +20,7 @@ final class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'username' => $this->whenHas('username'),
+            'telegram' => $this->whenHas('telegram'),
             'active' => $this->whenHas('active'),
             'role' => $this->whenHas('role'),
             'balance' => $this->whenHas('balance'),

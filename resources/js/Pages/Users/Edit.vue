@@ -31,6 +31,7 @@ const formSchema = toTypedSchema(
     username: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
+    telegram: z.string().optional(),
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
@@ -48,6 +49,7 @@ const { handleSubmit, setErrors, values } = useForm({
   initialValues: {
     name: props.user.name,
     username: props.user.username,
+    telegram: props.user.telegram,
     role: props.user.role,
     network_id: props.user.network ? String(props.user.network?.id) : undefined,
     percentage: props.user.percentage,
