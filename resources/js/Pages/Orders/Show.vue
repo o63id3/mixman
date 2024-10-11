@@ -107,7 +107,16 @@ defineProps<{
       </CardContent>
     </Card>
 
-    <p class="mt-4 px-4 text-sm font-bold tracking-wide"># المرفقات</p>
-    <DataTable :data="order.files" :columns="columns" />
+    <p
+      v-if="order.files.length"
+      class="mt-4 px-4 text-sm font-bold tracking-wide"
+    >
+      # المرفقات
+    </p>
+    <DataTable
+      v-if="order.files.length"
+      :data="order.files"
+      :columns="columns"
+    />
   </AuthenticatedLayout>
 </template>
