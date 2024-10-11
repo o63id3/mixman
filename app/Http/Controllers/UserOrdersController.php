@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
-use App\Models\Order;
 use App\Models\User;
 use App\Notifications\NewOrderNotification;
 use Illuminate\Http\RedirectResponse;
@@ -21,10 +20,11 @@ final class UserOrdersController
     {
         $user = type($request->user())->as(User::class);
 
-        $order = Order::create([
-            'user_id' => $user->id,
-            'status' => OrderStatusEnum::Pending,
-        ]);
+        $order = $user
+            ->orders()
+            ->create([
+                'status' => OrderStatusEnum::Pending,
+            ]);
 
         Notification::sendNow($order->manager, new NewOrderNotification($order));
 

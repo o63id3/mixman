@@ -9,7 +9,6 @@ import {
   CircleFadingArrowUp,
   DollarSign,
 } from 'lucide-vue-next'
-import { User } from '@/types'
 import { h } from 'vue'
 import CardDescription from '@/Components/ui/card/CardDescription.vue'
 import CardFooter from '@/Components/ui/card/CardFooter.vue'
@@ -132,6 +131,7 @@ const form = useForm({})
                 @click="
                   form.post(route('seller-orders.store'), {
                     preserveScroll: true,
+                    preserveState: false,
                     onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
                   })
                 "

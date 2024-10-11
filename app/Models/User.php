@@ -131,6 +131,14 @@ final class User extends Authenticatable
     /**
      * Get the seller region.
      */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the seller region.
+     */
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'recipient_id');
