@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 import { Card, Paginator } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
-import DataTable from '@/Components/data-table/DataTable.vue'
-import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
-import { columns } from './columns'
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
+import {
+  DataTable,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/Components/data-table'
+import { columns } from './definitions'
 
 defineProps<{
   cards: Paginator<Card>
@@ -19,8 +21,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Cards" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">

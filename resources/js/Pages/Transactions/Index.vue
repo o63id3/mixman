@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import DataTable from '@/Components/data-table/DataTable.vue'
-import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Filters, Network, Paginator, Transaction, User } from '@/types'
-import { Head } from '@inertiajs/vue3'
-import { columns } from './columns'
+
+import { DataTable, DataTablePagination } from '@/Components/data-table'
 import Toolbar from './Partials/Toolbar.vue'
+import { columns } from './definitions'
+
+import { Filters, Network, Paginator, Transaction, User } from '@/types'
 
 defineProps<{
   transactions: Paginator<Transaction>
@@ -18,8 +18,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Transactions" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

@@ -1,39 +1,19 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import UserForm from './Partials/UserForm.vue'
+import { useSubmit } from '@/Composables/submit'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import UserForm from './Partials/UserForm.vue'
-import { Network } from '@/types'
-import { useSubmit } from '@/Composables/submit'
 import { toast } from '@/Components/ui/toast'
+
+import { Network } from '@/types'
 
 defineProps<{
   networks: Array<Network>
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    name: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
-    username: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
-    telegram: z.string().nullable(),
-    password: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),
-    role: z.string({ message: 'هذا الحقل مطلوب' }),
-    network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
-    percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
-    contact_info: z.string().optional().nullable(),
-  }),
-)
 
 const { handleSubmit, setErrors, values } = useForm({
   validationSchema: formSchema,
@@ -51,8 +31,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Admins" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

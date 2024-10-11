@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { Order } from '@/types'
 import { orderStatues } from '@/types/enums'
 import { Link } from '@inertiajs/vue3'
@@ -95,3 +95,21 @@ export const columns: ColumnDef<Order>[] = [
     enableSorting: false,
   },
 ]
+
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+
+export const formSchema = toTypedSchema(
+  z.object({
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    status: z.string({ message: 'هذا الحقل مطلوب' }),
+    cards: z.array(
+      z.object({
+        card_id: z.string({ message: 'حقل الفئة مطلوب' }),
+        number_of_packages: z.number({ message: 'حقل الفئة مطلوب' }).min(1),
+        number_of_cards_per_package: z.number(),
+      }),
+    ),
+    notes: z.string().nullable().optional(),
+  }),
+)

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { Order } from '@/types'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
-import DataTable from '@/Components/data-table/DataTable.vue'
+import { DataTable } from '@/Components/data-table'
 import { columns } from './Partials/filesColumns'
 import { orderStatues } from '@/types/enums'
 import { formatDate, formatMoney } from '@/lib/formatters'
@@ -16,8 +15,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Orders" />
-
   <AuthenticatedLayout>
     <Card class="rounded-none sm:rounded-xl">
       <CardHeader>

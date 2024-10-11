@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
 import {
@@ -112,8 +112,6 @@ const form = useForm({})
 </script>
 
 <template>
-  <Head title="Dashboard" />
-
   <AuthenticatedLayout>
     <div class="space-y-8">
       <div v-if="user.role !== 'ahmed'">

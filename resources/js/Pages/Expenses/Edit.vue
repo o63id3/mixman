@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
+import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
-
-import ExpenseForm from './Partials/ExpenseForm.vue'
-
-import { useSubmit } from '@/Composables/submit'
+import { DeleteLink } from '@/Components/links'
 
 import { Expense, Network } from '@/types'
 import { AlertCircle } from 'lucide-vue-next'
@@ -25,14 +21,6 @@ const props = defineProps<{
     delete: boolean
   }
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    description: z.string({ message: 'هذا الحقل مطلوب' }),
-    network_id: z.string({ message: 'هذا الحقل مطلوب' }),
-    amount: z.number({ message: 'هذا الحقل مطلوب' }),
-  }),
-)
 
 const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
@@ -55,8 +43,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Expenses" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

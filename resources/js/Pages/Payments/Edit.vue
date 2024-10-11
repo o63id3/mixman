@@ -1,23 +1,19 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { Head } from '@inertiajs/vue3'
-
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
+import PaymentForm from './Partials/PaymentForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
+import { DeleteLink } from '@/Components/links'
 
-import PaymentForm from './Partials/PaymentForm.vue'
-
-import { useSubmit } from '@/Composables/submit'
+import { AlertCircle } from 'lucide-vue-next'
 
 import { Payment, User } from '@/types'
-import { AlertCircle } from 'lucide-vue-next'
 
 const props = defineProps<{
   payment: Payment
@@ -26,14 +22,6 @@ const props = defineProps<{
     delete: boolean
   }
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
-    amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().nullable().optional(),
-  }),
-)
 
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
@@ -56,8 +44,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Payments" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { Card } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { active } from '@/types/enums'
@@ -56,3 +56,16 @@ export const columns: ColumnDef<Card>[] = [
     },
   },
 ]
+
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+
+export const formSchema = toTypedSchema(
+  z.object({
+    name: z
+      .string({ message: 'هذا الحقل مطلوب' })
+      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
+    price_for_consumer: z.number({ message: 'هذا الحقل مطلوب' }).min(0),
+    notes: z.string().nullable().optional(),
+  }),
+)

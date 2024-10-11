@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 import { Filters, Network, Order, Paginator, User } from '@/types'
 
 import { Button } from '@/Components/ui/button'
 
-import DataTable from '@/Components/data-table/DataTable.vue'
-import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
-import { columns } from './columns'
+import { DataTable, DataTablePagination } from '@/Components/data-table'
+import { columns } from './definitions'
 import Toolbar from './Partials/Toolbar.vue'
 
 defineProps<{
@@ -24,8 +23,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Orders" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
@@ -37,7 +34,7 @@ defineProps<{
         </h2>
         <div v-if="can.create">
           <Link :href="route('orders.create')">
-            <Button> إنشاء طلب </Button>
+            <Button> إنشاء </Button>
           </Link>
         </div>
       </div>

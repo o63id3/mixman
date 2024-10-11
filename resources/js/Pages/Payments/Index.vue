@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Filters, Network, Paginator, Payment, User } from '@/types'
-import { Head, Link } from '@inertiajs/vue3'
-import Button from '@/Components/ui/button/Button.vue'
-import { DataTable, DataTablePagination } from '@/Components/data-table/index'
 
-import { columns } from './columns'
+import { Link } from '@inertiajs/vue3'
+
+import { Button } from '@/Components/ui/button'
+
+import { DataTable, DataTablePagination } from '@/Components/data-table/index'
+import { columns } from './definitions'
 import Toolbar from './Partials/Toolbar.vue'
+
+import { Filters, Network, Paginator, Payment, User } from '@/types'
 
 defineProps<{
   payments: Paginator<Payment>
@@ -22,8 +25,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Payments" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">

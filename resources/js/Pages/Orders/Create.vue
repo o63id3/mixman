@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
+import OrderForm from './Partials/OrderForm.vue'
 
 import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import OrderForm from './Partials/OrderForm.vue'
-import { useSubmit } from '@/Composables/submit'
 import { toast } from '@/Components/ui/toast'
 
 const props = defineProps<{
@@ -17,21 +15,6 @@ const props = defineProps<{
   cards: Array<Card>
   statuses: Array<string>
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
-    status: z.string({ message: 'هذا الحقل مطلوب' }),
-    cards: z.array(
-      z.object({
-        card_id: z.string({ message: 'حقل الفئة مطلوب' }),
-        number_of_packages: z.number({ message: 'حقل الفئة مطلوب' }).min(1),
-        number_of_cards_per_package: z.number(),
-      }),
-    ),
-    notes: z.string().nullable().optional(),
-  }),
-)
 
 const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
@@ -59,8 +42,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Orders" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

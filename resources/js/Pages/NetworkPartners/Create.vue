@@ -1,13 +1,27 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import NetworkPartnersForm from './Partials/NetworkPartnersForm.vue'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/Components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/Components/ui/select'
+import { Input } from '@/Components/ui/input'
 import { Network, User } from '@/types'
 
 import { AlertCircle } from 'lucide-vue-next'
@@ -50,8 +64,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Partners" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
@@ -79,7 +91,39 @@ const onSubmit = handleSubmit(submit)
     </Alert>
 
     <CreateFormLayout class="mt-2" @submit="onSubmit" :loading="loading">
-      <NetworkPartnersForm :partners="partners" />
+      <FormField v-slot="{ componentField }" name="user_id">
+        <FormItem>
+          <FormLabel>الشريك</FormLabel>
+          <FormControl>
+            <Select v-bind="componentField">
+              <SelectTrigger>
+                <SelectValue placeholder="اختر الشريك" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    v-for="partner in partners"
+                    :key="partner.id"
+                    :value="String(partner.id)"
+                  >
+                    {{ partner.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="share">
+        <FormItem>
+          <FormLabel>الحصة</FormLabel>
+          <FormControl>
+            <Input type="number" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>

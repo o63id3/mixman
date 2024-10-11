@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { User } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { active, roles } from '@/types/enums'
@@ -98,3 +98,25 @@ export const columns: ColumnDef<User>[] = [
     },
   },
 ]
+
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+
+export const formSchema = toTypedSchema(
+  z.object({
+    name: z
+      .string({ message: 'هذا الحقل مطلوب' })
+      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
+    username: z
+      .string({ message: 'هذا الحقل مطلوب' })
+      .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
+    telegram: z.string().nullable(),
+    password: z
+      .string({ message: 'هذا الحقل مطلوب' })
+      .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),
+    role: z.string({ message: 'هذا الحقل مطلوب' }),
+    network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
+    percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
+    contact_info: z.string().optional().nullable(),
+  }),
+)

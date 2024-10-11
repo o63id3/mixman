@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
-import { Network, Paginator } from '@/types'
+
+import { Link } from '@inertiajs/vue3'
 
 import { Button } from '@/Components/ui/button'
 
-import DataTable from '@/Components/data-table/DataTable.vue'
-import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
-import { columns } from './columns'
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
+import {
+  DataTable,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/Components/data-table'
+import { columns } from './definitions'
+
+import { Network, Paginator } from '@/types'
 
 defineProps<{
   networks: Paginator<Network>
@@ -20,8 +24,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Networks" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
@@ -33,7 +35,7 @@ defineProps<{
         </h2>
         <div v-if="can.create">
           <Link :href="route('networks.create')">
-            <Button> إنشاء شبكة </Button>
+            <Button> إنشاء </Button>
           </Link>
         </div>
       </div>

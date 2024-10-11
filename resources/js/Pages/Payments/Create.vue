@@ -1,28 +1,19 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
 
-import { User } from '@/types'
+import { toast } from '@/Components/ui/toast'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
-import { useSubmit } from '@/Composables/submit'
-import { toast } from '@/Components/ui/toast'
+
+import { User } from '@/types'
 
 defineProps<{
   users: Array<User>
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
-    amount: z.number({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().nullable().optional(),
-  }),
-)
 
 const { handleSubmit, resetForm, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
@@ -40,8 +31,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Payments" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

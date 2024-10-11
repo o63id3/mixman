@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
+
+import { columns, summaryFields } from './partners'
+import { DataTable } from '@/Components/data-table'
 
 import { Network } from '@/types'
-import { columns, summaryFields } from './partners'
-import DataTable from '@/Components/data-table/DataTable.vue'
 
 defineProps<{
   network: Network
@@ -12,8 +12,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Networks" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">

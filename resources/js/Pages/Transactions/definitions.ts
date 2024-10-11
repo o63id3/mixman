@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { Transaction } from '@/types'
 import { orderStatues, transactionTypes } from '@/types/enums'
 import { formatDate, formatMoney } from '@/lib/formatters'

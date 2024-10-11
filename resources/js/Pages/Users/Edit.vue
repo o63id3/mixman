@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { useSubmit } from '@/Composables/submit'
+import { formSchema } from './definitions'
+import UserForm from './Partials/UserForm.vue'
 
 import { toast } from '@/Components/ui/toast'
-import { Network, User } from '@/types'
+import { DeleteLink, SecondaryLink } from '@/Components/links'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import UserForm from './Partials/UserForm.vue'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
-import SecondaryLink from '@/Components/links/SecondaryLink.vue'
-import { useSubmit } from '@/Composables/submit'
+
+import { Network, User } from '@/types'
 
 const props = defineProps<{
   user: User
@@ -22,26 +20,6 @@ const props = defineProps<{
     delete: boolean
   }
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    name: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
-    username: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
-    telegram: z.string().nullable(),
-    password: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' })
-      .optional(),
-    role: z.string({ message: 'هذا الحقل مطلوب' }),
-    network_id: z.string({ message: 'هذا الحقل مطلوب' }).optional(),
-    percentage: z.number({ message: 'هذا الحقل مطلوب' }).optional(),
-    contact_info: z.string().optional().nullable(),
-  }),
-)
 
 const { handleSubmit, setErrors, values } = useForm({
   validationSchema: formSchema,
@@ -65,8 +43,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Users" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

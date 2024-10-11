@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import DataTable from '@/Components/data-table/DataTable.vue'
-import DataTablePagination from '@/Components/data-table/DataTablePagination.vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+
+import {
+  DataTable,
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/Components/data-table'
+import { columns } from './definitions'
+
 import { Paginator, Report } from '@/types'
-import { Head } from '@inertiajs/vue3'
-import { columns } from './columns'
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 
 defineProps<{
   reports: Paginator<Report>
@@ -13,8 +16,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Reports" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
-import { Expense } from '@/types'
 import { formatDate, formatMoney } from '@/lib/formatters'
+
+import { Expense } from '@/types'
 
 defineProps<{
   expense: Expense
@@ -12,8 +13,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Payments" />
-
   <AuthenticatedLayout>
     <Card class="rounded-none sm:rounded-xl">
       <CardHeader>

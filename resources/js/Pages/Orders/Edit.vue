@@ -1,25 +1,22 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { Head } from '@inertiajs/vue3'
-
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
+import OrderForm from './Partials/OrderForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
+import { DeleteLink } from '@/Components/links'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { AlertCircle } from 'lucide-vue-next'
 
-import OrderForm from './Partials/OrderForm.vue'
 import CardsSection from './Partials/CardsSection.vue'
-import { useSubmit } from '@/Composables/submit'
+import FilesSection from './Partials/FilesSection.vue'
 
 import { Card, Order, User } from '@/types'
-import FilesSection from './Partials/FilesSection.vue'
 
 const props = defineProps<{
   order: Order
@@ -36,15 +33,6 @@ const props = defineProps<{
     }
   }
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
-    status: z.string({ message: 'هذا الحقل مطلوب' }),
-    notes: z.string().nullable(),
-    files: z.array(z.string()).optional().optional(),
-  }),
-)
 
 const { handleSubmit, setErrors, values, setFieldValue } = useForm({
   validationSchema: formSchema,
@@ -63,8 +51,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Orders" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">

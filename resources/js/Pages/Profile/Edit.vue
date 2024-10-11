@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head } from '@inertiajs/vue3'
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue'
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue'
 
@@ -10,8 +9,6 @@ defineProps<{
 </script>
 
 <template>
-  <Head title="Profile" />
-
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">حسابي</h2>

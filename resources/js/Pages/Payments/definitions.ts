@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { Payment } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { formatDate, formatMoney } from '@/lib/formatters'
@@ -63,3 +63,14 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => formatDate(row.original.created_at_date, false),
   },
 ]
+
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+
+export const formSchema = toTypedSchema(
+  z.object({
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
+    amount: z.number({ message: 'هذا الحقل مطلوب' }),
+    notes: z.string().nullable().optional(),
+  }),
+)

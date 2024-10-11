@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
-import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
+import { DataTableColumnHeader } from '@/Components/data-table'
 import { Network } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { active } from '@/types/enums'
@@ -78,3 +78,15 @@ export function columns(canUpdate: boolean): ColumnDef<Network>[] {
 
   return columns
 }
+
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+
+export const formSchema = toTypedSchema(
+  z.object({
+    name: z
+      .string({ message: 'هذا الحقل مطلوب' })
+      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
+    internet_price_per_week: z.any().optional(),
+  }),
+)

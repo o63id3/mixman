@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
+
+import { Link } from '@inertiajs/vue3'
 
 import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { formSchema } from './definitions'
+import { useSubmit } from '@/Composables/submit'
+import NetworkForm from './Partials/NetworkForm.vue'
+
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+
+import { columns, summaryFields } from './partners'
+import { DataTable } from '@/Components/data-table'
+
+import { Button } from '@/Components/ui/button'
+import { toast } from '@/Components/ui/toast'
+import { DeleteLink, SecondaryLink } from '@/Components/links'
 
 import { Network } from '@/types'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import NetworkForm from './Partials/NetworkForm.vue'
-import { columns, summaryFields } from './partners'
-import DataTable from '@/Components/data-table/DataTable.vue'
-import Button from '@/Components/ui/button/Button.vue'
-import { useSubmit } from '@/Composables/submit'
-import { toast } from '@/Components/ui/toast'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
-import SecondaryLink from '@/Components/links/SecondaryLink.vue'
 
 const props = defineProps<{
   network: Network
@@ -25,15 +27,6 @@ const props = defineProps<{
     deletePartner: boolean
   }
 }>()
-
-const formSchema = toTypedSchema(
-  z.object({
-    name: z
-      .string({ message: 'هذا الحقل مطلوب' })
-      .min(2, { message: 'الاسم يجيب ان يكون حرفين على الاقل' }),
-    internet_price_per_week: z.any().optional(),
-  }),
-)
 
 const { handleSubmit, setErrors } = useForm({
   validationSchema: formSchema,
@@ -55,8 +48,6 @@ const onSubmit = handleSubmit(submit)
 </script>
 
 <template>
-  <Head title="Networks" />
-
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
