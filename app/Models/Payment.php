@@ -27,28 +27,6 @@ final class Payment extends Model
     ];
 
     /**
-     * Scope the payments depending on user role.
-     */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
-    {
-        if ($user->isAhmed()) {
-            return $query;
-        }
-
-        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id));
-    }
-
-    /**
-     * Scope the payments depending on user role.
-     */
-    public function scopeVisibleToAhmed(Builder $query): Builder
-    {
-        return $query->whereHas('recipient', function (Builder $query) {
-            $query->where('role', RoleEnum::Ahmed);
-        });
-    }
-
-    /**
      * Get recipient.
      */
     public function recipient(): BelongsTo
@@ -70,6 +48,28 @@ final class Payment extends Model
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);
+    }
+
+    /**
+     * Scope the payments depending on user role.
+     */
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id));
+    }
+
+    /**
+     * Scope the payments depending on user role.
+     */
+    public function scopeVisibleToAhmed(Builder $query): Builder
+    {
+        return $query->whereHas('recipient', function (Builder $query) {
+            $query->where('role', RoleEnum::Ahmed);
+        });
     }
 
     /**

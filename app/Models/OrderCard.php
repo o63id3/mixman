@@ -51,16 +51,13 @@ final class OrderCard extends Model
     {
         parent::boot();
 
-        $setTotalPrices = function ($model) {
+        self::saving(function ($model) {
             $model->quantity = $model->number_of_packages * $model->number_of_cards_per_package;
 
             $card = Card::find($model->card_id);
 
             $model->total_price_for_consumer = $card->price_for_consumer * $model->quantity;
             $model->total_price_for_seller = ($card->price_for_consumer * (1 - $model->order->user->percentage)) * $model->quantity;
-        };
-
-        self::creating($setTotalPrices);
-        self::updating($setTotalPrices);
+        });
     }
 }

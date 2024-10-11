@@ -28,20 +28,6 @@ final class Expense extends Model
     ];
 
     /**
-     * Scope the expenses depending on user role.
-     */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
-    {
-        if ($user->isAhmed()) {
-            return $query;
-        }
-
-        return $query->where(fn ($query) => $query->where('user_id', $user->id)
-            ->orWhere('network_id', $user->network_id)
-        );
-    }
-
-    /**
      * Get user.
      */
     public function user(): BelongsTo
@@ -55,5 +41,19 @@ final class Expense extends Model
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);
+    }
+
+    /**
+     * Scope the expenses depending on user role.
+     */
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->where(fn ($query) => $query->where('user_id', $user->id)
+            ->orWhere('network_id', $user->network_id)
+        );
     }
 }

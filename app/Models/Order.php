@@ -44,42 +44,6 @@ final class Order extends Model
     }
 
     /**
-     * Scope the orders visibility.
-     */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
-    {
-        if ($user->isAhmed()) {
-            return $query;
-        }
-
-        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('manager_id', $user->id));
-    }
-
-    /**
-     * Scope the orders to completed.
-     */
-    public function scopeCompleted(Builder $query): Builder
-    {
-        return $query->where('status', OrderStatusEnum::Completed);
-    }
-
-    /**
-     * Scope the orders to pending.
-     */
-    public function scopePending(Builder $query): Builder
-    {
-        return $query->where('status', OrderStatusEnum::Pending);
-    }
-
-    /**
-     * Scope the orders to returned.
-     */
-    public function scopeReturned(Builder $query): Builder
-    {
-        return $query->where('status', OrderStatusEnum::Returned);
-    }
-
-    /**
      * Get the user.
      */
     public function user(): BelongsTo
@@ -120,6 +84,42 @@ final class Order extends Model
     }
 
     /**
+     * Scope the orders visibility.
+     */
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('manager_id', $user->id));
+    }
+
+    /**
+     * Scope the orders to completed.
+     */
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Completed);
+    }
+
+    /**
+     * Scope the orders to pending.
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Pending);
+    }
+
+    /**
+     * Scope the orders to returned.
+     */
+    public function scopeReturned(Builder $query): Builder
+    {
+        return $query->where('status', OrderStatusEnum::Returned);
+    }
+
+    /**
      * The "booting" method of the model.
      *
      * This method is used to register any event listeners for the model,
@@ -131,17 +131,14 @@ final class Order extends Model
     {
         parent::boot();
 
-        $setManagerAndNetwork = function ($model) {
+        self::saving(function ($model) {
             $user = User::with('network:id,manager_id')->find($model->user->id);
 
             $model->network_id = $user->network->id;
             $model->manager_id = $user->isManager() ? User::where('role', 'ahmed')->first(['id'])->id : $user->network->manager_id;
 
             $model->completed_at = $model->isDirty('status') && $model->status === OrderStatusEnum::Pending ? null : now();
-        };
-
-        self::creating($setManagerAndNetwork);
-        self::updating($setManagerAndNetwork);
+        });
     }
 
     /**

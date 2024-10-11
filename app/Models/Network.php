@@ -36,28 +36,6 @@ final class Network extends Model
     }
 
     /**
-     * Scope the networks visibility.
-     */
-    public function scopeVisibleTo(Builder $query, User $user): Builder
-    {
-        if ($user->isAhmed()) {
-            return $query;
-        }
-
-        return $query->whereIn('id', $user->networks()->get(['networks.id'])->pluck('id'));
-    }
-
-    /**
-     * Load the network balance.
-     */
-    public function scopeWithBalance(Builder $query): Builder
-    {
-        return $query->withSum(['transactions as balance' => function ($query) {
-            $query->whereHas('user', fn ($query) => $query->whereIn('role', [RoleEnum::Ahmed, RoleEnum::Partner]));
-        }], 'amount');
-    }
-
-    /**
      * Get the network manager.
      */
     public function manager(): BelongsTo
@@ -95,6 +73,28 @@ final class Network extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Scope the networks visibility.
+     */
+    public function scopeVisibleTo(Builder $query, User $user): Builder
+    {
+        if ($user->isAhmed()) {
+            return $query;
+        }
+
+        return $query->whereIn('id', $user->networks()->get(['networks.id'])->pluck('id'));
+    }
+
+    /**
+     * Load the network balance.
+     */
+    public function scopeWithBalance(Builder $query): Builder
+    {
+        return $query->withSum(['transactions as balance' => function ($query) {
+            $query->whereHas('user', fn ($query) => $query->whereIn('role', [RoleEnum::Ahmed, RoleEnum::Partner]));
+        }], 'amount');
     }
 
     /**

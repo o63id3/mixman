@@ -92,6 +92,38 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the networks that the user own shares in.
+     */
+    public function networks(): BelongsToMany
+    {
+        return $this->belongsToMany(Network::class, 'network_partners');
+    }
+
+    /**
+     * Get the orders.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the payments that the user received.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'recipient_id');
+    }
+
+    /**
+     * Get the user transactions.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
      * Scope the users visibility.
      */
     public function scopeVisibleTo(Builder $query, self $user): Builder
@@ -129,38 +161,6 @@ final class User extends Authenticatable
     public function scopeBenefiter(Builder $query): Builder
     {
         return $query->whereNotNull('network_id');
-    }
-
-    /**
-     * Get the networks that the user own shares in.
-     */
-    public function networks(): BelongsToMany
-    {
-        return $this->belongsToMany(Network::class, 'network_partners');
-    }
-
-    /**
-     * Get the orders.
-     */
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    /**
-     * Get the payments that the user received.
-     */
-    public function payments(): HasMany
-    {
-        return $this->hasMany(Payment::class, 'recipient_id');
-    }
-
-    /**
-     * Get the user transactions.
-     */
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class);
     }
 
     /**
