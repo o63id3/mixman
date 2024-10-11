@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\WeeklyReportResource;
+use App\Models\User;
 use App\Models\WeeklyReport;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -15,11 +17,14 @@ final class WeeklyReportsController
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         Gate::authorize('viewAny', WeeklyReport::class);
 
+        $user = type($request->user())->as(User::class);
+
         $reports = WeeklyReport::query()
+            ->visibleTo($user)
             ->with(['network'])
             ->latest()
             ->paginate(config('settings.pagination_size'));

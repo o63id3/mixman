@@ -14,7 +14,7 @@ final class WeeklyReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAhmed();
+        return $user->isPartner();
     }
 
     /**
@@ -22,46 +22,7 @@ final class WeeklyReportPolicy
      */
     public function view(User $user, WeeklyReport $weeklyReport): bool
     {
-        return $user->isAhmed();
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return $user->isAhmed();
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, WeeklyReport $weeklyReport): bool
-    {
-        return $user->isAhmed();
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, WeeklyReport $weeklyReport): bool
-    {
-        return $user->isAhmed();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, WeeklyReport $weeklyReport): bool
-    {
-        return $user->isAhmed();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, WeeklyReport $weeklyReport): bool
-    {
-        return $user->isAhmed();
+        return $user->isAhmed()
+            || $user->networks()->where('networks.id', $weeklyReport->network_id)->exists();
     }
 }
