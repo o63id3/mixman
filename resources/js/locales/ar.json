@@ -13,7 +13,8 @@
   "cards": {
     "columns": {
       "name": "الاسم",
-      "price_for_consumer": "السعر للمستهلك"
+      "price_for_consumer": "السعر للمستهلك",
+      "active": "الحالة"
     }
   },
   "networks": {

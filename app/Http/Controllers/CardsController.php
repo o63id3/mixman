@@ -94,16 +94,4 @@ final class CardsController
 
         return back();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Card $card): RedirectResponse
-    {
-        Gate::authorize('delete', Card::class);
-
-        $card->delete();
-
-        return to_route('cards.index');
-    }
 }

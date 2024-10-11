@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Network;
+use App\Models\Card;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 
-final class DeactivatedNetworksController
+final class DeactivatedCardsController
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Network $network): RedirectResponse
+    public function store(Card $card): RedirectResponse
     {
-        Gate::authorize('deactivate', Network::class);
+        Gate::authorize('deactivate', Card::class);
 
-        $network->update([
+        $card->update([
             'active' => false,
         ]);
 
@@ -27,11 +27,11 @@ final class DeactivatedNetworksController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Network $network): RedirectResponse
+    public function destroy(Card $card): RedirectResponse
     {
-        Gate::authorize('activate', Network::class);
+        Gate::authorize('activate', Card::class);
 
-        $network->update([
+        $card->update([
             'active' => true,
         ]);
 

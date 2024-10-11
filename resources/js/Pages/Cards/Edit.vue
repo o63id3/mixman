@@ -10,8 +10,8 @@ import { toast } from '@/Components/ui/toast'
 import { Card } from '@/types'
 import CardForm from './Partials/CardForm.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
-import DeleteLink from '@/Components/links/DeleteLink.vue'
 import { useSubmit } from '@/Composables/submit'
+import { DeleteLink, SecondaryLink } from '@/Components/links'
 
 const props = defineProps<{
   card: Card
@@ -68,6 +68,22 @@ const onSubmit = handleSubmit(submit)
         >
           حذف
         </DeleteLink>
+        <DeleteLink
+          v-if="card.active"
+          :href="route('cards.deactivate', card.id)"
+          @success="toast({ title: 'تم تعطيل الكرت' })"
+          method="POST"
+        >
+          تعطيل
+        </DeleteLink>
+        <SecondaryLink
+          v-else
+          method="DELETE"
+          :href="route('cards.activate', card.id)"
+          @success="toast({ title: 'تم تفعيل الكرت' })"
+        >
+          تفعيل
+        </SecondaryLink>
       </template>
 
       <CardForm />

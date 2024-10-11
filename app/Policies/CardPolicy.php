@@ -33,9 +33,17 @@ final class CardPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can deactivate the model.
      */
-    public function delete(User $user): bool
+    public function deactivate(User $user): bool
+    {
+        return $user->isAhmed();
+    }
+
+    /**
+     * Determine whether the user can activate the model.
+     */
+    public function activate(User $user): bool
     {
         return $user->isAhmed();
     }

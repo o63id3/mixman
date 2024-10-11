@@ -62,7 +62,7 @@ final class OrdersController
 
         return Inertia::render('Orders/Create', [
             'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
-            'cards' => Card::all('id', 'name'),
+            'cards' => Card::whereActive(true)->get(['id', 'name']),
             'statuses' => OrderStatusEnum::cases(),
         ]);
     }
@@ -127,7 +127,7 @@ final class OrdersController
         return Inertia::render('Orders/Edit', [
             'order' => OrderResource::single($order),
             'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
-            'cards' => Card::get(['id', 'name']),
+            'cards' => Card::whereActive(true)->get(['id', 'name']),
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),

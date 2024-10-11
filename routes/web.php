@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeactivatedCardsController;
 use App\Http\Controllers\DeactivatedNetworksController;
 use App\Http\Controllers\DeactivatedUsersController;
 use App\Http\Controllers\ExpensesController;
@@ -29,7 +30,7 @@ Route::middleware('auth')->resource('users', UsersController::class)->except('sh
 Route::middleware('auth')->resource('networks', NetworksController::class)->except('delete');
 Route::middleware('auth')->resource('network.partners', NetworkPartnersController::class)->only(['create', 'store', 'destroy']);
 Route::middleware('auth')->post('/networks/{network}/managers/{user}', [NetworkManagersController::class, 'store'])->name('network.managers.store');
-Route::middleware('auth')->resource('cards', CardsController::class)->except('show');
+Route::middleware('auth')->resource('cards', CardsController::class)->except('show', 'destroy');
 Route::middleware('auth')->resource('orders', OrdersController::class);
 Route::middleware(['auth', 'throttle:user-orders'])->post('/user/orders', UserOrdersController::class)->name('user-orders.store');
 Route::middleware('auth')->resource('payments', PaymentsController::class);
@@ -41,6 +42,11 @@ Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store
 Route::middleware('auth')->group(function () {
     Route::post('/users/{user}', [DeactivatedUsersController::class, 'store'])->name('users.deactivate');
     Route::delete('/users/{user}', [DeactivatedUsersController::class, 'destroy'])->name('users.activate');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/cards/{card}', [DeactivatedCardsController::class, 'store'])->name('cards.deactivate');
+    Route::delete('/cards/{card}', [DeactivatedCardsController::class, 'destroy'])->name('cards.activate');
 });
 
 Route::middleware('auth')->group(function () {
