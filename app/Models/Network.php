@@ -25,6 +25,7 @@ final class Network extends Model
         'name',
         'internet_price_per_week',
         'active',
+        'manager_id',
     ];
 
     /**
@@ -95,6 +96,14 @@ final class Network extends Model
         return $query->withSum(['transactions as balance' => function ($query) {
             $query->whereHas('user', fn ($query) => $query->whereIn('role', [RoleEnum::Ahmed, RoleEnum::Partner]));
         }], 'amount');
+    }
+
+    /**
+     * Get the network available shares.
+     */
+    public function getAvailableShareAttribute(): int
+    {
+        return 100 - (int) ((float) $this->partners()->sum('share') * 100);
     }
 
     /**

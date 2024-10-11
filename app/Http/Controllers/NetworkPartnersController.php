@@ -21,7 +21,7 @@ final class NetworkPartnersController
      */
     public function create(Network $network): Response
     {
-        Gate::authorize('createPartner', Network::class);
+        Gate::authorize('createPartner', $network);
 
         return Inertia::render('NetworkPartners/Create', [
             'network' => NetworkResource::single($network),
@@ -35,11 +35,11 @@ final class NetworkPartnersController
      */
     public function store(Request $request, Network $network): RedirectResponse
     {
-        Gate::authorize('createPartner', Network::class);
+        Gate::authorize('createPartner', $network);
 
         $validated = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
-            'share' => ['numeric'],
+            'share' => ['numeric', "max:{$network->available_share}"],
         ]);
 
         $network
@@ -48,7 +48,7 @@ final class NetworkPartnersController
                 'share' => $validated['share'] / 100,
             ]);
 
-        return back();
+        return Gate::allows('createPartner', $network) ? back() : to_route('networks.edit', $network);
     }
 
     /**

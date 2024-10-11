@@ -95,7 +95,7 @@ final class NetworksController
             'network' => NetworkResource::single($network),
             'can' => [
                 'assignManager' => Gate::allows('assignManager', Network::class),
-                'createPartner' => Gate::allows('createPartner', Network::class),
+                'createPartner' => Gate::allows('createPartner', $network),
                 'deletePartner' => Gate::allows('deletePartner', Network::class),
             ],
         ]);

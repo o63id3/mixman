@@ -15,7 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import { useSubmit } from '@/Composables/submit'
 import { toast } from '@/Components/ui/toast'
 
-defineProps<{
+const props = defineProps<{
   network: Network
   partners: Array<User>
   remainingShare: number
@@ -35,14 +35,17 @@ const { handleSubmit, resetForm, setErrors } = useForm({
   validationSchema: formSchema,
 })
 
-const { submit, loading } = useSubmit(route('network.partners.store'), {
-  method: 'patch',
-  onSuccess: () => {
-    toast({ title: 'تم إضافة الشريك' })
-    resetForm()
+const { submit, loading } = useSubmit(
+  route('network.partners.store', props.network.id),
+  {
+    method: 'post',
+    onSuccess: () => {
+      toast({ title: 'تم إضافة الشريك' })
+      resetForm()
+    },
+    onError: (errors) => setErrors(errors),
   },
-  onError: (errors) => setErrors(errors),
-})
+)
 const onSubmit = handleSubmit(submit)
 </script>
 

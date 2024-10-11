@@ -56,9 +56,9 @@ final class NetworkPolicy
     /**
      * Determine whether the user can deactivate the model.
      */
-    public function createPartner(User $user): bool
+    public function createPartner(User $user, Network $network): bool
     {
-        return $user->isAhmed();
+        return $network->available_share && $user->isAhmed();
     }
 
     /**

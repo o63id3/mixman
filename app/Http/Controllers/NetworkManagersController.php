@@ -23,12 +23,4 @@ final class NetworkManagersController
 
         return back();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Network $network)
-    {
-        //
-    }
 }
