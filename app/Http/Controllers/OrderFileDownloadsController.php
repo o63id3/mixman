@@ -6,18 +6,24 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderFile;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class OrderFileDownloadsController
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(OrderFile $file): StreamedResponse
+    public function __invoke(OrderFile $file): BinaryFileResponse
     {
         Gate::authorize('download', $file);
 
-        return Storage::download($file->server_path); // TODO: FIX download link
+        $path = storage_path("app/{$file->server_path}");
+
+        if (! file_exists($path)) {
+            abort(404, 'File Not Found!');
+        }
+
+        return Response::download($path, $file->original_file_name);
     }
 }

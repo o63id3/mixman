@@ -4,7 +4,6 @@ import { h } from 'vue'
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
 import { OrderFile } from '@/types'
 import OrderFilesRowActions from './OrderFilesRowActions.vue'
-import { Link } from '@inertiajs/vue3'
 
 function returnFileSize(number: number) {
   if (number < 1e3) {
@@ -24,10 +23,11 @@ export const columns: ColumnDef<OrderFile>[] = [
     cell: ({ row }) =>
       row.original.can.download
         ? h(
-            Link,
+            'a',
             {
               href: route('order-files.download', row.original.id),
               class: 'hover:underline',
+              target: '_blank',
             },
             { default: () => row.original.original_file_name },
           )
