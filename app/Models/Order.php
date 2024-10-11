@@ -104,11 +104,11 @@ final class Order extends Model
     }
 
     /**
-     * Get the order items.
+     * Get the order cards.
      */
-    public function items(): HasMany
+    public function cards(): HasMany
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderCard::class);
     }
 
     /**

@@ -23,19 +23,19 @@ it('allows an authorized user to create an order item', function () {
         ]];
 
     $this->actingAs($user)
-        ->post(route('order-items.store', Order::factory()->create()), $data)
+        ->post(route('order-cards.store', Order::factory()->create()), $data)
         ->assertSessionHasNoErrors()
         ->assertRedirect();
 
-    $this->assertDatabaseHas('order_items', $data['cards'][0]);
-    $this->assertDatabaseHas('order_items', $data['cards'][1]);
+    $this->assertDatabaseHas('order_cards', $data['cards'][0]);
+    $this->assertDatabaseHas('order_cards', $data['cards'][1]);
 });
 
 it('fails validation when required fields are missing', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
-        ->post(route('order-items.store', Order::factory()->create()))
+        ->post(route('order-cards.store', Order::factory()->create()))
         ->assertSessionHasErrors(['cards']);
 });
 
@@ -53,7 +53,7 @@ it('fails validation when fields are not applicable', function ($number_of_packa
     ];
 
     $this->actingAs($user)
-        ->post(route('order-items.store', Order::factory()->create()), $data)
+        ->post(route('order-cards.store', Order::factory()->create()), $data)
         ->assertSessionHasErrors(['cards.0.card_id', 'cards.0.number_of_packages', 'cards.0.number_of_cards_per_package']);
 })->with([
     ['asd', 'asd'],
@@ -64,6 +64,6 @@ it('prevents unauthorized users from creating an order item', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->post(route('order-items.store', Order::factory()->create()))
+        ->post(route('order-cards.store', Order::factory()->create()))
         ->assertForbidden();
 });

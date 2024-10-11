@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\OrderCard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +18,7 @@ final class OrderItemsController
      */
     public function store(Request $request, Order $order): RedirectResponse
     {
-        Gate::authorize('createItems', $order);
+        Gate::authorize('createCards', $order);
 
         $validated = $request->validate([
             'cards' => ['required', 'array'],
@@ -27,7 +27,7 @@ final class OrderItemsController
             'cards.*.number_of_cards_per_package' => ['required', 'numeric'],
         ]);
 
-        $order->items()->createMany($validated['cards']);
+        $order->cards()->createMany($validated['cards']);
 
         return back();
     }
@@ -35,9 +35,9 @@ final class OrderItemsController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderItem $item): RedirectResponse
+    public function destroy(OrderCard $item): RedirectResponse
     {
-        Gate::authorize('delete', $item);
+        Gate::authorize('createCards', $item);
 
         $item->delete();
 

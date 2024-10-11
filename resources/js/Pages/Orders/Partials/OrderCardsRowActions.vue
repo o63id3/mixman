@@ -28,7 +28,7 @@ const row = computed(() => props.row.original)
     v-if="row.can.delete"
     @click="
       () =>
-        router.delete(route('order-items.destroy', row.id), {
+        router.delete(route('order-cards.destroy', row.id), {
           preserveScroll: true,
           onSuccess: () => toast({ title: 'تم حذف الرزمة' }),
         })

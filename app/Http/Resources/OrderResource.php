@@ -23,7 +23,7 @@ final class OrderResource extends JsonResource
             'user' => $this->whenLoaded('user', fn () => UserResource::single($this->user)),
             'manager' => $this->whenLoaded('manager', fn () => UserResource::single($this->manager)),
             'network' => $this->whenLoaded('network', fn () => NetworkResource::single($this->network)),
-            'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items)),
+            'cards' => $this->whenLoaded('cards', fn () => OrderItemResource::collection($this->cards)),
             'files' => $this->whenLoaded('files', fn () => OrderFileResource::collection($this->files)),
             'total_price_for_seller' => $this->whenHas('total_price_for_seller'),
             'total_price_for_consumer' => $this->whenHas('total_price_for_consumer'),

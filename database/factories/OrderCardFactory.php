@@ -9,9 +9,9 @@ use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OrderItem>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OrderCard>
  */
-final class OrderItemFactory extends Factory
+final class OrderCardFactory extends Factory
 {
     /**
      * Define the model's default state.

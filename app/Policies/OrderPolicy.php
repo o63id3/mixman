@@ -65,9 +65,9 @@ final class OrderPolicy
     }
 
     /**
-     * Determine whether the user can create items for the model.
+     * Determine whether the user can create cards for the model.
      */
-    public function createItems(User $user, Order $order): bool
+    public function createCards(User $user, Order $order): bool
     {
         return $this->update($user, $order);
     }

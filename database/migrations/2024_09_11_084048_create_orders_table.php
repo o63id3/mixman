@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('order_cards', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
             $table->foreignIdFor(Card::class)->nullable()->constrained('cards')->nullOnDelete();
@@ -39,6 +39,16 @@ return new class extends Migration
             $table->integer('total_price_for_seller');
             $table->timestamps();
         });
+
+        Schema::create('order_files', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Order::class)->constrained('orders')->cascadeOnDelete();
+            $table->string('server_path');
+            $table->string('original_file_name');
+            $table->string('extension');
+            $table->string('size');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -47,6 +57,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('order_cards');
+        Schema::dropIfExists('order_files');
     }
 };

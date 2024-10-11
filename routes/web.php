@@ -53,8 +53,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/orders/{order}/items', [OrderItemsController::class, 'store'])->name('order-items.store');
-    Route::delete('/order-items/{item}', [OrderItemsController::class, 'destroy'])->name('order-items.destroy');
+    Route::post('/orders/{order}/cards', [OrderItemsController::class, 'store'])->name('order-cards.store');
+    Route::delete('/order-cards/{item}', [OrderItemsController::class, 'destroy'])->name('order-cards.destroy');
 });
 
 Route::middleware('auth')->group(function () {

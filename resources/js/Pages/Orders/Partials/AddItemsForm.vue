@@ -51,7 +51,7 @@ const { handleSubmit, setErrors, resetForm } = useForm({
 })
 
 const { submit, loading } = useSubmit(
-  route('order-items.store', props.order.id),
+  route('order-cards.store', props.order.id),
   {
     method: 'post',
     onSuccess: () => {

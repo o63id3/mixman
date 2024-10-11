@@ -36,7 +36,7 @@ export interface Order {
   created_at_date: string
   updated_at: string
   updated_at_date: string
-  items: Array<OrderItem>
+  cards: Array<OrderCard>
   files: Array<OrderFile>
   can: {
     view: boolean
@@ -56,7 +56,7 @@ export interface OrderFile {
   }
 }
 
-export interface OrderItem {
+export interface OrderCard {
   id: number
   order: Order
   card: Card

@@ -2,12 +2,12 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import { OrderItem } from '@/types'
-import OrderItemsRowActions from './OrderItemsRowActions.vue'
+import { OrderCard } from '@/types'
+import OrderCardsRowActions from './OrderCardsRowActions.vue'
 import { formatMoney } from '@/lib/formatters'
 
-export function columns(canDelete: boolean): ColumnDef<OrderItem>[] {
-  const columns: ColumnDef<OrderItem>[] = [
+export function columns(canDelete: boolean): ColumnDef<OrderCard>[] {
+  const columns: ColumnDef<OrderCard>[] = [
     {
       accessorKey: 'card.name',
       header: ({ column }) =>
@@ -52,7 +52,7 @@ export function columns(canDelete: boolean): ColumnDef<OrderItem>[] {
   if (canDelete) {
     columns.push({
       id: 'actions',
-      cell: ({ row }) => h(OrderItemsRowActions, { row }),
+      cell: ({ row }) => h(OrderCardsRowActions, { row }),
     })
   }
 

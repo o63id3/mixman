@@ -70,7 +70,7 @@ defineProps<{
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in order.items" :key="item.id">
+                  <tr v-for="item in order.cards" :key="item.id">
                     <td class="whitespace-nowrap border p-2">
                       {{ item.card.name }}
                     </td>

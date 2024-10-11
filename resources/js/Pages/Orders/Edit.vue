@@ -28,7 +28,7 @@ const props = defineProps<{
   can: {
     update: boolean
     delete: boolean
-    items: {
+    cards: {
       create: boolean
     }
     files: {
@@ -119,10 +119,10 @@ const onSubmit = handleSubmit(submit)
       class="mt-4"
       editing
       :can-update="can.update"
-      :items="order.items"
+      :items="order.cards"
       :order="order"
       :cards="cards"
-      :can-add-item="can.items.create"
+      :can-add-item="can.cards.create"
     />
 
     <FilesSection v-if="can.files.create" class="mt-4" :order="order" />

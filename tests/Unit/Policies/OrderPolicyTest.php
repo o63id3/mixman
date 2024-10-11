@@ -37,8 +37,8 @@ test('create items', function () {
     $admin = User::factory()->create(['admin' => true]);
     $seller = User::factory()->create(['admin' => false]);
 
-    expect($admin->can('createItems', Order::class))->toBeTrue()
-        ->and($seller->can('createItems', Order::class))->toBeFalse();
+    expect($admin->can('createCards', Order::class))->toBeTrue()
+        ->and($seller->can('createCards', Order::class))->toBeFalse();
 });
 
 test('update', function () {

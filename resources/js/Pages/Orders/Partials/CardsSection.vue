@@ -4,14 +4,13 @@ import { ref } from 'vue'
 import { Button } from '@/Components/ui/button'
 import { X } from 'lucide-vue-next'
 
-import { Card, Order, OrderItem } from '@/types'
+import { Card, Order } from '@/types'
 import { columns, summaryFields } from './columns'
 import DataTable from '@/Components/data-table/DataTable.vue'
 import AddItemsForm from './AddItemsForm.vue'
 
 defineProps<{
   order: Order
-  items: Array<OrderItem>
   cards?: Array<Card>
   canAddItem: boolean
 }>()
@@ -43,9 +42,9 @@ const addingForm = ref(false)
     />
     <DataTable
       v-else
-      :data="items"
+      :data="order.cards"
       :columns="columns(canAddItem)"
-      :summaryFields="items.length ? summaryFields : undefined"
+      :summaryFields="order.cards.length ? summaryFields : undefined"
     />
   </div>
 </template>

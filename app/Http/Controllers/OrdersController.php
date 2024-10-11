@@ -31,8 +31,8 @@ final class OrdersController
 
         $orders = Order::query()
             ->with(['user', 'manager', 'network'])
-            ->withSum('items as total_price_for_seller', 'total_price_for_seller')
-            ->withSum('items as total_price_for_consumer', 'total_price_for_consumer')
+            ->withSum('cards as total_price_for_seller', 'total_price_for_seller')
+            ->withSum('cards as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -89,7 +89,7 @@ final class OrdersController
         unset($validated['cards']);
 
         $order = Order::create($validated);
-        $order->items()->createMany($cards);
+        $order->cards()->createMany($cards);
 
         return back();
     }
@@ -101,9 +101,9 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order->load(['user', 'manager', 'items', 'files', 'items.card']);
-        $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
-            ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
+        $order->load(['user', 'manager', 'cards', 'files', 'cards.card']);
+        $order->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
+            ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Show', [
             'order' => OrderResource::single($order),
@@ -119,9 +119,9 @@ final class OrdersController
 
         $user = type($request->user())->as(User::class);
 
-        $order->load(['user', 'manager', 'items', 'files', 'items.card']);
-        $order->loadSum('items as total_price_for_seller', 'total_price_for_seller')
-            ->loadSum('items as total_price_for_consumer', 'total_price_for_consumer');
+        $order->load(['user', 'manager', 'cards', 'files', 'cards.card']);
+        $order->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
+            ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 
         return Inertia::render('Orders/Edit', [
             'order' => OrderResource::single($order),
@@ -130,8 +130,8 @@ final class OrdersController
             'can' => [
                 'update' => Gate::allows('update', $order),
                 'delete' => Gate::allows('delete', $order),
-                'items' => [
-                    'create' => Gate::allows('createItems', $order),
+                'cards' => [
+                    'create' => Gate::allows('createCards', $order),
                 ],
                 'files' => [
                     'create' => Gate::allows('createFiles', $order),

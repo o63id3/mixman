@@ -24,7 +24,7 @@ return new class extends Migration
                 COALESCE(
                     SUM(
                         CASE
-                            WHEN status = 'مكتمل' THEN - order_items.total_price_for_seller
+                            WHEN status = 'مكتمل' THEN - order_cards.total_price_for_seller
                             WHEN status = 'مرجع' THEN 0
                             WHEN status = 'طلب جديد' THEN 0
                         END
@@ -35,7 +35,7 @@ return new class extends Migration
                 orders.created_at
             FROM
                 orders
-                LEFT JOIN order_items ON orders.id = order_items.order_id
+                LEFT JOIN order_cards ON orders.id = order_cards.order_id
             GROUP BY
                 orders.id,
                 orders.user_id,
