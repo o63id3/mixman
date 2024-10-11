@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -47,9 +48,11 @@ final class Transaction extends Model
         }
 
         return $query
-            ->where('user_id', $user->id)
-            ->orWhere('manager_id', $user->id)
-            ->orWhereIn('id', $user->networks()->get(['networks.id'])->pluck('id'));
+            ->when($user->isSeller(), fn ($query) => $query->where(fn ($query) => $query->whereStatus(null)->orWhereNot('status', OrderStatusEnum::Returned)))
+            ->where(fn ($query) => $query->where('user_id', $user->id)
+                ->orWhere('manager_id', $user->id)
+                ->orWhereIn('id', $user->networks()->select(['networks.id']))
+            );
     }
 
     /**

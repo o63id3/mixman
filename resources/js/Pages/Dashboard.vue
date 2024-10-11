@@ -102,7 +102,7 @@ const groups: Array<Group> = [
         title: 'الطلبات المرجعة',
         value: h('span', `${props.number_of_returned_orders_last_week} طلب`),
         icon: h(CircleFadingArrowUp, { class: 'text-red-500' }),
-        visible: true,
+        visible: user.role !== 'seller',
       },
     ],
   },

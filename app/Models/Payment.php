@@ -35,7 +35,7 @@ final class Payment extends Model
             return $query;
         }
 
-        return $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id);
+        return $query->where(fn ($query) => $query->where('user_id', $user->id)->orWhere('recipient_id', $user->id));
     }
 
     /**

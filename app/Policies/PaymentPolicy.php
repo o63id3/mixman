@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\RoleEnum;
 use App\Models\Payment;
 use App\Models\User;
 
@@ -15,7 +14,7 @@ final class PaymentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isManager() || $user->role !== RoleEnum::Partner->value;
+        return $user->isManager();
     }
 
     /**

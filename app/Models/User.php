@@ -73,6 +73,14 @@ final class User extends Authenticatable
     }
 
     /**
+     * Check if the user is seller.
+     */
+    public function isSeller(): bool
+    {
+        return $this->role === RoleEnum::Seller->value;
+    }
+
+    /**
      * Get the user network.
      */
     public function network(): BelongsTo
