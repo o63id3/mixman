@@ -128,7 +128,13 @@ export interface Report {
   total_payments_amount: number
   total_expenses_amount: number
   network_income: number
-  partners_shares: Array
+  partners_shares: Record<
+    string,
+    {
+      benefit: number
+      share: number
+    }
+  >
   start_from_date: string
   end_at_date: string
   created_at_date: string

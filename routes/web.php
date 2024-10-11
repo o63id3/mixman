@@ -41,7 +41,7 @@ Route::middleware('auth')->resource('orders', OrdersController::class);
 Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class);
 Route::middleware('auth')->get('/transactions', TransactionsController::class)->name('transactions.index');
-Route::middleware('auth')->get('/reports', [WeeklyReportsController::class, 'index'])->name('reports.index');
+Route::middleware('auth')->resource('reports', WeeklyReportsController::class)->only(['index', 'show']);
 Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');
 
 Route::middleware('auth')->group(function () {

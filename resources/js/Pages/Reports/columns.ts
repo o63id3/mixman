@@ -7,12 +7,42 @@ import { formatDate, formatMoney } from '@/lib/formatters'
 
 export const columns: ColumnDef<Report>[] = [
   {
+    accessorKey: 'id',
+    header: '#',
+    cell: ({ row }) =>
+      h(
+        'a',
+        {
+          target: '_blank',
+          href: route('reports.show', row.original.id),
+          class: 'hover:underline',
+        },
+        {
+          default: () => row.original.id,
+        },
+      ),
+    enableSorting: false,
+  },
+  {
     id: 'network',
     accessorKey: 'network.name',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'الشبكة' }),
+    cell: ({ row }) =>
+      h(
+        'a',
+        {
+          target: '_blank',
+          href: route('reports.show', row.original.id),
+          class: 'hover:underline',
+        },
+        {
+          default: () => row.original.network.name,
+        },
+      ),
     enableSorting: false,
   },
+
   {
     accessorKey: 'total_payments_amount',
     header: ({ column }) =>
