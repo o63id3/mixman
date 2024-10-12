@@ -5,12 +5,26 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-final class OrderCard extends Model
+final class OrderCard extends Pivot
 {
     use HasFactory;
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -52,10 +66,9 @@ final class OrderCard extends Model
         parent::boot();
 
         self::saving(function ($model) {
+            $card = Card::find($model->card_id, ['price_for_consumer']);
+
             $model->quantity = $model->number_of_packages * $model->number_of_cards_per_package;
-
-            $card = Card::find($model->card_id);
-
             $model->total_price_for_consumer = $card->price_for_consumer * $model->quantity;
             $model->total_price_for_seller = ($card->price_for_consumer * (1 - $model->order->user->percentage)) * $model->quantity;
         });

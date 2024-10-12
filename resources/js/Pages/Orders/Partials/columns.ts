@@ -2,14 +2,14 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import { OrderCard } from '@/types'
+import { Card } from '@/types'
 import OrderCardsRowActions from './OrderCardsRowActions.vue'
 import { formatMoney } from '@/lib/formatters'
 
-export function columns(canDelete: boolean): ColumnDef<OrderCard>[] {
-  const columns: ColumnDef<OrderCard>[] = [
+export function columns(canDelete: boolean): ColumnDef<Card>[] {
+  const columns: ColumnDef<Card>[] = [
     {
-      accessorKey: 'card.name',
+      accessorKey: 'name',
       header: ({ column }) =>
         h(DataTableColumnHeader, { column, title: 'الفئة' }),
       enableSorting: false,
@@ -23,12 +23,12 @@ export function columns(canDelete: boolean): ColumnDef<OrderCard>[] {
           title: 'اجمالي السعر للبائع',
         }),
       cell: ({ row }) =>
-        `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`,
+        `${formatMoney(row.original.pivot.total_price_for_seller)} شيكل`,
       enableSorting: false,
       enableHiding: false,
     },
     {
-      accessorKey: 'number_of_packages',
+      accessorKey: 'pivot.number_of_packages',
       header: ({ column }) =>
         h(DataTableColumnHeader, {
           column,
@@ -38,7 +38,7 @@ export function columns(canDelete: boolean): ColumnDef<OrderCard>[] {
       enableHiding: false,
     },
     {
-      accessorKey: 'number_of_cards_per_package',
+      accessorKey: 'pivot.number_of_cards_per_package',
       header: ({ column }) =>
         h(DataTableColumnHeader, {
           column,
@@ -62,7 +62,7 @@ export function columns(canDelete: boolean): ColumnDef<OrderCard>[] {
 export const summaryFields = [
   { key: 'id', label: '' },
   {
-    key: 'total_price_for_seller',
+    key: 'pivot.number_of_packages',
     label: 'اجمالي السعر للبائع',
     formatter: (value: number) => `${formatMoney(value)} شيكل`,
   },

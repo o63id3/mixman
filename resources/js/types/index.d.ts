@@ -23,6 +23,25 @@ export interface Network {
   active: boolean
 }
 
+export interface Card {
+  id: number
+  name: string
+  active: boolean
+  price_for_consumer: number
+  notes: string
+  pivot: {
+    id: number
+    number_of_packages: number
+    number_of_cards_per_package: number
+    quantity: number
+    total_price_for_consumer: number
+    total_price_for_seller: number
+    can: {
+      delete: boolean
+    }
+  }
+}
+
 export interface Order {
   id: number
   status: 'معلق' | 'مكتمل' | 'مرجع'
@@ -35,7 +54,7 @@ export interface Order {
   created_at_date: string
   updated_at: string
   updated_at_date: string
-  cards: Array<OrderCard>
+  cards: Array<Card>
   files: Array<OrderFile>
   can: {
     view: boolean
@@ -51,20 +70,6 @@ export interface OrderFile {
   size: number
   can: {
     download: boolean
-    delete: boolean
-  }
-}
-
-export interface OrderCard {
-  id: number
-  order: Order
-  card: Card
-  number_of_packages: number
-  number_of_cards_per_package: number
-  quantity: number
-  total_price_for_consumer: number
-  total_price_for_seller: number
-  can: {
     delete: boolean
   }
 }
@@ -98,14 +103,6 @@ export interface Expense {
     update: boolean
     delete: boolean
   }
-}
-
-export interface Card {
-  id: number
-  name: string
-  active: boolean
-  price_for_consumer: number
-  notes: string
 }
 
 export interface Transaction {

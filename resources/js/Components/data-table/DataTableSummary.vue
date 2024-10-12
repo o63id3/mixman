@@ -30,7 +30,7 @@ const summaries = computed(() => {
     value:
       field.key === 'id'
         ? field.label
-        : props.data.reduce((sum, item) => sum + (item[field.key] || 0), 0),
+        : props.data.reduce((sum, item) => sum + (item[field.key] || 0), 0), // FIX: nested objects
   }))
 })
 </script>

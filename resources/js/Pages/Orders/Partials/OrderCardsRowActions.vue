@@ -3,13 +3,13 @@ import type { Row } from '@tanstack/vue-table'
 import { computed } from 'vue'
 
 import { Button } from '@/Components/ui/button'
-import { OrderCard } from '@/types'
+import { Card } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { toast } from '@/Components/ui/toast'
 import { Trash2 } from 'lucide-vue-next'
 
 const props = defineProps<{
-  row: Row<OrderCard>
+  row: Row<Card>
 }>()
 
 const row = computed(() => props.row.original)
@@ -17,7 +17,7 @@ const row = computed(() => props.row.original)
 
 <template>
   <Button
-    v-if="row.can.delete"
+    v-if="row.pivot.can.delete"
     @click="
       () =>
         router.delete(route('order-cards.destroy', row.id), {

@@ -110,7 +110,7 @@ export const formSchema = toTypedSchema(
     username: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(2, { message: 'اسم المستخدم يجيب ان يكون حرفين على الاقل' }),
-    telegram: z.string().nullable(),
+    telegram: z.string().nullable().optional(),
     password: z
       .string({ message: 'هذا الحقل مطلوب' })
       .min(4, { message: 'كلمة المرور يجب ان تكون 4 احرف على الاقل' }),

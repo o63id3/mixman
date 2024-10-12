@@ -37,7 +37,6 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('total_price_for_consumer');
             $table->integer('total_price_for_seller');
-            $table->timestamps();
         });
 
         Schema::create('order_files', function (Blueprint $table) {
@@ -47,7 +46,6 @@ return new class extends Migration
             $table->string('original_file_name');
             $table->string('extension');
             $table->string('size');
-            $table->timestamps();
         });
     }
 

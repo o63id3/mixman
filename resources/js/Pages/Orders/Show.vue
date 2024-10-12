@@ -67,20 +67,20 @@ defineProps<{
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in order.cards" :key="item.id">
+                  <tr v-for="card in order.cards" :key="card.id">
                     <td class="whitespace-nowrap border p-2">
-                      {{ item.card.name }}
+                      {{ card.name }}
                     </td>
                     <td class="whitespace-nowrap border p-2">
-                      {{ formatMoney(item.total_price_for_seller) }}
+                      {{ formatMoney(card.pivot.total_price_for_seller) }}
                       <span class="text-xs leading-none tracking-wide">
                         شيكل
                       </span>
                     </td>
                     <td class="whitespace-nowrap border p-2">
-                      {{ item.number_of_packages }}
+                      {{ card.pivot.number_of_packages }}
                       <span class="text-xs leading-none tracking-wide">
-                        ({{ item.number_of_cards_per_package }})
+                        ({{ card.pivot.number_of_cards_per_package }})
                       </span>
                     </td>
                   </tr>

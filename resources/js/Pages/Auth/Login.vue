@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import { Checkbox } from '@/Components/ui/checkbox'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
-import InputError from '@/Components/InputError.vue'
-import { Head, useForm } from '@inertiajs/vue3'
-import Input from '@/Components/ui/input/Input.vue'
-import Button from '@/Components/ui/button/Button.vue'
-import Label from '@/Components/ui/label/Label.vue'
 
-defineProps<{
-  canResetPassword?: boolean
-  status?: string
-}>()
+import { useForm } from '@inertiajs/vue3'
+
+import { Checkbox } from '@/Components/ui/checkbox'
+import InputError from '@/Components/InputError.vue'
+import { Input } from '@/Components/ui/input'
+import { Button } from '@/Components/ui/button'
+import { Label } from '@/Components/ui/label'
 
 const form = useForm({
   username: '',
@@ -29,12 +26,6 @@ const submit = () => {
 
 <template>
   <GuestLayout>
-    <Head title="Log in" />
-
-    <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-      {{ status }}
-    </div>
-
     <form @submit.prevent="submit">
       <div>
         <Label for="username">اسم المستخدم</Label>
@@ -64,10 +55,10 @@ const submit = () => {
       </div>
 
       <div class="mt-4 block">
-        <label class="flex items-center">
+        <Label class="flex items-center">
           <Checkbox name="remember" v-model="form.remember" />
           <span class="ms-2 text-sm text-gray-600">تذكرني</span>
-        </label>
+        </Label>
       </div>
 
       <div class="mt-4 flex items-center justify-end">

@@ -16,22 +16,18 @@ import {
   SelectValue,
 } from '@/Components/ui/select'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import { Card, Order, User } from '@/types'
+import { Card, User } from '@/types'
 import { orderStatues } from '@/types/enums'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircle } from 'lucide-vue-next'
 import Button from '@/Components/ui/button/Button.vue'
-import Input from '@/Components/ui/input/Input.vue'
 
 const emit = defineEmits(['select'])
 
 defineProps<{
-  order?: Order
-  users?: Array<User>
+  users: Array<User>
   cards?: Array<Card>
   selected?: number
-  hiddenCards?: boolean
-  disabled?: boolean
 }>()
 </script>
 
@@ -40,7 +36,6 @@ defineProps<{
     <FormItem>
       <FormLabel>المستفيد</FormLabel>
       <Combobox
-        v-if="users"
         :options="
           users.map((seller) => ({
             value: seller.id,
@@ -52,7 +47,6 @@ defineProps<{
         :selected="selected"
         @select="(selected: any) => emit('select', selected.value)"
       />
-      <Input v-else :model-value="order?.user.name" disabled />
       <FormMessage />
     </FormItem>
   </FormField>
@@ -60,7 +54,7 @@ defineProps<{
     <FormItem>
       <FormLabel>الحالة</FormLabel>
       <FormControl>
-        <Select v-bind="componentField" :disabled="disabled">
+        <Select v-bind="componentField">
           <SelectTrigger>
             <SelectValue placeholder="اختر حالة الطلب" />
           </SelectTrigger>
@@ -83,11 +77,7 @@ defineProps<{
       <FormMessage />
     </FormItem>
   </FormField>
-  <FormField
-    v-if="!hiddenCards && cards"
-    v-slot="{ componentField }"
-    name="cards"
-  >
+  <FormField v-if="cards" v-slot="{ componentField }" name="cards">
     <FormItem class="col-span-full">
       <FormLabel>الكروت</FormLabel>
       <FormControl class="col-span-full">
@@ -123,7 +113,7 @@ defineProps<{
     <FormItem class="col-span-full">
       <FormLabel>ملاحظات</FormLabel>
       <FormControl>
-        <Textarea v-bind="componentField" :disabled="disabled" />
+        <Textarea v-bind="componentField" />
       </FormControl>
       <FormMessage />
     </FormItem>

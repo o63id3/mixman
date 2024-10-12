@@ -70,7 +70,10 @@ export const columns: ColumnDef<Report>[] = [
     accessorKey: 'income_overflow',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'ربح فائض' }),
-    cell: ({ row }) => `${formatMoney(row.original.income_overflow)} شيكل`,
+    cell: ({ row }) =>
+      row.original.income_overflow
+        ? `${formatMoney(row.original.income_overflow)} شيكل`
+        : '-',
     enableSorting: false,
   },
   {

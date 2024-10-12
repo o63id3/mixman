@@ -146,9 +146,11 @@ final class User extends Authenticatable
      */
     public function scopeManager(Builder $query): Builder
     {
-        return $query->where('role', RoleEnum::Ahmed)->orWhere(function (Builder $query) {
-            $query->where('role', RoleEnum::Partner)->whereNotNull('network_id');
-        });
+        return $query
+            ->where('role', RoleEnum::Ahmed)
+            ->orWhere(function (Builder $query) {
+                $query->where('role', RoleEnum::Partner)->whereNotNull('network_id');
+            });
     }
 
     /**
@@ -164,9 +166,23 @@ final class User extends Authenticatable
     /**
      * Scope the users to beneficiaries only.
      */
-    public function scopeBeneficiary(Builder $query): Builder
+    public function scopeBeneficiary(Builder $query, ?self $user = null): Builder
     {
-        return $query->whereNotNull('network_id');
+        if ($user?->isAhmed()) {
+            return $query
+                ->whereNot('role', RoleEnum::Ahmed)
+                ->where(function (Builder $query) use ($user): Builder {
+                    return $query
+                        ->orWhere(function (Builder $query) {
+                            $query->where('role', RoleEnum::Partner)->whereNotNull('network_id');
+                        })
+                        ->when($user->network_id, fn () => $query->orWhere('network_id', $user->network_id));
+                });
+        }
+
+        return $query
+            ->whereNot('role', RoleEnum::Ahmed)
+            ->whereNotNull('network_id');
     }
 
     /**

@@ -27,7 +27,7 @@ defineProps<{
   </FormField>
   <FormField v-slot="{ componentField }" name="internet_price_per_week">
     <FormItem class="col-span-full md:col-span-1">
-      <FormLabel>سعر الانترنت اسبوعيا</FormLabel>
+      <FormLabel>سعر الإنترنت أسبوعيا</FormLabel>
       <FormControl>
         <Input type="number" v-bind="componentField" :disabled="disabled" />
       </FormControl>

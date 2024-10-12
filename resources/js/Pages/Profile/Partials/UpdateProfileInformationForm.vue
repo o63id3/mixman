@@ -5,10 +5,6 @@ import Input from '@/Components/ui/input/Input.vue'
 import Label from '@/Components/ui/label/Label.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 
-defineProps<{
-  status?: String
-}>()
-
 const user = usePage().props.auth.user
 
 const form = useForm({

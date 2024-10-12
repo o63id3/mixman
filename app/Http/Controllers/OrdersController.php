@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\StoreOrderCardsAction;
 use App\Enums\OrderStatusEnum;
 use App\Http\Filters\OrderFilter;
 use App\Http\Resources\OrderResource;
@@ -31,8 +32,8 @@ final class OrdersController
 
         $orders = Order::query()
             ->with('user:id,name', 'manager:id,name', 'network:id,name')
-            ->withSum('cards as total_price_for_seller', 'total_price_for_seller')
-            ->withSum('cards as total_price_for_consumer', 'total_price_for_consumer')
+            ->withSum('cards as total_price_for_seller', 'order_cards.total_price_for_seller')
+            ->withSum('cards as total_price_for_consumer', 'order_cards.total_price_for_consumer')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -61,7 +62,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         return Inertia::render('Orders/Create', [
-            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary($user)->get(['id', 'name']),
             'cards' => Card::whereActive(true)->get(['id', 'name']),
             'statuses' => OrderStatusEnum::cases(),
         ]);
@@ -70,7 +71,7 @@ final class OrdersController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, StoreOrderCardsAction $action): RedirectResponse
     {
         Gate::authorize('create', Order::class);
 
@@ -88,7 +89,7 @@ final class OrdersController
         unset($validated['cards']);
 
         $order = Order::create($validated);
-        $order->cards()->createMany($cards);
+        $action->handle($order, $cards);
 
         return back();
     }
@@ -100,10 +101,7 @@ final class OrdersController
     {
         Gate::authorize('view', $order);
 
-        $order
-            ->load('user:id,name', 'manager:id,name', 'cards', 'files', 'cards.card')
-            ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
-            ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
+        $order->load('user:id,name', 'manager:id,name', 'cards', 'files');
 
         return Inertia::render('Orders/Show', [
             'order' => OrderResource::single($order),
@@ -119,10 +117,7 @@ final class OrdersController
 
         $user = type($request->user())->as(User::class);
 
-        $order
-            ->load('user:id,name', 'manager:id,name', 'cards', 'files', 'cards.card')
-            ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
-            ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
+        $order->load('user:id,name', 'manager:id,name', 'cards', 'files');
 
         return Inertia::render('Orders/Edit', [
             'order' => OrderResource::single($order),

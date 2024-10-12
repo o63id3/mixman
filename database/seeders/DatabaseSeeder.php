@@ -69,7 +69,10 @@ final class DatabaseSeeder extends Seeder
         Order::factory(100)
             ->recycle([$network1, $network2])
             ->recycle([...$sellers, $partners1->first(), $partners2->first()])
-            ->hasCards(3)
+            ->hasAttached($cards, fn () => [
+                'number_of_packages' => random_int(1, 3),
+                'number_of_cards_per_package' => 120,
+            ])
             ->recycle($cards)
             ->create();
 

@@ -59,11 +59,8 @@ final class NetworkPartnersController
         Gate::authorize('deletePartner', Network::class);
 
         if ($network->manager?->is($partner)) {
-            $network->manager_id = null;
-            $network->save();
-
-            $partner->network_id = null;
-            $partner->save();
+            $network->update(['manager_id' => null]);
+            $partner->update(['network_id' => null]);
         }
 
         $network

@@ -18,10 +18,9 @@ import { Card, Order, User } from '@/types'
 
 const props = defineProps<{
   order: Order
-  users?: Array<User>
-  cards?: Array<Card>
+  users: Array<User>
+  cards: Array<Card>
   can: {
-    update: boolean
     delete: boolean
     cards: {
       create: boolean
@@ -69,7 +68,7 @@ const initialValues = {
       :initial-values="initialValues"
       :route="route('orders.update', order.id)"
       @success="toast({ title: 'تم تعديل الطلب' })"
-      :can-update="can.update"
+      can-update
     >
       <template #buttons>
         <DeleteLink
@@ -83,11 +82,8 @@ const initialValues = {
 
       <template #default="{ values, setFieldValue }">
         <OrderForm
-          hidden-cards
-          :disabled="!can.update"
           :order="order"
           :users="users"
-          :cards="cards"
           :selected="values.user_id"
           @select="(selected: number) => setFieldValue('user_id', selected)"
         />
@@ -97,7 +93,7 @@ const initialValues = {
     <CardsSection
       class="mt-4"
       editing
-      :can-update="can.update"
+      can-update
       :items="order.cards"
       :order="order"
       :cards="cards"

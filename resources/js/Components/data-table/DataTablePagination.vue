@@ -24,11 +24,13 @@ defineProps<{
     class="flex items-center justify-between rounded border bg-white px-3 py-2 shadow-sm rtl:flex-row-reverse"
   >
     <div
-      class="flex w-[100px] items-center justify-center text-xs font-medium tracking-wide"
+      class="flex items-center justify-center text-xs font-medium tracking-wide"
     >
-      صفحة {{ meta.current_page }} من
-      {{ meta.last_page }}
+      <!-- العناصر من {{ meta.from }} حتى {{ meta.to }} من أصل {{ meta.total }} عنصر -->
+      <!-- صفحة {{ meta.current_page }} من {{ meta.last_page }} -->
+      {{ meta.current_page }} \ {{ meta.last_page }}
     </div>
+
     <div class="flex items-center space-x-2 rtl:flex-row-reverse">
       <Button
         variant="outline"

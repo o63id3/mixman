@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Order extends Model
@@ -70,9 +71,19 @@ final class Order extends Model
     /**
      * Get the order cards.
      */
-    public function cards(): HasMany
+    public function cards(): BelongsToMany
     {
-        return $this->hasMany(OrderCard::class);
+        return $this->belongsToMany(Card::class, 'order_cards')
+            ->using(OrderCard::class)
+            ->withPivot([
+                'id',
+                'number_of_packages',
+                'number_of_packages',
+                'number_of_cards_per_package',
+                'quantity',
+                'total_price_for_consumer',
+                'total_price_for_seller',
+            ]);
     }
 
     /**
