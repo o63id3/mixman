@@ -23,7 +23,7 @@ final class TransactionsController
         $user = type($request->user())->as(User::class);
 
         $transactions = Transaction::query()
-            ->with('user', 'manager', 'network')
+            ->with('user:id,name', 'manager:id,name', 'network:id,name')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()

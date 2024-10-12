@@ -28,7 +28,7 @@ final class UsersController
         $user = type($request->user())->as(User::class);
 
         $users = User::query()
-            ->with(['network'])
+            ->with('network:id,name')
             ->visibleTo($user)
             ->withBalance()
             ->filter($filter, $user)
@@ -102,7 +102,7 @@ final class UsersController
 
         $auth = type($request->user())->as(User::class);
 
-        $user->load('network');
+        $user->load('network:id,name');
 
         return Inertia::render('Users/Edit', [
             'user' => UserResource::single($user),

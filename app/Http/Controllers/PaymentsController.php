@@ -28,7 +28,7 @@ final class PaymentsController
         $user = type($request->user())->as(User::class);
 
         $payments = Payment::query()
-            ->with(['recipient', 'user', 'network'])
+            ->with('recipient:id,name', 'user:id,name', 'network:id,name')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -89,7 +89,7 @@ final class PaymentsController
     {
         Gate::authorize('view', $payment);
 
-        $payment->load(['recipient', 'user']);
+        $payment->load('recipient:id,name', 'user:id,name');
 
         return Inertia::render('Payments/Show', [
             'payment' => PaymentResource::single($payment),
@@ -104,7 +104,7 @@ final class PaymentsController
         Gate::authorize('update', $payment);
         $user = type($request->user())->as(User::class);
 
-        $payment->load(['recipient', 'user']);
+        $payment->load('recipient:id,name', 'user:id,name');
 
         return Inertia::render('Payments/Edit', [
             'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),

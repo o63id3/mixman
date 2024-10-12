@@ -30,7 +30,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         $orders = Order::query()
-            ->with(['user', 'manager', 'network'])
+            ->with('user:id,name', 'manager:id,name', 'network:id,name')
             ->withSum('cards as total_price_for_seller', 'total_price_for_seller')
             ->withSum('cards as total_price_for_consumer', 'total_price_for_consumer')
             ->visibleTo($user)
@@ -101,7 +101,7 @@ final class OrdersController
         Gate::authorize('view', $order);
 
         $order
-            ->load(['user', 'manager', 'cards', 'files', 'cards.card'])
+            ->load('user:id,name', 'manager:id,name', 'cards', 'files', 'cards.card')
             ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 
@@ -120,7 +120,7 @@ final class OrdersController
         $user = type($request->user())->as(User::class);
 
         $order
-            ->load(['user', 'manager', 'cards', 'files', 'cards.card'])
+            ->load('user:id,name', 'manager:id,name', 'cards', 'files', 'cards.card')
             ->loadSum('cards as total_price_for_seller', 'total_price_for_seller')
             ->loadSum('cards as total_price_for_consumer', 'total_price_for_consumer');
 

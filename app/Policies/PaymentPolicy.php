@@ -40,9 +40,13 @@ final class PaymentPolicy
      */
     public function update(User $user, Payment $payment): bool
     {
-        return ($user->isAhmed()
-            || $payment->recipient_id === $user->id)
-            && $payment->created_at->isToday();
+        if (
+            $payment->recipient_id !== $user->id
+        ) {
+            return false;
+        }
+
+        return $payment->created_at->isToday();
     }
 
     /**

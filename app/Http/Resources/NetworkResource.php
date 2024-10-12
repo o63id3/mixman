@@ -24,8 +24,8 @@ final class NetworkResource extends JsonResource
             'manager' => $this->whenLoaded('manager', fn () => UserResource::single($this->manager)),
             'partners' => $this->whenLoaded('partners', fn () => UserResource::collection($this->partners)),
             'balance' => $this->whenHas('balance'),
-            'internet_price_per_week' => $this->internet_price_per_week,
-            'active' => $this->active,
+            'internet_price_per_week' => $this->whenHas('internet_price_per_week'),
+            'active' => $this->whenHas('active'),
         ];
     }
 }

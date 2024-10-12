@@ -27,7 +27,7 @@ final class ExpensesController
         $user = type($request->user())->as(User::class);
 
         $expenses = Expense::query()
-            ->with(['user', 'network'])
+            ->with('user:id,name', 'network:id,name')
             ->visibleTo($user)
             ->filter($filter, $user)
             ->latest()
@@ -87,7 +87,7 @@ final class ExpensesController
     {
         Gate::authorize('view', $expense);
 
-        $expense->load(['user', 'network']);
+        $expense->load('user:id,name', 'network:id,name');
 
         return Inertia::render('Expenses/Show', [
             'expense' => ExpenseResource::single($expense),
@@ -101,7 +101,7 @@ final class ExpensesController
     {
         Gate::authorize('update', $expense);
 
-        $expense->load(['user', 'network']);
+        $expense->load('user:id,name', 'network:id,name');
 
         return Inertia::render('Expenses/Edit', [
             'networks' => Network::all(['id', 'name']),
