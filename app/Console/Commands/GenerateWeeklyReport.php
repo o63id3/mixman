@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Enums\RoleEnum;
 use App\Http\Resources\WeeklyReportResource;
 use App\Models\Network;
+use App\Models\WeeklyReport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -50,59 +51,79 @@ final class GenerateWeeklyReport extends Command
                 $query
                     ->whereBetween('expenses.created_at', [$startOfLastWeek, $endOfLastWeek]);
             }], 'amount')
-            ->where('active', true)
+            ->whereActive(true)
             ->get();
 
         foreach ($networks as $network) {
-            // calculate net income
-            $totalIncome = $network->total_payments_amount - $network->total_expenses_amount;
-            $this->info("Network {$network->name} net income: {$totalIncome}!");
+            $report = $this->persistStateInDatabase($network);
 
-            // calculate partners shares
-            $partnersShares = [];
-            foreach ($network->partners as $partner) {
-                $share = $partner->pivot?->share;
-                $money = $share * $totalIncome;
+            $this->addInternetPrice($network);
 
-                $partnersShares[$partner->name] = [
-                    'share' => $partner->pivot->share,
-                    'benefit' => $totalIncome > 0 ? $totalIncome * $share : 0,
-                ];
+            $pdf = $this->generatePdf($report);
 
-                if ($totalIncome > 0) {
-                    $this->info("Partner {$partner->name}: {$share} * {$totalIncome} = {$money}!");
-                } else {
-                    $this->info("Partner {$partner->name}: 0!");
-                }
-            }
-
-            // Store data
-            $report = $network->reports()->forceCreate([
-                'total_payments_amount' => $network->total_payments_amount ?? 0,
-                'total_expenses_amount' => $network->total_expenses_amount ?? 0,
-                'network_income' => $totalIncome,
-                'partners_shares' => $partnersShares,
-                'start_from' => $startOfLastWeek,
-                'end_at' => $endOfLastWeek,
-            ]);
-
-            // Add price for internet
-            if ($network->internet_price_per_week > 0) {
-                $network->expenses()->forceCreate([
-                    'user_id' => 1,
-                    'amount' => $network->internet_price_per_week,
-                    'description' => 'حساب الانترنت الأسبوعي',
-                ]);
-            }
-
-            // Generate the pdf file
-            $pdf = Pdf::loadView('reports.network-weekly-report', [
-                'title' => "{$report->network->name} تقرير رقم {$report->id}",
-                'report' => WeeklyReportResource::single($report),
-            ]);
-            Storage::disk('public')->put("reports/{$report->id}.pdf", $pdf->output());
-
-            // Send telegram notifications
+            $this->notifyPartners($network->partners, $pdf);
         }
+    }
+
+    private function persistStateInDatabase(Network $network): WeeklyReport
+    {
+        $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
+        $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
+
+        $totalIncome = $network->total_payments_amount - $network->total_expenses_amount;
+        $partnersShares = $this->calculatePartnersShares($network->partners, $totalIncome);
+
+        return $network->reports()->forceCreate([
+            'total_payments_amount' => $network->total_payments_amount ?? 0,
+            'total_expenses_amount' => $network->total_expenses_amount ?? 0,
+            'network_income' => $totalIncome,
+            'partners_shares' => $partnersShares,
+            'start_from' => $startOfLastWeek,
+            'end_at' => $endOfLastWeek,
+        ]);
+    }
+
+    private function calculatePartnersShares(array $partners, float $totalIncome): array
+    {
+        $partnersShares = [];
+        foreach ($partners as $partner) {
+            $partnersShares[$partner->name] = [
+                'share' => $partner->pivot->share,
+                'benefit' => $totalIncome > 0 ? $totalIncome * $partner->pivot->share : 0,
+            ];
+        }
+
+        return $partnersShares;
+    }
+
+    private function addInternetPrice(Network $network): void
+    {
+        if ($network->internet_price_per_week <= 0) {
+            return;
+        }
+
+        $network->expenses()->forceCreate([
+            'user_id' => 1,
+            'amount' => $network->internet_price_per_week,
+            'description' => 'حساب الانترنت الأسبوعي',
+        ]);
+    }
+
+    private function generatePdf(WeeklyReport $report): string
+    {
+        $pdf = Pdf::loadView('reports.network-weekly-report', [
+            'title' => "{$report->network->name} تقرير رقم {$report->id}",
+            'report' => WeeklyReportResource::single($report),
+        ]);
+
+        $filePath = "reports/{$report->id}.pdf";
+        Storage::disk('public')->put($filePath, $pdf->output());
+
+        return $filePath;
+    }
+
+    private function notifyPartners(array $partners, string $file): void
+    {
+        //
     }
 }
