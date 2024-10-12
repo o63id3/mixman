@@ -7,12 +7,15 @@ namespace App\Console\Commands;
 use App\Enums\RoleEnum;
 use App\Http\Resources\WeeklyReportResource;
 use App\Models\Network;
+use App\Models\User;
 use App\Models\WeeklyReport;
+use App\Notifications\NetworksWeeklyReportNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 final class GenerateWeeklyReport extends Command
@@ -60,10 +63,10 @@ final class GenerateWeeklyReport extends Command
 
             $this->addInternetPrice($network);
 
-            $pdf = $this->generatePdf($report);
-
-            $this->notifyPartners($network->partners, $pdf);
+            $this->generatePdf($report);
         }
+
+        $this->notifyUsers($networks);
     }
 
     private function persistStateInDatabase(Network $network): WeeklyReport
@@ -124,8 +127,9 @@ final class GenerateWeeklyReport extends Command
         return $filePath;
     }
 
-    private function notifyPartners(Collection $partners, string $file): void
+    private function notifyUsers(Collection $networks): void
     {
-        //
+        $admins = User::whereRole(RoleEnum::Ahmed)->get();
+        Notification::sendNow($admins, new NetworksWeeklyReportNotification());
     }
 }
