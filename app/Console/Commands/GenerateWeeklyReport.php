@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\RoleEnum;
+use App\Http\Resources\WeeklyReportResource;
 use App\Models\Network;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 final class GenerateWeeklyReport extends Command
 {
@@ -74,7 +77,7 @@ final class GenerateWeeklyReport extends Command
             }
 
             // Store data
-            $network->reports()->forceCreate([
+            $report = $network->reports()->forceCreate([
                 'total_payments_amount' => $network->total_payments_amount ?? 0,
                 'total_expenses_amount' => $network->total_expenses_amount ?? 0,
                 'network_income' => $totalIncome,
@@ -93,6 +96,12 @@ final class GenerateWeeklyReport extends Command
             }
 
             // Generate the pdf file
+            $pdf = Pdf::loadView('reports.network-weekly-report', [
+                'title' => "{$report->network->name} تقرير رقم {$report->id}",
+                'report' => WeeklyReportResource::single($report),
+            ]);
+            Storage::disk('public')->put("reports/{$report->id}.pdf", $pdf->output());
+
             // Send telegram notifications
         }
     }
