@@ -66,7 +66,7 @@ final class GenerateWeeklyReport extends Command
             $this->generatePdf($report);
         }
 
-        $this->notifyUsers($networks);
+        $this->notifyUsers();
     }
 
     private function persistStateInDatabase(Network $network): WeeklyReport
@@ -127,9 +127,9 @@ final class GenerateWeeklyReport extends Command
         return $filePath;
     }
 
-    private function notifyUsers(Collection $networks): void
+    private function notifyUsers(): void
     {
-        $admins = User::whereRole(RoleEnum::Ahmed)->get();
+        $admins = User::whereRole(RoleEnum::Ahmed)->whereNotNull('telegram')->get();
         Notification::sendNow($admins, new NetworksWeeklyReportNotification());
     }
 }

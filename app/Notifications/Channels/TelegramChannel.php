@@ -25,11 +25,12 @@ final class TelegramChannel
             return;
         }
 
-        $data = $notification->toTelegram($notifiable);
         $this
             ->telegram
             ->user($telegramId)
-            ->message($data->message)
+            ->message(
+                $notification->toTelegram($notifiable)
+            )
             ->send('Markdown');
     }
 }

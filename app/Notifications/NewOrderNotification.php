@@ -35,14 +35,14 @@ final class NewOrderNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toTelegram(object $notifiable): array
+    public function toTelegram(object $notifiable): string
     {
         $appURL = config('app.url');
-        $url = "{$appURL}/orders/{$this->order->id}/edit";
-        $message = "*{$this->order->user->name}* أرسل طلباً جديداً !!\nبإمكانك متابعة الطلب من خلال الرابط: \n{$url}";
 
-        return [
-            'message' => $message,
-        ];
+        return <<<EOD
+            *{$this->order->user->name}* أرسل طلباً جديداً !!
+            بإمكانك متابعة الطلب من خلال الرابط:
+            {$appURL}/orders/{$this->order->id}/edit
+        EOD;
     }
 }
