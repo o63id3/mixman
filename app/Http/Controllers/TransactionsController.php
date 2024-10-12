@@ -31,7 +31,7 @@ final class TransactionsController
 
         return Inertia::render('Transactions/Index', [
             'transactions' => TransactionResource::collection($transactions),
-            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
             'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
             'networks' => Network::get(['id', 'name']),
             'filters' => $filter->filters,

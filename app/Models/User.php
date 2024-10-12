@@ -162,9 +162,9 @@ final class User extends Authenticatable
     }
 
     /**
-     * Scope the users to benefiters only.
+     * Scope the users to beneficiaries only.
      */
-    public function scopeBenefiter(Builder $query): Builder
+    public function scopeBeneficiary(Builder $query): Builder
     {
         return $query->whereNotNull('network_id');
     }

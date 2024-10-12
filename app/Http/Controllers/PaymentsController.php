@@ -36,7 +36,7 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
             'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
             'networks' => Network::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,
@@ -57,7 +57,7 @@ final class PaymentsController
         $user = type($request->user())->as(User::class);
 
         return Inertia::render('Payments/Create', [
-            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
         ]);
     }
 
@@ -107,7 +107,7 @@ final class PaymentsController
         $payment->load(['recipient', 'user']);
 
         return Inertia::render('Payments/Edit', [
-            'users' => User::visibleTo($user)->benefiter()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
             'payment' => PaymentResource::single($payment),
             'can' => [
                 'delete' => Gate::allows('delete', $payment),
