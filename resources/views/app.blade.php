@@ -15,6 +15,6 @@
   </head>
   <body class="antialiased rtl:text-right">
     @inertia
-    <div id="toaster"></div>
+    <div id="toaster" />
   </body>
 </html>

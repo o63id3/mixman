@@ -20,6 +20,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserOrdersController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WeeklyReportPdfGeneratorController;
 use App\Http\Controllers\WeeklyReportsController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,7 @@ Route::middleware('auth')->resource('payments', PaymentsController::class);
 Route::middleware('auth')->resource('expenses', ExpensesController::class);
 Route::middleware('auth')->get('/transactions', TransactionsController::class)->name('transactions.index');
 Route::middleware('auth')->resource('reports', WeeklyReportsController::class)->only(['index', 'show']);
+Route::middleware('auth')->get('/reports/{report}/pdf', WeeklyReportPdfGeneratorController::class);
 Route::middleware('auth')->post('/upload', [FileUploadsController::class, 'store'])->name('upload');
 
 Route::middleware('auth')->group(function () {

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3'
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 
 import { formatDate, formatMoney } from '@/lib/formatters'
@@ -10,6 +12,8 @@ defineProps<{
 </script>
 
 <template>
+  <Head :title="`${report.network.name} تقرير رقم ${report.id}`" />
+
   <Card class="rounded-none shadow-none">
     <CardHeader>
       <CardTitle>{{ report.network.name }} تقرير رقم {{ report.id }}</CardTitle>
