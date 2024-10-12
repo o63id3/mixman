@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 final class GenerateWeeklyReport extends Command
@@ -78,14 +79,15 @@ final class GenerateWeeklyReport extends Command
             'total_expenses_amount' => $network->total_expenses_amount ?? 0,
             'network_income' => $totalIncome,
             'partners_shares' => $partnersShares,
+            'income_overflow' => $totalIncome - $partnersShares->sum('benefit'),
             'start_from' => $startOfLastWeek,
             'end_at' => $endOfLastWeek,
         ]);
     }
 
-    private function calculatePartnersShares(array $partners, float $totalIncome): array
+    private function calculatePartnersShares(Collection $partners, float $totalIncome): Collection
     {
-        $partnersShares = [];
+        $partnersShares = collect();
         foreach ($partners as $partner) {
             $partnersShares[$partner->name] = [
                 'share' => $partner->pivot->share,
@@ -122,7 +124,7 @@ final class GenerateWeeklyReport extends Command
         return $filePath;
     }
 
-    private function notifyPartners(array $partners, string $file): void
+    private function notifyPartners(Collection $partners, string $file): void
     {
         //
     }

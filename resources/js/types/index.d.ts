@@ -127,6 +127,7 @@ export interface Report {
   total_payments_amount: number
   total_expenses_amount: number
   network_income: number
+  income_overflow: number
   partners_shares: Record<
     string,
     {

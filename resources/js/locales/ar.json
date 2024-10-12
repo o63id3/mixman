@@ -73,6 +73,7 @@
       "total_payments_amount": "مجموع الدفعات",
       "total_expenses_amount": "مجموع النفقات",
       "network_income": "صافي الربح",
+      "income_overflow": "ربح فائض",
       "start_from_date": "من تاريخ",
       "end_at_date": "حتى تاريخ",
       "created_at_date": "تم الإعداد بتاريخ"

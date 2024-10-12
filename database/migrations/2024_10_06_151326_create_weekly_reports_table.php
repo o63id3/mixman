@@ -21,6 +21,7 @@ return new class extends Migration
             $table->float('total_expenses_amount');
             $table->float('network_income');
             $table->json('partners_shares');
+            $table->float('income_overflow');
             $table->timestamp('start_from');
             $table->timestamp('end_at');
             $table->timestamps();

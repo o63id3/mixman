@@ -67,6 +67,13 @@ export const columns: ColumnDef<Report>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'income_overflow',
+    header: ({ column }) =>
+      h(DataTableColumnHeader, { column, title: 'ربح فائض' }),
+    cell: ({ row }) => `${formatMoney(row.original.income_overflow)} شيكل`,
+    enableSorting: false,
+  },
+  {
     accessorKey: 'start_from_date',
     header: ({ column }) =>
       h(DataTableColumnHeader, {

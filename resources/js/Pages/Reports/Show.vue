@@ -6,9 +6,19 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
 import { formatDate, formatMoney } from '@/lib/formatters'
 import { Report } from '@/types'
 
-defineProps<{
+const props = defineProps<{
   report: Report
 }>()
+
+let totalBenefit: number = 0
+Object.keys(props.report.partners_shares).forEach(
+  (key) => (totalBenefit += props.report.partners_shares[key].benefit),
+)
+
+let totalShares: number = 0
+Object.keys(props.report.partners_shares).forEach(
+  (key) => (totalShares += props.report.partners_shares[key].share),
+)
 </script>
 
 <template>
@@ -29,8 +39,18 @@ defineProps<{
           <p>{{ formatMoney(report.total_expenses_amount) }} شيكل</p>
         </div>
         <div>
-          <h3 class="col-span-full text-lg font-semibold">صافي الربح</h3>
+          <h3 class="text-lg font-semibold">صافي الربح</h3>
           <p>{{ formatMoney(report.network_income) }} شيكل</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold">ربح فائض</h3>
+          <p>
+            {{
+              report.income_overflow
+                ? `${formatMoney(report.income_overflow)} شيكل`
+                : 'لا يوجد'
+            }}
+          </p>
         </div>
         <div class="md:col-span-full">
           <h3 class="mb-2 text-lg font-semibold">حصص الشركاء</h3>
@@ -63,6 +83,15 @@ defineProps<{
                   <td class="whitespace-nowrap border p-2">
                     {{ formatMoney(report.partners_shares[username].benefit) }}
                     شيكل
+                  </td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap border p-2"></td>
+                  <td class="whitespace-nowrap border p-2">
+                    %{{ Math.round(totalShares * 100) }}
+                  </td>
+                  <td class="whitespace-nowrap border p-2">
+                    {{ totalBenefit }} شيكل
                   </td>
                 </tr>
               </tbody>
