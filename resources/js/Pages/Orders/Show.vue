@@ -3,6 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 import { Order } from '@/types'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 
 import { DataTable } from '@/Components/data-table'
 import { columns } from './Partials/filesColumns'
@@ -16,6 +24,33 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('orders.index')">
+              الطلبات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              {{ order.id }}#
+              <span class="text-xs font-normal tracking-wide">
+                ({{ order.manager.name }})
+              </span>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </template>
+
     <Card class="rounded-none sm:rounded-xl">
       <CardHeader>
         <CardTitle>معلومات الطلب</CardTitle>

@@ -6,6 +6,14 @@ import OrderForm from './Partials/OrderForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 import { DeleteLink } from '@/Components/links'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
@@ -40,13 +48,31 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        طلب رقم: {{ order.id }}
-        <span class="text-xs font-normal tracking-wide">
-          ({{ order.manager.name }})
-        </span>
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('orders.index')">
+              الطلبات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              {{ order.id }}#
+              <span class="text-xs font-normal tracking-wide">
+                ({{ order.manager.name }})
+              </span>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <Alert
@@ -80,12 +106,13 @@ const initialValues = {
         </DeleteLink>
       </template>
 
-      <template #default="{ values, setFieldValue }">
+      <template #default="{ form }">
         <OrderForm
-          :order="order"
           :users="users"
-          :selected="values.user_id"
-          @select="(selected: number) => setFieldValue('user_id', selected)"
+          :selected="form.values.user_id"
+          @select="
+            (selected: number) => form.setFieldValue('user_id', selected)
+          "
         />
       </template>
     </UpdateFormLayout>

@@ -4,6 +4,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Link } from '@inertiajs/vue3'
 
 import { Button } from '@/Components/ui/button'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 
 import {
   DataTable,
@@ -13,6 +21,7 @@ import {
 import { columns } from './definitions'
 
 import { Network, Paginator } from '@/types'
+import { PlusCircle } from 'lucide-vue-next'
 
 defineProps<{
   networks: Paginator<Network>
@@ -25,19 +34,37 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          الشبكات
-          <span class="text-xs font-normal tracking-wide">
-            ({{ networks.meta.total }})
-          </span>
-        </h2>
-        <div v-if="can.create">
-          <Link :href="route('networks.create')">
-            <Button> إنشاء </Button>
-          </Link>
-        </div>
+    <template #secondaryHeader>
+      <div class="flex flex-1 items-center justify-between">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink :href="route('dashboard')">
+                الرئيسة
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                الشبكات
+                <span class="text-xs font-normal tracking-wide">
+                  ({{ networks.meta.total }})
+                </span>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <Link :href="route('networks.create')">
+          <Button size="sm" class="h-7">
+            <div class="flex items-center gap-1">
+              <PlusCircle class="h-3.5 w-3.5" />
+              <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                إنشاء
+              </span>
+            </div>
+          </Button>
+        </Link>
       </div>
     </template>
 

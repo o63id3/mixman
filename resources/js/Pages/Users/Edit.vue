@@ -5,6 +5,15 @@ import { formSchema } from './definitions'
 import UserForm from './Partials/UserForm.vue'
 
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
+import { Badge } from '@/Components/ui/badge'
 import { DeleteLink, SecondaryLink } from '@/Components/links'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
@@ -32,10 +41,35 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        {{ user.name }}
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('users.index')">
+              المستخدمين
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              {{ user.name }}
+              <Badge
+                variant="outline"
+                class="mr-auto sm:ml-0"
+                :class="[user.active ? 'text-green-500' : 'text-red-500']"
+              >
+                {{ user.active ? 'فعال' : 'معطل' }}
+              </Badge>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <UpdateFormLayout
@@ -64,10 +98,10 @@ const initialValues = {
         </SecondaryLink>
       </template>
 
-      <template #default="{ values }">
+      <template #default="{ form }">
         <UserForm
           :disabled="!can.update"
-          :role="values.role"
+          :role="form.values.role"
           :networks="networks"
         />
       </template>

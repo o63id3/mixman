@@ -6,6 +6,14 @@ import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 
 import { Network } from '@/types'
 
@@ -16,10 +24,26 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('expenses.index')">
+              المصروفات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>إضافة</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <CreateFormLayout

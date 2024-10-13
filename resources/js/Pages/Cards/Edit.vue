@@ -5,6 +5,15 @@ import { formSchema } from './definitions'
 import CardForm from './Partials/CardForm.vue'
 
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
+import { Badge } from '@/Components/ui/badge'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import { DeleteLink, SecondaryLink } from '@/Components/links'
 
@@ -23,10 +32,35 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        {{ card.name }}
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('cards.index')">
+              الكروت
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              {{ card.name }}
+              <Badge
+                variant="outline"
+                class="mr-auto sm:ml-0"
+                :class="[card.active ? 'text-green-500' : 'text-red-500']"
+              >
+                {{ card.active ? 'فعال' : 'معطل' }}
+              </Badge>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <UpdateFormLayout

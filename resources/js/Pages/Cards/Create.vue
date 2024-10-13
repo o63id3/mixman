@@ -7,14 +7,39 @@ import CardForm from './Partials/CardForm.vue'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
+import { CardTitle } from '@/Components/ui/card'
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        كرت جديد
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('cards.index')">
+              الكروت
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage> إنشاء </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <CreateFormLayout
@@ -22,6 +47,10 @@ import { toast } from '@/Components/ui/toast'
       :route="route('cards.store')"
       @success="toast({ title: 'تم إنشاء الكرت' })"
     >
+      <template #title>
+        <CardTitle> كرت جديد </CardTitle>
+      </template>
+
       <CardForm />
     </CreateFormLayout>
   </AuthenticatedLayout>

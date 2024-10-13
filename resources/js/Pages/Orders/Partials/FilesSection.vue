@@ -29,7 +29,9 @@ const adding = ref<boolean>(false)
       </Button>
     </div>
 
-    <AddFilesForm v-if="adding" :order="order" @success="adding = false" />
-    <DataTable v-else :data="order.files" :columns="columns" />
+    <div class="mt-4">
+      <AddFilesForm v-if="adding" :order="order" @success="adding = false" />
+      <DataTable v-else :data="order.files" :columns="columns" />
+    </div>
   </div>
 </template>

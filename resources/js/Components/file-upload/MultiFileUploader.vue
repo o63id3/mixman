@@ -21,7 +21,7 @@ const deleteFile = (key: number) => {
   files.value.splice(key, 1)
   emit('delete', key)
 }
-const newUploadedFile = (file: string) => {
+const newUploadedFile = (file: object) => {
   pending.value--
   emit('uploaded', file)
 }
@@ -54,7 +54,7 @@ const newUploadedFile = (file: string) => {
           :key="key"
           :file="file"
           @delete="() => deleteFile(key)"
-          @uploaded="(file: string) => newUploadedFile(file)"
+          @uploaded="(file: object) => newUploadedFile(file)"
         />
       </div>
       <div

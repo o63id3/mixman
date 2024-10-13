@@ -127,7 +127,7 @@ function useFilteringAndSorting(
 </script>
 
 <template>
-  <div class="mb-4 overflow-x-auto px-4 lg:px-0">
+  <div v-if="$slots.toolBar" class="mb-4 overflow-x-auto px-4 lg:px-0">
     <slot :table="table" name="toolBar" />
   </div>
   <div class="overflow-x-auto border bg-white shadow-sm lg:rounded-md">
@@ -157,7 +157,6 @@ function useFilteringAndSorting(
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() && 'selected'"
-            class="whitespace-nowrap text-nowrap text-right"
           >
             <TableCell
               v-for="cell in row.getVisibleCells()"

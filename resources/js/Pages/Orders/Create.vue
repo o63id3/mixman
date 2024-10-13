@@ -7,6 +7,15 @@ import OrderForm from './Partials/OrderForm.vue'
 import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
+import { CardTitle } from '@/Components/ui/card'
 
 const props = defineProps<{
   users: Array<User>
@@ -28,10 +37,26 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        طلبية جديدة
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('orders.index')">
+              الطلبات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>إنشاء</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <CreateFormLayout
@@ -40,12 +65,18 @@ const initialValues = {
       :route="route('orders.store')"
       @success="toast({ title: 'تم إضافة الطلب' })"
     >
-      <template #default="{ values, setFieldValue }">
+      <template #title>
+        <CardTitle> طلبية جديدة </CardTitle>
+      </template>
+
+      <template #default="{ form }">
         <OrderForm
           :users="users"
           :cards="cards"
-          :selected="values.user_id"
-          @select="(selected: number) => setFieldValue('user_id', selected)"
+          :selected="form.values.user_id"
+          @select="
+            (selected: number) => form.setFieldValue('user_id', selected)
+          "
         />
       </template>
     </CreateFormLayout>

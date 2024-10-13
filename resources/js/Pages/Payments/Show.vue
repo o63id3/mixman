@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 
 import { Payment } from '@/types'
 import { formatDate, formatMoney } from '@/lib/formatters'
@@ -12,6 +20,28 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('payments.index')">
+              الدفعات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{{ payment.id }}#</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </template>
+
     <Card class="rounded-none sm:rounded-xl">
       <CardHeader>
         <CardTitle>معلومات الدفعة</CardTitle>

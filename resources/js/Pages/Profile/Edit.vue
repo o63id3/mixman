@@ -3,24 +3,36 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue'
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue'
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 </script>
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">حسابي</h2>
+    <template #secondaryHeader>
+      <Breadcrumb class="mx-2 md:mx-0">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/"> الرئيسة </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage> حسابي </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-        <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-          <UpdateProfileInformationForm class="max-w-xl" />
-        </div>
-
-        <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-          <UpdatePasswordForm class="max-w-xl" />
-        </div>
-      </div>
+    <div class="space-y-12">
+      <UpdateProfileInformationForm />
+      <UpdatePasswordForm />
     </div>
   </AuthenticatedLayout>
 </template>

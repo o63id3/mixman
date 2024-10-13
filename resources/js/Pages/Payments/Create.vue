@@ -4,6 +4,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { formSchema } from './definitions'
 
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
 
@@ -16,10 +24,26 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('payments.index')">
+              الدفعات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>إضافة</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <CreateFormLayout
@@ -27,11 +51,13 @@ defineProps<{
       :route="route('payments.store')"
       @success="toast({ title: 'تم إدخال الدفعة المالية' })"
     >
-      <template #default="{ values, setFieldValue }">
+      <template #default="{ form }">
         <PaymentForm
           :users="users"
-          :selected="values.user_id"
-          @select="(selected: number) => setFieldValue('user_id', selected)"
+          :selected="form.values.user_id"
+          @select="
+            (selected: number) => form.setFieldValue('user_id', selected)
+          "
         />
       </template>
     </CreateFormLayout>

@@ -21,11 +21,21 @@ import {
   SelectValue,
 } from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
+import { toast } from '@/Components/ui/toast'
+import { CardTitle } from '@/Components/ui/card'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
+
 import { Network, User } from '@/types'
 
 import { AlertCircle } from 'lucide-vue-next'
-import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import { toast } from '@/Components/ui/toast'
 
 defineProps<{
   network: Network
@@ -46,13 +56,36 @@ const formSchema = toTypedSchema(
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        إضافة شريك
-        <span class="text-xs font-normal tracking-wide">
-          ({{ network.name }})
-        </span>
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('networks.index')">
+              الشبكات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('networks.edit', network.id)">
+              {{ network.name }}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage> الشركاء </BreadcrumbPage>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage> إضافة </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <Alert class="rounded-none sm:rounded-xl" variant="destructive">
@@ -77,6 +110,15 @@ const formSchema = toTypedSchema(
       :route="route('network.partners.store', network.id)"
       @success="toast({ title: 'تم إضافة الشريك' })"
     >
+      <template #title>
+        <CardTitle>
+          إضافة شريك
+          <span class="text-xs font-normal tracking-wide">
+            ({{ network.name }})
+          </span>
+        </CardTitle>
+      </template>
+
       <FormField v-slot="{ componentField }" name="user_id">
         <FormItem>
           <FormLabel>الشريك</FormLabel>

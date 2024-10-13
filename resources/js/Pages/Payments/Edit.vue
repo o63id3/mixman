@@ -5,6 +5,14 @@ import { formSchema } from './definitions'
 import PaymentForm from './Partials/PaymentForm.vue'
 
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import { DeleteLink } from '@/Components/links'
@@ -30,10 +38,26 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية رقم {{ payment.id }}
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('payments.index')">
+              الدفعات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{{ payment.id }}#</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <Alert
@@ -67,11 +91,13 @@ const initialValues = {
         </DeleteLink>
       </template>
 
-      <template #default="{ values, setFieldValue }">
+      <template #default="{ form }">
         <PaymentForm
           :users="users"
-          :selected="values.user_id"
-          @select="(selected: number) => setFieldValue('user_id', selected)"
+          :selected="form.values.user_id"
+          @select="
+            (selected: number) => form.setFieldValue('user_id', selected)
+          "
         />
       </template>
     </UpdateFormLayout>

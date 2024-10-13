@@ -6,6 +6,14 @@ import UserForm from './Partials/UserForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 
 import { Network } from '@/types'
 
@@ -20,10 +28,26 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        مستخدم جديد
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('users.index')">
+              المستخدمين
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>إنشاء</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <CreateFormLayout
@@ -31,9 +55,10 @@ const initialValues = {
       :initial-values="initialValues"
       :route="route('users.store')"
       @success="toast({ title: 'تم إنشاء المستخدم' })"
+      class="mt-4"
     >
-      <template #default="{ values }">
-        <UserForm :role="values.role" :networks="networks" />
+      <template #default="{ form }">
+        <UserForm :role="form.values.role" :networks="networks" />
       </template>
     </CreateFormLayout>
   </AuthenticatedLayout>

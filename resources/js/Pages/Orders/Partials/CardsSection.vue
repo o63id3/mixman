@@ -33,18 +33,20 @@ const addingForm = ref(false)
         <span v-else>إضافة رزم</span>
       </Button>
     </div>
-    <AddItemsForm
-      v-if="addingForm && canAddItem && cards"
-      class="mt-4 overflow-hidden bg-white p-6 text-gray-900 shadow-sm sm:rounded-lg"
-      :cards="cards"
-      :order="order"
-      @success="addingForm = false"
-    />
-    <DataTable
-      v-else
-      :data="order.cards"
-      :columns="columns(canAddItem)"
-      :summaryFields="order.cards.length ? summaryFields : undefined"
-    />
+    <div class="mt-4">
+      <AddItemsForm
+        v-if="addingForm && canAddItem && cards"
+        class="mt-4 overflow-hidden bg-white p-6 text-gray-900 shadow-sm sm:rounded-lg"
+        :cards="cards"
+        :order="order"
+        @success="addingForm = false"
+      />
+      <DataTable
+        v-else
+        :data="order.cards"
+        :columns="columns(canAddItem)"
+        :summaryFields="order.cards.length ? summaryFields : undefined"
+      />
+    </div>
   </div>
 </template>

@@ -6,6 +6,14 @@ import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import { DeleteLink } from '@/Components/links'
 
@@ -29,10 +37,26 @@ const initialValues = {
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        دفعة مالية رقم {{ expense.id }}
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('expenses.index')">
+              المصروفات
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{{ expense.id }}#</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <Alert

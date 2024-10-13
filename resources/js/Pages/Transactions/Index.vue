@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb'
 import { DataTable, DataTablePagination } from '@/Components/data-table'
 import Toolbar from './Partials/Toolbar.vue'
 import { columns } from './definitions'
@@ -19,13 +27,25 @@ defineProps<{
 
 <template>
   <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        الحركات
-        <span class="text-xs font-normal tracking-wide">
-          ({{ transactions.meta.total }})
-        </span>
-      </h2>
+    <template #secondaryHeader>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="route('dashboard')">
+              الرئيسة
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              الحركات
+              <span class="text-xs font-normal tracking-wide">
+                ({{ transactions.meta.total }})
+              </span>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </template>
 
     <div class="space-y-4">
