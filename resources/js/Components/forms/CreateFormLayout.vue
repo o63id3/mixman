@@ -32,41 +32,43 @@ const onSubmit = form.handleSubmit(submit)
 </script>
 
 <template>
-  <Card>
-    <CardHeader v-if="$slots.title">
-      <slot name="title" />
-    </CardHeader>
-    <CardContent>
-      <div
-        class="grid grid-cols-1 gap-4 md:grid-cols-2"
-        :class="{
-          'pt-6': !$slots.title,
-        }"
-      >
-        <slot :form="form" />
-      </div>
-    </CardContent>
-    <CardFooter class="border-t px-6 py-4">
-      <div class="flex items-center gap-4">
-        <Button
-          @click="onSubmit"
-          :loading="loading"
-          :disabled="disabled || loading || !form.meta.value.valid"
+  <form @submit="onSubmit">
+    <Card>
+      <CardHeader v-if="$slots.title">
+        <slot name="title" />
+      </CardHeader>
+      <CardContent>
+        <div
+          class="grid grid-cols-1 gap-4 md:grid-cols-2"
+          :class="{
+            'pt-6': !$slots.title,
+          }"
         >
-          {{ btnTitle ?? 'إنشاء' }}
-        </Button>
+          <slot :form="form" />
+        </div>
+      </CardContent>
+      <CardFooter class="border-t px-6 py-4">
+        <div class="flex items-center gap-4">
+          <Button
+            type="submit"
+            :loading="loading"
+            :disabled="disabled || loading || !form.meta.value.valid"
+          >
+            {{ btnTitle ?? 'إنشاء' }}
+          </Button>
 
-        <Transition
-          enter-active-class="transition ease-in-out"
-          enter-from-class="opacity-0"
-          leave-active-class="transition ease-in-out"
-          leave-to-class="opacity-0"
-        >
-          <p v-if="recentlySuccessful" class="text-sm text-gray-600">
-            {{ `تم ال${btnTitle ?? 'إنشاء'}.` }}
-          </p>
-        </Transition>
-      </div>
-    </CardFooter>
-  </Card>
+          <Transition
+            enter-active-class="transition ease-in-out"
+            enter-from-class="opacity-0"
+            leave-active-class="transition ease-in-out"
+            leave-to-class="opacity-0"
+          >
+            <p v-if="recentlySuccessful" class="text-sm text-gray-600">
+              {{ `تم ال${btnTitle ?? 'إنشاء'}.` }}
+            </p>
+          </Transition>
+        </div>
+      </CardFooter>
+    </Card>
+  </form>
 </template>
