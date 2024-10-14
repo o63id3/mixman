@@ -60,7 +60,7 @@ defineProps<{
       </Breadcrumb>
     </template>
 
-    <div>
+    <div class="space-y-4">
       <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
       <DataTable
         v-if="network.partners"

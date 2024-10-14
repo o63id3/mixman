@@ -110,6 +110,8 @@ final class UsersController
             'can' => [
                 'update' => Gate::allows('update', $user),
                 'delete' => Gate::allows('delete', $user),
+                'activate' => Gate::allows('activate', $user),
+                'deactivate' => Gate::allows('deactivate', $user),
             ],
         ]);
     }

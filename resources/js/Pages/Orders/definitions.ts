@@ -103,13 +103,15 @@ export const formSchema = toTypedSchema(
   z.object({
     user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     status: z.string({ message: 'هذا الحقل مطلوب' }),
-    cards: z.array(
-      z.object({
-        card_id: z.string({ message: 'حقل الفئة مطلوب' }),
-        number_of_packages: z.number({ message: 'حقل الفئة مطلوب' }).min(1),
-        number_of_cards_per_package: z.number(),
-      }),
-    ),
     notes: z.string().nullable().optional(),
+    cards: z
+      .array(
+        z.object({
+          card_id: z.string({ message: 'حقل الفئة مطلوب' }),
+          number_of_packages: z.number({ message: 'حقل الفئة مطلوب' }).min(1),
+          number_of_cards_per_package: z.number(),
+        }),
+      )
+      .optional(),
   }),
 )

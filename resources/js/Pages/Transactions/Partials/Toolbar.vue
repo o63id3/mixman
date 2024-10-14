@@ -21,7 +21,7 @@ defineProps<DataTableToolbarProps>()
 
 <template>
   <DataTableToolbar :table="table" table-id="transactions">
-    <div class="flex gap-2">
+    <div v-if="$page.props.auth.user.network" class="flex gap-2">
       <DataTableFacetedFilter
         v-if="table.getColumn('user')"
         :column="table.getColumn('user')"

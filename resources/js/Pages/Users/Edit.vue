@@ -25,6 +25,8 @@ const props = defineProps<{
   can: {
     update: boolean
     delete: boolean
+    activate: boolean
+    deactivate: boolean
   }
 }>()
 
@@ -79,9 +81,9 @@ const initialValues = {
       @success="toast({ title: 'تم تعديل المستخدم' })"
       :can-update="can.update"
     >
-      <template #buttons>
+      <template v-if="can.activate || can.deactivate" #buttons>
         <DeleteLink
-          v-if="user.active"
+          v-if="user.active && can.deactivate"
           :href="route('users.deactivate', user.id)"
           @success="toast({ title: 'تم تعطيل الحساب' })"
           method="POST"
@@ -89,7 +91,7 @@ const initialValues = {
           تعطيل
         </DeleteLink>
         <SecondaryLink
-          v-else
+          v-else-if="can.activate"
           method="DELETE"
           :href="route('users.activate', user.id)"
           @success="toast({ title: 'تم تفعيل الحساب' })"

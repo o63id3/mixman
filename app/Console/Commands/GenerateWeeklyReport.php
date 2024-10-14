@@ -103,7 +103,7 @@ final class GenerateWeeklyReport extends Command
 
     private function addInternetPrice(Network $network): void
     {
-        if ($network->internet_price_per_week <= 0) {
+        if (! $network->internet_price_per_week) {
             return;
         }
 

@@ -43,16 +43,16 @@ final class UserPolicy
     /**
      * Determine whether the user can deactivate the model.
      */
-    public function deactivate(User $user): bool
+    public function deactivate(User $user, User $model): bool
     {
-        return $user->isManager();
+        return $user->isManager() && ! $user->is($model);
     }
 
     /**
      * Determine whether the user can activate the model.
      */
-    public function activate(User $user): bool
+    public function activate(User $user, User $model): bool
     {
-        return $user->isManager();
+        return $user->isManager() && ! $user->is($model);
     }
 }
