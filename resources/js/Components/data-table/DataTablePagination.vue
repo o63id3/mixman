@@ -21,7 +21,7 @@ defineProps<{
 
 <template>
   <div
-    class="flex items-center justify-between rounded border bg-white px-3 py-2 shadow-sm rtl:flex-row-reverse"
+    class="flex items-center justify-between border-y bg-white px-3 py-2 shadow-sm lg:rounded-md lg:border-x rtl:flex-row-reverse"
   >
     <div
       class="flex items-center justify-center text-xs font-medium tracking-wide"

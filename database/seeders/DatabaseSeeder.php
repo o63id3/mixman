@@ -50,25 +50,32 @@ final class DatabaseSeeder extends Seeder
             'active' => true,
         ]]);
 
-        $partners1 = User::factory(4)->set('role', RoleEnum::Partner)->create();
-        $network1 = Network::factory()->set('manager_id', $partners1->first())->set('name', 'كمال عدوان')->create();
-        $partners1->first()->update(['network_id' => $network1->id]);
-        $network1->partners()->attach($partners1, ['share' => 0.25]);
+        $networks = Network::factory()
+            ->afterCreating(function (Network $network) {
+                $network->partners()->attach(
+                    User::factory(3)->set('role', RoleEnum::Partner)->create(),
+                    ['share' => 0.25]
+                );
+                $network->partners()->attach($network->manager, ['share' => 0.25]);
+                $network->manager->update(['network_id' => $network->id]);
+            })
+            ->createMany([
+                ['name' => 'كمال عدوان'],
+                ['name' => 'مدرسة أبو حسين'],
+                ['name' => 'بيت لاهيا'],
+                ['name' => 'معسكر جباليا'],
+            ]);
 
-        $partners2 = User::factory(4)->set('role', RoleEnum::Partner)->create();
-        $network2 = Network::factory()->set('manager_id', $partners2->first())->set('name', 'مدرسة أبو حسين')->create();
-        $partners2->first()->update(['network_id' => $network2->id]);
-        $network2->partners()->attach($partners2, ['share' => 0.25]);
+        $managers = $networks->pluck('manager');
 
-        $sellers = User::factory(5)
-            ->recycle([$network1, $network2])
-            ->state(fn () => ['network_id' => collect([$network1, $network2])->random()])
+        $sellers = User::factory(20)
+            ->state(fn () => ['network_id' => $networks->random()])
             ->set('role', RoleEnum::Seller)
             ->create();
 
-        Order::factory(100)
-            ->recycle([$network1, $network2])
-            ->recycle([...$sellers, $partners1->first(), $partners2->first()])
+        Order::factory(5000)
+            ->recycle($networks)
+            ->recycle([...$sellers, ...$managers])
             ->hasAttached($cards, fn () => [
                 'number_of_packages' => random_int(1, 3),
                 'number_of_cards_per_package' => 120,
@@ -76,21 +83,22 @@ final class DatabaseSeeder extends Seeder
             ->recycle($cards)
             ->create();
 
-        Payment::factory(100)
-            ->recycle([$network1, $network2])
-            ->state(fn () => ['recipient_id' => collect([$partners1->first(), $partners2->first(), $admin])->random()])
-            ->state(fn () => ['user_id' => collect([...$sellers, $partners1->first(), $partners2->first()])->random()])
+        Payment::factory(5000)
+            ->recycle($networks)
+            ->state(fn () => ['recipient_id' => collect([...$managers, $admin])->random()])
+            ->state(fn () => ['user_id' => collect([...$sellers, ...$managers])->random()])
             ->create();
 
-        Expense::factory(100)
-            ->recycle([$network1, $network2])
-            ->recycle([$admin, $partners1->first(), $partners2->first()])
+        Expense::factory(1000)
+            ->recycle($networks)
+            ->recycle([$admin, ...$managers])
             ->create();
 
-        // Order::where('status', OrderStatusEnum::Pending)
-        //     ->where('created_at', '<', now()->subWeek())
-        //     ->update([
-        //         'status' => OrderStatusEnum::Completed,
-        //     ]);
+        Order::where('status', OrderStatusEnum::Pending)
+            ->where('created_at', '<', now('Asia/Gaza')->subWeek())
+            ->update([
+                'status' => OrderStatusEnum::Completed,
+                'completed_at' => now('Asia/Gaza')->subWeek(),
+            ]);
     }
 }

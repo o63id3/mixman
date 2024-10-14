@@ -20,12 +20,12 @@ final class PaymentFactory extends Factory
      */
     public function definition(): array
     {
-        $createdAt = $this->faker->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
+        $createdAt = $this->faker->dateTimeBetween('-6 month', 'now', 'Asia/Gaza')->format('Y-m-d H:i:s');
 
         return [
             'recipient_id' => User::factory(state: ['role' => RoleEnum::Ahmed]),
             'user_id' => User::factory(state: ['role' => RoleEnum::Partner]),
-            'amount' => fake()->numberBetween(100, 1000),
+            'amount' => fake()->numberBetween(2000, 3000),
             'created_at' => $createdAt,
             'updated_at' => $createdAt,
         ];

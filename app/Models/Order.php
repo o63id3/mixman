@@ -143,7 +143,7 @@ final class Order extends Model
         parent::boot();
 
         self::saving(function ($model) {
-            $user = User::with('network:id,manager_id')->find($model->user->id);
+            $user = User::with('network:id,manager_id')->find($model->user_id);
 
             $model->network_id = $user->network->id;
             $model->manager_id = $user->isManager() ? User::where('role', 'ahmed')->first(['id'])->id : $user->network->manager_id;

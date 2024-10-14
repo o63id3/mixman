@@ -21,7 +21,7 @@ final class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $createdAt = fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d H:i:s');
+        $createdAt = fake()->dateTimeBetween('-6 month', 'now', 'Asia/Gaza')->format('Y-m-d H:i:s');
 
         return [
             'user_id' => User::factory(),
