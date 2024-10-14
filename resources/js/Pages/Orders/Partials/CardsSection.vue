@@ -36,7 +36,6 @@ const addingForm = ref(false)
     <div class="mt-4">
       <AddItemsForm
         v-if="addingForm && canAddItem && cards"
-        class="mt-4 overflow-hidden bg-white p-6 text-gray-900 shadow-sm sm:rounded-lg"
         :cards="cards"
         :order="order"
         @success="addingForm = false"
