@@ -84,7 +84,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('networks.update', network.id)"
-      can-update
     >
       <template #buttons>
         <DeleteLink

@@ -67,7 +67,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('cards.update', card.id)"
-      can-update
     >
       <template #buttons>
         <DeleteLink

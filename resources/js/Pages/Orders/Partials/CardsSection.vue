@@ -15,7 +15,7 @@ defineProps<{
   canAddItem: boolean
 }>()
 
-const addingForm = ref(false)
+const adding = ref(false)
 </script>
 
 <template>
@@ -25,20 +25,20 @@ const addingForm = ref(false)
       <Button
         class="text-xs tracking-wide"
         size="xs"
-        :variant="addingForm ? 'outline' : 'default'"
-        @click="addingForm = !addingForm"
+        :variant="adding ? 'outline' : 'default'"
+        @click="adding = !adding"
         v-if="canAddItem"
       >
-        <X v-if="addingForm" class="w-3 text-red-500" />
+        <X v-if="adding" class="w-3 text-red-500" />
         <span v-else>إضافة رزم</span>
       </Button>
     </div>
     <div class="mt-4">
       <AddItemsForm
-        v-if="addingForm && canAddItem && cards"
+        v-if="adding && canAddItem && cards"
         :cards="cards"
         :order="order"
-        @success="addingForm = false"
+        @success="adding = false"
       />
       <DataTable
         v-else

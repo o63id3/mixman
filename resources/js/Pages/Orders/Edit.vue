@@ -93,7 +93,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('orders.update', order.id)"
-    can-update
     >
       <template #buttons>
         <DeleteLink
@@ -118,8 +117,6 @@ const initialValues = {
 
     <CardsSection
       class="mt-4"
-      editing
-      can-update
       :items="order.cards"
       :order="order"
       :cards="cards"

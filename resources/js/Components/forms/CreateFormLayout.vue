@@ -5,13 +5,18 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card'
 import { TypedSchema, useForm } from 'vee-validate'
 import { useSubmit } from '@/Composables/submit'
 
-const props = defineProps<{
-  formSchema: TypedSchema
-  initialValues?: TValues
-  route: string
-  disabled?: boolean
-  btnTitle?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    formSchema: TypedSchema
+    initialValues?: TValues
+    route: string
+    disabled?: boolean
+    btnTitle?: string
+  }>(),
+  {
+    btnTitle: 'إنشاء',
+  },
+)
 
 const emit = defineEmits(['success'])
 
@@ -54,7 +59,7 @@ const onSubmit = form.handleSubmit(submit)
             :loading="loading"
             :disabled="disabled || loading || !form.meta.value.valid"
           >
-            {{ btnTitle ?? 'إنشاء' }}
+            {{ btnTitle }}
           </Button>
 
           <Transition
@@ -64,7 +69,7 @@ const onSubmit = form.handleSubmit(submit)
             leave-to-class="opacity-0"
           >
             <p v-if="recentlySuccessful" class="text-sm text-gray-600">
-              {{ `تم ال${btnTitle ?? 'إنشاء'}.` }}
+              {{ `تم ال${btnTitle}.` }}
             </p>
           </Transition>
         </div>

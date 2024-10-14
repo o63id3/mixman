@@ -6,12 +6,17 @@ import { useSubmit } from '@/Composables/submit'
 import { TypedSchema, useForm } from 'vee-validate'
 import { Separator } from '../ui/separator'
 
-const props = defineProps<{
-  formSchema: TypedSchema
-  initialValues?: TValues
-  route: string
-  canUpdate?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    formSchema: TypedSchema
+    initialValues?: TValues
+    route: string
+    canUpdate?: boolean
+  }>(),
+  {
+    canUpdate: true,
+  },
+)
 
 const emit = defineEmits(['success'])
 
@@ -47,6 +52,7 @@ const onSubmit = form.handleSubmit(submit)
       <CardFooter class="border-t px-6 py-4">
         <div class="flex items-center gap-4">
           <Button
+            v-if="canUpdate"
             type="submit"
             :loading="loading"
             :disabled="
@@ -56,7 +62,11 @@ const onSubmit = form.handleSubmit(submit)
             حفظ
           </Button>
 
-          <Separator v-if="$slots.buttons" orientation="vertical" class="h-4" />
+          <Separator
+            v-if="$slots.buttons && canUpdate"
+            orientation="vertical"
+            class="h-4"
+          />
 
           <slot name="buttons" />
 
