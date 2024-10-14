@@ -2,15 +2,16 @@
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '../ui/button'
 import { Link } from '@inertiajs/vue3'
+import { AreaHTMLAttributes } from 'vue'
 
 defineProps<{
-  href: string
+  href: AreaHTMLAttributes['href']
 }>()
 </script>
 
 <template>
   <Link
-    :href="href"
+    :href="href ?? ''"
     method="delete"
     as="button"
     type="button"

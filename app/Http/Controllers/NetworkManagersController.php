@@ -18,9 +18,8 @@ final class NetworkManagersController
     {
         Gate::authorize('assignManager', Network::class);
 
-        $network->manager?->update([
-            'network_id' => null,
-        ]);
+        $network->manager?->update(['network_id' => null]);
+        $user->network?->update(['manager_id' => null]);
 
         $network->update(['manager_id' => $user->id]);
         $user->update(['network_id' => $network->id]);
