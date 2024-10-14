@@ -78,7 +78,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('users.update', user.id)"
-      @success="toast({ title: 'تم تعديل المستخدم' })"
       :can-update="can.update"
     >
       <template v-if="can.activate || can.deactivate" #buttons>

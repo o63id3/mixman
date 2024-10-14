@@ -20,7 +20,7 @@ const form = useForm({
   initialValues: props.initialValues,
 })
 
-const { submit, loading } = useSubmit(props.route, {
+const { submit, loading, recentlySuccessful } = useSubmit(props.route, {
   method: 'patch',
   onSuccess: () => emit('success'),
   onError: (errors) => form.setErrors(errors),
@@ -53,16 +53,16 @@ const onSubmit = form.handleSubmit(submit)
 
         <slot name="buttons" />
 
-        <!-- <Transition
+        <Transition
           enter-active-class="transition ease-in-out"
           enter-from-class="opacity-0"
           leave-active-class="transition ease-in-out"
           leave-to-class="opacity-0"
         >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
+          <p v-if="recentlySuccessful" class="text-sm text-gray-600">
             تم الحفظ.
           </p>
-        </Transition> -->
+        </Transition>
       </div>
     </CardFooter>
   </Card>

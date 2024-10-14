@@ -6,7 +6,6 @@ import CardForm from './Partials/CardForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -42,11 +41,7 @@ import { CardTitle } from '@/Components/ui/card'
       </Breadcrumb>
     </template>
 
-    <CreateFormLayout
-      :form-schema="formSchema"
-      :route="route('cards.store')"
-      @success="toast({ title: 'تم إنشاء الكرت' })"
-    >
+    <CreateFormLayout :form-schema="formSchema" :route="route('cards.store')">
       <template #title>
         <CardTitle> كرت جديد </CardTitle>
       </template>

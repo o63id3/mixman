@@ -93,8 +93,7 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('orders.update', order.id)"
-      @success="toast({ title: 'تم تعديل الطلب' })"
-      can-update
+    can-update
     >
       <template #buttons>
         <DeleteLink

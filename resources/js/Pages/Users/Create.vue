@@ -5,7 +5,6 @@ import { formSchema } from './definitions'
 import UserForm from './Partials/UserForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -54,7 +53,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('users.store')"
-      @success="toast({ title: 'تم إنشاء المستخدم' })"
       class="mt-4"
     >
       <template #default="{ form }">

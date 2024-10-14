@@ -84,7 +84,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('networks.update', network.id)"
-      @success="toast({ title: 'تم تعديل الشبكة' })"
       can-update
     >
       <template #buttons>

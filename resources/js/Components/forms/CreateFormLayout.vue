@@ -20,7 +20,7 @@ const form = useForm({
   initialValues: props.initialValues,
 })
 
-const { submit, loading } = useSubmit(props.route, {
+const { submit, loading, recentlySuccessful } = useSubmit(props.route, {
   method: 'post',
   onSuccess: () => {
     emit('success')
@@ -56,16 +56,16 @@ const onSubmit = form.handleSubmit(submit)
           {{ btnTitle ?? 'إنشاء' }}
         </Button>
 
-        <!-- <Transition
+        <Transition
           enter-active-class="transition ease-in-out"
           enter-from-class="opacity-0"
           leave-active-class="transition ease-in-out"
           leave-to-class="opacity-0"
         >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            تم الإنشاء.
+          <p v-if="recentlySuccessful" class="text-sm text-gray-600">
+            {{ `تم ال${btnTitle ?? 'إنشاء'}.` }}
           </p>
-        </Transition> -->
+        </Transition>
       </div>
     </CardFooter>
   </Card>

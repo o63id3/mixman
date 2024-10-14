@@ -3,7 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 import { formSchema } from './definitions'
 
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -49,7 +48,7 @@ defineProps<{
     <CreateFormLayout
       :form-schema="formSchema"
       :route="route('payments.store')"
-      @success="toast({ title: 'تم إدخال الدفعة المالية' })"
+      btn-title="إضافة"
     >
       <template #default="{ form }">
         <PaymentForm

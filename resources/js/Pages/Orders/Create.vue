@@ -6,7 +6,6 @@ import OrderForm from './Partials/OrderForm.vue'
 
 import { Card, User } from '@/types'
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -63,7 +62,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('orders.store')"
-      @success="toast({ title: 'تم إضافة الطلب' })"
     >
       <template #title>
         <CardTitle> طلبية جديدة </CardTitle>

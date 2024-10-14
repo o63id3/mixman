@@ -77,7 +77,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('expenses.update', expense.id)"
-      @success="toast({ title: 'تم تعديل المصروف' })"
       can-update
     >
       <template #buttons>

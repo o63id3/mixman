@@ -78,7 +78,6 @@ const initialValues = {
       :form-schema="formSchema"
       :initial-values="initialValues"
       :route="route('payments.update', payment.id)"
-      @success="toast({ title: 'تم تعديل الدفعة المالية' })"
       can-update
     >
       <template #buttons>

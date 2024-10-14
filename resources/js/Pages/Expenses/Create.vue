@@ -5,7 +5,6 @@ import { formSchema } from './definitions'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -49,7 +48,7 @@ defineProps<{
     <CreateFormLayout
       :form-schema="formSchema"
       :route="route('expenses.store')"
-      @success="toast({ title: 'تم إنشاء المصروف' })"
+      btn-title="إضافة"
     >
       <ExpenseForm :networks="networks" />
     </CreateFormLayout>

@@ -5,7 +5,6 @@ import { formSchema } from './definitions'
 import NetworkForm from './Partials/NetworkForm.vue'
 
 import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import { toast } from '@/Components/ui/toast'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -43,7 +42,6 @@ import {
     <CreateFormLayout
       :form-schema="formSchema"
       :route="route('networks.store')"
-      @success="toast({ title: 'تم إنشاء الشبكة' })"
     >
       <NetworkForm />
     </CreateFormLayout>

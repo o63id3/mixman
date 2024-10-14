@@ -22,7 +22,6 @@ import {
 } from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import { toast } from '@/Components/ui/toast'
 import { CardTitle } from '@/Components/ui/card'
 import {
   Breadcrumb,
@@ -108,7 +107,6 @@ const formSchema = toTypedSchema(
       class="mt-2"
       :form-schema="formSchema"
       :route="route('network.partners.store', network.id)"
-      @success="toast({ title: 'تم إضافة الشريك' })"
     >
       <template #title>
         <CardTitle>
