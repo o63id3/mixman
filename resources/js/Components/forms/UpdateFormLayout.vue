@@ -45,7 +45,13 @@ const onSubmit = form.handleSubmit(submit)
     </CardContent>
     <CardFooter class="border-t px-6 py-4">
       <div class="flex items-center gap-4">
-        <Button @click="onSubmit" :loading="loading" :disabled="loading">
+        <Button
+          @click="onSubmit"
+          :loading="loading"
+          :disabled="
+            loading || !form.meta.value.dirty || !form.meta.value.valid
+          "
+        >
           حفظ
         </Button>
 

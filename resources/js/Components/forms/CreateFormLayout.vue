@@ -51,7 +51,7 @@ const onSubmit = form.handleSubmit(submit)
         <Button
           @click="onSubmit"
           :loading="loading"
-          :disabled="disabled || loading"
+          :disabled="disabled || loading || !form.meta.value.valid"
         >
           {{ btnTitle ?? 'إنشاء' }}
         </Button>
