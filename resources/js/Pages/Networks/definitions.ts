@@ -48,7 +48,9 @@ export function columns(canUpdate: boolean): ColumnDef<Network>[] {
       header: ({ column }) =>
         h(DataTableColumnHeader, { column, title: 'سعر الانترنت أسبوعيا' }),
       cell: ({ row }) =>
-        `${formatMoney(row.original.internet_price_per_week)} شيكل`,
+        row.original.balance
+          ? `${formatMoney(row.original.internet_price_per_week)} شيكل`
+          : '-',
       enableSorting: false,
     },
     {

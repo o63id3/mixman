@@ -109,7 +109,7 @@ const links: Array<Link> = [
             <ApplicationLogo
               class="block h-9 w-auto fill-current text-gray-800"
             />
-            <span>مكس نت</span>
+            <span class="sr-only">مكس نت</span>
           </Link>
           <!-- <Button variant="outline" size="icon" class="mr-auto h-8 w-8">
             <Bell class="h-4 w-4" />
@@ -119,7 +119,7 @@ const links: Array<Link> = [
         <div class="flex-1 overflow-y-auto">
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
             <Link
-              v-for="link in links"
+              v-for="link in links.filter((link) => link.visible)"
               :key="link.label"
               :href="route(link.route)"
               class="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
@@ -164,7 +164,7 @@ const links: Array<Link> = [
               </Link>
 
               <Link
-                v-for="link in links"
+                v-for="link in links.filter((link) => link.visible)"
                 :key="link.label"
                 :href="route(link.route)"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground"
@@ -201,8 +201,13 @@ const links: Array<Link> = [
             <DropdownMenuItem as-child>
               <Link :href="route('profile.edit')">حسابي</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem as-child class="w-full">
-              <Link :href="route('logout')" method="post" as="button">
+            <DropdownMenuItem as-child>
+              <Link
+                :href="route('logout')"
+                method="post"
+                as="button"
+                class="w-full"
+              >
                 تسجيل الخروج
               </Link>
             </DropdownMenuItem>

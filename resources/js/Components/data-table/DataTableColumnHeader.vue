@@ -55,7 +55,6 @@ export default {
         <DropdownMenuItem
           @click="column.toggleSorting(false)"
           v-if="column.getCanSort()"
-          class="rtl:flex-row-reverse"
         >
           <ArrowUpIcon
             class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
@@ -65,7 +64,6 @@ export default {
         <DropdownMenuItem
           @click="column.toggleSorting(true)"
           v-if="column.getCanSort()"
-          class="rtl:flex-row-reverse"
         >
           <ArrowDownIcon
             class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
@@ -78,7 +76,6 @@ export default {
         <DropdownMenuItem
           v-if="column.getCanHide()"
           @click="column.toggleVisibility(false)"
-          class="rtl:flex-row-reverse"
         >
           <EyeNoneIcon
             class="h-3.5 w-3.5 text-muted-foreground/70 ltr:mr-2 rtl:ml-2"
