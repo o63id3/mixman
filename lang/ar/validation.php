@@ -156,6 +156,7 @@ return [
         'username' => 'اسم المستخدم',
         'telegram' => 'حساب التلغرام',
         'password' => 'كلمة المرور',
+        'current_password' => 'كلمة المرور الحالية',
         'contact_info' => 'بيانات التواصل',
         'notes' => 'الملاحظات',
 
