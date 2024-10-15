@@ -101,7 +101,11 @@ const updatePassword = () => {
       </CardContent>
       <CardFooter class="border-t px-6 py-4">
         <div class="flex items-center gap-4">
-          <Button @click="updatePassword" :disabled="form.processing">
+          <Button
+            @click="updatePassword"
+            :disabled="form.processing"
+            :loading="form.processing"
+          >
             حفظ
           </Button>
 
