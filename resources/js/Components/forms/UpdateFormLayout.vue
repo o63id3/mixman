@@ -3,8 +3,10 @@ import { Button } from '@/Components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card'
 
 import { useSubmit } from '@/Composables/submit'
-import { TypedSchema, useForm } from 'vee-validate'
+import { FormContext, TypedSchema, useForm } from 'vee-validate'
 import { Separator } from '../ui/separator'
+
+import { type Method, VisitOptions } from '@inertiajs/core'
 
 const props = withDefaults(
   defineProps<{
@@ -12,9 +14,12 @@ const props = withDefaults(
     initialValues?: TValues
     route: string
     canUpdate?: boolean
+    method?: Method
+    options?: VisitOptions
   }>(),
   {
     canUpdate: true,
+    method: 'patch',
   },
 )
 
@@ -25,10 +30,20 @@ const form = useForm({
   initialValues: props.initialValues,
 })
 
+defineExpose<{
+  form: FormContext
+}>({
+  form: form,
+})
+
 const { submit, loading, recentlySuccessful } = useSubmit(props.route, {
-  method: 'patch',
+  method: props.method,
   onSuccess: () => emit('success'),
-  onError: (errors) => form.setErrors(errors),
+  onError: (errors) => {
+    form.setErrors(errors)
+
+    if (props.options?.onError) props.options.onError(errors)
+  },
 })
 const onSubmit = form.handleSubmit(submit)
 </script>
