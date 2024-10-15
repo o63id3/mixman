@@ -16,3 +16,7 @@ export function valueUpdater<T extends Updater<any>>(
       ? updaterOrValue(ref.value)
       : updaterOrValue
 }
+
+export function getNestedProperty(obj: Record<string, any>, path: string) {
+  return path.split('.').reduce((current, key) => current && current[key], obj)
+}

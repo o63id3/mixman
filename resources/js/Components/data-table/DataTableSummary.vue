@@ -9,6 +9,7 @@ export interface SummaryField {
 <script setup lang="ts">
 import { computed } from 'vue'
 import { TableCell, TableRow } from '@/Components/ui/table'
+import { getNestedProperty } from '@/lib/utils'
 
 interface SummaryField {
   key: string
@@ -30,7 +31,10 @@ const summaries = computed(() => {
     value:
       field.key === 'id'
         ? field.label
-        : props.data.reduce((sum, item) => sum + (item[field.key] || 0), 0), // FIX: nested objects
+        : props.data.reduce(
+            (sum, item) => sum + (getNestedProperty(item, field.key) || 0),
+            0,
+          ),
   }))
 })
 </script>

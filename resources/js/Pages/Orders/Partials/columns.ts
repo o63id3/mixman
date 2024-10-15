@@ -62,7 +62,7 @@ export function columns(canDelete: boolean): ColumnDef<Card>[] {
 export const summaryFields = [
   { key: 'id', label: '' },
   {
-    key: 'pivot.number_of_packages',
+    key: 'pivot.total_price_for_seller',
     label: 'اجمالي السعر للبائع',
     formatter: (value: number) => `${formatMoney(value)} شيكل`,
   },
