@@ -13,6 +13,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -98,7 +99,7 @@ final class DatabaseSeeder extends Seeder
             ->where('created_at', '<', now('Asia/Gaza')->subWeek())
             ->update([
                 'status' => OrderStatusEnum::Completed,
-                'completed_at' => now('Asia/Gaza')->subWeek(),
+                'completed_at' => DB::raw('created_at'),
             ]);
     }
 }

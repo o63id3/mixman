@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 
+defineOptions({
+  layout: GuestLayout,
+})
+
 import { useForm } from '@inertiajs/vue3'
 
 import { Checkbox } from '@/Components/ui/checkbox'
@@ -25,52 +29,50 @@ const submit = () => {
 </script>
 
 <template>
-  <GuestLayout>
-    <form @submit.prevent="submit">
-      <div>
-        <Label for="username">اسم المستخدم</Label>
+  <form @submit.prevent="submit">
+    <div>
+      <Label for="username">اسم المستخدم</Label>
 
-        <Input
-          type="text"
-          class="mt-2 block w-full"
-          autocapitalize="none"
-          v-model="form.username"
-          autofocus
-        />
+      <Input
+        type="text"
+        class="mt-2 block w-full"
+        autocapitalize="none"
+        v-model="form.username"
+        autofocus
+      />
 
-        <InputError class="mt-2" :message="form.errors.username" />
-      </div>
+      <InputError class="mt-2" :message="form.errors.username" />
+    </div>
 
-      <div class="mt-4">
-        <Label for="password">كلمة المرور</Label>
+    <div class="mt-4">
+      <Label for="password">كلمة المرور</Label>
 
-        <Input
-          type="password"
-          class="mt-2 block w-full"
-          v-model="form.password"
-          autofocus
-        />
+      <Input
+        type="password"
+        class="mt-2 block w-full"
+        v-model="form.password"
+        autofocus
+      />
 
-        <InputError class="mt-2" :message="form.errors.password" />
-      </div>
+      <InputError class="mt-2" :message="form.errors.password" />
+    </div>
 
-      <div class="mt-4 block">
-        <Label class="flex items-center">
-          <Checkbox name="remember" v-model="form.remember" />
-          <span class="ms-2 text-sm text-gray-600">تذكرني</span>
-        </Label>
-      </div>
+    <div class="mt-4 block">
+      <Label class="flex items-center">
+        <Checkbox name="remember" v-model="form.remember" />
+        <span class="ms-2 text-sm text-gray-600">تذكرني</span>
+      </Label>
+    </div>
 
-      <div class="mt-4 flex items-center justify-end">
-        <Button
-          class="ms-4"
-          :class="{ 'opacity-25': form.processing }"
-          :disabled="form.processing"
-          :loading="form.processing"
-        >
-          دخول
-        </Button>
-      </div>
-    </form>
-  </GuestLayout>
+    <div class="mt-4 flex items-center justify-end">
+      <Button
+        class="ms-4"
+        :class="{ 'opacity-25': form.processing }"
+        :disabled="form.processing"
+        :loading="form.processing"
+      >
+        دخول
+      </Button>
+    </div>
+  </form>
 </template>

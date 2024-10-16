@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+
+defineOptions({
+  layout: AuthenticatedLayout,
+})
+
 import { Link, useForm, usePage } from '@inertiajs/vue3'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card'
@@ -112,63 +117,61 @@ const form = useForm({})
 </script>
 
 <template>
-  <AuthenticatedLayout>
-    <div class="space-y-8">
-      <div v-if="user.role !== 'ahmed'">
-        <h2 class="px-4 font-semibold"># الطلبات</h2>
-        <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-          <Card class="rounded-none sm:col-span-2 sm:rounded-xl">
-            <CardHeader class="pb-3">
-              <CardTitle>طلباتي</CardTitle>
-              <CardDescription class="max-w-lg text-balance leading-relaxed">
-                بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button
-                @click="
-                  form.post(route('user-orders.store'), {
-                    preserveScroll: true,
-                    preserveState: false,
-                    onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
-                  })
-                "
-                :disabled="form.processing"
-                :loading="form.processing"
-              >
-                طلب كروت
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-      </div>
-      <div v-for="group in groups" :key="group.title">
-        <h2 class="px-4 font-semibold"># {{ group.title }}</h2>
-        <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-          <Card
-            class="rounded-none sm:rounded-xl"
-            v-for="card in group.cards.filter((card) => card.visible)"
-            :key="card.title"
-          >
-            <CardHeader
-              class="flex flex-row items-center justify-between space-y-0 pb-2"
+  <div class="space-y-8">
+    <div v-if="user.role !== 'ahmed'">
+      <h2 class="px-4 font-semibold"># الطلبات</h2>
+      <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+        <Card class="rounded-none sm:col-span-2 sm:rounded-xl">
+          <CardHeader class="pb-3">
+            <CardTitle>طلباتي</CardTitle>
+            <CardDescription class="max-w-lg text-balance leading-relaxed">
+              بإمكانك طلب حزمة كروت جديدة مرة واحدة يومياً
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <Button
+              @click="
+                form.post(route('user-orders.store'), {
+                  preserveScroll: true,
+                  preserveState: false,
+                  onSuccess: () => toast({ title: 'تم إرسال الطلب بنجاح' }),
+                })
+              "
+              :disabled="form.processing"
+              :loading="form.processing"
             >
-              <CardTitle class="text-sm font-medium">
-                {{ card.title }}
-              </CardTitle>
-              <component :is="card.icon" class="h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <div class="text-2xl font-bold">
-                <component :is="card.value" />
-              </div>
-              <p v-if="card.description" class="text-xs text-muted-foreground">
-                {{ card.description }}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+              طلب كروت
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
-  </AuthenticatedLayout>
+    <div v-for="group in groups" :key="group.title">
+      <h2 class="px-4 font-semibold"># {{ group.title }}</h2>
+      <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+        <Card
+          class="rounded-none sm:rounded-xl"
+          v-for="card in group.cards.filter((card) => card.visible)"
+          :key="card.title"
+        >
+          <CardHeader
+            class="flex flex-row items-center justify-between space-y-0 pb-2"
+          >
+            <CardTitle class="text-sm font-medium">
+              {{ card.title }}
+            </CardTitle>
+            <component :is="card.icon" class="h-4 w-4" />
+          </CardHeader>
+          <CardContent>
+            <div class="text-2xl font-bold">
+              <component :is="card.value" />
+            </div>
+            <p v-if="card.description" class="text-xs text-muted-foreground">
+              {{ card.description }}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  </div>
 </template>
