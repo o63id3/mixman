@@ -99,10 +99,8 @@ const getColumnName = (columnId: string) => {
         size="sm"
         class="flex h-8 ltr:ml-auto rtl:mr-auto"
       >
-        <div class="flex">
-          الحقول
-          <MixerHorizontalIcon class="h-4 w-4 ltr:ml-2 rtl:mr-2" />
-        </div>
+        الحقول
+        <MixerHorizontalIcon class="h-4 w-4 ltr:ml-2 rtl:mr-2" />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[150px]">

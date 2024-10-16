@@ -37,18 +37,16 @@ export default {
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="ghost" size="sm" class="-ml-3 h-8">
-          <div class="flex items-center">
-            <span>{{ title }}</span>
-            <ArrowDownIcon
-              v-if="column.getIsSorted() === 'desc'"
-              class="ml-2 h-4 w-4"
-            />
-            <ArrowUpIcon
-              v-else-if="column.getIsSorted() === 'asc'"
-              class="ml-2 h-4 w-4"
-            />
-            <CaretSortIcon v-else class="ml-2 h-4 w-4" />
-          </div>
+          <span>{{ title }}</span>
+          <ArrowDownIcon
+            v-if="column.getIsSorted() === 'desc'"
+            class="ml-2 h-4 w-4"
+          />
+          <ArrowUpIcon
+            v-else-if="column.getIsSorted() === 'asc'"
+            class="ml-2 h-4 w-4"
+          />
+          <CaretSortIcon v-else class="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">

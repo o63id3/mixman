@@ -14,20 +14,21 @@ const isFiltered = computed(() =>
 </script>
 
 <template>
-  <div v-if="table" class="flex items-center justify-between gap-2">
+  <div
+    v-if="table"
+    class="flex items-center justify-between gap-2 overflow-x-auto px-2 lg:px-0"
+  >
     <div class="flex flex-1 items-center gap-2">
       <slot />
 
       <Button
         v-if="isFiltered"
         variant="ghost"
-        class="h-8 gap-1"
+        class="h-8"
+        size="icon"
         @click="table.resetColumnFilters()"
       >
-        <div class="flex items-center gap-x-1">
-          مسح
-          <Cross2Icon class="mr-2 h-4 w-4" />
-        </div>
+        <Cross2Icon class="h-4 w-4" />
       </Button>
     </div>
 

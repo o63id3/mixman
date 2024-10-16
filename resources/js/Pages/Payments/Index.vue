@@ -61,13 +61,11 @@ defineProps<{
         </Breadcrumb>
 
         <Link v-if="can.create" :href="route('payments.create')">
-          <Button size="sm" class="h-7">
-            <div class="flex items-center gap-1">
-              <PlusCircle class="h-3.5 w-3.5" />
-              <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                إضافة
-              </span>
-            </div>
+          <Button size="sm" class="h-7 gap-1">
+            <PlusCircle class="h-3.5 w-3.5" />
+            <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              إضافة
+            </span>
           </Button>
         </Link>
       </div>

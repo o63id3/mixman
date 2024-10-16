@@ -24,7 +24,10 @@ const props = withDefaults(defineProps<Props>(), {
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class, 'relative')"
   >
-    <div :class="{ 'opacity-0': loading }">
+    <div
+      class="flex items-center"
+      :class="[props.class, loading ? 'opacity-0' : '']"
+    >
       <slot />
     </div>
     <span

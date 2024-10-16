@@ -53,13 +53,11 @@ defineProps<{
         </Breadcrumb>
 
         <Link :href="route('cards.create')">
-          <Button size="sm" class="h-7">
-            <div class="flex items-center gap-1">
-              <PlusCircle class="h-3.5 w-3.5" />
-              <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                إنشاء
-              </span>
-            </div>
+          <Button size="sm" class="h-7 gap-1">
+            <PlusCircle class="h-3.5 w-3.5" />
+            <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              إنشاء
+            </span>
           </Button>
         </Link>
       </div>
