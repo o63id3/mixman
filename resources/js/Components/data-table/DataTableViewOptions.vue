@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table'
-import { computed, onMounted, watch } from 'vue'
+import { computed, inject, onMounted, watch } from 'vue'
 import { MixerHorizontalIcon } from '@radix-icons/vue'
 
 import { Button } from '@/Components/ui/button'
@@ -14,25 +13,26 @@ import {
 } from '@/Components/ui/dropdown-menu'
 import { useI18n } from 'vue-i18n'
 
-interface DataTableViewOptionsProps {
-  tableId: string
-  table: Table<TData>
-}
+const table = inject<import('@tanstack/table-core').Table<TData>>('table')
+const tableId = inject<string>('tableId')
 
-const props = defineProps<DataTableViewOptionsProps>()
 const { t } = useI18n()
 
 const columns = computed(() =>
-  props.table
-    .getAllColumns()
-    .filter(
-      (column) =>
-        typeof column.accessorFn !== 'undefined' && column.getCanHide(),
-    ),
+  table
+    ? table
+        .getAllColumns()
+        .filter(
+          (column) =>
+            typeof column.accessorFn !== 'undefined' && column.getCanHide(),
+        )
+    : [],
 )
 
 const saveColumnVisibility = () => {
-  const visibilityState = props.table.getAllColumns().reduce(
+  if (!table) return
+
+  const visibilityState = table.getAllColumns().reduce(
     (acc, column) => {
       acc[column.id] = column.getIsVisible()
       return acc
@@ -41,21 +41,23 @@ const saveColumnVisibility = () => {
   )
 
   localStorage.setItem(
-    `${props.tableId}_tableColumnVisibility`,
+    `${tableId}_tableColumnVisibility`,
     JSON.stringify(visibilityState),
   )
 }
 
 const loadColumnVisibility = () => {
+  if (!table) return
+
   const savedVisibility = localStorage.getItem(
-    `${props.tableId}_tableColumnVisibility`,
+    `${tableId}_tableColumnVisibility`,
   )
   if (savedVisibility) {
     const parsedVisibility = JSON.parse(savedVisibility) as Record<
       string,
       boolean
     >
-    props.table.getAllColumns().forEach((column) => {
+    table.getAllColumns().forEach((column) => {
       const isVisible = parsedVisibility[column.id]
       if (typeof isVisible === 'boolean') {
         column.toggleVisibility(isVisible)
@@ -65,7 +67,9 @@ const loadColumnVisibility = () => {
 }
 
 const toggleColumnVisibility = (columnId: string, isVisible: boolean) => {
-  const column = props.table.getColumn(columnId)
+  if (!table) return
+
+  const column = table.getColumn(columnId)
   if (column) {
     column.toggleVisibility(isVisible)
     saveColumnVisibility()
@@ -83,12 +87,12 @@ watch(
 )
 
 const getColumnName = (columnId: string) => {
-  return t(`${props.tableId}.columns.${columnId}`, columnId)
+  return t(`${tableId}.columns.${columnId}`, columnId)
 }
 </script>
 
 <template>
-  <DropdownMenu v-if="columns.length">
+  <DropdownMenu v-if="table?.getAllColumns().length">
     <DropdownMenuTrigger as-child>
       <Button
         variant="outline"
@@ -106,7 +110,7 @@ const getColumnName = (columnId: string) => {
       <DropdownMenuSeparator />
 
       <DropdownMenuCheckboxItem
-        v-for="column in columns"
+        v-for="column in table.getAllColumns()"
         :key="column.id"
         :checked="column.getIsVisible()"
         @update:checked="(value) => toggleColumnVisibility(column.id, value)"

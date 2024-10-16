@@ -6,8 +6,12 @@ import { X } from 'lucide-vue-next'
 
 import { Card, Order } from '@/types'
 import { columns, summaryFields } from './columns'
-import DataTable from '@/Components/data-table/DataTable.vue'
 import AddItemsForm from './AddItemsForm.vue'
+import {
+  DataTable,
+  DataTableTable,
+  DataTableSummary,
+} from '@/Components/data-table'
 
 defineProps<{
   order: Order
@@ -42,10 +46,14 @@ const adding = ref(false)
       />
       <DataTable
         v-else
-        :data="order.cards"
         :columns="columns(canAddItem)"
-        :summaryFields="order.cards.length ? summaryFields : undefined"
-      />
+        :data="order.cards"
+        table-id="order.cards"
+      >
+        <DataTableTable>
+          <DataTableSummary :summaryFields="summaryFields" />
+        </DataTableTable>
+      </DataTable>
     </div>
   </div>
 </template>

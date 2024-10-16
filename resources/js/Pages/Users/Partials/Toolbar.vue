@@ -1,42 +1,37 @@
 <script setup lang="ts">
-import type { Table } from '@tanstack/vue-table'
 import { Network, User } from '@/types'
-import DataTableFacetedFilter from '@/Components/data-table/DataTableFacetedFilter.vue'
+import { DataTableFacetedFilter } from '@/Components/data-table'
 
-import DataTableToolbar from '@/Components/data-table/DataTableToolbar.vue'
 import { usePage } from '@inertiajs/vue3'
 import { roles } from '@/types/enums'
+import { inject } from 'vue'
 
 interface DataTableToolbarProps {
-  table: Table<User>
   networks: Array<Network>
 }
 
 const user = usePage().props.auth.user
 
 defineProps<DataTableToolbarProps>()
+const table = inject<import('@tanstack/table-core').Table<User>>('table')
 </script>
 
 <template>
-  <DataTableToolbar :table="table" table-id="users">
-    <div class="flex gap-2">
-      <DataTableFacetedFilter
-        v-if="table.getColumn('network') && user.role === 'ahmed'"
-        :column="table.getColumn('network')"
-        title="الشبكة"
-        :options="
-          networks.map((network) => ({
-            label: network.name,
-            value: String(network.id),
-          }))
-        "
-      />
-      <DataTableFacetedFilter
-        v-if="table.getColumn('role') && user.role === 'ahmed'"
-        :column="table.getColumn('role')"
-        title="الصلاحية"
-        :options="roles"
-      />
-    </div>
-  </DataTableToolbar>
+  <DataTableFacetedFilter
+    v-if="table && table.getColumn('network') && user.role === 'ahmed'"
+    :column="table.getColumn('network')"
+    title="الشبكة"
+    :options="
+      networks.map((network) => ({
+        label: network.name,
+        value: String(network.id),
+      }))
+    "
+  />
+  <DataTableFacetedFilter
+    v-if="table && table.getColumn('role') && user.role === 'ahmed'"
+    :column="table.getColumn('role')"
+    title="الصلاحية"
+    :options="roles"
+  />
 </template>

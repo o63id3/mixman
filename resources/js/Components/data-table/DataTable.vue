@@ -7,27 +7,18 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/vue-table'
-import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
+import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 
-import { computed, ref, watch } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import { valueUpdater } from '@/lib/utils'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/Components/ui/table'
-import DataTableSummary from './DataTableSummary.vue'
-import type { SummaryField } from './DataTableSummary.vue'
-import { Filters } from '@/types'
+import { Filters, Links, Meta, Paginator } from '@/types'
 import { router, usePage } from '@inertiajs/vue3'
+import DataTablePagination from './DataTablePagination.vue'
 
 interface DataTableProps {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  summaryFields?: SummaryField[]
+  data: TData[] | Paginator<TData>
+  tableId: string
   initialFilters?: Filters
   initialSorts?: string
 }
@@ -44,7 +35,11 @@ const { columnFilters, sorting } = useFilteringAndSorting(
 
 const table = useVueTable({
   get data() {
-    return props.data
+    if (props.data instanceof Array) {
+      return props.data
+    }
+
+    return props.data.data
   },
   get columns() {
     return props.columns
@@ -72,6 +67,17 @@ const table = useVueTable({
     valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
 })
+
+provide('table', table)
+provide('tableId', props.tableId)
+
+const meta = computed<Meta | undefined>(() =>
+  props.data instanceof Array ? undefined : props.data.meta,
+)
+
+const links = computed<Links | undefined>(() =>
+  props.data instanceof Array ? undefined : props.data.links,
+)
 
 function useFilteringAndSorting(
   initialFilters?: Filters,
@@ -127,65 +133,14 @@ function useFilteringAndSorting(
 </script>
 
 <template>
-  <div v-if="$slots.toolBar" class="mb-4 overflow-x-auto px-4 lg:px-0">
-    <slot :table="table" name="toolBar" />
-  </div>
-  <div
-    class="overflow-x-auto border-y bg-white shadow-sm lg:rounded-md lg:border-x"
-  >
-    <Table>
-      <TableHeader class="bg-gray-100">
-        <TableRow
-          v-for="headerGroup in table.getHeaderGroups()"
-          :key="headerGroup.id"
-          class="whitespace-nowrap text-nowrap text-right"
-        >
-          <TableHead
-            v-for="header in headerGroup.headers"
-            :key="header.id"
-            class="whitespace-nowrap text-nowrap text-right"
-          >
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="table.getRowModel().rows?.length">
-          <TableRow
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            :data-state="row.getIsSelected() && 'selected'"
-          >
-            <TableCell
-              v-for="cell in row.getVisibleCells()"
-              :key="cell.id"
-              class="whitespace-nowrap text-nowrap text-right"
-            >
-              <FlexRender
-                :render="cell.column.columnDef.cell"
-                :props="cell.getContext()"
-              />
-            </TableCell>
-          </TableRow>
-        </template>
-
-        <TableRow v-else>
-          <TableCell :colspan="columns.length" class="h-24 text-center">
-            لا يوجد نتائج.
-          </TableCell>
-        </TableRow>
-
-        <DataTableSummary
-          v-if="props.summaryFields"
-          :data="props.data"
-          :summaryFields="props.summaryFields"
-          :columnsCount="props.columns.length"
-        />
-      </TableBody>
-    </Table>
+  <div class="space-y-4">
+    <slot />
+    <DataTablePagination
+      v-if="meta && links"
+      :meta="meta"
+      :links="links"
+      :filters="initialFilters"
+      :sorts="initialSorts"
+    />
   </div>
 </template>

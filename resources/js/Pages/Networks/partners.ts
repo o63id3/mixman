@@ -65,10 +65,8 @@ export function columns(
 }
 
 export const summaryFields = [
-  { key: 'id', label: '' },
   {
     key: 'share',
-    label: 'total_share',
     formatter: (value: number) => `%${Math.round(value * 100)}`,
   },
 ]

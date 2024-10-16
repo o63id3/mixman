@@ -11,7 +11,7 @@ import {
 } from '@/Components/ui/breadcrumb'
 import {
   DataTable,
-  DataTablePagination,
+  DataTableTable,
   DataTableToolbar,
 } from '@/Components/data-table'
 import { columns } from './definitions'
@@ -46,13 +46,9 @@ defineProps<{
       </Breadcrumb>
     </template>
 
-    <div class="space-y-4">
-      <DataTable :data="reports.data" :columns="columns">
-        <template #toolBar="{ table }">
-          <DataTableToolbar :table="table" table-id="reports" />
-        </template>
-      </DataTable>
-      <DataTablePagination :links="reports.links" :meta="reports.meta" />
-    </div>
+    <DataTable :columns="columns" :data="reports" table-id="reports">
+      <DataTableToolbar />
+      <DataTableTable />
+    </DataTable>
   </AuthenticatedLayout>
 </template>

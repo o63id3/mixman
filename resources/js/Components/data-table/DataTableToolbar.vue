@@ -1,26 +1,20 @@
 <script setup lang="ts" generic="TData">
-import type { Table } from '@tanstack/vue-table'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 
 import { Button } from '@/Components/ui/button'
 import DataTableViewOptions from './DataTableViewOptions.vue'
 
 import { Cross2Icon } from '@radix-icons/vue'
 
-interface DataTableToolbarProps {
-  table: Table<TData>
-  tableId: string
-}
+const table = inject<import('@tanstack/table-core').Table<TData>>('table')
 
-const props = defineProps<DataTableToolbarProps>()
-
-const isFiltered = computed(
-  () => props.table.getState().columnFilters.length > 0,
+const isFiltered = computed(() =>
+  table ? table.getState().columnFilters.length > 0 : false,
 )
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-2">
+  <div v-if="table" class="flex items-center justify-between gap-2">
     <div class="flex flex-1 items-center gap-2">
       <slot />
 
@@ -37,6 +31,6 @@ const isFiltered = computed(
       </Button>
     </div>
 
-    <DataTableViewOptions :table="table" :table-id="tableId" />
+    <DataTableViewOptions />
   </div>
 </template>

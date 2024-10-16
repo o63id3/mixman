@@ -9,7 +9,11 @@ import NetworkForm from './Partials/NetworkForm.vue'
 import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { columns, summaryFields } from './partners'
-import { DataTable } from '@/Components/data-table'
+import {
+  DataTable,
+  DataTableSummary,
+  DataTableTable,
+} from '@/Components/data-table'
 
 import { Button } from '@/Components/ui/button'
 import {
@@ -119,10 +123,14 @@ const initialValues = {
       </div>
       <DataTable
         v-if="network.partners"
-        :data="network.partners"
         :columns="columns(network, can.deletePartner, can.assignManager)"
-        :summaryFields="network.partners.length ? summaryFields : undefined"
-      />
+        :data="network.partners"
+        table-id="network.partners"
+      >
+        <DataTableTable>
+          <DataTableSummary :summaryFields="summaryFields" />
+        </DataTableTable>
+      </DataTable>
     </div>
   </AuthenticatedLayout>
 </template>

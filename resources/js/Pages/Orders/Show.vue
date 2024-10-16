@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb'
 
-import { DataTable } from '@/Components/data-table'
+import { DataTable, DataTableTable } from '@/Components/data-table'
 import { columns } from './Partials/filesColumns'
 import { orderStatues } from '@/types/enums'
 import { formatDate, formatMoney } from '@/lib/formatters'
@@ -145,10 +145,14 @@ defineProps<{
     >
       # المرفقات
     </p>
+
     <DataTable
       v-if="order.files.length"
-      :data="order.files"
       :columns="columns"
-    />
+      :data="order.files"
+      table-id="order.files"
+    >
+      <DataTableTable />
+    </DataTable>
   </AuthenticatedLayout>
 </template>

@@ -12,17 +12,23 @@ import {
   BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb'
 
-import { DataTable, DataTablePagination } from '@/Components/data-table/index'
+import {
+  DataTable,
+  DataTableTable,
+  DataTableToolbar,
+} from '@/Components/data-table'
 import { columns } from './definitions'
 import Toolbar from './Partials/Toolbar.vue'
 
-import { Expense, Network, Paginator, User } from '@/types'
+import { Expense, Filter, Network, Paginator, User } from '@/types'
 import { PlusCircle } from 'lucide-vue-next'
 
 defineProps<{
   expenses: Paginator<Expense>
   managers: Array<User>
   networks: Array<Network>
+  filters: Filter
+  sorts: string
   can: {
     create: boolean
   }
@@ -65,16 +71,21 @@ defineProps<{
       </div>
     </template>
 
-    <div class="space-y-4">
-      <DataTable :data="expenses.data" :columns="columns">
-        <template
+    <DataTable
+      :columns="columns"
+      :data="expenses"
+      table-id="expenses"
+      :initial-filters="filters"
+      :initial-sorts="sorts"
+    >
+      <DataTableToolbar>
+        <Toolbar
           v-if="$page.props.auth.user.role !== 'seller'"
-          #toolBar="{ table }"
-        >
-          <Toolbar :table="table" :managers="managers" :networks="networks" />
-        </template>
-      </DataTable>
-      <DataTablePagination :links="expenses.links" :meta="expenses.meta" />
-    </div>
+          :managers="managers"
+          :networks="networks"
+        />
+      </DataTableToolbar>
+      <DataTableTable />
+    </DataTable>
   </AuthenticatedLayout>
 </template>

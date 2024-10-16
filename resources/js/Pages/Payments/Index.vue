@@ -13,7 +13,11 @@ import {
   BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb'
 
-import { DataTable, DataTablePagination } from '@/Components/data-table/index'
+import {
+  DataTable,
+  DataTableTable,
+  DataTableToolbar,
+} from '@/Components/data-table'
 import { columns } from './definitions'
 import Toolbar from './Partials/Toolbar.vue'
 
@@ -69,31 +73,22 @@ defineProps<{
       </div>
     </template>
 
-    <div class="space-y-4">
-      <DataTable
-        :data="payments.data"
-        :columns="columns"
-        :initial-filters="filters"
-        :initial-sorts="sorts"
-      >
-        <template
+    <DataTable
+      :columns="columns"
+      :data="payments"
+      table-id="payments"
+      :initial-filters="filters"
+      :initial-sorts="sorts"
+    >
+      <DataTableToolbar>
+        <Toolbar
           v-if="$page.props.auth.user.role !== 'seller'"
-          #toolBar="{ table }"
-        >
-          <Toolbar
-            :table="table"
-            :users="users"
-            :managers="managers"
-            :networks="networks"
-          />
-        </template>
-      </DataTable>
-      <DataTablePagination
-        :links="payments.links"
-        :meta="payments.meta"
-        :filters="filters"
-        :sorts="sorts"
-      />
-    </div>
+          :users="users"
+          :managers="managers"
+          :networks="networks"
+        />
+      </DataTableToolbar>
+      <DataTableTable />
+    </DataTable>
   </AuthenticatedLayout>
 </template>

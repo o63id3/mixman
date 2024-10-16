@@ -12,7 +12,11 @@ import {
 import { Badge } from '@/Components/ui/badge'
 
 import { columns, summaryFields } from './partners'
-import { DataTable } from '@/Components/data-table'
+import {
+  DataTable,
+  DataTableSummary,
+  DataTableTable,
+} from '@/Components/data-table'
 
 import { Network } from '@/types'
 
@@ -60,14 +64,19 @@ defineProps<{
       </Breadcrumb>
     </template>
 
-    <div class="space-y-4">
-      <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
-      <DataTable
-        v-if="network.partners"
-        :data="network.partners"
-        :columns="columns(network)"
-        :summaryFields="network.partners.length ? summaryFields : undefined"
-      />
-    </div>
+    <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>
+    <DataTable
+      v-if="network.partners"
+      class="mt-4"
+      :columns="columns(network)"
+      :data="network.partners"
+      table-id="network.partners"
+    >
+      <DataTableTable>
+        <DataTableSummary
+          :summaryFields="network.partners.length ? summaryFields : undefined"
+        />
+      </DataTableTable>
+    </DataTable>
   </AuthenticatedLayout>
 </template>

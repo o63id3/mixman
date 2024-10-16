@@ -15,7 +15,7 @@ import {
 
 import {
   DataTable,
-  DataTablePagination,
+  DataTableTable,
   DataTableToolbar,
 } from '@/Components/data-table'
 import { columns } from './definitions'
@@ -68,16 +68,13 @@ defineProps<{
       </div>
     </template>
 
-    <div class="space-y-4">
-      <DataTable :data="networks.data" :columns="columns(can.update)">
-        <template
-          v-if="$page.props.auth.user.role === 'ahmed'"
-          #toolBar="{ table }"
-        >
-          <DataTableToolbar :table="table" table-id="networks" />
-        </template>
-      </DataTable>
-      <DataTablePagination :links="networks.links" :meta="networks.meta" />
-    </div>
+    <DataTable
+      :columns="columns(can.update)"
+      :data="networks"
+      table-id="networks"
+    >
+      <DataTableToolbar />
+      <DataTableTable />
+    </DataTable>
   </AuthenticatedLayout>
 </template>

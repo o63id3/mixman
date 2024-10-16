@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Order } from '@/types'
 import AddFilesForm from './AddFilesForm.vue'
-import DataTable from '@/Components/data-table/DataTable.vue'
 import { columns } from './filesColumns'
 import { ref } from 'vue'
 import { Button } from '@/Components/ui/button'
 import { X } from 'lucide-vue-next'
+import { DataTable, DataTableTable } from '@/Components/data-table'
 
 defineProps<{
   order: Order
@@ -31,7 +31,14 @@ const adding = ref<boolean>(false)
 
     <div class="mt-4">
       <AddFilesForm v-if="adding" :order="order" @success="adding = false" />
-      <DataTable v-else :data="order.files" :columns="columns" />
+      <DataTable
+        v-else
+        :columns="columns"
+        :data="order.files"
+        table-id="order.files"
+      >
+        <DataTableTable />
+      </DataTable>
     </div>
   </div>
 </template>
