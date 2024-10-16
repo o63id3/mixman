@@ -1,17 +1,5 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Link } from '@inertiajs/vue3'
-import { Card, Paginator } from '@/types'
-
-import { Button } from '@/Components/ui/button'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 
 import {
   DataTable,
@@ -19,7 +7,11 @@ import {
   DataTableToolbar,
 } from '@/Components/data-table'
 import { columns } from './definitions'
-import { PlusCircle } from 'lucide-vue-next'
+import { Badge } from '@/Components/ui/badge'
+import { CreateLink } from '@/Components/links'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
+
+import { Card, Paginator } from '@/types'
 
 defineProps<{
   cards: Paginator<Card>
@@ -27,39 +19,27 @@ defineProps<{
     create: boolean
   }
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الكروت',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
       <div class="flex flex-1 items-center justify-between">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink :href="route('dashboard')">
-                الرئيسة
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                الكروت
-                <span class="text-xs font-normal tracking-wide">
-                  ({{ cards.meta.total }})
-                </span>
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <Link :href="route('cards.create')">
-          <Button size="sm" class="h-7 gap-1">
-            <PlusCircle class="h-3.5 w-3.5" />
-            <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              إنشاء
-            </span>
-          </Button>
-        </Link>
+        <div class="flex items-center gap-2">
+          <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+          <Badge>{{ cards.meta.total }}</Badge>
+        </div>
+        <CreateLink v-if="can.create" :href="route('cards.create')" />
       </div>
     </template>
 

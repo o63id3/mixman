@@ -1,48 +1,37 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import ExpenseForm from './Partials/ExpenseForm.vue'
 
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { Network } from '@/types'
 
 defineProps<{
   networks: Array<Network>
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'النفقات',
+    route: route('expenses.index'),
+  },
+  {
+    label: 'إضافة',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('expenses.index')">
-              المصروفات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>إضافة</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <CreateFormLayout

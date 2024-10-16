@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import {
   FormControl,
   FormField,
@@ -23,20 +23,12 @@ import {
 import { Input } from '@/Components/ui/input'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import { CardTitle } from '@/Components/ui/card'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-
-import { Network, User } from '@/types'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { AlertCircle } from 'lucide-vue-next'
+import { Network, User } from '@/types'
 
-defineProps<{
+const props = defineProps<{
   network: Network
   partners: Array<User>
   remainingShare: number
@@ -51,40 +43,33 @@ const formSchema = toTypedSchema(
       .max(100, { message: 'يجب أن يكون أقل من 100' }),
   }),
 )
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الشبكات',
+    route: route('networks.index'),
+  },
+  {
+    label: props.network.name,
+    route: route('networks.edit', props.network.id),
+  },
+  {
+    label: 'الشركاء',
+  },
+  {
+    label: 'إضافة',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('networks.index')">
-              الشبكات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('networks.edit', network.id)">
-              {{ network.name }}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage> الشركاء </BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage> إضافة </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <Alert class="rounded-none sm:rounded-xl" variant="destructive">

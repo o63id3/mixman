@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import OrderForm from './Partials/OrderForm.vue'
 
-import { Card, User } from '@/types'
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { CardTitle } from '@/Components/ui/card'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
+
+import { Card, User } from '@/types'
 
 const props = defineProps<{
   users: Array<User>
@@ -32,30 +26,26 @@ const initialValues = {
     },
   ],
 }
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الطلبات',
+    route: route('orders.index'),
+  },
+  {
+    label: 'إنشاء',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('orders.index')">
-              الطلبات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>إنشاء</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <CreateFormLayout

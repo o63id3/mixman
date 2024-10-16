@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { Link } from '@inertiajs/vue3'
-
-import { Button } from '@/Components/ui/button'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
+import { CreateLink } from '@/Components/links'
+import { Badge } from '@/Components/ui/badge'
 import {
   DataTable,
   DataTableTable,
@@ -22,7 +13,6 @@ import { columns } from './definitions'
 import Toolbar from './Partials/Toolbar.vue'
 
 import { Filters, Network, Paginator, User } from '@/types'
-import { PlusCircle } from 'lucide-vue-next'
 
 defineProps<{
   users: Paginator<User>
@@ -31,39 +21,27 @@ defineProps<{
   sorts: string
   can: { create: boolean }
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'المستخدمين',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
       <div class="flex flex-1 items-center justify-between">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink :href="route('dashboard')">
-                الرئيسة
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                المستخدمين
-                <span class="text-xs font-normal tracking-wide">
-                  ({{ users.meta.total }})
-                </span>
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <Link v-if="can.create" :href="route('users.create')">
-          <Button size="sm" class="h-7 gap-1">
-            <PlusCircle class="h-3.5 w-3.5" />
-            <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              إنشاء
-            </span>
-          </Button>
-        </Link>
+        <div class="flex items-center gap-2">
+          <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+          <Badge>{{ users.meta.total }}</Badge>
+        </div>
+        <CreateLink v-if="can.create" :href="route('users.create')" />
       </div>
     </template>
 

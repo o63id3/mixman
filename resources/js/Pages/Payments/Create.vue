@@ -1,48 +1,37 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 import { formSchema } from './definitions'
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import PaymentForm from './Partials/PaymentForm.vue'
+
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { User } from '@/types'
 
 defineProps<{
   users: Array<User>
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الدفعات',
+    route: route('payments.index'),
+  },
+  {
+    label: 'إضافة',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('payments.index')">
-              الدفعات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>إضافة</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <CreateFormLayout

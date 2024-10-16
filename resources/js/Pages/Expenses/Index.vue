@@ -1,27 +1,18 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { Link } from '@inertiajs/vue3'
-import { Button } from '@/Components/ui/button'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-
 import {
   DataTable,
   DataTableTable,
   DataTableToolbar,
 } from '@/Components/data-table'
 import { columns } from './definitions'
+import { CreateLink } from '@/Components/links'
+import { Badge } from '@/Components/ui/badge'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 import Toolbar from './Partials/Toolbar.vue'
 
 import { Expense, Filter, Network, Paginator, User } from '@/types'
-import { PlusCircle } from 'lucide-vue-next'
 
 defineProps<{
   expenses: Paginator<Expense>
@@ -33,39 +24,31 @@ defineProps<{
     create: boolean
   }
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'المصروفات',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
       <div class="flex flex-1 items-center justify-between">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink :href="route('dashboard')">
-                الرئيسة
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                المصروفات
-                <span class="text-xs font-normal tracking-wide">
-                  ({{ expenses.meta.total }})
-                </span>
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <Link v-if="can.create" :href="route('expenses.create')">
-          <Button size="sm" class="h-7 gap-1">
-            <PlusCircle class="h-3.5 w-3.5" />
-            <span class="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              إضافة
-            </span>
-          </Button>
-        </Link>
+        <div class="flex items-center gap-2">
+          <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+          <Badge>{{ expenses.meta.total }}</Badge>
+        </div>
+        <CreateLink
+          v-if="can.create"
+          :href="route('expenses.create')"
+          btn-title="إضافة"
+        />
       </div>
     </template>
 

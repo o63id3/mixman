@@ -2,20 +2,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-import {
   DataTable,
   DataTableTable,
   DataTableToolbar,
 } from '@/Components/data-table'
-import Toolbar from './Partials/Toolbar.vue'
 import { columns } from './definitions'
+import { Badge } from '@/Components/ui/badge'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
+import Toolbar from './Partials/Toolbar.vue'
 
 import { Filters, Network, Paginator, Transaction, User } from '@/types'
 
@@ -27,29 +21,27 @@ defineProps<{
   filters: Filters
   sorts: string
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الحركات',
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              الحركات
-              <span class="text-xs font-normal tracking-wide">
-                ({{ transactions.meta.total }})
-              </span>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div class="flex flex-1 items-center justify-between">
+        <div class="flex items-center gap-2">
+          <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+          <Badge>{{ transactions.meta.total }}</Badge>
+        </div>
+      </div>
     </template>
 
     <DataTable
