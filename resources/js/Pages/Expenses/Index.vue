@@ -44,11 +44,9 @@ const breadcrumbs = [
           <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
           <Badge>{{ expenses.meta.total }}</Badge>
         </div>
-        <CreateLink
-          v-if="can.create"
-          :href="route('expenses.create')"
-          btn-title="إضافة"
-        />
+        <CreateLink v-if="can.create" :href="route('expenses.create')">
+          إضافة
+        </CreateLink>
       </div>
     </template>
 
