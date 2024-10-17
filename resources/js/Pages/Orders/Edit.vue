@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import OrderForm from './Partials/OrderForm.vue'
 
 import { toast } from '@/Components/ui/toast'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { DeleteLink } from '@/Components/links'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { AlertCircle } from 'lucide-vue-next'
 
@@ -44,35 +37,26 @@ const initialValues = {
   status: props.order.status,
   notes: props.order.notes,
 }
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الطلبات',
+    route: route('orders.index'),
+  },
+  {
+    label: `${props.order.id}#`,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('orders.index')">
-              الطلبات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {{ order.id }}#
-              <span class="text-xs font-normal tracking-wide">
-                ({{ order.manager.name }})
-              </span>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <Alert

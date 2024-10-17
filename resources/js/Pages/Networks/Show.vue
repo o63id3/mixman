@@ -1,67 +1,50 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { Badge } from '@/Components/ui/badge'
-
-import { columns, summaryFields } from './partners'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 import {
   DataTable,
   DataTableSummary,
   DataTableTable,
 } from '@/Components/data-table'
 
+import { columns, summaryFields } from './partners'
+
 import { Network } from '@/types'
 
-defineProps<{
+const props = defineProps<{
   network: Network
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الشبكات',
+    route: route('networks.index'),
+  },
+  {
+    label: props.network.name,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('networks.index')">
-              الشبكات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {{ network.name }}
-              <span
-                v-if="network.manager"
-                class="text-xs font-normal tracking-wide"
-              >
-                ({{ network.manager.name }})
-              </span>
-              <Badge
-                variant="outline"
-                class="mr-auto sm:ml-0"
-                :class="[network.active ? 'text-green-500' : 'text-red-500']"
-              >
-                {{ network.active ? 'فعالة' : 'معطلة' }}
-              </Badge>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div class="flex items-center gap-2">
+        <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+        <Badge
+          variant="outline"
+          class="mr-auto sm:ml-0"
+          :class="[network.active ? 'text-green-500' : 'text-red-500']"
+        >
+          {{ network.active ? 'فعالة' : 'معطلة' }}
+        </Badge>
+      </div>
     </template>
 
     <p class="px-4 text-sm font-medium tracking-wide"># الشركاء</p>

@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import PaymentForm from './Partials/PaymentForm.vue'
 
 import { toast } from '@/Components/ui/toast'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 import { DeleteLink } from '@/Components/links'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { AlertCircle } from 'lucide-vue-next'
 
@@ -34,30 +27,26 @@ const initialValues = {
   amount: props.payment.amount,
   notes: props.payment.notes,
 }
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الدفعات',
+    route: route('payments.index'),
+  },
+  {
+    label: `${props.payment.id}#`,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('payments.index')">
-              الدفعات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{{ payment.id }}#</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <Alert

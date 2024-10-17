@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-
-import { Link } from '@inertiajs/vue3'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import NetworkForm from './Partials/NetworkForm.vue'
-
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { columns, summaryFields } from './partners'
 import {
@@ -15,18 +12,10 @@ import {
   DataTableTable,
 } from '@/Components/data-table'
 
-import { Button } from '@/Components/ui/button'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { Badge } from '@/Components/ui/badge'
 import { toast } from '@/Components/ui/toast'
-import { DeleteLink, SecondaryLink } from '@/Components/links'
+import { CreateLink, DeleteLink, SecondaryLink } from '@/Components/links'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { Network } from '@/types'
 
@@ -43,45 +32,35 @@ const initialValues = {
   name: props.network.name,
   internet_price_per_week: props.network.internet_price_per_week,
 }
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الشبكات',
+    route: route('networks.index'),
+  },
+  {
+    label: props.network.name,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('networks.index')">
-              الشبكات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {{ network.name }}
-              <span
-                v-if="network.manager"
-                class="text-xs font-normal tracking-wide"
-              >
-                ({{ network.manager.name }})
-              </span>
-              <Badge
-                variant="outline"
-                class="mr-auto sm:ml-0"
-                :class="[network.active ? 'text-green-500' : 'text-red-500']"
-              >
-                {{ network.active ? 'فعالة' : 'معطلة' }}
-              </Badge>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div class="flex items-center gap-2">
+        <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+        <Badge
+          variant="outline"
+          class="mr-auto sm:ml-0"
+          :class="[network.active ? 'text-green-500' : 'text-red-500']"
+        >
+          {{ network.active ? 'فعالة' : 'معطلة' }}
+        </Badge>
+      </div>
     </template>
 
     <UpdateFormLayout
@@ -114,12 +93,12 @@ const initialValues = {
     <div class="mt-4 space-y-4">
       <div class="flex items-center justify-between px-4">
         <p class="text-sm font-medium tracking-wide"># الشركاء</p>
-        <Link
+        <CreateLink
           v-if="can.createPartner"
           :href="route('network.partners.create', props.network.id)"
         >
-          <Button class="text-xs tracking-wide" size="xs"> إضافة شريك </Button>
-        </Link>
+          إضافة شريك
+        </CreateLink>
       </div>
       <DataTable
         v-if="network.partners"

@@ -1,54 +1,39 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-import { Order } from '@/types'
 import { Card, CardHeader, CardTitle, CardContent } from '@/Components/ui/card'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
-
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 import { DataTable, DataTableTable } from '@/Components/data-table'
+
 import { columns } from './Partials/filesColumns'
 import { orderStatues } from '@/types/enums'
 import { formatDate, formatMoney } from '@/lib/formatters'
 
-defineProps<{
+import { Order } from '@/types'
+
+const props = defineProps<{
   order: Order
 }>()
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'الطلبات',
+    route: route('orders.index'),
+  },
+  {
+    label: `${props.order.id}#`,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('orders.index')">
-              الطلبات
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {{ order.id }}#
-              <span class="text-xs font-normal tracking-wide">
-                ({{ order.manager.name }})
-              </span>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
     </template>
 
     <Card class="rounded-none sm:rounded-xl">

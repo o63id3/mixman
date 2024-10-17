@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import UserForm from './Partials/UserForm.vue'
 
 import { toast } from '@/Components/ui/toast'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb'
 import { Badge } from '@/Components/ui/badge'
 import { DeleteLink, SecondaryLink } from '@/Components/links'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
 
 import { Network, User } from '@/types'
 
@@ -39,39 +32,35 @@ const initialValues = {
   percentage: props.user.percentage,
   contact_info: props.user.contact_info,
 }
+
+const breadcrumbs = [
+  {
+    label: 'الرئيسة',
+    route: route('dashboard'),
+  },
+  {
+    label: 'المستخدمين',
+    route: route('users.index'),
+  },
+  {
+    label: props.user.name,
+  },
+]
 </script>
 
 <template>
   <AuthenticatedLayout>
     <template #secondaryHeader>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('dashboard')">
-              الرئيسة
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink :href="route('users.index')">
-              المستخدمين
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>
-              {{ user.name }}
-              <Badge
-                variant="outline"
-                class="mr-auto sm:ml-0"
-                :class="[user.active ? 'text-green-500' : 'text-red-500']"
-              >
-                {{ user.active ? 'فعال' : 'معطل' }}
-              </Badge>
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div class="flex items-center gap-2">
+        <BreadcrumbsGenerator :breadcrumbs="breadcrumbs" />
+        <Badge
+          variant="outline"
+          class="mr-auto sm:ml-0"
+          :class="[user.active ? 'text-green-500' : 'text-red-500']"
+        >
+          {{ user.active ? 'فعال' : 'معطل' }}
+        </Badge>
+      </div>
     </template>
 
     <UpdateFormLayout
