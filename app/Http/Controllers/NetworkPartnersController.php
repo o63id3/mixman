@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,8 +26,8 @@ final class NetworkPartnersController
 
         return Inertia::render('NetworkPartners/Create', [
             'network' => NetworkResource::single($network),
-            'partners' => User::whereNot('role', RoleEnum::Seller)->whereNotIn('id', $network->partners->pluck('id'))->get(['id', 'name']),
-            'remainingShare' => (1 - $network->partners()->sum('share')) * 100,
+            'partners' => User::whereNot('role', RoleEnum::Seller)->whereNotIn('id', $network->partners()->select(['users.id']))->get(['id', 'name']),
+            'remainingShare' => $network->available_share,
         ]);
     }
 
@@ -38,8 +39,10 @@ final class NetworkPartnersController
         Gate::authorize('createPartner', $network);
 
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'exists:users,id', Rule::notIn($network->partners->pluck('id'))],
             'share' => ['numeric', "max:{$network->available_share}"],
+        ], [
+            'user_id.not_in' => 'هذا الشريك ضمن قائمة الشركاء.',
         ]);
 
         $network

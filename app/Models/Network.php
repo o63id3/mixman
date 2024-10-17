@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -99,11 +100,13 @@ final class Network extends Model
     }
 
     /**
-     * Get the network available shares.
+     * Get the network's available share.
      */
-    public function getAvailableShareAttribute(): int
+    protected function availableShare(): Attribute
     {
-        return 100 - (int) ((float) $this->partners()->sum('share') * 100);
+        return Attribute::make(
+            get: fn () => 100 - (int) ((float) $this->partners()->sum('share') * 100)
+        )->shouldCache();
     }
 
     /**
