@@ -24,18 +24,18 @@ const props = withDefaults(defineProps<Props>(), {
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class, 'relative')"
   >
-    <div
-      class="flex items-center"
-      :class="[props.class, loading ? 'opacity-0' : '']"
-    >
-      <slot />
-    </div>
-    <span
+    <!-- <div class="flex items-center" :class="[loading ? 'opacity-0' : '']"> -->
+    <slot />
+    <span v-if="loading" class="ltr:ml-2 rtl:mr-2" aria-hidden="true">
+      <Loader2Icon class="h-4 w-4 animate-spin" />
+    </span>
+    <!-- </div> -->
+    <!-- <span
       v-if="loading"
       class="absolute inset-0 flex items-center justify-center"
       aria-hidden="true"
     >
       <Loader2Icon class="h-4 w-4 animate-spin" />
-    </span>
+    </span> -->
   </Primitive>
 </template>
