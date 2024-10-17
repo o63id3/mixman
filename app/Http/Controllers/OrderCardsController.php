@@ -36,11 +36,13 @@ final class OrderCardsController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderCard $card): RedirectResponse
+    public function destroy(Order $order, OrderCard $card): RedirectResponse
     {
-        Gate::authorize('createCards', $card);
+        Gate::authorize('createCards', $order);
 
-        $card->delete();
+        $order
+            ->cards()
+            ->detach($card);
 
         return back();
     }

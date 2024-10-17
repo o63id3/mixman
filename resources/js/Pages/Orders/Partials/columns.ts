@@ -2,11 +2,11 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { h } from 'vue'
 
 import DataTableColumnHeader from '@/Components/data-table/DataTableColumnHeader.vue'
-import { Card } from '@/types'
+import { Card, Order } from '@/types'
 import OrderCardsRowActions from './OrderCardsRowActions.vue'
 import { formatMoney } from '@/lib/formatters'
 
-export function columns(canDelete: boolean): ColumnDef<Card>[] {
+export function columns(order: Order, canDelete: boolean): ColumnDef<Card>[] {
   const columns: ColumnDef<Card>[] = [
     {
       accessorKey: 'name',
@@ -52,7 +52,7 @@ export function columns(canDelete: boolean): ColumnDef<Card>[] {
   if (canDelete) {
     columns.push({
       id: 'actions',
-      cell: ({ row }) => h(OrderCardsRowActions, { row }),
+      cell: ({ row }) => h(OrderCardsRowActions, { order, row }),
     })
   }
 

@@ -41,7 +41,7 @@ final class OrdersController
 
         return Inertia::render('Orders/Index', [
             'orders' => OrderResource::collection($orders),
-            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary($user)->get(['id', 'name']),
             'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
             'networks' => Network::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,
@@ -121,7 +121,7 @@ final class OrdersController
 
         return Inertia::render('Orders/Edit', [
             'order' => OrderResource::single($order),
-            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary($user)->get(['id', 'name']),
             'cards' => Card::whereActive(true)->get(['id', 'name']),
             'can' => [
                 'update' => Gate::allows('update', $order),

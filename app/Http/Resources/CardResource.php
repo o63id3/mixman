@@ -24,6 +24,7 @@ final class CardResource extends JsonResource
             'active' => $this->active,
             'notes' => $this->notes,
             'pivot' => $this->whenPivotLoaded('order_cards', fn () => [
+                'id' => $this->pivot->id,
                 'number_of_packages' => $this->pivot->number_of_packages,
                 'number_of_cards_per_package' => $this->pivot->number_of_cards_per_package,
                 'quantity' => $this->pivot->quantity,

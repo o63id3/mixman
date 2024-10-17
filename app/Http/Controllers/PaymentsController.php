@@ -36,7 +36,7 @@ final class PaymentsController
 
         return Inertia::render('Payments/Index', [
             'payments' => PaymentResource::collection($payments),
-            'users' => User::visibleTo($user)->beneficiary()->get(['id', 'name']),
+            'users' => User::visibleTo($user)->beneficiary($user)->get(['id', 'name']),
             'managers' => User::visibleTo($user)->manager()->get(['id', 'name']),
             'networks' => Network::visibleTo($user)->get(['id', 'name']),
             'filters' => $filter->filters,

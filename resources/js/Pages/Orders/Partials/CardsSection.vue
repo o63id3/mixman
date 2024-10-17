@@ -46,7 +46,7 @@ const adding = ref(false)
       />
       <DataTable
         v-else
-        :columns="columns(canAddItem)"
+        :columns="columns(order, canAddItem)"
         :data="order.cards"
         table-id="order.cards"
       >

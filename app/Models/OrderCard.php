@@ -27,6 +27,13 @@ final class OrderCard extends Pivot
     public $timestamps = false;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string|null
+     */
+    protected $table = 'order_cards';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

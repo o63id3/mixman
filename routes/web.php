@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/cards', [OrderCardsController::class, 'store'])->name('order-cards.store');
-    Route::delete('/order-cards/{card}', [OrderCardsController::class, 'destroy'])->name('order-cards.destroy');
+    Route::delete('/orders/{order}/cards/{card}', [OrderCardsController::class, 'destroy'])->name('order-cards.destroy');
 
     Route::get('/order-files/{file}', OrderFileDownloadsController::class)->name('order-files.download');
     Route::post('/orders/{order}/files', [OrderFilesController::class, 'store'])->name('order-files.store');

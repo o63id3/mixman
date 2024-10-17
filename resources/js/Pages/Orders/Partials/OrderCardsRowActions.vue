@@ -3,12 +3,13 @@ import type { Row } from '@tanstack/vue-table'
 import { computed } from 'vue'
 
 import { Button } from '@/Components/ui/button'
-import { Card } from '@/types'
+import { Card, Order } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { toast } from '@/Components/ui/toast'
 import { Trash2 } from 'lucide-vue-next'
 
 const props = defineProps<{
+  order: Order
   row: Row<Card>
 }>()
 
@@ -20,7 +21,7 @@ const row = computed(() => props.row.original)
     v-if="row.pivot.can.delete"
     @click="
       () =>
-        router.delete(route('order-cards.destroy', row.id), {
+        router.delete(route('order-cards.destroy', [order.id, row.id]), {
           preserveScroll: true,
           onSuccess: () => toast({ title: 'تم حذف الرزمة' }),
         })
