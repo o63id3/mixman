@@ -99,7 +99,7 @@ const links: Array<Link> = [
   <div
     class="grid min-h-screen w-full bg-muted/40 md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
   >
-    <div class="hidden border-l md:block">
+    <div class="hidden md:block ltr:border-r rtl:border-l">
       <div class="sticky top-0 flex h-full max-h-screen flex-col gap-2">
         <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <Link
@@ -111,7 +111,7 @@ const links: Array<Link> = [
             />
             <span class="sr-only">مكس نت</span>
           </Link>
-          <!-- <Button variant="outline" size="icon" class="mr-auto h-8 w-8">
+          <!-- <Button variant="outline" size="icon" class="rtl:mr-auto ltr:ml-auto h-8 w-8">
             <Bell class="h-4 w-4" />
             <span class="sr-only">Toggle notifications</span>
           </Button> -->
@@ -133,7 +133,7 @@ const links: Array<Link> = [
               {{ link.label }}
               <Badge
                 v-if="link.badge"
-                class="mr-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
               >
                 {{ link.badge }}
               </Badge>
@@ -178,7 +178,7 @@ const links: Array<Link> = [
                 {{ link.label }}
                 <Badge
                   v-if="link.badge"
-                  class="mr-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                  class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
                 >
                   {{ link.badge }}
                 </Badge>

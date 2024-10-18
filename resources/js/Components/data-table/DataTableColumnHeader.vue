@@ -36,7 +36,7 @@ export default {
   >
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
-        <Button variant="ghost" size="sm" class="-ml-3 h-8">
+        <Button variant="ghost" size="sm" class="h-8 ltr:-ml-3 rtl:-mr-3">
           <span>{{ title }}</span>
           <ArrowDownIcon
             v-if="column.getIsSorted() === 'desc'"
