@@ -15,12 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/Components/ui/select'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import { Card, User } from '@/types'
-import { orderStatues } from '@/types/enums'
-import CardItemForm from './CardItemForm.vue'
+import { Textarea } from '@/Components/ui/textarea'
+import { Button } from '@/Components/ui/button'
+
 import { PlusCircle } from 'lucide-vue-next'
-import Button from '@/Components/ui/button/Button.vue'
+
+import CardItemForm from './CardItemForm.vue'
+
+import { orderStatues } from '@/types/enums'
+import { Card, User } from '@/types'
 
 const emit = defineEmits(['select'])
 

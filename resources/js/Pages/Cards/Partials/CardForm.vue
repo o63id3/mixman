@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { Input } from '@/Components/ui/input'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
+import { Textarea } from '@/Components/ui/textarea'
 </script>
 
 <template>
@@ -29,15 +29,6 @@ import Textarea from '@/Components/ui/textarea/Textarea.vue'
       <FormMessage />
     </FormItem>
   </FormField>
-  <!-- <FormField v-slot="{ componentField }" name="price_for_seller">
-    <FormItem>
-      <FormLabel>السعر للبائع</FormLabel>
-      <FormControl>
-        <Input type="number" step="0.01" v-bind="componentField" />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  </FormField> -->
   <FormField v-slot="{ componentField }" name="notes">
     <FormItem class="col-span-full">
       <FormLabel>ملاحظات</FormLabel>

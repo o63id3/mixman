@@ -8,7 +8,8 @@ import {
   FormMessage,
 } from '@/Components/ui/form'
 import { Input } from '@/Components/ui/input'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
+import { Textarea } from '@/Components/ui/textarea'
+
 import { User } from '@/types'
 
 const emit = defineEmits(['select'])

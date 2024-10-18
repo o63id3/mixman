@@ -16,7 +16,8 @@ import {
   SelectValue,
 } from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
-import Textarea from '@/Components/ui/textarea/Textarea.vue'
+import { Textarea } from '@/Components/ui/textarea'
+
 import { roles } from '@/types/enums'
 import { Network } from '@/types'
 
