@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Link, usePage } from '@inertiajs/vue3'
+import { useI18n } from 'vue-i18n'
+
 import {
   CircleUser,
   DollarSign,
@@ -22,8 +25,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
-
-import { Link, usePage } from '@inertiajs/vue3'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue'
 
 const auth = usePage().props.auth
@@ -36,59 +37,61 @@ interface Link {
   icon?: any
 }
 
+const { t } = useI18n()
+
 const links: Array<Link> = [
   {
     route: 'dashboard',
-    label: 'الرئيسة',
+    label: 'dashboard',
     visible: true,
     icon: Home,
   },
   {
     route: 'users.index',
-    label: 'المستخدمين',
+    label: 'users',
     visible: auth.permissions.users.viewAny,
     icon: Users,
   },
   {
     route: 'cards.index',
-    label: 'الكروت',
+    label: 'cards',
     visible: auth.permissions.cards.viewAny,
     icon: Package,
   },
   {
     route: 'networks.index',
-    label: 'الشبكات',
+    label: 'networks',
     visible: auth.permissions.networks.viewAny,
     icon: Network,
   },
   {
     route: 'orders.index',
-    label: 'الطلبات',
+    label: 'orders',
     visible: auth.permissions.orders.viewAny,
     badge: usePage().props.pendingOrders,
     icon: ShoppingCart,
   },
   {
     route: 'payments.index',
-    label: 'الدفعات',
+    label: 'payments',
     visible: auth.permissions.payments.viewAny,
     icon: DollarSign,
   },
   {
     route: 'expenses.index',
-    label: 'المصروفات',
+    label: 'expenses',
     visible: auth.permissions.expenses.viewAny,
     icon: HandCoins,
   },
   {
     route: 'transactions.index',
-    label: 'الحركات',
+    label: 'transactions',
     visible: auth.permissions.transactions.viewAny,
     icon: LineChart,
   },
   {
     route: 'reports.index',
-    label: 'التقارير',
+    label: 'reports',
     visible: auth.permissions.reports.viewAny,
     icon: SheetIcon,
   },
@@ -130,7 +133,7 @@ const links: Array<Link> = [
               ]"
             >
               <component v-if="link.icon" :is="link.icon" class="h-4 w-4" />
-              {{ link.label }}
+              {{ t(`nav.${link.label}`) }}
               <Badge
                 v-if="link.badge"
                 class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"

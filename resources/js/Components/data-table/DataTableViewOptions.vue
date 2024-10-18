@@ -87,7 +87,7 @@ watch(
 )
 
 const getColumnName = (columnId: string) => {
-  return t(`${tableId}.columns.${columnId}`, columnId)
+  return t(`tables.${tableId}.columns.${columnId}`, columnId)
 }
 </script>
 

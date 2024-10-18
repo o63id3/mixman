@@ -1,82 +1,95 @@
 {
-  "users": {
-    "columns": {
-      "name": "الاسم",
-      "username": "اسم المستخدم",
-      "telegram": "حساب التلغرام",
-      "network": "الشبكة",
-      "role": "الصلاحية",
-      "balance": "صافي الحساب",
-      "active": "الحالة"
-    }
+  "nav": {
+    "dashboard": "الرئيسة",
+    "users": "المستخدمين",
+    "cards": "الكروت",
+    "networks": "الشبكات",
+    "orders": "الطلبات",
+    "payments": "الدفعات",
+    "expenses": "المصروفات",
+    "transactions": "الحركات",
+    "reports": "التقارير"
   },
-  "cards": {
-    "columns": {
-      "name": "الاسم",
-      "price_for_consumer": "السعر للمستهلك",
-      "active": "الحالة"
-    }
-  },
-  "networks": {
-    "columns": {
-      "name": "الاسم",
-      "manager": "المدير المالي",
-      "balance": "صافي الحساب",
-      "internet_price_per_week": "سعر الانترنت أسبوعيا",
-      "active": "الحالة"
-    }
-  },
-  "orders": {
-    "columns": {
-      "user": "المستفيد",
-      "manager": "مدير الطلب",
-      "network": "الشبكة",
-      "status": "الحالة",
-      "total_price_for_seller": "اجمالي السعر",
-      "total_price_for_consumer": "اجمالي السعر للمستهلك",
-      "updated_at": "التاريخ"
-    }
-  },
-  "payments": {
-    "columns": {
-      "recipient": "المستلم",
-      "user": "الاسم",
-      "network": "الشبكة",
-      "amount": "المبلغ",
-      "created_at": "التاريخ"
-    }
-  },
-  "expenses": {
-    "columns": {
-      "description": "الوصف",
-      "user": "تم الإدخال بواسطة",
-      "network": "الشبكة",
-      "amount": "المبلغ",
-      "created_at": "التاريخ"
-    }
-  },
-  "transactions": {
-    "columns": {
-      "user": "المستفيد",
-      "manager": "المدير",
-      "network": "الشبكة",
-      "type": "نوع الحركة",
-      "amount": "المبلغ",
-      "description": "الوصف",
-      "created_at": "التاريخ"
-    }
-  },
-  "reports": {
-    "columns": {
-      "id": "#",
-      "network": "الشبكة",
-      "total_payments_amount": "مجموع الدفعات",
-      "total_expenses_amount": "مجموع النفقات",
-      "network_income": "صافي الربح",
-      "income_overflow": "ربح فائض",
-      "start_from_date": "من تاريخ",
-      "end_at_date": "حتى تاريخ",
-      "created_at_date": "تم الإعداد بتاريخ"
+  "tables": {
+    "users": {
+      "columns": {
+        "name": "الاسم",
+        "username": "اسم المستخدم",
+        "telegram": "حساب التلغرام",
+        "network": "الشبكة",
+        "role": "الصلاحية",
+        "balance": "صافي الحساب",
+        "active": "الحالة"
+      }
+    },
+    "cards": {
+      "columns": {
+        "name": "الاسم",
+        "price_for_consumer": "السعر للمستهلك",
+        "active": "الحالة"
+      }
+    },
+    "networks": {
+      "columns": {
+        "name": "الاسم",
+        "manager": "المدير المالي",
+        "balance": "صافي الحساب",
+        "internet_price_per_week": "سعر الانترنت أسبوعيا",
+        "active": "الحالة"
+      }
+    },
+    "orders": {
+      "columns": {
+        "user": "المستفيد",
+        "manager": "مدير الطلب",
+        "network": "الشبكة",
+        "status": "الحالة",
+        "total_price_for_seller": "اجمالي السعر",
+        "total_price_for_consumer": "اجمالي السعر للمستهلك",
+        "updated_at": "التاريخ"
+      }
+    },
+    "payments": {
+      "columns": {
+        "recipient": "المستلم",
+        "user": "الاسم",
+        "network": "الشبكة",
+        "amount": "المبلغ",
+        "created_at": "التاريخ"
+      }
+    },
+    "expenses": {
+      "columns": {
+        "description": "الوصف",
+        "user": "تم الإدخال بواسطة",
+        "network": "الشبكة",
+        "amount": "المبلغ",
+        "created_at": "التاريخ"
+      }
+    },
+    "transactions": {
+      "columns": {
+        "user": "المستفيد",
+        "manager": "المدير",
+        "network": "الشبكة",
+        "type": "نوع الحركة",
+        "amount": "المبلغ",
+        "description": "الوصف",
+        "created_at": "التاريخ"
+      }
+    },
+    "reports": {
+      "columns": {
+        "id": "#",
+        "network": "الشبكة",
+        "total_payments_amount": "مجموع الدفعات",
+        "total_expenses_amount": "مجموع النفقات",
+        "network_income": "صافي الربح",
+        "income_overflow": "ربح فائض",
+        "start_from_date": "من تاريخ",
+        "end_at_date": "حتى تاريخ",
+        "created_at_date": "تم الإعداد بتاريخ"
+      }
     }
   }
 }
