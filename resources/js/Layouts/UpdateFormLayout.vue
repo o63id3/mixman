@@ -7,7 +7,6 @@ import { FormContext, TypedSchema, useForm } from 'vee-validate'
 import { Separator } from '@/Components/ui/separator'
 
 import { type Method, VisitOptions } from '@inertiajs/core'
-import { ResetIcon } from '@radix-icons/vue'
 
 const props = withDefaults(
   defineProps<{
@@ -39,12 +38,14 @@ defineExpose<{
 
 const { submit, loading, recentlySuccessful } = useSubmit(props.route, {
   method: props.method,
-  preserveState: false,
-  onSuccess: () => emit('success'),
+  preserveState: true,
+  onSuccess: () => {
+    form.meta.value.initialValues = form.values
+    emit('success')
+  },
   onError: (errors) => {
-    form.setErrors(errors)
-
     if (props.options?.onError) props.options.onError(errors)
+    form.setErrors(errors)
   },
 })
 const onSubmit = form.handleSubmit(submit)
@@ -86,6 +87,17 @@ const onSubmit = form.handleSubmit(submit)
           />
 
           <slot name="buttons" />
+
+          <Transition
+            enter-active-class="transition ease-in-out"
+            enter-from-class="opacity-0"
+            leave-active-class="transition ease-in-out"
+            leave-to-class="opacity-0"
+          >
+            <p v-if="recentlySuccessful" class="text-sm text-gray-600">
+              تم الحفظ.
+            </p>
+          </Transition>
         </div>
       </CardFooter>
     </Card>

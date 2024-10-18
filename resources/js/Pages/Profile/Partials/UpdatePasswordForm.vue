@@ -1,126 +1,102 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue'
-import { Button } from '@/Components/ui/button'
+import UpdateFormLayout from '@/Layouts/UpdateFormLayout.vue'
+
+import { ref, useTemplateRef } from 'vue'
+
 import { Input } from '@/Components/ui/input'
-import { Label } from '@/Components/ui/label'
-
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/Components/ui/card'
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/Components/ui/form'
+import { CardDescription, CardTitle } from '@/Components/ui/card'
 
-import { ref } from 'vue'
-import { useForm } from '@inertiajs/vue3'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
 
-const passwordInput = ref<HTMLInputElement | null>(null)
-const currentPasswordInput = ref<HTMLInputElement | null>(null)
+const formSchema = toTypedSchema(
+  z
+    .object({
+      current_password: z.string({ message: 'هذا الحقل مطلوب' }),
+      password: z.string({ message: 'هذا الحقل مطلوب' }),
+      password_confirmation: z.string({ message: 'هذا الحقل مطلوب' }),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: 'كلمات المرور لا تتطابق.',
+      path: ['password_confirmation'],
+    }),
+)
 
-const form = useForm({
-  current_password: '',
-  password: '',
-  password_confirmation: '',
-})
+const form = useTemplateRef('form')
+const currentPasswordInput = ref<InstanceType<typeof Input> | null>(null)
+const passwordInput = ref<InstanceType<typeof Input> | null>(null)
 
-const updatePassword = () => {
-  form.put(route('password.update'), {
-    preserveScroll: true,
-    onSuccess: () => {
-      form.reset()
-    },
-    onError: () => {
-      if (form.errors.password) {
-        form.reset('password', 'password_confirmation')
-        passwordInput.value?.focus()
-      }
-      if (form.errors.current_password) {
-        form.reset('current_password')
-        currentPasswordInput.value?.focus()
-      }
-    },
-  })
+const options = {
+  onError: (errors: any) => {
+    if (errors.password) {
+      form.value?.form.resetField('password')
+      form.value?.form.resetField('password_confirmation')
+      passwordInput.value?.inputElement?.focus()
+    }
+    if (errors.current_password) {
+      currentPasswordInput.value?.inputElement?.focus()
+      form.value?.form.resetField('current_password')
+    } // Fix: focus resets the errors
+  },
 }
 </script>
 
 <template>
   <section>
-    <Card>
-      <CardHeader>
+    <UpdateFormLayout
+      ref="form"
+      :form-schema="formSchema"
+      :route="route('password.update')"
+      :options="options"
+      method="put"
+    >
+      <template #title>
         <CardTitle>تغيير كلمة المرور</CardTitle>
         <CardDescription>تأكد أن كلمة المرور الخاصة بك قوية</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form class="max-w-xl space-y-6">
-          <div>
-            <Label for="current_password">كلمة المرور الحالية</Label>
+      </template>
 
+      <FormField v-slot="{ componentField }" name="current_password">
+        <FormItem class="col-span-full max-w-xl">
+          <FormLabel>كلمة المرور الحالية</FormLabel>
+          <FormControl>
             <Input
-              id="current_password"
               ref="currentPasswordInput"
-              v-model="form.current_password"
               type="password"
-              class="mt-2 block w-full"
+              v-bind="componentField"
             />
-
-            <InputError :message="form.errors.current_password" class="mt-2" />
-          </div>
-
-          <div>
-            <Label for="password">كلمة المرور الجديدة</Label>
-
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="password">
+        <FormItem class="col-span-full max-w-xl">
+          <FormLabel>كلمة المرور الجديدة</FormLabel>
+          <FormControl>
             <Input
-              id="password"
               ref="passwordInput"
-              v-model="form.password"
               type="password"
-              class="mt-2 block w-full"
+              v-bind="componentField"
             />
-
-            <InputError :message="form.errors.password" class="mt-2" />
-          </div>
-
-          <div>
-            <Label for="password_confirmation">تأكيد كلمة المرور الجديدة</Label>
-
-            <Input
-              id="password_confirmation"
-              v-model="form.password_confirmation"
-              type="password"
-              class="mt-2 block w-full"
-            />
-
-            <InputError
-              :message="form.errors.password_confirmation"
-              class="mt-2"
-            />
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter class="border-t px-6 py-4">
-        <div class="flex items-center gap-4">
-          <Button
-            @click="updatePassword"
-            :disabled="form.processing"
-            :loading="form.processing"
-          >
-            حفظ
-          </Button>
-
-          <Transition
-            enter-active-class="transition ease-in-out"
-            enter-from-class="opacity-0"
-            leave-active-class="transition ease-in-out"
-            leave-to-class="opacity-0"
-          >
-            <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-              تم الحفظ.
-            </p>
-          </Transition>
-        </div>
-      </CardFooter>
-    </Card>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+      <FormField v-slot="{ componentField }" name="password_confirmation">
+        <FormItem class="col-span-full max-w-xl">
+          <FormLabel>تأكيد كلمة المرور الجديدة</FormLabel>
+          <FormControl>
+            <Input type="password" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+    </UpdateFormLayout>
   </section>
 </template>
