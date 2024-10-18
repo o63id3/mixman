@@ -5,6 +5,7 @@ defineOptions({
   layout: GuestLayout,
 })
 
+import { onMounted, ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 
 import { Checkbox } from '@/Components/ui/checkbox'
@@ -26,6 +27,11 @@ const submit = () => {
     },
   })
 }
+
+const input = ref<InstanceType<typeof Input> | null>(null)
+onMounted(() => {
+  input.value?.inputElement?.focus()
+})
 </script>
 
 <template>
@@ -34,11 +40,11 @@ const submit = () => {
       <Label for="username">اسم المستخدم</Label>
 
       <Input
+        ref="input"
         type="text"
         class="mt-2 block w-full"
         autocapitalize="none"
         v-model="form.username"
-        autofocus
       />
 
       <InputError class="mt-2" :message="form.errors.username" />

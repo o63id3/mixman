@@ -20,12 +20,18 @@ import { Textarea } from '@/Components/ui/textarea'
 
 import { roles } from '@/types/enums'
 import { Network } from '@/types'
+import { onMounted, ref } from 'vue'
 
 defineProps<{
   disabled?: boolean
   networks: Array<Network>
   role?: string
 }>()
+
+const input = ref<InstanceType<typeof Input> | null>(null)
+onMounted(() => {
+  input.value?.inputElement?.focus()
+})
 </script>
 
 <template>
@@ -33,7 +39,12 @@ defineProps<{
     <FormItem>
       <FormLabel>الاسم</FormLabel>
       <FormControl>
-        <Input type="text" v-bind="componentField" :disabled="disabled" />
+        <Input
+          ref="input"
+          type="text"
+          v-bind="componentField"
+          :disabled="disabled"
+        />
       </FormControl>
       <FormMessage />
     </FormItem>

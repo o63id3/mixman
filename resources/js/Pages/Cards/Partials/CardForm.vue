@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
 import {
   FormControl,
   FormField,
@@ -8,6 +10,11 @@ import {
 } from '@/Components/ui/form'
 import { Input } from '@/Components/ui/input'
 import { Textarea } from '@/Components/ui/textarea'
+
+const input = ref<InstanceType<typeof Input> | null>(null)
+onMounted(() => {
+  input.value?.inputElement?.focus()
+})
 </script>
 
 <template>
@@ -15,7 +22,7 @@ import { Textarea } from '@/Components/ui/textarea'
     <FormItem>
       <FormLabel>اسم الكرت</FormLabel>
       <FormControl>
-        <Input type="text" v-bind="componentField" />
+        <Input ref="input" type="text" v-bind="componentField" />
       </FormControl>
       <FormMessage />
     </FormItem>

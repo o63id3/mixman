@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
 import {
   FormControl,
   FormField,
@@ -11,6 +13,11 @@ import { Input } from '@/Components/ui/input'
 defineProps<{
   disabled?: boolean
 }>()
+
+const input = ref<InstanceType<typeof Input> | null>(null)
+onMounted(() => {
+  input.value?.inputElement?.focus()
+})
 </script>
 
 <template>
@@ -18,7 +25,12 @@ defineProps<{
     <FormItem class="col-span-full md:col-span-1">
       <FormLabel>الاسم</FormLabel>
       <FormControl>
-        <Input type="text" v-bind="componentField" :disabled="disabled" />
+        <Input
+          ref="input"
+          type="text"
+          v-bind="componentField"
+          :disabled="disabled"
+        />
       </FormControl>
       <FormMessage />
     </FormItem>
