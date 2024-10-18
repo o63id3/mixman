@@ -22,8 +22,7 @@ export function columns(order: Order, canDelete: boolean): ColumnDef<Card>[] {
           column,
           title: 'اجمالي السعر للبائع',
         }),
-      cell: ({ row }) =>
-        `${formatMoney(row.original.pivot.total_price_for_seller)} شيكل`,
+      cell: ({ row }) => formatMoney(row.original.pivot.total_price_for_seller),
       enableSorting: false,
       enableHiding: false,
     },
@@ -62,6 +61,6 @@ export function columns(order: Order, canDelete: boolean): ColumnDef<Card>[] {
 export const summaryFields = [
   {
     key: 'pivot.total_price_for_seller',
-    formatter: (value: number) => `${formatMoney(value)} شيكل`,
+    formatter: (value: number) => formatMoney(value),
   },
 ]
