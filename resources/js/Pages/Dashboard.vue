@@ -121,7 +121,7 @@ const form = useForm({})
     <div v-if="user.role !== 'ahmed'">
       <h2 class="px-4 font-semibold"># الطلبات</h2>
       <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
-        <Card class="rounded-none sm:col-span-2 sm:rounded-xl">
+        <Card class="sm:col-span-2">
           <CardHeader class="pb-3">
             <CardTitle>طلباتي</CardTitle>
             <CardDescription class="max-w-lg text-balance leading-relaxed">
@@ -150,7 +150,6 @@ const form = useForm({})
       <h2 class="px-4 font-semibold"># {{ group.title }}</h2>
       <div class="mt-2 grid gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
         <Card
-          class="rounded-none sm:rounded-xl"
           v-for="card in group.cards.filter((card) => card.visible)"
           :key="card.title"
         >
