@@ -6,16 +6,13 @@ import DataTableViewOptions from './DataTableViewOptions.vue'
 
 import { Cross2Icon } from '@radix-icons/vue'
 
-const table = inject<import('@tanstack/table-core').Table<TData>>('table')
+const table = inject('table') as import('@tanstack/table-core').Table<TData>
 
-const isFiltered = computed(() =>
-  table ? table.getState().columnFilters.length > 0 : false,
-)
+const isFiltered = computed(() => table.getState().columnFilters.length > 0)
 </script>
 
 <template>
   <div
-    v-if="table"
     class="flex items-center justify-between gap-2 overflow-x-auto px-2 lg:px-0"
   >
     <div class="flex flex-1 items-center gap-2">

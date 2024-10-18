@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { Network, User } from '@/types'
+import { inject } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+
 import { DataTableFacetedFilter } from '@/Components/data-table'
 
-import { usePage } from '@inertiajs/vue3'
+import { Network, User } from '@/types'
 import { roles } from '@/types/enums'
-import { inject } from 'vue'
+import type { Table } from '@tanstack/vue-table'
 
 interface DataTableToolbarProps {
   networks: Array<Network>
@@ -13,12 +15,12 @@ interface DataTableToolbarProps {
 const user = usePage().props.auth.user
 
 defineProps<DataTableToolbarProps>()
-const table = inject<import('@tanstack/table-core').Table<User>>('table')
+const table = inject('table') as Table<User>
 </script>
 
 <template>
   <DataTableFacetedFilter
-    v-if="table && table.getColumn('network') && user.role === 'ahmed'"
+    v-if="table.getColumn('network') && user.role === 'ahmed'"
     :column="table.getColumn('network')"
     title="الشبكة"
     :options="
@@ -29,7 +31,7 @@ const table = inject<import('@tanstack/table-core').Table<User>>('table')
     "
   />
   <DataTableFacetedFilter
-    v-if="table && table.getColumn('role') && user.role === 'ahmed'"
+    v-if="table.getColumn('role') && user.role === 'ahmed'"
     :column="table.getColumn('role')"
     title="الصلاحية"
     :options="roles"

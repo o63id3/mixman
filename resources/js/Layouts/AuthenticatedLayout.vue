@@ -178,7 +178,7 @@ const links: Array<Link> = [
                 ]"
               >
                 <component v-if="link.icon" :is="link.icon" class="h-5 w-5" />
-                {{ link.label }}
+                {{ t(`nav.${link.label}`) }}
                 <Badge
                   v-if="link.badge"
                   class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"

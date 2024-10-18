@@ -11,13 +11,12 @@ import {
 } from '@/Components/ui/table'
 import { inject } from 'vue'
 
-const table = inject<import('@tanstack/table-core').Table<TData>>('table')
+const table = inject('table') as import('@tanstack/table-core').Table<TData>
 </script>
 
 <template>
   <div
     class="overflow-x-auto border-y bg-white shadow-sm lg:rounded-md lg:border-x"
-    v-if="table"
   >
     <Table>
       <TableHeader class="bg-gray-100">

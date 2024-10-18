@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData">
 import { computed, inject, onMounted, watch } from 'vue'
-import { MixerHorizontalIcon } from '@radix-icons/vue'
+import { useI18n } from 'vue-i18n'
 
 import { Button } from '@/Components/ui/button'
 import {
@@ -11,27 +11,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
-import { useI18n } from 'vue-i18n'
+import { MixerHorizontalIcon } from '@radix-icons/vue'
 
-const table = inject<import('@tanstack/table-core').Table<TData>>('table')
-const tableId = inject<string>('tableId')
+const table = inject('table') as import('@tanstack/table-core').Table<TData>
+const tableId = inject('tableId') as string
 
 const { t } = useI18n()
 
 const columns = computed(() =>
   table
-    ? table
-        .getAllColumns()
-        .filter(
-          (column) =>
-            typeof column.accessorFn !== 'undefined' && column.getCanHide(),
-        )
-    : [],
+    .getAllColumns()
+    .filter(
+      (column) =>
+        typeof column.accessorFn !== 'undefined' && column.getCanHide(),
+    ),
 )
 
 const saveColumnVisibility = () => {
-  if (!table) return
-
   const visibilityState = table.getAllColumns().reduce(
     (acc, column) => {
       acc[column.id] = column.getIsVisible()
@@ -47,8 +43,6 @@ const saveColumnVisibility = () => {
 }
 
 const loadColumnVisibility = () => {
-  if (!table) return
-
   const savedVisibility = localStorage.getItem(
     `${tableId}_tableColumnVisibility`,
   )
@@ -67,8 +61,6 @@ const loadColumnVisibility = () => {
 }
 
 const toggleColumnVisibility = (columnId: string, isVisible: boolean) => {
-  if (!table) return
-
   const column = table.getColumn(columnId)
   if (column) {
     column.toggleVisibility(isVisible)
@@ -92,7 +84,7 @@ const getColumnName = (columnId: string) => {
 </script>
 
 <template>
-  <DropdownMenu v-if="table?.getAllColumns().length">
+  <DropdownMenu v-if="table.getAllColumns().length">
     <DropdownMenuTrigger as-child>
       <Button
         variant="outline"

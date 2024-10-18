@@ -7,8 +7,11 @@ export interface SummaryField {
 
 <script setup lang="ts" generic="TData">
 import { computed, inject } from 'vue'
+
 import { TableCell, TableRow } from '@/Components/ui/table'
 import { getNestedProperty } from '@/lib/utils'
+
+import type { Table } from '@tanstack/table-core'
 
 interface SummaryField {
   key: string
@@ -20,12 +23,12 @@ interface DataTableSummaryProps {
 }
 
 const props = defineProps<DataTableSummaryProps>()
-const table = inject<import('@tanstack/table-core').Table<TData>>('table')
+const table = inject('table') as Table<TData>
 
 const summaries = computed(() => {
   return props.summaryFields?.map((field) => {
     const value = table
-      ?.getRowModel()
+      .getRowModel()
       .rows.reduce(
         (sum, item) =>
           sum + (Number(getNestedProperty(item, `original.${field.key}`)) || 0),
@@ -45,7 +48,7 @@ const summaries = computed(() => {
     class="whitespace-nowrap text-nowrap bg-gray-100 text-right font-medium hover:bg-gray-100"
   >
     <TableCell
-      v-if="table && summaries"
+      v-if="summaries"
       v-for="header in table.getHeaderGroups()[0].headers"
       :key="header.id"
     >

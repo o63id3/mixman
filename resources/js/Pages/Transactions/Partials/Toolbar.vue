@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { Network, Transaction, User } from '@/types'
+import { inject } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+
 import {
   DataTableFacetedFilter,
   DataTableDateRangeFilter,
 } from '@/Components/data-table'
 
-import { usePage } from '@inertiajs/vue3'
-import { inject } from 'vue'
+import { Network, Transaction, User } from '@/types'
+import type { Table } from '@tanstack/vue-table'
 
 interface DataTableToolbarProps {
   users: Array<User>
@@ -17,12 +19,12 @@ interface DataTableToolbarProps {
 const user = usePage().props.auth.user
 
 defineProps<DataTableToolbarProps>()
-const table = inject<import('@tanstack/table-core').Table<Transaction>>('table')
+const table = inject('table') as Table<Transaction>
 </script>
 
 <template>
   <DataTableFacetedFilter
-    v-if="table && table.getColumn('user')"
+    v-if="table.getColumn('user')"
     :column="table.getColumn('user')"
     title="المستفيد"
     :options="
@@ -33,7 +35,7 @@ const table = inject<import('@tanstack/table-core').Table<Transaction>>('table')
     "
   />
   <DataTableFacetedFilter
-    v-if="table && table.getColumn('manager')"
+    v-if="table.getColumn('manager')"
     :column="table.getColumn('manager')"
     title="المدير"
     :options="
@@ -44,7 +46,7 @@ const table = inject<import('@tanstack/table-core').Table<Transaction>>('table')
     "
   />
   <DataTableFacetedFilter
-    v-if="table && table.getColumn('network') && user.role === 'ahmed'"
+    v-if="table.getColumn('network') && user.role === 'ahmed'"
     :column="table.getColumn('network')"
     title="الشبكة"
     :options="
@@ -55,7 +57,7 @@ const table = inject<import('@tanstack/table-core').Table<Transaction>>('table')
     "
   />
   <DataTableDateRangeFilter
-    v-if="table && table.getColumn('created_at')"
+    v-if="table.getColumn('created_at')"
     :column="table.getColumn('created_at')"
   />
 </template>
