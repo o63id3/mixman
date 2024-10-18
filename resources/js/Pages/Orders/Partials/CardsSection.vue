@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@/Components/ui/button'
-import { X } from 'lucide-vue-next'
-
-import { Card, Order } from '@/types'
-import { columns, summaryFields } from './columns'
-import AddItemsForm from './AddItemsForm.vue'
 import {
   DataTable,
   DataTableTable,
   DataTableSummary,
 } from '@/Components/data-table'
+import {
+  ToggleArea,
+  ToggleAreaToggle,
+  ToggleAreaSheet,
+} from '@/Components/toggle-area'
+import { ToggleButton } from '@/Components/buttons'
+
+import AddItemsForm from './AddItemsForm.vue'
+import { columns, summaryFields } from './columns'
+
+import { Card, Order } from '@/types'
 
 defineProps<{
   order: Order
@@ -23,29 +28,16 @@ const adding = ref(false)
 </script>
 
 <template>
-  <div>
+  <ToggleArea v-model="adding" class="space-y-4">
     <div class="flex items-center justify-between px-4">
       <p class="text-sm font-medium tracking-wide"># الكروت</p>
-      <Button
-        class="text-xs tracking-wide"
-        size="xs"
-        :variant="adding ? 'outline' : 'default'"
-        @click="adding = !adding"
-        v-if="canAddItem"
-      >
-        <X v-if="adding" class="w-3 text-red-500" />
-        <span v-else>إضافة رزم</span>
-      </Button>
+      <ToggleAreaToggle v-if="canAddItem && cards">
+        <ToggleButton v-model="adding">إضافة رزم</ToggleButton>
+      </ToggleAreaToggle>
     </div>
-    <div class="mt-4">
-      <AddItemsForm
-        v-if="adding && canAddItem && cards"
-        :cards="cards"
-        :order="order"
-        @success="adding = false"
-      />
+
+    <ToggleAreaSheet first>
       <DataTable
-        v-else
         :columns="columns(order, canAddItem)"
         :data="order.cards"
         table-id="order.cards"
@@ -54,6 +46,15 @@ const adding = ref(false)
           <DataTableSummary :summaryFields="summaryFields" />
         </DataTableTable>
       </DataTable>
-    </div>
-  </div>
+    </ToggleAreaSheet>
+
+    <ToggleAreaSheet>
+      <AddItemsForm
+        v-if="canAddItem && cards"
+        :cards="cards"
+        :order="order"
+        @success="adding = false"
+      />
+    </ToggleAreaSheet>
+  </ToggleArea>
 </template>
