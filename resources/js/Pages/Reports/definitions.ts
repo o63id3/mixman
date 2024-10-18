@@ -47,33 +47,28 @@ export const columns: ColumnDef<Report>[] = [
     accessorKey: 'total_payments_amount',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'مجموع الدفعات' }),
-    cell: ({ row }) =>
-      `${formatMoney(row.original.total_payments_amount)} شيكل`,
+    cell: ({ row }) => formatMoney(row.original.total_payments_amount),
     enableSorting: false,
   },
   {
     accessorKey: 'total_expenses_amount',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'مجموع النفقات' }),
-    cell: ({ row }) =>
-      `${formatMoney(row.original.total_expenses_amount)} شيكل`,
+    cell: ({ row }) => formatMoney(row.original.total_expenses_amount),
     enableSorting: false,
   },
   {
     accessorKey: 'network_income',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'صافي الربح' }),
-    cell: ({ row }) => `${formatMoney(row.original.network_income)} شيكل`,
+    cell: ({ row }) => formatMoney(row.original.network_income),
     enableSorting: false,
   },
   {
     accessorKey: 'income_overflow',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'ربح فائض' }),
-    cell: ({ row }) =>
-      row.original.income_overflow
-        ? `${formatMoney(row.original.income_overflow)} شيكل`
-        : '-',
+    cell: ({ row }) => formatMoney(row.original.income_overflow),
     enableSorting: false,
   },
   {

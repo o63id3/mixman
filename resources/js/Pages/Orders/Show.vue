@@ -93,9 +93,6 @@ const breadcrumbs = [
                     </td>
                     <td class="whitespace-nowrap border p-2">
                       {{ formatMoney(card.pivot.total_price_for_seller) }}
-                      <span class="text-xs leading-none tracking-wide">
-                        شيكل
-                      </span>
                     </td>
                     <td class="whitespace-nowrap border p-2">
                       {{ card.pivot.number_of_packages }}

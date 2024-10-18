@@ -14,8 +14,8 @@ export function formatDate(date: string, withTime: boolean = true): string {
   return new Date(date).toLocaleString('ar-US', options)
 }
 
-export function formatMoney(money?: number): string {
-  if (!money) return '-'
+export function formatMoney(money?: number, fallback = '-' as string): string {
+  if (!money) return fallback
 
   return new Intl.NumberFormat('en-US').format(money) + ' شيكل'
 }

@@ -45,7 +45,7 @@ const breadcrumbs = [
           </div>
           <div>
             <h3 class="text-lg font-semibold">المبلغ</h3>
-            <p>{{ formatMoney(payment.amount) }} شيكل</p>
+            <p>{{ formatMoney(payment.amount) }}</p>
           </div>
           <div class="md:col-span-2">
             <h3 class="text-lg font-semibold">ملاحظات</h3>

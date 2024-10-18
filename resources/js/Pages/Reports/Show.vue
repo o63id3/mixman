@@ -32,24 +32,20 @@ Object.keys(props.report.partners_shares).forEach(
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <h3 class="text-lg font-semibold">مجموع الدفعات</h3>
-          <p>{{ formatMoney(report.total_payments_amount) }} شيكل</p>
+          <p>{{ formatMoney(report.total_payments_amount) }}</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold">مجموع النفقات</h3>
-          <p>{{ formatMoney(report.total_expenses_amount) }} شيكل</p>
+          <p>{{ formatMoney(report.total_expenses_amount) }}</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold">صافي الربح</h3>
-          <p>{{ formatMoney(report.network_income) }} شيكل</p>
+          <p>{{ formatMoney(report.network_income) }}</p>
         </div>
         <div>
           <h3 class="text-lg font-semibold">ربح فائض</h3>
           <p>
-            {{
-              report.income_overflow
-                ? `${formatMoney(report.income_overflow)} شيكل`
-                : 'لا يوجد'
-            }}
+            {{ formatMoney(report.income_overflow) }}
           </p>
         </div>
         <div class="md:col-span-full">
@@ -82,7 +78,6 @@ Object.keys(props.report.partners_shares).forEach(
                   </td>
                   <td class="whitespace-nowrap border p-2">
                     {{ formatMoney(report.partners_shares[username].benefit) }}
-                    شيكل
                   </td>
                 </tr>
                 <tr>
@@ -91,7 +86,7 @@ Object.keys(props.report.partners_shares).forEach(
                     %{{ Math.round(totalShares * 100) }}
                   </td>
                   <td class="whitespace-nowrap border p-2">
-                    {{ totalBenefit }} شيكل
+                    {{ formatMoney(totalBenefit) }}
                   </td>
                 </tr>
               </tbody>

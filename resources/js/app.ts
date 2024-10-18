@@ -10,7 +10,7 @@ import Toaster from './Components/ui/toast/Toaster.vue'
 
 import { createI18n } from 'vue-i18n'
 import ar from './locales/ar.json'
-import AuthenticatedLayout from './Layouts/AuthenticatedLayout.vue'
+
 const i18n = createI18n({
   legacy: false,
   locale: 'ar',
