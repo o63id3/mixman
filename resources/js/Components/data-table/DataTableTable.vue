@@ -24,12 +24,11 @@ const table = inject<import('@tanstack/table-core').Table<TData>>('table')
         <TableRow
           v-for="headerGroup in table.getHeaderGroups()"
           :key="headerGroup.id"
-          class="whitespace-nowrap text-nowrap text-right"
         >
           <TableHead
             v-for="header in headerGroup.headers"
             :key="header.id"
-            class="whitespace-nowrap text-nowrap text-right"
+            class="whitespace-nowrap text-nowrap"
           >
             <FlexRender
               v-if="!header.isPlaceholder"
@@ -49,7 +48,7 @@ const table = inject<import('@tanstack/table-core').Table<TData>>('table')
             <TableCell
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="whitespace-nowrap text-nowrap text-right"
+              class="whitespace-nowrap text-nowrap"
             >
               <FlexRender
                 :render="cell.column.columnDef.cell"
