@@ -32,7 +32,7 @@ const breadcrumbs = [
     route: route('dashboard'),
   },
   {
-    label: 'المدفوعات',
+    label: 'الدفعات',
   },
 ]
 </script>

@@ -12,18 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/Components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/Components/ui/select'
 import { Input } from '@/Components/ui/input'
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert'
 import { CardTitle } from '@/Components/ui/card'
 import BreadcrumbsGenerator from '@/Components/BreadcrumbsGenerator.vue'
+import Combobox from '@/Components/combobox/Combobox.vue'
 
 import { AlertCircle } from 'lucide-vue-next'
 import { Network, User } from '@/types'
@@ -36,7 +29,7 @@ const props = defineProps<{
 
 const formSchema = toTypedSchema(
   z.object({
-    user_id: z.string({ message: 'هذا الحقل مطلوب' }),
+    user_id: z.number({ message: 'هذا الحقل مطلوب' }),
     share: z
       .number({ message: 'هذا الحقل مطلوب' })
       .min(1, { message: 'يجب أن يكون أكبر من 1' })
@@ -102,39 +95,40 @@ const breadcrumbs = [
         </CardTitle>
       </template>
 
-      <FormField v-slot="{ componentField }" name="user_id">
-        <FormItem>
-          <FormLabel>الشريك</FormLabel>
-          <FormControl>
-            <Select v-bind="componentField">
-              <SelectTrigger>
-                <SelectValue placeholder="اختر الشريك" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem
-                    v-for="partner in partners"
-                    :key="partner.id"
-                    :value="String(partner.id)"
-                  >
-                    {{ partner.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="share">
-        <FormItem>
-          <FormLabel>الحصة</FormLabel>
-          <FormControl>
-            <Input type="number" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+      <template #default="{ form }">
+        <FormField name="user_id">
+          <FormItem>
+            <FormLabel>الشريك</FormLabel>
+            <FormControl>
+              <Combobox
+                :options="
+                  partners.map((partner) => ({
+                    value: partner.id,
+                    label: partner.name,
+                  }))
+                "
+                choose-title="اختر الشريك..."
+                search-placeholder="ابحث عن شريك"
+                :selected="form.values.user_id"
+                @select="
+                  (selected: any) =>
+                    form.setFieldValue('user_id', selected.value)
+                "
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="share">
+          <FormItem>
+            <FormLabel>الحصة</FormLabel>
+            <FormControl>
+              <Input type="number" v-bind="componentField" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+      </template>
     </CreateFormLayout>
   </AuthenticatedLayout>
 </template>
