@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3'
+import { useLocalStorage, createReusableTemplate } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -25,7 +26,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from '@/Components/ui/context-menu'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import { DialogDescription, DialogTitle } from '@/Components/ui/dialog'
+
+const [NavLinkTemplate, NavLink] = createReusableTemplate()
 
 const auth = usePage().props.auth
 
@@ -96,13 +106,39 @@ const links: Array<Link> = [
     icon: SheetIcon,
   },
 ]
+
+const sidebar = useLocalStorage('sidebar.visibility', false)
 </script>
 
 <template>
+  <NavLinkTemplate v-slot="{ link }">
+    <Link
+      :href="route(link.route)"
+      class="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
+      :class="[
+        route().current(link.route)
+          ? 'bg-muted text-primary'
+          : 'text-muted-foreground',
+      ]"
+    >
+      <component v-if="link.icon" :is="link.icon" class="h-4 w-4" />
+      {{ t(`nav.${link.label}`) }}
+      <Badge
+        v-if="link.badge"
+        class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
+      >
+        {{ link.badge }}
+      </Badge>
+    </Link>
+  </NavLinkTemplate>
+
   <div
-    class="grid min-h-screen w-full bg-muted/40 md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
+    class="grid min-h-screen w-full bg-muted/40"
+    :class="[
+      sidebar ? 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]' : '',
+    ]"
   >
-    <div class="hidden md:block ltr:border-r rtl:border-l">
+    <div v-if="sidebar" class="hidden md:block ltr:border-r rtl:border-l">
       <div class="sticky top-0 flex h-full max-h-screen flex-col gap-2">
         <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <Link
@@ -121,26 +157,11 @@ const links: Array<Link> = [
         </div>
         <div class="flex-1 overflow-y-auto">
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-            <Link
+            <NavLink
               v-for="link in links.filter((link) => link.visible)"
               :key="link.label"
-              :href="route(link.route)"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
-              :class="[
-                route().current(link.route)
-                  ? 'bg-muted text-primary'
-                  : 'text-muted-foreground',
-              ]"
-            >
-              <component v-if="link.icon" :is="link.icon" class="h-4 w-4" />
-              {{ t(`nav.${link.label}`) }}
-              <Badge
-                v-if="link.badge"
-                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
-              >
-                {{ link.badge }}
-              </Badge>
-            </Link>
+              :link="link"
+            />
           </nav>
         </div>
       </div>
@@ -156,8 +177,13 @@ const links: Array<Link> = [
               <span class="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" class="flex flex-col">
-            <nav class="grid gap-2 overflow-y-auto text-lg font-medium">
+          <SheetContent
+            side="right"
+            class="flex flex-col"
+            aria-describedby="asd"
+          >
+            <DialogDescription />
+            <DialogTitle>
               <Link
                 :href="route('dashboard')"
                 class="flex items-center gap-2 text-lg font-semibold"
@@ -165,31 +191,41 @@ const links: Array<Link> = [
                 <ApplicationLogo class="h-7 w-7" />
                 <span class="sr-only">مكس نت</span>
               </Link>
+            </DialogTitle>
 
-              <Link
+            <nav class="grid gap-2 overflow-y-auto text-lg font-medium">
+              <NavLink
                 v-for="link in links.filter((link) => link.visible)"
                 :key="link.label"
-                :href="route(link.route)"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground"
-                :class="[
-                  route().current(link.route)
-                    ? 'bg-muted px-3 py-2 text-foreground'
-                    : 'text-muted-foreground',
-                ]"
-              >
-                <component v-if="link.icon" :is="link.icon" class="h-5 w-5" />
-                {{ t(`nav.${link.label}`) }}
-                <Badge
-                  v-if="link.badge"
-                  class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ltr:ml-auto rtl:mr-auto"
-                >
-                  {{ link.badge }}
-                </Badge>
-              </Link>
+                :link="link"
+              />
             </nav>
           </SheetContent>
         </Sheet>
         <div>
+          <ContextMenu>
+            <ContextMenuTrigger>
+              <!-- <div class="absolute inset-0 z-10 hidden md:block" /> -->
+
+              <Button
+                class="hidden md:flex"
+                variant="outline"
+                size="icon"
+                @click="sidebar = !sidebar"
+              >
+                <Menu class="h-5 w-5" />
+              </Button>
+            </ContextMenuTrigger>
+            <ContextMenuContent class="w-64">
+              <ContextMenuItem
+                v-for="link in links.filter((link) => link.visible)"
+                :key="link.label"
+                as-child
+              >
+                <NavLink :link="link" />
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
           <slot name="header" />
         </div>
         <div class="flex-1" />
