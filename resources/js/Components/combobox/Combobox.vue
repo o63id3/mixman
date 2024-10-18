@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
+
 import { Button } from '@/Components/ui/button'
 import {
   Command,
@@ -10,14 +11,21 @@ import {
   CommandItem,
   CommandList,
 } from '@/Components/ui/command'
-import { Drawer, DrawerContent, DrawerTrigger } from '@/Components/ui/drawer'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,
+  DrawerDescription,
+} from '@/Components/ui/drawer'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/Components/ui/popover'
-import { cn } from '@/lib/utils'
 import { CheckIcon } from 'lucide-vue-next'
+
+import { cn } from '@/lib/utils'
 
 interface Option {
   label: string
@@ -33,7 +41,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['select'])
 
-const [UseTemplate, StatusList] = createReusableTemplate()
+const [StatusListTemplate, StatusList] = createReusableTemplate()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const isOpen = ref(false)
@@ -59,7 +67,7 @@ function filter(value: string, search: string) {
 
 <template>
   <div>
-    <UseTemplate>
+    <StatusListTemplate>
       <Command :filter="filter">
         <!-- <CommandInput
           v-model="searchQuery"
@@ -94,7 +102,7 @@ function filter(value: string, search: string) {
           </CommandGroup>
         </CommandList>
       </Command>
-    </UseTemplate>
+    </StatusListTemplate>
 
     <Popover v-if="isDesktop" v-model:open="isOpen">
       <PopoverTrigger as-child>
@@ -127,7 +135,10 @@ function filter(value: string, search: string) {
           }}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent class="h-2/3">
+        <DrawerTitle />
+        <DrawerDescription />
+
         <div class="mt-4 border-t">
           <StatusList />
         </div>
