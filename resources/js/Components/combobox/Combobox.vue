@@ -26,6 +26,7 @@ import {
 import { CheckIcon } from 'lucide-vue-next'
 
 import { cn } from '@/lib/utils'
+import { CaretSortIcon } from '@radix-icons/vue'
 
 interface Option {
   label: string
@@ -42,6 +43,7 @@ const props = defineProps<{
 const emit = defineEmits(['select'])
 
 const [StatusListTemplate, StatusList] = createReusableTemplate()
+const [TriggerTemplate, Trigger] = createReusableTemplate()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const isOpen = ref(false)
@@ -104,18 +106,33 @@ function filter(value: string, search: string) {
       </Command>
     </StatusListTemplate>
 
+    <TriggerTemplate>
+      <Button
+        variant="outline"
+        class="relative w-full justify-start hover:bg-background"
+        :class="[!selected ? 'text-muted-foreground' : '']"
+      >
+        {{
+          selected
+            ? options.find((option) => option.value === selected)?.label
+            : chooseTitle
+        }}
+
+        <CaretSortIcon
+          :class="
+            cn(
+              'absolute left-5',
+              'h-4 w-4 shrink-0 opacity-50',
+              'ltr:me-2 ltr:ms-auto rtl:me-auto rtl:ms-2',
+            )
+          "
+        />
+      </Button>
+    </TriggerTemplate>
+
     <Popover v-if="isDesktop" v-model:open="isOpen">
       <PopoverTrigger as-child>
-        <Button
-          variant="outline"
-          class="w-full justify-start text-muted-foreground"
-        >
-          {{
-            selected
-              ? options.find((option) => option.value === selected)?.label
-              : chooseTitle
-          }}
-        </Button>
+        <Trigger />
       </PopoverTrigger>
       <PopoverContent class="w-full p-0" align="start">
         <StatusList />
@@ -124,16 +141,7 @@ function filter(value: string, search: string) {
 
     <Drawer v-else v-model:open="isOpen">
       <DrawerTrigger as-child>
-        <Button
-          variant="outline"
-          class="w-full justify-start text-muted-foreground"
-        >
-          {{
-            selected
-              ? options.find((option) => option.value === selected)?.label
-              : chooseTitle
-          }}
-        </Button>
+        <Trigger />
       </DrawerTrigger>
       <DrawerContent class="h-2/3">
         <DrawerTitle />
