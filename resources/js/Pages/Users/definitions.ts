@@ -72,8 +72,7 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'balance',
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: 'صافي الحساب' }),
-    cell: ({ row }) =>
-      row.original.balance ? `${formatMoney(row.original.balance)} شيكل` : '-',
+    cell: ({ row }) => formatMoney(row.original.balance),
     enableSorting: false,
   },
   {

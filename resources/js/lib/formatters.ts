@@ -15,7 +15,7 @@ export function formatDate(date: string, withTime: boolean = true): string {
 }
 
 export function formatMoney(money?: number): string {
-  if (!money) return ''
+  if (!money) return '-'
 
-  return new Intl.NumberFormat('en-US').format(money)
+  return new Intl.NumberFormat('en-US').format(money) + ' شيكل'
 }

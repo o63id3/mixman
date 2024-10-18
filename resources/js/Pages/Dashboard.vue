@@ -54,7 +54,7 @@ const groups: Array<Group> = [
     cards: [
       {
         title: 'الديون المستحقة',
-        value: h('span', `${formatMoney(props.total_debuts)} شيكل`),
+        value: h('span', formatMoney(props.total_debuts)),
         icon: h(DollarSign, { class: 'text-green-500' }),
         visible: props.total_debuts !== 0,
       },
@@ -83,7 +83,7 @@ const groups: Array<Group> = [
     cards: [
       {
         title: 'صافي المدخول',
-        value: h('span', `${formatMoney(props.total_income)} شيكل`),
+        value: h('span', formatMoney(props.total_income)),
         icon: h(DollarSign, { class: 'text-green-500' }),
         visible:
           user.role !== 'seller' &&
@@ -93,7 +93,7 @@ const groups: Array<Group> = [
       {
         title: 'أكبر مدخول شبكة',
         value: h('span', props.max_network_income?.network ?? ''),
-        description: `${formatMoney(props.max_network_income?.amount)} شيكل`,
+        description: formatMoney(props.max_network_income?.amount),
         icon: h(DollarSign, { class: 'text-green-500' }),
         visible: user.role === 'ahmed',
       },

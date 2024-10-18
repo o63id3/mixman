@@ -37,20 +37,14 @@ export function columns(canUpdate: boolean): ColumnDef<Network>[] {
       accessorKey: 'balance',
       header: ({ column }) =>
         h(DataTableColumnHeader, { column, title: 'صافي الحساب' }),
-      cell: ({ row }) =>
-        row.original.balance
-          ? `${formatMoney(row.original.balance)} شيكل`
-          : '-',
+      cell: ({ row }) => formatMoney(row.original.balance),
       enableSorting: false,
     },
     {
       accessorKey: 'internet_price_per_week',
       header: ({ column }) =>
         h(DataTableColumnHeader, { column, title: 'سعر الانترنت أسبوعيا' }),
-      cell: ({ row }) =>
-        row.original.balance
-          ? `${formatMoney(row.original.internet_price_per_week)} شيكل`
-          : '-',
+      cell: ({ row }) => formatMoney(row.original.internet_price_per_week),
       enableSorting: false,
     },
     {

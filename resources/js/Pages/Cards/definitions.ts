@@ -31,7 +31,7 @@ export const columns: ColumnDef<Card>[] = [
         column,
         title: 'السعر للمستهلك',
       }),
-    cell: ({ row }) => `${row.getValue('price_for_consumer')} شيكل`,
+    cell: ({ row }) => formatMoney(row.getValue('price_for_consumer')),
     enableSorting: false,
   },
   {
@@ -59,6 +59,7 @@ export const columns: ColumnDef<Card>[] = [
 
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
+import { formatMoney } from '@/lib/formatters'
 
 export const formSchema = toTypedSchema(
   z.object({

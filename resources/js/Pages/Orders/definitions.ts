@@ -66,10 +66,7 @@ export const columns: ColumnDef<Order>[] = [
         column,
         title: 'اجمالي السعر',
       }),
-    cell: ({ row }) =>
-      row.original.total_price_for_seller
-        ? `${formatMoney(row.getValue('total_price_for_seller'))} شيكل`
-        : '-',
+    cell: ({ row }) => formatMoney(row.getValue('total_price_for_seller')),
   },
   {
     accessorKey: 'total_price_for_consumer',
@@ -78,10 +75,7 @@ export const columns: ColumnDef<Order>[] = [
         column,
         title: 'اجمالي السعر للمستهلك',
       }),
-    cell: ({ row }) =>
-      row.original.total_price_for_consumer
-        ? `${formatMoney(row.getValue('total_price_for_consumer'))} شيكل`
-        : '-',
+    cell: ({ row }) => formatMoney(row.getValue('total_price_for_consumer')),
     enableSorting: false,
   },
   {

@@ -62,8 +62,7 @@ export const columns: ColumnDef<Transaction>[] = [
         column,
         title: 'المبلغ',
       }),
-    cell: ({ row }) =>
-      row.original.amount ? `${formatMoney(row.original.amount)} شيكل` : '-',
+    cell: ({ row }) => formatMoney(row.original.amount),
   },
   {
     accessorKey: 'description',

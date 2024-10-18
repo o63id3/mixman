@@ -51,7 +51,7 @@ export const columns: ColumnDef<Expense>[] = [
         column,
         title: 'المبلغ',
       }),
-    cell: ({ row }) => `${formatMoney(row.original.amount)} شيكل`,
+    cell: ({ row }) => formatMoney(row.original.amount),
   },
   {
     accessorKey: 'created_at',
