@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import UpdateFormLayout from '@/Layouts/UpdateFormLayout.vue'
+
 import { Input } from '@/Components/ui/input'
 import {
   FormControl,
@@ -10,7 +12,6 @@ import {
 import { CardDescription, CardTitle } from '@/Components/ui/card'
 
 import { usePage } from '@inertiajs/vue3'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
 
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'

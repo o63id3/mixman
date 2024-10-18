@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card'
 
 import { useSubmit } from '@/Composables/submit'
 import { FormContext, TypedSchema, useForm } from 'vee-validate'
-import { Separator } from '../ui/separator'
+import { Separator } from '@/Components/ui/separator'
 
 import { type Method, VisitOptions } from '@inertiajs/core'
 

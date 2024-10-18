@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import UpdateFormLayout from '@/Components/forms/UpdateFormLayout.vue'
+import UpdateFormLayout from '@/Layouts/UpdateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import NetworkForm from './Partials/NetworkForm.vue'

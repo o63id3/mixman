@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import CreateFormLayout from '@/Layouts/CreateFormLayout.vue'
+
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
@@ -13,7 +15,6 @@ import { toast } from '@/Components/ui/toast'
 import { Card, Order } from '@/types'
 import CardItemForm from './CardItemForm.vue'
 import { PlusCircleIcon } from 'lucide-vue-next'
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 
 defineProps<{
   order: Order

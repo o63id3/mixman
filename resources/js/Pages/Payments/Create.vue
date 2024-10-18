@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
+import CreateFormLayout from '@/Layouts/CreateFormLayout.vue'
 
 import { formSchema } from './definitions'
 import PaymentForm from './Partials/PaymentForm.vue'

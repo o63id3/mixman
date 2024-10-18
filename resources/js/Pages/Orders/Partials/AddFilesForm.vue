@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import CreateFormLayout from '@/Layouts/CreateFormLayout.vue'
+
 import {
   FormControl,
   FormField,
@@ -11,10 +13,9 @@ import * as z from 'zod'
 
 import MultiFileUploader from '@/Components/file-upload/MultiFileUploader.vue'
 import { Order } from '@/types'
-import CreateFormLayout from '@/Components/forms/CreateFormLayout.vue'
 import { toast } from '@/Components/ui/toast'
 
-const props = defineProps<{
+defineProps<{
   order: Order
 }>()
 
