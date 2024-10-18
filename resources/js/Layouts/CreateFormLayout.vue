@@ -27,6 +27,7 @@ const form = useForm({
 
 const { submit, loading, recentlySuccessful } = useSubmit(props.route, {
   method: 'post',
+  preserveState: true,
   onSuccess: () => {
     emit('success')
     form.resetForm()

@@ -11,7 +11,6 @@ export function useSubmit(href: string, options: VisitOptions) {
 
     options.data = values
     options.preserveScroll = true
-    options.preserveState = true
     options.onStart = () => (loading.value = true)
     options.onFinish = () => (loading.value = false)
     options.onSuccess = (...params) => {
