@@ -52,7 +52,7 @@ final class CardsController
         Gate::authorize('create', Card::class);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:2', Rule::unique('cards', 'name')],
+            'name' => ['required', 'unique:cards,name', 'string', 'min:2'],
             'price_for_consumer' => ['required', 'numeric'],
             'notes' => ['nullable', 'string'],
         ]);

@@ -69,8 +69,8 @@ final class UsersController
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2'],
-            'username' => ['required', 'string', 'min:2', Rule::unique('users', 'username')],
-            'telegram' => ['nullable', 'string', Rule::unique('users', 'telegram')],
+            'username' => ['required', 'unique:users,username', 'string', 'min:2'],
+            'telegram' => ['nullable', 'unique:users,telegram', 'string'],
             'password' => ['required', 'string', 'min:4'],
             'role' => ['required', Rule::enum(RoleEnum::class)],
             'percentage' => ['required_if:role,seller', 'numeric'],

@@ -59,7 +59,7 @@ final class NetworksController
         Gate::authorize('create', Network::class);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:2', Rule::unique('networks', 'name')],
+            'name' => ['required', 'unique:networks,name', 'string', 'min:2'],
             'internet_price_per_week' => ['numeric'],
         ]);
 
